@@ -18,6 +18,7 @@ VENV_ROOT=${HGSOC_CORNETO_ENV:-/scratch/project_2012997/xiaomei/hgsoc_corneto_en
 SOLVER=${SOLVER:-auto}
 MOSEK_LICENSE=${MOSEKLM_LICENSE_FILE:-${REPO_ROOT}/mosek_xm.lic}
 GUROBI_LICENSE=${GRB_LICENSE_FILE:-${REPO_ROOT}/gurobi_xm.lic}
+PILOT_OUTPUT=${PILOT_OUTPUT:-data/processed/corneto/E-MTAB-14568/pilot_receipt.json}
 
 if ! type module >/dev/null 2>&1; then
     set +u
@@ -49,7 +50,7 @@ srun "${VENV_ROOT}/bin/python" scripts/run_corneto_14568_pilot.py \
     --expression "${RNA_ROOT}/aggregated/E-MTAB-14568/gene_tpm.tsv.gz" \
     --manifest data/processed/metadata/ocm_master_manifest.tsv \
     --human-gem "${INPUT_ROOT}/downloads/Human-GEM-v1.4.1.xml" \
-    --output data/processed/corneto/E-MTAB-14568/pilot_receipt.json \
+    --output "${PILOT_OUTPUT}" \
     --primary-only \
     --max-samples "${MAX_SAMPLES:-3}" \
     --max-candidates "${MAX_CANDIDATES:-250}" \
