@@ -293,13 +293,6 @@ def main() -> None:
             "audits_by_sample": candidate_audits,
             "bounds_clamped_to_human_gem": True,
             "bounds_skipped_as_empty_intersection": bounds_skipped,
-            "reaction_bounds_by_sample": {
-                run_id: {
-                    reaction_id: [float(lower), float(upper)]
-                    for reaction_id, (lower, upper) in sorted(reaction_bounds[run_id].items())
-                }
-                for run_id in run_ids
-            },
         },
         "objective": {
             "biomass_coefficient": -1.0,
