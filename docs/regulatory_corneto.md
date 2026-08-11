@@ -1,6 +1,3 @@
-** WARNING: connection is not using a post-quantum key exchange algorithm.
-** This session may be vulnerable to "store now, decrypt later" attacks.
-** The server may need to be upgraded. See https://openssh.com/pq.html
 # Regulatory CORNETO pilot
 
 This track is a response-blind, reproducible network-inference pilot. It uses
