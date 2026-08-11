@@ -1,0 +1,45 @@
+schema_version: 1
+
+# These are public OmniPath web-service queries.  The academic-use filter is
+# deliberate: source resources retain their own attribution/licence terms.
+retrieval:
+  user_agent: hgsoc-corneto-regulatory/0.1
+  timeout_seconds: 120
+  max_bytes: 50000000
+
+sources:
+  collectri:
+    url: "https://omnipathdb.org/interactions?datasets=collectri&organism=9606&genesymbols=yes&format=tsv&license=academic"
+    output: collectri.tsv
+    role: signed_tf_target_regulon
+    license: "OmniPath academic-use filter; CollecTRI-derived source licences remain applicable"
+    required_any_columns:
+      - [source_genesymbol, source]
+      - [target_genesymbol, target]
+      - [consensus_direction, is_stimulation, is_inhibition]
+  omnipath:
+    url: "https://omnipathdb.org/interactions?datasets=omnipath&organism=9606&genesymbols=yes&format=tsv&license=academic"
+    output: omnipath.tsv
+    role: signed_causal_pkn
+    license: "OmniPath academic-use filter; underlying resource licences remain applicable"
+    required_any_columns:
+      - [source_genesymbol, source]
+      - [target_genesymbol, target]
+      - [consensus_direction, is_stimulation, is_inhibition]
+
+pilot:
+  study_accession: E-MTAB-14568
+  sample_class: tumour
+  primary_only: true
+  default_samples: 8
+  min_samples: 8
+  max_samples: 12
+  top_tfs: 50
+  expression_transform: log1p_tpm
+  response_blind: true
+  corneto:
+    status: blocked_unverified_api
+    reason: >-
+      No pinned regulatory CORNETO/CARNIVAL adapter is declared in this
+      repository.  The pilot emits deterministic signed-regulon activity and
+      normalized signed-PKN tables, never a fabricated solver result.
