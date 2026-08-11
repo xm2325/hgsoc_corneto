@@ -65,8 +65,8 @@ def _load_receipt(path: Path, expected_study: str, expected_lambda: float) -> di
         root = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
         raise ReceiptError(f"cannot read {path}: {error}") from error
-    if not isinstance(root, dict) or root.get("status") != "completed":
-        raise ReceiptError(f"{path}: receipt must have status='completed'")
+    if not isinstance(root, dict) or root.get("status") not in {"completed", "blocked"}:
+        raise ReceiptError(f"{path}: receipt status must be 'completed' or 'blocked'")
     if root.get("study") != expected_study:
         raise ReceiptError(f"{path}: study {root.get('study')!r} != {expected_study!r}")
     if root.get("primary_only") is not True:
@@ -101,6 +101,13 @@ def _load_receipt(path: Path, expected_study: str, expected_lambda: float) -> di
         if len(edges) != len(raw_edges):
             raise ReceiptError(f"{path}: samples[{index}] has duplicate selected edges")
         samples[run] = {"status": status, "edges": edges}
+    sample_statuses = {row["status"] for row in samples.values()}
+    if "error" in sample_statuses:
+        raise ReceiptError(f"{path}: one or more sample solves have status='error'")
+    if root["status"] == "blocked" and any(
+        status in {"optimal", "optimal_inaccurate"} for status in sample_statuses
+    ):
+        raise ReceiptError(f"{path}: blocked receipt contains an optimal sample")
     source_sha = root.get("source_sha256")
     if not isinstance(source_sha, dict) or not source_sha:
         raise ReceiptError(f"{path}: source_sha256 missing")
@@ -108,6 +115,7 @@ def _load_receipt(path: Path, expected_study: str, expected_lambda: float) -> di
         "path": str(path),
         "receipt_sha256": _sha256(path),
         "source_sha256": source_sha,
+        "receipt_status": root["status"],
         "samples": samples,
     }
 
@@ -148,6 +156,7 @@ def _study_summary(values: dict[float, dict[str, Any]]) -> dict[str, Any]:
         rows[format(lambda_value, ".12g")] = {
             "path": value["path"],
             "receipt_sha256": value["receipt_sha256"],
+            "receipt_status": value["receipt_status"],
             "sample_count": len(runs),
             "status_counts": dict(sorted(Counter(samples[run]["status"] for run in runs).items())),
             "status_transitions_vs_lambda0": dict(sorted(status_transitions.items())),

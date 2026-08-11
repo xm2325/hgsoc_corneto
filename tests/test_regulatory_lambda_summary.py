@@ -20,6 +20,7 @@ def _receipt(lambda_value: float, shifted: bool = False):
         "path": f"lambda-{lambda_value}.json",
         "receipt_sha256": str(lambda_value),
         "source_sha256": {"expression": "same"},
+        "receipt_status": "completed",
         "samples": {
             "RUN1": {"status": "optimal", "edges": {edge_b if shifted else edge_a}},
             "RUN2": {"status": "blocked_no_selected_edges", "edges": set()},
@@ -54,3 +55,15 @@ def test_summary_rejects_sample_set_drift():
     changed["samples"].pop("RUN2")
     with pytest.raises(MODULE.ReceiptError, match="sample set differs"):
         MODULE.summarize({"STUDY-A": {0.0: _receipt(0.0), 0.1: changed}})
+
+
+def test_study_summary_records_blocked_receipt():
+    blocked = _receipt(1.0)
+    blocked["receipt_status"] = "blocked"
+    for row in blocked["samples"].values():
+        row["status"] = "blocked_no_selected_edges"
+        row["edges"] = set()
+    result = MODULE.summarize({"STUDY-A": {0.0: _receipt(0.0), 1.0: blocked}})
+    assert result["cohorts"]["STUDY-A"]["lambda_summaries"]["1"][
+        "receipt_status"
+    ] == "blocked"
