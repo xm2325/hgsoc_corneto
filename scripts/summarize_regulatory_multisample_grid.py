@@ -202,7 +202,67 @@ def main() -> int:
     )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    result = summarize(args.receipt, args.output)
+    try:
+        result = summarize(args.receipt, args.output)
+    except Exception as exc:
+        # Keep a machine-readable first-pass audit even when an array cell is
+        # missing or failed.  Exit nonzero so this receipt can never be mistaken
+        # for a scientific comparison; failed labels can then be retried only.
+        audit_rows = []
+        for mode, study, lambda_value, path in args.receipt:
+            row: dict[str, Any] = {
+                "mode": mode,
+                "study_accession": study,
+                "lambda_nominal": lambda_value,
+                "path": str(path),
+                "present": path.is_file(),
+            }
+            if path.is_file():
+                try:
+                    receipt = json.loads(path.read_text(encoding="utf-8"))
+                    row.update(
+                        {
+                            "status": receipt.get("status"),
+                            "error_class": receipt.get("error_class"),
+                            "error_message": receipt.get("error_message"),
+                            "solver_status": receipt.get("solver", {}).get("status"),
+                        }
+                    )
+                except Exception as receipt_error:
+                    row["parse_error"] = f"{type(receipt_error).__name__}: {receipt_error}"
+            audit_rows.append(row)
+        failed = [
+            row
+            for row in audit_rows
+            if not row["present"] or row.get("status") != "completed"
+        ]
+        result = {
+            "schema_version": "regulatory_multisample_grid_summary.v1",
+            "status": "incomplete_fail_closed",
+            "response_blind": True,
+            "validation_error": f"{type(exc).__name__}: {exc}",
+            "expected_receipt_count": len(args.receipt),
+            "completed_receipt_count": len(args.receipt) - len(failed),
+            "failed_or_missing_count": len(failed),
+            "failed_or_missing": failed,
+            "receipt_audit": audit_rows,
+            "claim_limit": "incomplete computation audit only; no network comparison",
+        }
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(
+            json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        print(
+            json.dumps(
+                {
+                    "status": result["status"],
+                    "failed_or_missing_count": len(failed),
+                    "output": str(args.output),
+                },
+                sort_keys=True,
+            )
+        )
+        return 2
     print(
         json.dumps(
             {
