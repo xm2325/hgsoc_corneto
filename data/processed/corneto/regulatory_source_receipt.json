@@ -1,0 +1,80 @@
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+{
+  "normalization": {
+    "remove_self_loops": true,
+    "require_directed": true,
+    "require_unambiguous_consensus_sign": true
+  },
+  "organism": "human",
+  "retrieved_at_utc": "2026-08-11T15:57:08+00:00",
+  "schema_version": "regulatory_sources.v1",
+  "sources": {
+    "collectri": {
+      "bytes": 4061567,
+      "columns": [
+        "source",
+        "target",
+        "source_genesymbol",
+        "target_genesymbol",
+        "is_directed",
+        "is_stimulation",
+        "is_inhibition",
+        "consensus_direction",
+        "consensus_stimulation",
+        "consensus_inhibition"
+      ],
+      "content_type": "text/plain; charset=utf-8",
+      "etag": null,
+      "http_status": 200,
+      "input_rows": 64516,
+      "kept_rows": 60023,
+      "last_modified": null,
+      "license_note": "CollecTRI GPL-3 and original resource terms apply.",
+      "normalized_bytes": 204911,
+      "normalized_path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_regulatory/collectri_tf_target.tsv.gz",
+      "normalized_sha256": "ecdb62986b37d740180244dc92e49e0828266134a7135eaaef658aa20a2de753",
+      "sha256": "98ef1163146d2e28ee413e7c909174998cd9d742ea93d97ccfe93f3a14c160c1",
+      "skipped_ambiguous_sign": 2590,
+      "skipped_missing": 0,
+      "skipped_self_loop": 8,
+      "skipped_undirected": 0,
+      "source": "collectri",
+      "url": "https://omnipathdb.org/interactions?datasets=collectri&genesymbols=yes&format=tsv"
+    },
+    "omnipath": {
+      "bytes": 6321713,
+      "columns": [
+        "source",
+        "target",
+        "source_genesymbol",
+        "target_genesymbol",
+        "is_directed",
+        "is_stimulation",
+        "is_inhibition",
+        "consensus_direction",
+        "consensus_stimulation",
+        "consensus_inhibition"
+      ],
+      "content_type": "text/plain; charset=utf-8",
+      "etag": null,
+      "http_status": 200,
+      "input_rows": 86189,
+      "kept_rows": 70675,
+      "last_modified": null,
+      "license_note": "OmniPath resource-specific licensing and attribution terms apply.",
+      "normalized_bytes": 232330,
+      "normalized_path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_regulatory/omnipath_signed_pkn.tsv.gz",
+      "normalized_sha256": "9b693925dc54e918e3766f514ecb44f3d3780d6cdd9085bb0a3df2c3a8c83c68",
+      "sha256": "527607c43fab14545282c4eb7afc35e8eb3e3cc48bb0e4c2aa6a76be0bc52944",
+      "skipped_ambiguous_sign": 15073,
+      "skipped_missing": 0,
+      "skipped_self_loop": 0,
+      "skipped_undirected": 0,
+      "source": "omnipath",
+      "url": "https://omnipathdb.org/interactions?datasets=omnipath&genesymbols=yes&format=tsv"
+    }
+  },
+  "status": "completed"
+}
