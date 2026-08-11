@@ -45,4 +45,5 @@ exec "${VENV_ROOT}/bin/python" scripts/run_corneto_regulatory_pilot.py \
     --study E-MTAB-14568 \
     --max-samples "${MAX_SAMPLES}" \
     --top-tfs "${TOP_TFS:-50}" \
-    --expression-transform log1p_tpm
+    --expression-transform log1p_tpm \
+    --primary-only
