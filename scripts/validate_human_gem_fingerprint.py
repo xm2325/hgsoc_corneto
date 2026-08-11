@@ -48,7 +48,6 @@ def main() -> None:
         optional["manifest_unique_runs"] = len({(r.get("study_accession"), r.get("run_accession")) for r in manifest_rows})
     if optional:
         receipt["optional_input_counts"] = optional
-    receipt["biomass_human_present"] = bool(biomass_ids)
     receipt["validation"] = {
         "status": "complete",
         "biomass_detected": bool(receipt["biomass_human_present"]),
