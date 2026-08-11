@@ -249,6 +249,11 @@ def main() -> int:
     parser.add_argument("--study", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--primary-only", action="store_true")
+    parser.add_argument(
+        "--run-accession",
+        action="append",
+        help="restrict solving to an exact run accession; repeat for multiple repair targets",
+    )
     parser.add_argument("--max-samples", type=int, default=8)
     parser.add_argument("--min-targets", type=int, default=5)
     parser.add_argument("--max-inputs", type=int, default=5)
@@ -278,13 +283,30 @@ def main() -> int:
         "source_sha256": {key: _sha(path) for key, path in (("expression", args.expression), ("manifest", args.manifest), ("collectri", args.collectri), ("pkn", args.pkn))},
         "samples": [],
     }
+    exit_code = 0
     try:
         manifest_rows = _load_manifest(args.manifest, args.study, args.primary_only)
         expression_samples, values = _load_expression(args.expression)
         zscores = _z_scores(values, expression_samples)
         edges_collectri = _load_edges(args.collectri)
         edges_pkn = _load_edges(args.pkn)
-        selected_manifest = [row for row in manifest_rows if row["run_accession"] in expression_samples][:args.max_samples]
+        selected_manifest = [
+            row for row in manifest_rows if row["run_accession"] in expression_samples
+        ]
+        if args.run_accession:
+            requested = set(args.run_accession)
+            if len(requested) != len(args.run_accession):
+                raise ValueError("duplicate --run-accession values")
+            available = {row["run_accession"] for row in selected_manifest}
+            missing = sorted(requested - available)
+            if missing:
+                raise ValueError(f"requested run accessions unavailable: {missing}")
+            selected_manifest = [
+                row for row in selected_manifest if row["run_accession"] in requested
+            ]
+            receipt["run_accession_filter"] = sorted(requested)
+        else:
+            selected_manifest = selected_manifest[: args.max_samples]
         if not selected_manifest:
             raise ValueError("no manifest samples overlap expression columns")
         receipt["input_counts"] = {"manifest_rows": len(manifest_rows), "expression_samples": len(expression_samples),
@@ -329,7 +351,13 @@ def main() -> int:
                     sample_result["error_message"] = str(exc)[:500]
             receipt["samples"].append(sample_result)
         statuses = [row["status"] for row in receipt["samples"]]
-        receipt["status"] = "completed" if any(status in {"optimal", "optimal_inaccurate"} for status in statuses) else "blocked"
+        if "error" in statuses:
+            receipt["status"] = "partial"
+            exit_code = 1
+        elif any(status in {"optimal", "optimal_inaccurate"} for status in statuses):
+            receipt["status"] = "completed"
+        else:
+            receipt["status"] = "blocked"
     except Exception as exc:
         receipt["status"] = "failed"
         receipt["error_class"] = type(exc).__name__
@@ -339,7 +367,7 @@ def main() -> int:
         receipt["finished_at_utc"] = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
         args.output.write_text(json.dumps(receipt, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8")
     print(json.dumps(receipt, indent=2, sort_keys=True, default=str))
-    return 0
+    return exit_code
 
 
 if __name__ == "__main__":
