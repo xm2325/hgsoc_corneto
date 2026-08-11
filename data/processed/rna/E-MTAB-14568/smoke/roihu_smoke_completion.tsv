@@ -1,0 +1,2 @@
+job_id	array_task_id	run_accession	canonical_ocm_id	state	exit_code	elapsed	peak_step_max_rss	alloc_cpus	repo_commit	library_type	processed_fragments	mapped_fragments	percent_mapped	receipt_sha256
+577984	25	ERR13907062	OCM341-1	COMPLETED	0:0	00:09:26	25041900K	8	c23b6a9b52ea300016de407d6baa1334d9c3181c	ISR	24850387	22489342	90.49896084113298	394c657731d03c0ccd6c107998c6c05020f2146927bd3ccc34a0c4b915b4630a

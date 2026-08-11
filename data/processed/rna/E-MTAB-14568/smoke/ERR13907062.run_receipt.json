@@ -1,0 +1,73 @@
+{
+  "completed_at_utc": "2026-08-11T06:52:25.587059+00:00",
+  "fastqs": [
+    {
+      "bytes": 799060641,
+      "mate": 1,
+      "md5": "1d799ea920b4660f1437c6b6a90cf5b7",
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/fastq/E-MTAB-14568/ERR13907062/ERR13907062_1.fastq.gz",
+      "url": "https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR139/062/ERR13907062/ERR13907062_1.fastq.gz",
+      "verification": "verified"
+    },
+    {
+      "bytes": 844630088,
+      "mate": 2,
+      "md5": "7e7c49acfb878910bb414ef85abc67d3",
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/fastq/E-MTAB-14568/ERR13907062/ERR13907062_2.fastq.gz",
+      "url": "https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR139/062/ERR13907062/ERR13907062_2.fastq.gz",
+      "verification": "verified"
+    }
+  ],
+  "library_type_requested": "A",
+  "library_types_detected": [
+    "ISR"
+  ],
+  "num_mapped": 22489342,
+  "num_processed": 24850387,
+  "percent_mapped": 90.49896084113298,
+  "repo_commit": "c23b6a9b52ea300016de407d6baa1334d9c3181c",
+  "run": {
+    "canonical_ocm_id": "OCM341-1",
+    "fastqs": [
+      {
+        "bytes": 799060641,
+        "mate": 1,
+        "md5": "1d799ea920b4660f1437c6b6a90cf5b7",
+        "url": "https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR139/062/ERR13907062/ERR13907062_1.fastq.gz"
+      },
+      {
+        "bytes": 844630088,
+        "mate": 2,
+        "md5": "7e7c49acfb878910bb414ef85abc67d3",
+        "url": "https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR139/062/ERR13907062/ERR13907062_2.fastq.gz"
+      }
+    ],
+    "library_layout": "PAIRED",
+    "patient_id": "OCM341",
+    "run_accession": "ERR13907062",
+    "sample_class": "tumour",
+    "study_accession": "E-MTAB-14568"
+  },
+  "salmon_command": [
+    "/scratch/project_2012997/xiaomei/hgsoc_corneto_tools/salmon-1.10.0/bin/salmon",
+    "quant",
+    "--index",
+    "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/reference/gencode_v32/salmon_index",
+    "--libType",
+    "A",
+    "--mates1",
+    "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/fastq/E-MTAB-14568/ERR13907062/ERR13907062_1.fastq.gz",
+    "--mates2",
+    "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/fastq/E-MTAB-14568/ERR13907062/ERR13907062_2.fastq.gz",
+    "--threads",
+    "8",
+    "--validateMappings",
+    "--seqBias",
+    "--gcBias",
+    "--output",
+    "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/quant/E-MTAB-14568/.ERR13907062.0kaoj3i4/quant"
+  ],
+  "salmon_version": "salmon 1.10.0",
+  "status": "completed",
+  "task_index": 25
+}
