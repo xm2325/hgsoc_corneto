@@ -18,6 +18,11 @@ MEESON_COMMIT=1b0e9050720be8fb6769a9a7ab14a4b19bbce8c3
 MEESON_CHECKOUT=${INPUT_ROOT}/sources/PhD_2024-${MEESON_COMMIT}
 HUMAN_GEM=${INPUT_ROOT}/downloads/Human-GEM-v1.4.1.xml
 
+if ! type module >/dev/null 2>&1; then
+    set +u
+    source /etc/profile.d/zz-csc-env.sh
+    set -u
+fi
 module load python-data/3.12
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 export PYTHONNOUSERSITE=1
