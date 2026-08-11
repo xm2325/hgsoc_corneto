@@ -1,0 +1,649 @@
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+{
+  "finished_at_utc": "2026-08-11T16:31:38+00:00",
+  "input_counts": {
+    "collectri_edges": 60023,
+    "expression_genes": 59368,
+    "expression_samples": 36,
+    "manifest_rows": 9,
+    "pkn_edges": 70675,
+    "selected_samples": 9
+  },
+  "inputs": {
+    "collectri": "/scratch/project_2012997/xiaomei/hgsoc_corneto_regulatory/collectri_tf_target.tsv.gz",
+    "expression": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/aggregated/E-MTAB-7223/gene_tpm.tsv.gz",
+    "manifest": "data/processed/metadata/ocm_master_manifest.tsv",
+    "pkn": "/scratch/project_2012997/xiaomei/hgsoc_corneto_regulatory/omnipath_signed_pkn.tsv.gz"
+  },
+  "method": {
+    "activity_method": "signed_collecTRI_regulon_zscore",
+    "exclusive_signal_paths": true,
+    "input_policy": "expression-derived upstream prior; not a perturbation experiment",
+    "lambda_reg": 0.0,
+    "max_depth": 3,
+    "max_edges": 3000,
+    "max_flow": 100,
+    "max_inputs": 3,
+    "max_outputs": 6,
+    "min_targets": 5,
+    "name": "CarnivalFlow",
+    "response_blind": true
+  },
+  "primary_only": true,
+  "samples": [
+    {
+      "inputs": {
+        "GRM3": 1.0,
+        "SOX10": 1.0,
+        "TCL1B": 1.0
+      },
+      "network_edges": 9,
+      "objective": 0.0,
+      "outputs": {
+        "MYC": 1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR2808250",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "AKT1",
+          "target": "CDK2"
+        },
+        {
+          "sign": 1,
+          "source": "CDK2",
+          "target": "MYC"
+        },
+        {
+          "sign": 1,
+          "source": "TCL1B",
+          "target": "AKT1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 5.360087600314754,
+          "target_count": 776,
+          "tf": "MYC"
+        },
+        {
+          "score": 3.6611656926986305,
+          "target_count": 123,
+          "tf": "SREBF1"
+        },
+        {
+          "score": 3.6244779034290393,
+          "target_count": 17,
+          "tf": "NEUROG2"
+        },
+        {
+          "score": 3.6244494939051584,
+          "target_count": 10,
+          "tf": "FOXI1"
+        },
+        {
+          "score": 3.547134081022732,
+          "target_count": 41,
+          "tf": "OTX2"
+        },
+        {
+          "score": -3.2421743275637485,
+          "target_count": 7,
+          "tf": "HOXC13"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "GZMA": 1.0,
+        "PTPRO": 1.0,
+        "SOST": 1.0
+      },
+      "network_edges": 8,
+      "objective": 1.0,
+      "outputs": {
+        "E2F1": 1.0,
+        "NFKB2": 1.0,
+        "RELB": 1.0
+      },
+      "processed_edges": 14,
+      "processed_vertices": 11,
+      "regulon_count": 763,
+      "run_accession": "ERR2808251",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "CDK1",
+          "target": "E2F1"
+        },
+        {
+          "sign": -1,
+          "source": "ERBB2",
+          "target": "CDK1"
+        },
+        {
+          "sign": -1,
+          "source": "GSK3B",
+          "target": "NFKB2"
+        },
+        {
+          "sign": -1,
+          "source": "LRP5",
+          "target": "GSK3B"
+        },
+        {
+          "sign": -1,
+          "source": "PTPRO",
+          "target": "ERBB2"
+        },
+        {
+          "sign": 1,
+          "source": "SOST",
+          "target": "LRP5"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 6.425571527319001,
+          "target_count": 295,
+          "tf": "E2F1"
+        },
+        {
+          "score": 6.170916951981812,
+          "target_count": 815,
+          "tf": "RELB"
+        },
+        {
+          "score": 6.109386613251649,
+          "target_count": 820,
+          "tf": "NFKB2"
+        },
+        {
+          "score": 5.903895891029236,
+          "target_count": 817,
+          "tf": "REL"
+        },
+        {
+          "score": 5.8278961614326175,
+          "target_count": 794,
+          "tf": "NFKB1_NFKB2"
+        },
+        {
+          "score": 5.8278961614326175,
+          "target_count": 794,
+          "tf": "NFKB1_REL"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "ADRA1A": 1.0,
+        "GATA1": 1.0,
+        "IL5RA": 1.0
+      },
+      "network_edges": 8,
+      "objective": 1.0,
+      "outputs": {
+        "NFKB1": 1.0,
+        "RELA": 1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR2808253",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "IL5RA",
+          "target": "JAK2"
+        },
+        {
+          "sign": -1,
+          "source": "JAK2",
+          "target": "PPP2CA"
+        },
+        {
+          "sign": -1,
+          "source": "PPP2CA",
+          "target": "RELA"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": -9.151078771387853,
+          "target_count": 79,
+          "tf": "REST"
+        },
+        {
+          "score": 7.967654897348291,
+          "target_count": 988,
+          "tf": "RELA"
+        },
+        {
+          "score": 7.8842452447624485,
+          "target_count": 958,
+          "tf": "NFKB1"
+        },
+        {
+          "score": 7.831459448421481,
+          "target_count": 815,
+          "tf": "RELB"
+        },
+        {
+          "score": 7.740446838100509,
+          "target_count": 794,
+          "tf": "NFKB1_NFKB2"
+        },
+        {
+          "score": 7.740446838100509,
+          "target_count": 794,
+          "tf": "NFKB1_REL"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "CHAD": 1.0,
+        "EP300": -1.0,
+        "GTF2I": -1.0
+      },
+      "network_edges": 7,
+      "objective": 2.0,
+      "outputs": {
+        "NFKB1": -1.0,
+        "NFKB2": -1.0,
+        "RELA": -1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR2808254",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "EP300",
+          "target": "RELA"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": -11.673814760975148,
+          "target_count": 958,
+          "tf": "NFKB1"
+        },
+        {
+          "score": -11.38331699213635,
+          "target_count": 988,
+          "tf": "RELA"
+        },
+        {
+          "score": -11.062149194073712,
+          "target_count": 820,
+          "tf": "NFKB2"
+        },
+        {
+          "score": -10.908829003117782,
+          "target_count": 794,
+          "tf": "NFKB1_NFKB2"
+        },
+        {
+          "score": -10.908829003117782,
+          "target_count": 794,
+          "tf": "NFKB1_REL"
+        },
+        {
+          "score": -10.908829003117782,
+          "target_count": 794,
+          "tf": "NFKB1_RELA"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "AR": 1.0,
+        "MKRN4P": 1.0,
+        "PTPN5": 1.0
+      },
+      "network_edges": 7,
+      "objective": 1.0,
+      "outputs": {
+        "RELA": 1.0,
+        "SP1": 1.0
+      },
+      "processed_edges": 12,
+      "processed_vertices": 9,
+      "regulon_count": 763,
+      "run_accession": "ERR2808260",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "MAPK14",
+          "target": "RELA"
+        },
+        {
+          "sign": 1,
+          "source": "PTPN5",
+          "target": "MAPK14"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 9.460313723069492,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": 6.241460228776638,
+          "target_count": 988,
+          "tf": "RELA"
+        },
+        {
+          "score": 6.166566099067763,
+          "target_count": 815,
+          "tf": "RELB"
+        },
+        {
+          "score": 6.030924939160345,
+          "target_count": 820,
+          "tf": "NFKB2"
+        },
+        {
+          "score": 5.905255083043476,
+          "target_count": 794,
+          "tf": "NFKB1_NFKB2"
+        },
+        {
+          "score": 5.905255083043476,
+          "target_count": 794,
+          "tf": "NFKB1_REL"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "GDF7": 1.0,
+        "IL10": 1.0,
+        "MOS": 1.0
+      },
+      "network_edges": 8,
+      "objective": 0.0,
+      "outputs": {
+        "E2F1": 1.0,
+        "SP1": 1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR2808261",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "ACVR2A",
+          "target": "SMAD2"
+        },
+        {
+          "sign": 1,
+          "source": "GDF7",
+          "target": "ACVR2A"
+        },
+        {
+          "sign": 1,
+          "source": "MAP2K1",
+          "target": "MAPK1"
+        },
+        {
+          "sign": 1,
+          "source": "MAPK1",
+          "target": "E2F1"
+        },
+        {
+          "sign": 1,
+          "source": "MOS",
+          "target": "MAP2K1"
+        },
+        {
+          "sign": 1,
+          "source": "SMAD2",
+          "target": "SP1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 9.977444831883902,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": 6.756462485674117,
+          "target_count": 295,
+          "tf": "E2F1"
+        },
+        {
+          "score": 6.398297446709894,
+          "target_count": 815,
+          "tf": "RELB"
+        },
+        {
+          "score": 6.322984634820427,
+          "target_count": 161,
+          "tf": "E2F4"
+        },
+        {
+          "score": 6.259826835820043,
+          "target_count": 794,
+          "tf": "NFKB1_NFKB2"
+        },
+        {
+          "score": 6.259826835820043,
+          "target_count": 794,
+          "tf": "NFKB1_REL"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "CYSLTR2": 1.0,
+        "KRT14": 1.0,
+        "MAGI2": 1.0
+      },
+      "network_edges": 8,
+      "objective": 1.0,
+      "outputs": {
+        "E2F1": 1.0,
+        "ESR1": 1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR2808264",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "MAGI2",
+          "target": "PTEN"
+        },
+        {
+          "sign": 1,
+          "source": "PTEN",
+          "target": "E2F1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 6.139307337779954,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": 4.800141339938073,
+          "target_count": 161,
+          "tf": "E2F4"
+        },
+        {
+          "score": 4.644049666567531,
+          "target_count": 295,
+          "tf": "E2F1"
+        },
+        {
+          "score": 4.573445692227294,
+          "target_count": 776,
+          "tf": "MYC"
+        },
+        {
+          "score": 4.51636702011747,
+          "target_count": 569,
+          "tf": "ESR1"
+        },
+        {
+          "score": 4.263560520717721,
+          "target_count": 146,
+          "tf": "SSRP1"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "AGTR2": 1.0,
+        "CDH19": 1.0,
+        "CDH9": 1.0
+      },
+      "network_edges": 7,
+      "objective": 2.0,
+      "outputs": {
+        "CEBPD": -1.0,
+        "HIF1A": -1.0
+      },
+      "processed_edges": 12,
+      "processed_vertices": 9,
+      "regulon_count": 763,
+      "run_accession": "ERR2808265",
+      "selected_edges": [],
+      "status": "blocked_no_selected_edges",
+      "top_tf_scores": [
+        {
+          "score": 4.243885986404842,
+          "target_count": 29,
+          "tf": "PROX1"
+        },
+        {
+          "score": 3.9131706325821543,
+          "target_count": 161,
+          "tf": "E2F4"
+        },
+        {
+          "score": -3.580074057588821,
+          "target_count": 416,
+          "tf": "HIF1A"
+        },
+        {
+          "score": -3.429141127600122,
+          "target_count": 91,
+          "tf": "CEBPD"
+        },
+        {
+          "score": -3.42061951856894,
+          "target_count": 159,
+          "tf": "IRF1"
+        },
+        {
+          "score": 3.4000505810696207,
+          "target_count": 5,
+          "tf": "HOXD4"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "HTR2A": 1.0,
+        "LTB": 1.0,
+        "UBQLN2": -1.0
+      },
+      "network_edges": 8,
+      "objective": 1.0,
+      "outputs": {
+        "NFKB1": -1.0,
+        "NFKB2": -1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR2808266",
+      "selected_edges": [
+        {
+          "sign": -1,
+          "source": "GNAQ",
+          "target": "GSK3B"
+        },
+        {
+          "sign": 1,
+          "source": "GSK3B",
+          "target": "NFKB1"
+        },
+        {
+          "sign": 1,
+          "source": "HTR2A",
+          "target": "GNAQ"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": -11.723848379927373,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": -9.955100415910957,
+          "target_count": 958,
+          "tf": "NFKB1"
+        },
+        {
+          "score": -9.661471847908102,
+          "target_count": 817,
+          "tf": "REL"
+        },
+        {
+          "score": -9.542397895286895,
+          "target_count": 820,
+          "tf": "NFKB2"
+        },
+        {
+          "score": -9.407498915814921,
+          "target_count": 794,
+          "tf": "NFKB1_NFKB2"
+        },
+        {
+          "score": -9.407498915814921,
+          "target_count": 794,
+          "tf": "NFKB1_REL"
+        }
+      ]
+    }
+  ],
+  "schema_version": "corneto_regulatory_pilot.v1",
+  "solver": {
+    "requested": "gurobi",
+    "selected": "GUROBI"
+  },
+  "source_sha256": {
+    "collectri": "ecdb62986b37d740180244dc92e49e0828266134a7135eaaef658aa20a2de753",
+    "expression": "d0921ae238bc174eb399d41117d1b8d4503be07f47e40485e45d8edf6dd3d9ee",
+    "manifest": "acb46c6cc5a62b076fdc94cc9a3913f1fad37262b5b0ac9a0a9ca3969a2df69b",
+    "pkn": "9b693925dc54e918e3766f514ecb44f3d3780d6cdd9085bb0a3df2c3a8c83c68"
+  },
+  "started_at_utc": "2026-08-11T16:31:31+00:00",
+  "status": "completed",
+  "study": "E-MTAB-7223"
+}
