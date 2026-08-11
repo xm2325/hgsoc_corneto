@@ -50,9 +50,14 @@ def _read_regulatory(path: Path, study: str) -> dict[str, dict[str, Any]]:
     receipt_study = root.get("study", root.get("study_accession"))
     if receipt_study != study:
         raise IntegrationError(f"regulatory study {receipt_study!r} != {study!r}")
+    # Legacy per-sample receipts call these records ``samples``.  The
+    # normalized true-joint runner uses ``conditions`` for the same
+    # run/edge/status records.
     samples = root.get("samples")
+    if samples is None:
+        samples = root.get("conditions")
     if not isinstance(samples, list) or not samples:
-        raise IntegrationError("regulatory receipt has no samples")
+        raise IntegrationError("regulatory receipt has no samples/conditions")
     result: dict[str, dict[str, Any]] = {}
     for index, row in enumerate(samples):
         if not isinstance(row, dict):
@@ -79,17 +84,18 @@ def _read_assignments(path: Path, study: str) -> dict[str, dict[str, str]]:
             rows = list(csv.DictReader(handle, delimiter="\t"))
     except OSError as error:
         raise IntegrationError(f"cannot read NMF assignments: {error}") from error
-    required = {"study_accession", "run_accession", "independent_state"}
+    state_column = "independent_state" if rows and "independent_state" in rows[0] else "state"
+    required = {"study_accession", "run_accession", state_column}
     if not rows or not required.issubset(rows[0]):
         raise IntegrationError("NMF assignments are empty or missing required columns")
     result: dict[str, dict[str, str]] = {}
     for index, row in enumerate(rows, start=2):
-        run, state = row["run_accession"], row["independent_state"]
+        run, state = row["run_accession"], row[state_column]
         if row["study_accession"] != study:
             raise IntegrationError(f"assignments line {index} has wrong study")
         if not run or not state or run in result:
             raise IntegrationError(f"assignments line {index} has invalid/duplicate identifiers")
-        result[run] = row
+        result[run] = {"state": state, **row}
     return result
 
 
@@ -116,11 +122,11 @@ def integrate(regulatory_path: Path, assignments_path: Path, study: str) -> dict
     matched = sorted(set(regulatory) & set(assignments))
     if len(matched) < 2:
         raise IntegrationError("fewer than two samples overlap")
-    states = sorted({assignments[run]["independent_state"] for run in matched})
+    states = sorted({assignments[run]["state"] for run in matched})
     if len(states) < 2:
         raise IntegrationError("fewer than two NMF states overlap")
     runs_by_state = {
-        state: [run for run in matched if assignments[run]["independent_state"] == state]
+        state: [run for run in matched if assignments[run]["state"] == state]
         for state in states
     }
     unions = {
