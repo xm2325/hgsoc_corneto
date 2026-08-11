@@ -7,12 +7,12 @@ Taxol claim.
 ## Public inputs
 
 `scripts/fetch_regulatory_sources.py` downloads the human CollecTRI and
-OmniPath tables from their public OmniPath endpoints. It filters to directed,
-unambiguous consensus stimulation/inhibition edges, removes self-loops and
-preserves downloaded TSVs and normalizes source/target/sign at read time. The receipt records the
-retrieval timestamp, URL, response metadata, SHA256, row counts and skipped-row
-counts. Raw and normalized tables belong on Roihu project scratch; they are
-not committed to GitHub. Source-specific licensing and attribution terms must
+OmniPath tables from their public OmniPath endpoints and preserves the raw TSVs.
+The pilot normalizes source/target/sign at read time, retaining only directed,
+unambiguous signed edges and removing self-loops. The receipt records retrieval
+time, URL, response metadata, SHA256, row/column counts, column names and any
+missing required column groups. Raw and normalized tables belong on Roihu project
+scratch; they are not committed to GitHub. Source-specific licensing and attribution terms must
 be retained with any redistribution.
 
 ## Inference policy
