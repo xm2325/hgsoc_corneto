@@ -9,7 +9,7 @@ Taxol claim.
 `scripts/fetch_regulatory_sources.py` downloads the human CollecTRI and
 OmniPath tables from their public OmniPath endpoints. It filters to directed,
 unambiguous consensus stimulation/inhibition edges, removes self-loops and
-writes normalized `source`, `target`, `sign` TSVs. The receipt records the
+preserves downloaded TSVs and normalizes source/target/sign at read time. The receipt records the
 retrieval timestamp, URL, response metadata, SHA256, row counts and skipped-row
 counts. Raw and normalized tables belong on Roihu project scratch; they are
 not committed to GitHub. Source-specific licensing and attribution terms must
@@ -19,9 +19,9 @@ be retained with any redistribution.
 
 The pilot computes signed CollecTRI regulon z-scores from log1p TPM, selects
 deterministic extreme TF outputs, chooses bounded upstream expression-derived
-priors, and solves CORNETO `CarnivalFlow` on a bounded OmniPath subgraph.
+priors, and emits normalized signed-PKN edges; the CORNETO/CARNIVAL solve is explicitly blocked.
 Expression-derived priors are not perturbation experiments. Each sample records
-the source hashes, selected nodes/edges, solver/status and any blocked/error
+the source hashes, selected nodes/edges, corneto blocked status and any blocked/error
 reason. A blocked sample is not silently treated as a network result.
 
 The first pilot is E-MTAB-14568 primary tumour samples (8–12 samples). Only
