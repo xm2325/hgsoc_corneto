@@ -323,6 +323,11 @@ def main() -> int:
     parser.add_argument("--max-outputs", type=int, default=10)
     parser.add_argument("--max-depth", type=int, default=3)
     parser.add_argument("--max-edges", type=int, default=5000)
+    # Compatibility options retained by the Roihu sbatch wrapper; the
+    # deterministic pilot records the policy but does not invoke a solver.
+    parser.add_argument("--top-tfs", type=int, default=50)
+    parser.add_argument("--expression-transform", default="log1p_tpm")
+    parser.add_argument("--primary-only", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--solver", choices=("auto", "gurobi", "highs"), default="auto")
     args = parser.parse_args()
     if args.output is None:
