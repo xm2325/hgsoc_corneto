@@ -96,6 +96,7 @@ def _declares_joint(root: dict[str, Any]) -> bool:
         root.get("joint_inference"),
         method.get("joint_multi_sample"),
         method.get("joint_inference"),
+        method.get("single_joint_problem"),
     )
     return any(value is True for value in candidates)
 
@@ -111,7 +112,12 @@ def _read_regulatory(
         raise ComparisonError(f"cannot read regulatory receipt {path}: {error}") from error
     if not isinstance(root, dict) or root.get("status") != "completed":
         raise ComparisonError(f"regulatory receipt {path} must have status='completed'")
+    # Legacy pilot receipts call these records ``samples``; the normalized
+    # true-joint runner calls them ``conditions``.  They have the same
+    # run_accession/selected_edges contract, so normalize at this boundary.
     samples = root.get("samples")
+    if samples is None:
+        samples = root.get("conditions")
     if not isinstance(samples, list) or not samples:
         raise ComparisonError(f"regulatory receipt {path} has no samples")
     method = root.get("method") if isinstance(root.get("method"), dict) else {}
