@@ -1,0 +1,7 @@
+stage	attempt	job_id	state	exit_code	elapsed	max_rss	requested_memory	outcome
+salmon_quant	1	578067	FAILED	1:0	NA	NA	24G	26/33 receipts; 7 failures retained and audited
+salmon_repair	2	580598	COMPLETED	0:0	NA	36989444K	48G	7/7 repaired; actual ArrayTaskThrottle=4; total 33/33 receipts
+aggregation	1	580599	FAILED	1:0	00:00:09	105592K	8G	GENCODE multivalued ont attribute exposed parser defect; no matrix output
+nmf	1	580600	CANCELLED	0:0	00:00:00	NA	12G	cancelled automatically because aggregation dependency failed
+aggregation	2	581206	COMPLETED	0:0	00:00:39	731.50M	8G	60609 genes x 33 runs; 227462 GENCODE transcripts
+nmf	2	581207	COMPLETED	0:0	00:02:21	793076K	12G	ranks 2-8; 100 starts per rank; 700 total fits

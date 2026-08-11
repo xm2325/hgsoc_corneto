@@ -1,0 +1,60 @@
+{
+  "aggregation": {
+    "gene_count": 60609,
+    "gene_counts_sha256": "1fbaa19e204afe7827c2d49b0d24bb3b7088c58e3cdde13d6067345963d59980",
+    "gene_log1p_tpm_sha256": "273edbb0271c1d5ca8fd1674a208106d7a2ea87337242b13feabc240fbc4d919",
+    "gene_metadata_sha256": "9b4d8807d71eeea9c118691d6803d9102aa5153963294eac9a450571019635d9",
+    "gene_tpm_sha256": "56acd7ef633d2f38d27a22fecdd48992d33513c3edbca56a5650562d6bdbdf2a",
+    "log1p_max_absolute_error": 4.991562718714704e-11,
+    "sample_count": 33,
+    "sample_qc_sha256": "0d26b5e64786205f67511131ffd136a83ddf801bb1d784c1e54c7c6a95df0a29",
+    "tpm_sum_max_absolute_error": 0.00015600002370774746,
+    "transcript_count": 227462
+  },
+  "cohort": {
+    "all_sample_class": "tumour",
+    "independent_nmf_scope": "all_33_public_E-MTAB-14568_runs",
+    "primary_cohort_eligible": 27,
+    "primary_cohort_policy": "HGSOC tumour-only"
+  },
+  "mapping_rate_percent": {
+    "maximum": 93.52762387744474,
+    "median": 91.30830326800685,
+    "minimum": 80.85813070522522
+  },
+  "nmf": {
+    "assignment_stability_median": 0.97,
+    "assignment_stability_minimum": 0.55,
+    "primary_rank": 3,
+    "rank_3_cluster_sizes": {
+      "tumour_state_1": 11,
+      "tumour_state_2": 11,
+      "tumour_state_3": 11
+    },
+    "rank_3_consensus_sharpness": 0.63670530303,
+    "rank_3_converged_runs": 98,
+    "rank_3_fit": 0.926827972459,
+    "ranks": [2, 3, 4, 5, 6, 7, 8],
+    "runs_per_rank": 100,
+    "total_runs": 700,
+    "verified_artifacts": 36
+  },
+  "repo_commit_used_for_aggregation_and_nmf": "e0761d6f87b30c20cb957e0831f8d8e19748ecb1",
+  "run_receipts": 33,
+  "status": "validated",
+  "study_accession": "E-MTAB-14568",
+  "tests": {
+    "passed": 28,
+    "skipped": 1
+  },
+  "validated_at_utc": "2026-08-11T10:07:25Z",
+  "validation_checks": [
+    "manifest-to-receipt run identity and order",
+    "completed status and paired FASTQ verification in all run receipts",
+    "all 33 quant.sf SHA-256 values",
+    "aggregation artifact byte counts and SHA-256 values",
+    "matrix dimensions, sample order, unique gene IDs, finiteness, and non-negativity",
+    "gene TPM column sums and exact log1p(TPM) consistency within tolerance",
+    "NMF input SHA-256, rank coverage, run counts, assignments, and all artifact checksums"
+  ]
+}

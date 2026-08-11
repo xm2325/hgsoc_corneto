@@ -91,12 +91,17 @@ Quantification requests 48 GiB per task. An initial 24 GiB request was rejected
 after `ERR13907051` exceeded that limit during index loading/quantification;
 verified FASTQs and the failed staging directory are retained for audit. After
 the original array reaches a terminal state, collect every failed array index
-and repair them in one `%1` array before aggregation. This avoids overlapping
-retries and prevents a partly complete cohort from entering downstream stages.
+and repair them in one explicitly capped array before aggregation. The recorded
+E-MTAB-14568 repair used `%4`; this kept the intended four-transfer ceiling and
+completed all seven missing runs. This avoids uncontrolled retries and prevents
+a partly complete cohort from entering downstream stages.
 
-Monitoring remains stage-based: record the job ID, wait for the expected stage
-duration, then inspect one terminal `sacct` record together with the job log and
-receipt. Do not poll the server in a tight loop.
+Monitoring uses a fast-failure gate followed by stage-based checks. At 30--60
+seconds after submission, inspect the scheduler state, the log tail, and the
+first expected output marker once; this catches import, schema, path, and parser
+failures before a long wait. If startup is healthy, wait for the expected stage
+duration and then inspect one terminal `sacct` record together with the full log
+and receipt. Do not poll the server in a tight loop.
 
 Compact terminal-state audits for the first E-MTAB-14568 array are retained in
 `data/processed/rna/etab_14568_salmon_array_summary.tsv` and

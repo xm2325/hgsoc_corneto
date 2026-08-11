@@ -1,0 +1,41 @@
+{
+  "aggregation": "sum Salmon NumReads and TPM across versioned GENCODE transcripts",
+  "completed_at_utc": "2026-08-11T09:55:24.359111+00:00",
+  "gene_count": 60609,
+  "gtf": {
+    "bytes": 43097815,
+    "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/reference/gencode_v32/downloads/gencode.v32.annotation.gtf.gz",
+    "sha256": "da9dc827e9a111c9bde60c55f55b7d37ffebc4649fc01f0745a670240e939ed4"
+  },
+  "matrices": {
+    "gene_counts": {
+      "bytes": 3014888,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/aggregated/E-MTAB-14568/gene_counts.tsv.gz",
+      "sha256": "1fbaa19e204afe7827c2d49b0d24bb3b7088c58e3cdde13d6067345963d59980"
+    },
+    "gene_log1p_tpm": {
+      "bytes": 6318781,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/aggregated/E-MTAB-14568/gene_log1p_tpm.tsv.gz",
+      "sha256": "273edbb0271c1d5ca8fd1674a208106d7a2ea87337242b13feabc240fbc4d919"
+    },
+    "gene_metadata": {
+      "bytes": 4152255,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/aggregated/E-MTAB-14568/gene_metadata.tsv",
+      "sha256": "9b4d8807d71eeea9c118691d6803d9102aa5153963294eac9a450571019635d9"
+    },
+    "gene_tpm": {
+      "bytes": 4328277,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/aggregated/E-MTAB-14568/gene_tpm.tsv.gz",
+      "sha256": "56acd7ef633d2f38d27a22fecdd48992d33513c3edbca56a5650562d6bdbdf2a"
+    }
+  },
+  "repo_commit": "e0761d6f87b30c20cb957e0831f8d8e19748ecb1",
+  "run_count": 33,
+  "sample_qc": {
+    "path": "data/processed/rna/E-MTAB-14568/aggregation/sample_qc.tsv",
+    "sha256": "0d26b5e64786205f67511131ffd136a83ddf801bb1d784c1e54c7c6a95df0a29"
+  },
+  "status": "completed",
+  "study_accession": "E-MTAB-14568",
+  "transcript_count": 227462
+}

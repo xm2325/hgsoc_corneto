@@ -1,0 +1,248 @@
+{
+  "artifacts": [
+    {
+      "bytes": 756,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_2/aligned_run_assignments.tsv.gz",
+      "sha256": "34f658c512f6b4c3cbb7c7828e3da427a65400dd273235504ff5d298fa10a655"
+    },
+    {
+      "bytes": 609,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_2/best_h_sample_loadings.tsv.gz",
+      "sha256": "6febe6f0923bffa588207bdc50dca0cb88786c4aa92d3d71834bacce384fa00b"
+    },
+    {
+      "bytes": 112555,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_2/best_w_gene_loadings.tsv.gz",
+      "sha256": "beb89b7f94d768e60794c22032fd35ff06ba182e9dbc9d4ca899e96e4c8e99e1"
+    },
+    {
+      "bytes": 651,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_2/consensus.tsv.gz",
+      "sha256": "f4308c644d88802b4c74330aa554c2f6b8d10aea236b40cfd39c987647ec6de8"
+    },
+    {
+      "bytes": 4928,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_2/run_metrics.tsv",
+      "sha256": "d1d0193d926f340af48dbd1670da637fe43a5b9fee52d21a1e33f0a6cbff9063"
+    },
+    {
+      "bytes": 959,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_3/aligned_run_assignments.tsv.gz",
+      "sha256": "4ee0881875d46de3e7703a3a5d654a793c8ae962cf24d63cd1da4c3813786f79"
+    },
+    {
+      "bytes": 793,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_3/best_h_sample_loadings.tsv.gz",
+      "sha256": "4cdc0d8dbcc7b6c67bb9bcfe4759f8015e55988d0cc5fe99d386df199cc977a7"
+    },
+    {
+      "bytes": 151327,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_3/best_w_gene_loadings.tsv.gz",
+      "sha256": "3032cd8ec7cbf2fd2bf8faecbdcc8198bc36ed4e90677b66fd75a42e3394443c"
+    },
+    {
+      "bytes": 1070,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_3/consensus.tsv.gz",
+      "sha256": "06b75147c2fba14dc54568ca052e7b2cbd61cd720d9357e6756675906fa78159"
+    },
+    {
+      "bytes": 4944,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_3/run_metrics.tsv",
+      "sha256": "231635894bf486041fe097e4ff5fd76fec3f63b408307196452aa03bdd7b7939"
+    },
+    {
+      "bytes": 1344,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_4/aligned_run_assignments.tsv.gz",
+      "sha256": "bb025e9e7ca9b4ba836e669ce94dc07cfc008cc0f0e8d4b062b344ae8769c1c9"
+    },
+    {
+      "bytes": 935,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_4/best_h_sample_loadings.tsv.gz",
+      "sha256": "d8278130db2b9c141e96e051420dad17b73867542c9441ecdea6f7b4d949f28c"
+    },
+    {
+      "bytes": 189450,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_4/best_w_gene_loadings.tsv.gz",
+      "sha256": "bca633909fc550dd14e31bdc1561fedb3cbc52a463697d4c95ebfbcb1ba1b288"
+    },
+    {
+      "bytes": 1499,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_4/consensus.tsv.gz",
+      "sha256": "d08d5ec1fd35aced56d38adb4f9a4f69113a3c89831a11b4ecda72da9ae0c317"
+    },
+    {
+      "bytes": 4957,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_4/run_metrics.tsv",
+      "sha256": "3e08c01d2ba5dd3ca6beb55cfec74313a75e97d9154f180a5483eb1b546f987c"
+    },
+    {
+      "bytes": 1393,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_5/aligned_run_assignments.tsv.gz",
+      "sha256": "b5b40ecd62a82082536353b5fb1892b73a93916d7b83fe3ee9a3a1183dd44eaa"
+    },
+    {
+      "bytes": 1065,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_5/best_h_sample_loadings.tsv.gz",
+      "sha256": "38e0a132c66dfad2f795c7c283f7873fda3cccfb624ec886b096ce8fc2ca8374"
+    },
+    {
+      "bytes": 229098,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_5/best_w_gene_loadings.tsv.gz",
+      "sha256": "15c17b310d43e561368c0ef57aa256fde68b6faa8174cbeff1ba58ae722d1e3e"
+    },
+    {
+      "bytes": 1392,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_5/consensus.tsv.gz",
+      "sha256": "ce7011ec8d436f6dba0bb99cad98978b06ca696558735ed3ec24e2ab98111c5f"
+    },
+    {
+      "bytes": 4947,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_5/run_metrics.tsv",
+      "sha256": "d4d332fc23f243f28299e107b0258756eedee2138dde2243ed9eebf57826ce63"
+    },
+    {
+      "bytes": 1095,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_6/aligned_run_assignments.tsv.gz",
+      "sha256": "d798fca724c0d2ccd183f1e44017613392f6ec9337753f4be789333bc6eaacbf"
+    },
+    {
+      "bytes": 1227,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_6/best_h_sample_loadings.tsv.gz",
+      "sha256": "954e822e20f7fd0bb344ef5c6733a4e424dad519f43e85f06e97668d538db0ea"
+    },
+    {
+      "bytes": 267803,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_6/best_w_gene_loadings.tsv.gz",
+      "sha256": "b02cc957ab76a26416a95cedab368be1c678bbad63863ea0f464669cd289fa30"
+    },
+    {
+      "bytes": 1093,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_6/consensus.tsv.gz",
+      "sha256": "84ad5f114fde3ef5df2edfe81fefaea2dd80e8f80bd3645d088748783f9478f7"
+    },
+    {
+      "bytes": 4929,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_6/run_metrics.tsv",
+      "sha256": "458d446b11911513090ef74a26b48e821d0900d5650aa24f840ad7cc96e21cbf"
+    },
+    {
+      "bytes": 1310,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_7/aligned_run_assignments.tsv.gz",
+      "sha256": "115950d1ead13440767bc294cfc46f60e9642450523ef4a0de6ba4dc54836e4b"
+    },
+    {
+      "bytes": 1396,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_7/best_h_sample_loadings.tsv.gz",
+      "sha256": "f8bbbe932b7fee8bdd517be47a03da05e3d364c76c0798652ec56c0a295a14af"
+    },
+    {
+      "bytes": 306890,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_7/best_w_gene_loadings.tsv.gz",
+      "sha256": "8dd8601228473b97625fe25f15943c39c19b5aa93ab1aabc839ed5637073c2be"
+    },
+    {
+      "bytes": 1091,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_7/consensus.tsv.gz",
+      "sha256": "863e9ab717436571ff5515d030546280d9474dcfa7c91f2a649c58ab47648ad2"
+    },
+    {
+      "bytes": 4930,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_7/run_metrics.tsv",
+      "sha256": "7dd516eec02139d16c65e02e28049239a730b9ab6771821dad57bcfcc6c38f0c"
+    },
+    {
+      "bytes": 1169,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_8/aligned_run_assignments.tsv.gz",
+      "sha256": "fe1986fae8833d3c7b2409c8e3e15d4426a747bd2f7f05fb6d052a7a3fbe0a39"
+    },
+    {
+      "bytes": 1462,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_8/best_h_sample_loadings.tsv.gz",
+      "sha256": "ddd5f6fb46807ebe207c725da617d5006de72c21b034889854592d70fca0cf88"
+    },
+    {
+      "bytes": 345987,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_8/best_w_gene_loadings.tsv.gz",
+      "sha256": "087bd43197dcb93bd9e496917d30f85f49b967e0ec0af7892d36da797fd617f6"
+    },
+    {
+      "bytes": 1021,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_8/consensus.tsv.gz",
+      "sha256": "25e350a9d9fe06c4445b0b311ceac63e53894d5ac5d434816755a1bb3597e468"
+    },
+    {
+      "bytes": 4926,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/rank_8/run_metrics.tsv",
+      "sha256": "b53a55e712dad8af25ff690c662365002528be66c00d9573c76b5126f2285952"
+    },
+    {
+      "bytes": 225840,
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/nmf/E-MTAB-14568/independent_k2-8_100runs/selected_genes.tsv",
+      "sha256": "85fd6282431618ec2fe21a29a0de60795cc6f267e261c67b7edc23a4b5891999"
+    }
+  ],
+  "claim_limit": "The independent E-MTAB-14568 analysis is a technical stability benchmark, not an exact reproduction of official Barnes subtype identities.",
+  "completed_at_utc": "2026-08-11T09:58:07.934576+00:00",
+  "config": {
+    "barnes_method_boundary": {
+      "claim_limit": "The independent E-MTAB-14568 analysis is a technical stability benchmark, not an exact reproduction of official Barnes subtype identities.",
+      "public_method": "DESeq2 1.26.0 VST count matrices; top MAD-variable gene lists; NMF R 0.23.0; ranks 2 to 10; 50 random starts for screening and 200 starts for selected ranks.",
+      "source": "https://doi.org/10.1101/2025.07.18.665513",
+      "unavailable_public_inputs": [
+        "executable analysis code",
+        "official OCM-to-subtype assignments",
+        "exact discovery-cohort curation table"
+      ]
+    },
+    "independent_etab_14568": {
+      "implementation": {
+        "initialization": "random",
+        "loss": "frobenius",
+        "maximum_iterations": 2000,
+        "package": "scikit-learn",
+        "solver": "coordinate_descent",
+        "tolerance": 0.0001
+      },
+      "input_value": "log1p_tpm",
+      "primary_rank": 3,
+      "random_initializations_per_rank": 100,
+      "ranks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "sample_policy": "all_33_public_runs",
+      "seed_base": 1456800,
+      "state_label_policy": "Consensus clusters are ordered deterministically by their lexically first run accession and named tumour_state_1..k. These labels do not imply Barnes Alpha/Beta/Gamma/Delta identity.",
+      "study_accession": "E-MTAB-14568",
+      "top_genes": 6000,
+      "variable_gene_method": "median_absolute_deviation"
+    },
+    "pipeline_version": 1
+  },
+  "input": {
+    "genes_after_mad_selection": 6000,
+    "genes_before_mad_selection": 60609,
+    "matrix_path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/aggregated/E-MTAB-14568/gene_log1p_tpm.tsv.gz",
+    "matrix_sha256": "273edbb0271c1d5ca8fd1674a208106d7a2ea87337242b13feabc240fbc4d919",
+    "sample_qc_path": "data/processed/rna/E-MTAB-14568/aggregation/sample_qc.tsv",
+    "sample_qc_sha256": "0d26b5e64786205f67511131ffd136a83ddf801bb1d784c1e54c7c6a95df0a29",
+    "samples": 33
+  },
+  "repo_commit": "e0761d6f87b30c20cb957e0831f8d8e19748ecb1",
+  "reports": {
+    "rank_3_assignments": "data/processed/rna/E-MTAB-14568/nmf/rank_3_assignments.tsv",
+    "rank_summary": "data/processed/rna/E-MTAB-14568/nmf/rank_summary.tsv"
+  },
+  "software": {
+    "numpy": "2.4.6",
+    "python": "3.12.13",
+    "scikit_learn": "1.8.0",
+    "scipy": "1.17.1"
+  },
+  "status": "completed"
+}
