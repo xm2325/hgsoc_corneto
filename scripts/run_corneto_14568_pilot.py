@@ -69,7 +69,9 @@ def _solver_choice(requested: str) -> tuple[str, list[str], str | None]:
     if requested == "auto":
         if "GUROBI" in normalized and importlib.util.find_spec("gurobipy") is not None:
             return "gurobi", available, None
-        return "highs", available, "Gurobi package/license not visible; using HiGHS"
+        if "MOSEK" in normalized and importlib.util.find_spec("mosek") is not None:
+            return "mosek", available, None
+        return "highs", available, "Commercial solver package/license not visible; using HiGHS"
     if requested.upper() not in normalized:
         raise RuntimeError(
             f"Requested solver {requested!r} is unavailable; available={available}"
@@ -163,8 +165,10 @@ def _reaction_bounds(
         constrained.objective = "biomass_human"
         optimum_solution = constrained.optimize()
         optimum = float(optimum_solution.objective_value or 0.0)
-        if not math.isfinite(optimum) or optimum < 0:
-            raise RuntimeError(f"Non-finite or negative biomass optimum for {run_id}")
+        if not math.isfinite(optimum) or optimum <= 0:
+            raise RuntimeError(
+                f"Non-positive or non-finite biomass optimum for {run_id}: {optimum}"
+            )
         biomass = model.reactions.get_by_id("biomass_human")
         target = growth_fraction * optimum
         sample_bounds["biomass_human"] = (
@@ -199,7 +203,7 @@ def main() -> None:
         choices=("raw_tpm", "log1p_tpm", "log1p_tpm_div5"),
         default="log1p_tpm",
     )
-    parser.add_argument("--solver", choices=("auto", "highs", "gurobi"), default="auto")
+    parser.add_argument("--solver", choices=("auto", "highs", "mosek", "gurobi"), default="auto")
     parser.add_argument("--independent-lambda", type=float, default=0.1)
     parser.add_argument("--joint-lambda", type=float, default=1.0)
     args = parser.parse_args()
