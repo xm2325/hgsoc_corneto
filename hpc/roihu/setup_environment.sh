@@ -21,7 +21,7 @@ python3 -m venv --system-site-packages "${VENV_ROOT}"
 "${VENV_ROOT}/bin/python" -m pip install \
     "corneto @ git+https://github.com/saezlab/corneto@${CORNETO_COMMIT}" \
     highspy \
-    'numpy>=1.25,<2'
+    'numpy>=2,<2.5'
 
 "${VENV_ROOT}/bin/python" "${REPO_ROOT}/scripts/fetch_metabolic_sources.py" \
     --destination "${INPUT_ROOT}"
