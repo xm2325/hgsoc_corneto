@@ -17,7 +17,8 @@ module load python-data/3.12
 
 python3 -m venv --system-site-packages "${VENV_ROOT}"
 "${VENV_ROOT}/bin/python" -m pip install --upgrade pip setuptools wheel
-"${VENV_ROOT}/bin/python" -m pip install -e "${REPO_ROOT}[dev,metadata,metabolic]"
+"${VENV_ROOT}/bin/python" -m pip install -e \
+    "${REPO_ROOT}[analysis,dev,metadata,metabolic]"
 "${VENV_ROOT}/bin/python" -m pip install \
     "corneto @ git+https://github.com/saezlab/corneto@${CORNETO_COMMIT}" \
     highspy \
