@@ -9,3 +9,8 @@ gurobipy	installed
 grb_license_file	configured_readable
 mosek	installed
 moseklm_license_file	configured_readable
+gurobipy_version	13.0.2
+mosek_version	11.2.2
+cvxpy	1.9.2
+cvxpy_solvers	MOSEK,GUROBI,SCIPY,HIGHS
+corneto_solvers	MOSEK,GUROBI,SCIPY,HIGHS
