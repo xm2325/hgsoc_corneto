@@ -1,10 +1,15 @@
-"""Validated run specifications for restartable Salmon quantification."""
+"""Validated run specifications and Salmon-to-gene aggregation utilities."""
 
 from __future__ import annotations
 
+import csv
+import gzip
 import hashlib
+import math
+from collections.abc import Iterator
 from dataclasses import asdict, dataclass
 from pathlib import Path
+from typing import TextIO
 from urllib.parse import urlparse
 
 from hgsoc_corneto.io import read_tsv
@@ -30,6 +35,36 @@ class RnaRunSpec:
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)
+
+
+@dataclass(frozen=True)
+class GeneRecord:
+    gene_id: str
+    gene_name: str
+    gene_type: str
+    chromosome: str
+    start: int
+    end: int
+    strand: str
+    transcript_count: int
+
+
+@dataclass(frozen=True)
+class SalmonGeneSample:
+    run_accession: str
+    counts: tuple[float, ...]
+    tpm: tuple[float, ...]
+    transcript_rows: int
+    mapped_transcript_rows: int
+    unmapped_transcript_ids: tuple[str, ...]
+
+    @property
+    def estimated_count_sum(self) -> float:
+        return sum(self.counts)
+
+    @property
+    def tpm_sum(self) -> float:
+        return sum(self.tpm)
 
 
 def _optional(value: str) -> str | None:
@@ -122,3 +157,207 @@ def validate_fastq_file(path: str | Path, spec: FastqSpec) -> tuple[bool, str]:
     if actual_md5 != spec.md5:
         return False, f"md5_mismatch:{actual_md5}"
     return True, "verified"
+
+
+def parse_gtf_attributes(value: str) -> dict[str, str]:
+    """Parse the semicolon-delimited attribute field from a GENCODE GTF row."""
+
+    attributes: dict[str, str] = {}
+    for item in value.split(";"):
+        item = item.strip()
+        if not item:
+            continue
+        key, separator, raw_value = item.partition(" ")
+        if not separator:
+            raise ValueError(f"Malformed GTF attribute: {item!r}")
+        parsed_value = raw_value.strip()
+        if len(parsed_value) >= 2 and parsed_value[0] == parsed_value[-1] == '"':
+            parsed_value = parsed_value[1:-1]
+        if key in attributes and attributes[key] != parsed_value:
+            raise ValueError(f"Conflicting GTF attribute {key!r}")
+        attributes[key] = parsed_value
+    return attributes
+
+
+def _open_text(path: Path) -> TextIO:
+    if path.suffix == ".gz":
+        return gzip.open(path, "rt", encoding="utf-8")
+    return path.open(encoding="utf-8")
+
+
+def load_gencode_gene_map(
+    gtf_path: str | Path,
+) -> tuple[tuple[GeneRecord, ...], dict[str, int]]:
+    """Return ordered GENCODE genes and a versioned transcript-to-gene index."""
+
+    target = Path(gtf_path)
+    transcript_rows: list[tuple[str, str, str, str, str, int, int, str]] = []
+    gene_order: list[str] = []
+    seen_genes: set[str] = set()
+    with _open_text(target) as handle:
+        for line_number, line in enumerate(handle, start=1):
+            if line.startswith("#"):
+                continue
+            fields = line.rstrip("\n").split("\t")
+            if len(fields) != 9:
+                raise ValueError(f"Expected 9 GTF columns at {target}:{line_number}")
+            chromosome, _source, feature, start, end, _score, strand, _frame, raw_attrs = fields
+            if feature != "transcript":
+                continue
+            attrs = parse_gtf_attributes(raw_attrs)
+            try:
+                transcript_id = attrs["transcript_id"]
+                gene_id = attrs["gene_id"]
+            except KeyError as error:
+                raise ValueError(
+                    f"Missing {error.args[0]} at {target}:{line_number}"
+                ) from error
+            gene_name = attrs.get("gene_name", gene_id)
+            gene_type = attrs.get("gene_type", attrs.get("gene_biotype", "NA"))
+            transcript_rows.append(
+                (
+                    transcript_id,
+                    gene_id,
+                    gene_name,
+                    gene_type,
+                    chromosome,
+                    int(start),
+                    int(end),
+                    strand,
+                )
+            )
+            if gene_id not in seen_genes:
+                gene_order.append(gene_id)
+                seen_genes.add(gene_id)
+    if not transcript_rows:
+        raise ValueError(f"No transcript features found in {target}")
+
+    gene_values: dict[str, dict[str, object]] = {}
+    transcript_to_gene_id: dict[str, str] = {}
+    for (
+        transcript_id,
+        gene_id,
+        gene_name,
+        gene_type,
+        chromosome,
+        start,
+        end,
+        strand,
+    ) in transcript_rows:
+        previous_gene = transcript_to_gene_id.setdefault(transcript_id, gene_id)
+        if previous_gene != gene_id:
+            raise ValueError(f"Transcript maps to multiple genes: {transcript_id}")
+        if gene_id not in gene_values:
+            gene_values[gene_id] = {
+                "gene_name": gene_name,
+                "gene_type": gene_type,
+                "chromosome": chromosome,
+                "start": start,
+                "end": end,
+                "strand": strand,
+                "transcript_count": 0,
+            }
+        values = gene_values[gene_id]
+        if values["gene_name"] != gene_name or values["gene_type"] != gene_type:
+            raise ValueError(f"Conflicting metadata for gene {gene_id}")
+        if values["chromosome"] != chromosome or values["strand"] != strand:
+            raise ValueError(f"Conflicting coordinates for gene {gene_id}")
+        values["start"] = min(int(values["start"]), start)
+        values["end"] = max(int(values["end"]), end)
+        values["transcript_count"] = int(values["transcript_count"]) + 1
+
+    genes = tuple(
+        GeneRecord(
+            gene_id=gene_id,
+            gene_name=str(gene_values[gene_id]["gene_name"]),
+            gene_type=str(gene_values[gene_id]["gene_type"]),
+            chromosome=str(gene_values[gene_id]["chromosome"]),
+            start=int(gene_values[gene_id]["start"]),
+            end=int(gene_values[gene_id]["end"]),
+            strand=str(gene_values[gene_id]["strand"]),
+            transcript_count=int(gene_values[gene_id]["transcript_count"]),
+        )
+        for gene_id in gene_order
+    )
+    gene_index = {gene.gene_id: index for index, gene in enumerate(genes)}
+    return genes, {
+        transcript_id: gene_index[gene_id]
+        for transcript_id, gene_id in transcript_to_gene_id.items()
+    }
+
+
+def _salmon_transcript_id(value: str) -> str:
+    """Normalize GENCODE FASTA headers whether Salmon kept or split pipe fields."""
+
+    return value.split("|", maxsplit=1)[0]
+
+
+def aggregate_salmon_quant(
+    quant_path: str | Path,
+    *,
+    run_accession: str,
+    transcript_to_gene_index: dict[str, int],
+    gene_count: int,
+) -> SalmonGeneSample:
+    """Sum transcript-level Salmon NumReads and TPM values to GENCODE genes."""
+
+    counts = [0.0] * gene_count
+    tpm = [0.0] * gene_count
+    transcript_rows = 0
+    mapped_rows = 0
+    unmapped: list[str] = []
+    seen: set[str] = set()
+    with Path(quant_path).open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle, delimiter="\t")
+        required = {"Name", "TPM", "NumReads"}
+        if reader.fieldnames is None or not required.issubset(reader.fieldnames):
+            raise ValueError(f"Invalid Salmon quant.sf header: {quant_path}")
+        for row in reader:
+            transcript_rows += 1
+            transcript_id = _salmon_transcript_id(row["Name"])
+            if transcript_id in seen:
+                raise ValueError(f"Duplicate Salmon target: {transcript_id}")
+            seen.add(transcript_id)
+            gene_index = transcript_to_gene_index.get(transcript_id)
+            if gene_index is None:
+                unmapped.append(transcript_id)
+                continue
+            count_value = float(row["NumReads"])
+            tpm_value = float(row["TPM"])
+            if not math.isfinite(count_value) or count_value < 0:
+                raise ValueError(f"Invalid NumReads for {transcript_id}: {count_value}")
+            if not math.isfinite(tpm_value) or tpm_value < 0:
+                raise ValueError(f"Invalid TPM for {transcript_id}: {tpm_value}")
+            counts[gene_index] += count_value
+            tpm[gene_index] += tpm_value
+            mapped_rows += 1
+    if transcript_rows == 0:
+        raise ValueError(f"No transcript rows in {quant_path}")
+    return SalmonGeneSample(
+        run_accession=run_accession,
+        counts=tuple(counts),
+        tpm=tuple(tpm),
+        transcript_rows=transcript_rows,
+        mapped_transcript_rows=mapped_rows,
+        unmapped_transcript_ids=tuple(sorted(unmapped)),
+    )
+
+
+def iter_gene_matrix_rows(
+    genes: tuple[GeneRecord, ...],
+    samples: tuple[SalmonGeneSample, ...],
+    *,
+    value: str,
+) -> Iterator[tuple[str, str, tuple[float, ...]]]:
+    """Yield one gene row for counts, TPM, or log1p(TPM)."""
+
+    if value not in {"counts", "tpm", "log1p_tpm"}:
+        raise ValueError(f"Unknown matrix value: {value}")
+    for index, gene in enumerate(genes):
+        if value == "counts":
+            values = tuple(sample.counts[index] for sample in samples)
+        elif value == "tpm":
+            values = tuple(sample.tpm[index] for sample in samples)
+        else:
+            values = tuple(math.log1p(sample.tpm[index]) for sample in samples)
+        yield gene.gene_id, gene.gene_name, values

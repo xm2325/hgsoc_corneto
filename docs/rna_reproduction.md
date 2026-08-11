@@ -85,3 +85,50 @@ than silently overwritten.
 Monitoring remains stage-based: record the job ID, wait for the expected stage
 duration, then inspect one terminal `sacct` record together with the job log and
 receipt. Do not poll the server in a tight loop.
+
+After all 33 runs have passed, aggregate transcripts to genes. Counts and TPM
+are summed using the versioned transcript-to-gene mapping in the same frozen
+GENCODE v32 GTF used to construct the Salmon reference:
+
+```bash
+sbatch --export=ALL,STUDY_ACCESSION=E-MTAB-14568 \
+  hpc/roihu/aggregate_salmon.sbatch
+```
+
+The full matrices remain under
+`/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/aggregated/`; the compact
+sample QC and checksum receipt are written under `data/processed/rna/` for
+version control. Matrix gzip streams have deterministic headers, so their
+SHA-256 values are stable when the numerical content is unchanged.
+
+## Independent E-MTAB-14568 NMF benchmark
+
+The executable public Barnes repository does not currently expose the exact
+discovery-cohort table, subtype assignments, or analysis code. The preprint's
+methods state that the official analysis used DESeq2 1.26.0 VST, MAD-variable
+gene lists, NMF R 0.23.0, ranks 2--10, 50 random starts for screening, and 200
+starts for selected solutions. That method is recorded in
+`config/nmf_pipeline.yaml` but is not claimed as reproduced here.
+
+The frozen independent technical benchmark uses all 33 public E-MTAB-14568
+runs, log1p(TPM), the 6,000 genes with greatest MAD, ranks 2--8, and 100 random
+initializations per rank. Run it on Roihu after aggregation:
+
+```bash
+sbatch hpc/roihu/nmf_stability.sbatch
+```
+
+Large consensus/factor matrices stay under the Roihu RNA root. Rank metrics,
+the rank-3 assignments, checksums, software versions, and the exact
+configuration are retained in the repository. Deterministically ordered labels
+are named `tumour_state_1`, `tumour_state_2`, and so on; they must not be renamed
+Alpha/Beta/Gamma/Delta without official label alignment.
+
+## Execution boundary
+
+Salmon deployment, reference construction, FASTQ transfer, quantification,
+aggregation, and NMF execute on Roihu. The local checkout is limited to source
+editing, lightweight unit tests, review of compact receipts, and GitHub
+publication. Roihu is checked only at stage boundaries (reference, one-run
+smoke test, complete array, aggregation, NMF), using the scheduler record, log,
+and output receipt together.

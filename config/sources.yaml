@@ -39,6 +39,12 @@ literature:
     doi: 10.1186/s40170-026-00425-6
     pmcid: PMC13003690
     supplementary_endpoint: https://www.ebi.ac.uk/europepmc/webservices/rest/PMC13003690/supplementaryFiles
+  barnes_2025_preprint:
+    doi: 10.1101/2025.07.18.665513
+    version: 1
+    posted_at: 2025-07-22
+    jats_source: https://www.biorxiv.org/content/early/2025/07/22/2025.07.18.665513.source.xml
+    jats_sha256: 7b08e5760de8370f5c46785bba48a8aa2f43625bb53cb152074e15c006ba2df7
 
 software_sources:
   meeson_phd_2024:
@@ -80,6 +86,13 @@ software_sources:
     repository: https://github.com/saezlab/corneto
     commit: c2d24f6c914e2d9fd3ebd5a19fc566f9ddc180a8
     captured_at: 2026-08-11
+  barnes_transcriptional_subtypes:
+    repository: https://github.com/bethmbarnes/living-biobank-HGSOC-transcriptional-subtypes
+    commit: c11a63a826157b9966014b3020209decb7eae199
+    captured_at: 2026-08-11
+    audit: >-
+      The main branch contains descriptive placeholders but no executable NMF
+      pipeline, official subtype-assignment table, or explicit license.
 
 rna_reference:
   genome: GRCh38

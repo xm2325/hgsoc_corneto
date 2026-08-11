@@ -1,0 +1,36 @@
+pipeline_version: 1
+
+independent_etab_14568:
+  study_accession: E-MTAB-14568
+  input_value: log1p_tpm
+  sample_policy: all_33_public_runs
+  variable_gene_method: median_absolute_deviation
+  top_genes: 6000
+  ranks: [2, 3, 4, 5, 6, 7, 8]
+  random_initializations_per_rank: 100
+  primary_rank: 3
+  seed_base: 1456800
+  implementation:
+    package: scikit-learn
+    solver: coordinate_descent
+    loss: frobenius
+    initialization: random
+    maximum_iterations: 2000
+    tolerance: 0.0001
+  state_label_policy: >-
+    Consensus clusters are ordered deterministically by their lexically first run
+    accession and named tumour_state_1..k. These labels do not imply Barnes
+    Alpha/Beta/Gamma/Delta identity.
+
+barnes_method_boundary:
+  source: https://doi.org/10.1101/2025.07.18.665513
+  public_method: >-
+    DESeq2 1.26.0 VST count matrices; top MAD-variable gene lists; NMF R 0.23.0;
+    ranks 2 to 10; 50 random starts for screening and 200 starts for selected ranks.
+  unavailable_public_inputs:
+    - executable analysis code
+    - official OCM-to-subtype assignments
+    - exact discovery-cohort curation table
+  claim_limit: >-
+    The independent E-MTAB-14568 analysis is a technical stability benchmark,
+    not an exact reproduction of official Barnes subtype identities.

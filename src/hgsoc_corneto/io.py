@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import csv
+import gzip
 import hashlib
+import io
 import json
-from collections.abc import Iterable
+from collections.abc import Iterable, Iterator
+from contextlib import contextmanager
 from pathlib import Path
-from typing import Any
+from typing import Any, TextIO
 
 
 def _serialize(value: Any) -> str:
@@ -71,3 +74,14 @@ def write_json(path: str | Path, value: Any) -> None:
     with target.open("w", encoding="utf-8") as handle:
         json.dump(value, handle, indent=2, sort_keys=True)
         handle.write("\n")
+
+
+@contextmanager
+def deterministic_gzip_text_writer(path: str | Path) -> Iterator[TextIO]:
+    """Write gzip text without timestamps or filenames in the gzip header."""
+
+    target = Path(path)
+    with target.open("wb") as raw_handle:
+        with gzip.GzipFile(filename="", mode="wb", fileobj=raw_handle, mtime=0) as compressed:
+            with io.TextIOWrapper(compressed, encoding="utf-8", newline="") as text_handle:
+                yield text_handle
