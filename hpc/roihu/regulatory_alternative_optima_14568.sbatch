@@ -19,7 +19,8 @@ PY=${PYTHON_BIN:-/scratch/project_2012997/xiaomei/hgsoc_corneto_env/bin/python}
 STUDY=E-MTAB-14568
 LAMBDA_REG=${LAMBDA_REG:-0.1}
 LABEL=${LAMBDA_LABEL:-l0p1}
-OUT=${ROOT}/data/processed/corneto/alternative_optima/${STUDY}/${LABEL}/sample_${SLURM_ARRAY_TASK_ID}.json
+OUTPUT_ROOT=${OUTPUT_ROOT:-${ROOT}/data/processed/corneto/alternative_optima/${STUDY}/${LABEL}}
+OUT=${OUTPUT_ROOT}/sample_${SLURM_ARRAY_TASK_ID}.json
 
 cd "$ROOT"
 mkdir -p logs "$(dirname "$OUT")"

@@ -50,3 +50,19 @@ def test_summary_reclassifies_zero_edge_incumbent(tmp_path):
         "completed": 1,
     }
     assert result["ensemble_metrics_nonempty_samples"]["median_incumbent_edge_count"] == 2
+
+
+def test_summary_prefers_successful_retry(tmp_path):
+    failed = _receipt("RUN1", 0)
+    failed["samples"][0]["status"] = "error"
+    original = tmp_path / "original.json"
+    original.write_text(json.dumps(failed), encoding="utf-8")
+    retry = tmp_path / "retry.json"
+    retry.write_text(json.dumps(_receipt("RUN1", 4)), encoding="utf-8")
+
+    result = MODULE.summarize([original, retry], expected_samples=1, study="E-MTAB-X")
+
+    assert result["counts"]["input_receipts"] == 2
+    assert result["counts"]["superseded_receipts"] == 1
+    assert result["samples"][0]["status"] == "completed"
+    assert result["samples"][0]["incumbent_edge_count"] == 4

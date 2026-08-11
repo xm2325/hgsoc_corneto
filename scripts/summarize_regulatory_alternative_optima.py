@@ -27,12 +27,11 @@ def _median(values: list[float | int | None]) -> float | None:
 
 
 def summarize(paths: list[Path], expected_samples: int, study: str) -> dict[str, Any]:
-    if len(paths) != expected_samples:
-        raise ValueError(f"found {len(paths)} receipts, expected {expected_samples}")
-    samples = []
+    if len(paths) < expected_samples:
+        raise ValueError(f"found {len(paths)} receipts, expected at least {expected_samples}")
+    candidates: dict[str, list[dict[str, Any]]] = {}
     method_fingerprints = set()
     source_fingerprints = set()
-    seen_runs = set()
     receipt_files = []
     for path in paths:
         payload = json.loads(path.read_text(encoding="utf-8"))
@@ -45,20 +44,20 @@ def summarize(paths: list[Path], expected_samples: int, study: str) -> dict[str,
             raise ValueError(f"{path}: expected exactly one sample")
         sample = dict(rows[0])
         run = str(sample.get("run_accession", ""))
-        if not run or run in seen_runs:
-            raise ValueError(f"{path}: missing or duplicate run_accession {run!r}")
-        seen_runs.add(run)
+        if not run:
+            raise ValueError(f"{path}: missing run_accession")
         # Older raw receipts may predate the explicit fail-closed status.  Keep
         # the raw status but classify an all-zero incumbent as blocked here.
         raw_status = str(sample.get("status", "unknown"))
         status = raw_status
         if raw_status == "completed" and sample.get("incumbent_edge_count") == 0:
             status = "blocked_no_selected_edges"
-        samples.append(
+        candidates.setdefault(run, []).append(
             {
                 "run_accession": run,
                 "status": status,
                 "raw_status": raw_status,
+                "selected_receipt": str(path),
                 "solution_count": sample.get("solution_count"),
                 "accepted_alternative_count": sample.get("accepted_alternative_count"),
                 "incumbent_edge_count": sample.get("incumbent_edge_count"),
@@ -78,6 +77,22 @@ def summarize(paths: list[Path], expected_samples: int, study: str) -> dict[str,
         raise ValueError("receipts disagree on method parameters")
     if len(source_fingerprints) != 1:
         raise ValueError("receipts disagree on source hashes")
+    if len(candidates) != expected_samples:
+        raise ValueError(
+            f"receipts represent {len(candidates)} unique samples, expected {expected_samples}"
+        )
+
+    def _candidate_rank(row: dict[str, Any]) -> tuple[int, str]:
+        status = str(row["status"])
+        if status == "completed":
+            rank = 3
+        elif status.startswith("blocked"):
+            rank = 2
+        else:
+            rank = 1
+        return rank, str(row["selected_receipt"])
+
+    samples = [max(rows, key=_candidate_rank) for rows in candidates.values()]
     samples.sort(key=lambda row: row["run_accession"])
     usable = [row for row in samples if row["status"] == "completed"]
     status_counts = Counter(row["status"] for row in samples)
@@ -92,7 +107,9 @@ def summarize(paths: list[Path], expected_samples: int, study: str) -> dict[str,
         "source_sha256": json.loads(next(iter(source_fingerprints))),
         "counts": {
             "expected_samples": expected_samples,
+            "input_receipts": len(paths),
             "receipt_samples": len(samples),
+            "superseded_receipts": len(paths) - len(samples),
             "usable_nonempty_samples": len(usable),
             "status_counts": dict(sorted(status_counts.items())),
         },
@@ -126,13 +143,13 @@ def summarize(paths: list[Path], expected_samples: int, study: str) -> dict[str,
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input-dir", type=Path, required=True)
+    parser.add_argument("--input-dir", type=Path, action="append", required=True)
     parser.add_argument("--pattern", default="sample_*.json")
     parser.add_argument("--expected-samples", type=int, required=True)
     parser.add_argument("--study", required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    paths = sorted(args.input_dir.glob(args.pattern))
+    paths = sorted(path for directory in args.input_dir for path in directory.glob(args.pattern))
     result = summarize(paths, args.expected_samples, args.study)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
