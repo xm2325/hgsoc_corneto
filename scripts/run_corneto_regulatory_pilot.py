@@ -67,31 +67,46 @@ def _load_manifest(path: Path, study: str, primary_only: bool) -> list[dict[str,
 
 
 def _load_expression(path: Path) -> tuple[list[str], dict[str, list[float]]]:
+    """Load a matrix with gene_name/gene_symbol/symbol header support."""
     opener = gzip.open if path.name.endswith(".gz") else open
     with opener(path, "rt", encoding="utf-8", newline="") as handle:
         reader = csv.reader(handle, delimiter="\t")
         header = next(reader)
-        if len(header) < 2:
+        lowered = [str(value).strip().lower() for value in header]
+        name_index = next(
+            (index for index, value in enumerate(lowered)
+             if value in {"gene_name", "gene_symbol", "symbol"}),
+            None,
+        )
+        # Canonical gene_id/gene_name has name_index=1 and sample_start=2.
+        # Without a name column retain the original gene-ID/sample layout.
+        sample_start = name_index + 1 if name_index is not None else 1
+        if len(header) <= sample_start:
             raise ValueError("expression matrix has no sample columns")
-        sample_ids = header[1:]
+        sample_ids = [str(value).strip() for value in header[sample_start:]]
         values: dict[str, list[float]] = {}
+        counts: dict[str, int] = defaultdict(int)
         for row in reader:
-            if len(row) < len(header):
+            if len(row) != len(header):
                 continue
-            gene = row[0].strip()
-            if not gene or gene in values:
+            raw_gene = row[name_index] if name_index is not None else row[0]
+            gene = raw_gene.strip().upper()
+            if not gene:
                 continue
             out = []
-            for item in row[1:]:
+            for item in row[sample_start:]:
                 try:
                     value = float(item)
                 except ValueError:
                     value = 0.0
                 out.append(math.log1p(max(0.0, value)))
-            values[gene] = out
+            if gene not in values:
+                values[gene] = [0.0] * len(sample_ids)
+            values[gene] = [left + right for left, right in zip(values[gene], out)]
+            counts[gene] += 1
+        for gene, row in values.items():
+            values[gene] = [value / counts[gene] for value in row]
     return sample_ids, values
-
-
 def _load_edges(path: Path) -> list[tuple[str, str, int]]:
     opener = gzip.open if path.name.endswith(".gz") else open
     edges = set()
