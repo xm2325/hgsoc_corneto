@@ -36,6 +36,9 @@ for index in "${!STUDIES[@]}"; do
     value=${VALUES[$lambda_index]}
     label=${LABELS[$lambda_index]}
     path="data/processed/corneto/lambda_grid_all60/${study}/${label}.json"
+    if [[ "$study" == E-MTAB-14568 && "$label" == l0p01 && -n "${ETAB14568_L0P01_RECEIPT:-}" ]]; then
+      path=$ETAB14568_L0P01_RECEIPT
+    fi
     test -s "$path"
     ARGS+=(--receipt "${study}|${value}|${path}")
   done
