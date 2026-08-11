@@ -327,7 +327,6 @@ def main() -> int:
     # deterministic pilot records the policy but does not invoke a solver.
     parser.add_argument("--top-tfs", type=int, default=50)
     parser.add_argument("--expression-transform", default="log1p_tpm")
-    parser.add_argument("--primary-only", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--solver", choices=("auto", "gurobi", "highs"), default="auto")
     args = parser.parse_args()
     if args.output is None:
