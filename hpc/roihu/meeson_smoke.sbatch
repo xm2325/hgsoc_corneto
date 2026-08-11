@@ -41,6 +41,8 @@ srun "${VENV_ROOT}/bin/python" scripts/run_toy_order_benchmark.py \
 srun "${VENV_ROOT}/bin/python" scripts/run_toy_order_benchmark.py \
     --semantics published \
     --output data/processed/meeson/toy_order_published.json
+srun "${VENV_ROOT}/bin/python" scripts/run_corneto_toy_retention.py \
+    --output data/processed/meeson/toy_corneto_global_retention.json
 
 printf 'completed_at_utc\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
     > data/processed/meeson/roihu_smoke_completion.tsv

@@ -20,7 +20,8 @@ python3 -m venv --system-site-packages "${VENV_ROOT}"
 "${VENV_ROOT}/bin/python" -m pip install -e "${REPO_ROOT}[dev,metadata,metabolic]"
 "${VENV_ROOT}/bin/python" -m pip install \
     "corneto @ git+https://github.com/saezlab/corneto@${CORNETO_COMMIT}" \
-    highspy
+    highspy \
+    'numpy>=1.25,<2'
 
 "${VENV_ROOT}/bin/python" "${REPO_ROOT}/scripts/fetch_metabolic_sources.py" \
     --destination "${INPUT_ROOT}"
@@ -32,7 +33,7 @@ mkdir -p "${REPO_ROOT}/logs" "${REPO_ROOT}/data/processed/meeson"
     printf 'python\t'
     "${VENV_ROOT}/bin/python" --version
     "${VENV_ROOT}/bin/python" -c \
-        'from importlib.metadata import version; import highspy; print("cobra\t" + version("cobra")); print("corneto\t" + version("corneto")); print("highspy\tinstalled")'
+        'from importlib.metadata import version; import highspy; print("numpy\t" + version("numpy")); print("cobra\t" + version("cobra")); print("corneto\t" + version("corneto")); print("highspy\tinstalled")'
     printf 'human_gem_sha256\t'
     sha256sum "${INPUT_ROOT}/downloads/Human-GEM-v1.4.1.xml" | cut -d' ' -f1
 } > "${REPO_ROOT}/data/processed/meeson/roihu_cpu_environment.tsv"

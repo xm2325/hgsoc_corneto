@@ -60,15 +60,15 @@ def notebook_sources(path: Path) -> str:
 def audit_notebook(path: Path, checkout: Path) -> dict[str, Any]:
     source = notebook_sources(path)
     restored = sorted(set(re.findall(r"%store\s+-r\s+([A-Za-z_][A-Za-z0-9_]*)", source)))
-    csv_references = sorted(
-        set(
-            match.strip("'\"")
-            for match in re.findall(r"['\"][^'\"\n]+\.csv['\"]", source)
-        )
+    input_csv_references = sorted(
+        set(re.findall(r"read_csv\s*\(\s*r?['\"]([^'\"\n]+\.csv)['\"]", source))
     )
-    local_absolute = [value for value in csv_references if Path(value).is_absolute()]
+    output_csv_references = sorted(
+        set(re.findall(r"to_csv\s*\(\s*r?['\"]([^'\"\n]+\.csv)['\"]", source))
+    )
+    local_absolute = [value for value in input_csv_references if Path(value).is_absolute()]
     unresolved = []
-    for value in csv_references:
+    for value in input_csv_references:
         candidate = Path(value)
         if candidate.is_absolute():
             if not candidate.exists():
@@ -77,10 +77,12 @@ def audit_notebook(path: Path, checkout: Path) -> dict[str, Any]:
             unresolved.append(value)
     return {
         "restored_ipython_variables": restored,
-        "csv_references": csv_references,
-        "absolute_csv_references": local_absolute,
-        "unresolved_csv_references": sorted(unresolved),
-        "mentions_manual_excel_adjustment": "Excel" in source and "/ 5" in source,
+        "input_csv_references": input_csv_references,
+        "output_csv_references": output_csv_references,
+        "absolute_input_csv_references": local_absolute,
+        "unresolved_input_csv_references": sorted(unresolved),
+        "mentions_manual_excel_adjustment": "divide all values by 5 in excel"
+        in source.casefold(),
         "mentions_and_or_group_but_no_integration_loop": (
             "ANDORs" in source and "for r in ANDORs" not in source
         ),
