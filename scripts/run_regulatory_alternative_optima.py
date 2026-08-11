@@ -352,7 +352,9 @@ def main() -> int:
                     )
                     edge_sets = _active_edge_sets(sampled["edge_has_signal"], method.processed_graph)
                     result.update(summarize_edge_ensemble(edge_sets, args.core_frequency))
-                    result["status"] = "completed"
+                    result["status"] = (
+                        "completed" if edge_sets[0] else "blocked_no_selected_edges"
+                    )
                     result["processed_vertices"] = len(method.processed_graph.V)
                     result["processed_edges"] = len(method.processed_graph.E)
             except Exception as error:  # fail closed but retain per-sample evidence
