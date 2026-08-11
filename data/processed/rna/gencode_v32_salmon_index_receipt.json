@@ -1,0 +1,58 @@
+{
+  "completed_at_utc": "2026-08-11T06:36:22.923127+00:00",
+  "decoys": {
+    "count": 194,
+    "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/reference/gencode_v32/decoys.txt"
+  },
+  "gentrome": {
+    "bytes": 3541410736,
+    "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/reference/gencode_v32/gentrome.fa"
+  },
+  "index": {
+    "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/reference/gencode_v32/salmon_index",
+    "version_info": {
+      "auxKmerLength": 31,
+      "hasAuxIndex": false,
+      "indexType": 2,
+      "indexVersion": 5,
+      "salmonVersion": "1.10.0"
+    }
+  },
+  "index_command": [
+    "/scratch/project_2012997/xiaomei/hgsoc_corneto_tools/salmon-1.10.0/bin/salmon",
+    "index",
+    "--transcripts",
+    "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/reference/gencode_v32/gentrome.fa",
+    "--decoys",
+    "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/reference/gencode_v32/decoys.txt",
+    "--index",
+    "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/reference/gencode_v32/salmon_index",
+    "--threads",
+    "16",
+    "--kmerLen",
+    "31",
+    "--gencode"
+  ],
+  "reference": {
+    "annotation": {
+      "bytes": 43097815,
+      "md5": "6e5ca615187dfe3775a98e406fed69e4",
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/reference/gencode_v32/downloads/gencode.v32.annotation.gtf.gz",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gtf.gz"
+    },
+    "genome": {
+      "bytes": 844691642,
+      "md5": "a08878cc9076dfa98908123e0069007f",
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/reference/gencode_v32/downloads/GRCh38.primary_assembly.genome.fa.gz",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/GRCh38.primary_assembly.genome.fa.gz"
+    },
+    "transcripts": {
+      "bytes": 72585915,
+      "md5": "a5c0b5c2ac1ddba93b051e1765525871",
+      "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/reference/gencode_v32/downloads/gencode.v32.transcripts.fa.gz",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.transcripts.fa.gz"
+    }
+  },
+  "repo_commit": "32696c31ff6da85b3f99ae1c2b23f0921ae4e3e9",
+  "salmon_version": "salmon 1.10.0"
+}

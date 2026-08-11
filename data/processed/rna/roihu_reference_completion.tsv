@@ -1,0 +1,2 @@
+job_id	job_name	state	exit_code	elapsed	peak_step_max_rss	alloc_cpus	repo_commit	receipt_sha256
+577792	hgsoc-rna-reference	COMPLETED	0:0	00:17:07	37516756K	16	32696c31ff6da85b3f99ae1c2b23f0921ae4e3e9	ca98b10b23f585d8a0e7a708e80c656e71399d046a7b71e58dbbf1261d8aa7e8
