@@ -1,0 +1,26 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Large or regenerated data
+data/raw/fastq/
+data/raw/reference/
+data/interim/
+data/quant/
+data/expression/
+results/
+logs/
+tmp/
+
+# Large article supplements are fetched on demand.
+data/raw/metadata/*.pdf
+data/raw/metadata/*supplementaryFiles*.zip
+
+# Scheduler artefacts
+slurm-*.out
+.snakemake/

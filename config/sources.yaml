@@ -1,0 +1,93 @@
+snapshot_date: 2026-08-11
+
+rna_studies:
+  E-MTAB-7223:
+    ena_project: PRJEB28709
+    expected_runs: 36
+    expected_fastq_files: 72
+    expected_fastq_bytes: 188841300121
+    biostudies_root: https://ftp.ebi.ac.uk/biostudies/fire/E-MTAB-/223/E-MTAB-7223
+  E-MTAB-10801:
+    ena_project: PRJEB46736
+    expected_runs: 36
+    expected_fastq_files: 72
+    expected_fastq_bytes: 172318782780
+    biostudies_root: https://ftp.ebi.ac.uk/biostudies/fire/E-MTAB-/801/E-MTAB-10801
+  E-MTAB-11000:
+    ena_project: PRJEB47842
+    expected_runs: 12
+    expected_fastq_files: 24
+    expected_fastq_bytes: 33440119254
+    biostudies_root: https://ftp.ebi.ac.uk/biostudies/fire/E-MTAB-/000/E-MTAB-11000
+  E-MTAB-14568:
+    ena_project: PRJEB81794
+    expected_runs: 33
+    expected_fastq_files: 66
+    expected_fastq_bytes: 83162442959
+    biostudies_root: https://ftp.ebi.ac.uk/biostudies/fire/E-MTAB-/568/E-MTAB-14568
+
+literature:
+  tighe_2025:
+    doi: 10.1016/j.xcrm.2025.102160
+    pmcid: PMC12208324
+    supplementary_endpoint: https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12208324/supplementaryFiles
+    table_s1_file: mmc1.pdf
+    table_s1_md5: dd534b92b1b8c64bcba970127ee16767
+    table_s2_file: mmc2.xlsx
+    table_s2_md5: fc47d624e4d7ef1ae87394357189b049
+  meeson_2026:
+    doi: 10.1186/s40170-026-00425-6
+    pmcid: PMC13003690
+    supplementary_endpoint: https://www.ebi.ac.uk/europepmc/webservices/rest/PMC13003690/supplementaryFiles
+
+software_sources:
+  meeson_phd_2024:
+    repository: https://github.com/katemeeson/PhD_2024
+    commit: 1b0e9050720be8fb6769a9a7ab14a4b19bbce8c3
+    archive_sha256: dbd5a69aac4a5d1a0f35298cd2f87494edad54f561b4a238c440a418aecac5a0
+    captured_at: 2026-08-11
+  meeson_ovarian_genome_scale_modeling:
+    repository: https://github.com/katemeeson/ovarian_genome_scale_modeling
+    commit: 9820dcad44824eed98c77beb9eef8686fb3d39ef
+    captured_at: 2026-08-11
+  meeson_repository_to_accompany_paper_2023:
+    repository: https://github.com/katemeeson/repository_to_accompany_paper_2023
+    commit: 3c644e0a9a7a31d07153da424d77f22e424c2268
+    captured_at: 2026-08-11
+  human_gem:
+    repository: https://github.com/SysBioChalmers/Human-GEM
+    release: v1.4.1
+    commit: f95db8a2e8d9c4fa5b6920419add62f0533724b2
+    released_at: 2020-07-29
+    model_url: https://raw.githubusercontent.com/SysBioChalmers/Human-GEM/v1.4.1/model/Human-GEM.xml
+    model_sha256: 57d1b137f0c90d83a3e4f9a8225d74d37523594e6ee99f622b160a014d9f7050
+    expected_fingerprint:
+      reactions: 13096
+      genes: 3628
+      gpr_and: 653
+      gpr_and_or: 129
+      gpr_or: 3972
+      gpr_single_gene: 3282
+      gpr_no_gene: 5060
+      biomass_id_after_cobrapy_import: biomass_human
+    rationale: >-
+      This was the latest Human-GEM release when Meeson reports accessing the
+      model in September 2020. Its complete reaction/gene/GPR fingerprint
+      matches the values printed by the public Meeson notebook. Human-GEM
+      v1.4.0 is biologically identical at this fingerprint level; v1.4.1 differs
+      from it only in SBML metadata timestamps.
+  corneto:
+    repository: https://github.com/saezlab/corneto
+    commit: c2d24f6c914e2d9fd3ebd5a19fc566f9ddc180a8
+    captured_at: 2026-08-11
+
+rna_reference:
+  genome: GRCh38
+  annotation: GENCODE v32
+  reason: >-
+    Tighe et al. mapped the OCM studies to hg38/GENCODE v32. A single
+    GENCODE-v32 transcriptome/decoy reference is therefore used for Salmon
+    harmonisation across all four accessions.
+  note: >-
+    Salmon harmonisation is an independent reproduction choice; the Tighe paper
+    itself used STAR --quantMode GeneCounts and DESeq2 median-of-ratios.

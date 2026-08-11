@@ -1,0 +1,1383 @@
+{
+  "accno" : "E-MTAB-10801",
+  "attributes" : [ {
+    "name" : "Title",
+    "value" : "RNA-seq of human ex vivo ovarian cancer models with matched stromal cells - part II"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2021-08-05"
+  }, {
+    "name" : "RootPath",
+    "value" : "E-MTAB-10801"
+  }, {
+    "name" : "AttachTo",
+    "value" : "ArrayExpress"
+  } ],
+  "section" : {
+    "accno" : "s-E-MTAB-10801",
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Title",
+      "value" : "RNA-seq of human ex vivo ovarian cancer models with matched stromal cells - part II"
+    }, {
+      "name" : "Study type",
+      "value" : "RNA-seq of coding RNA",
+      "valqual" : [ {
+        "name" : "Ontology",
+        "value" : "EFO"
+      }, {
+        "name" : "TermId",
+        "value" : "EFO_0003738"
+      } ]
+    }, {
+      "name" : "Study type",
+      "value" : "Cell line - High-throughput sequencing"
+    }, {
+      "name" : "Organism",
+      "value" : "Homo sapiens"
+    }, {
+      "name" : "Description",
+      "value" : "Ascites or solid tumour from patients with ovarian cancer was collected and grown in culture as ex vivo models. Each sample has a tumour component and some samples have matched stromal cells, which were separated into individual cultures. RNA-seq was performed on these models to establish gene expression profiles, which allow the assessment of the separation protocol and identification of genes that are differentially expressed. The histological subtype from which the models were collected includes majorly high-grade serous, but also low-grade serous, clear cell and mucinous ovarian cancer. The sample subtypes have been assessed using a machine-learning based transcriptional classifier.  These samples are processed in the same manner as a previous study, “E-MTAB-7223 - RNA-seq of human ex vivo ovarian cancer models with matched stromal cells”"
+    } ],
+    "links" : [ [ {
+      "url" : "E-MTAB-7223",
+      "attributes" : [ {
+        "name" : "Type",
+        "value" : "Biostudies"
+      } ]
+    } ], [ {
+      "url" : "ERP130952",
+      "attributes" : [ {
+        "name" : "Type",
+        "value" : "ENA"
+      } ]
+    } ] ],
+    "subsections" : [ [ {
+      "accno" : "P-MTAB-112767",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-112767"
+      }, {
+        "name" : "Type",
+        "value" : "sample collection protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0005518"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "Ascites was obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01). Solid tumour samples were obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01)."
+      } ]
+    }, {
+      "accno" : "P-MTAB-112771",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-112771"
+      }, {
+        "name" : "Type",
+        "value" : "growth protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0003789"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "The acsites fluid was centrifuged at 500xg for 10mins at 4oC and cell pellets pooled in HBSS. Red blood cells were removed using a red blood cell lysis buffer (Miltenyi Biotec) as per the manufacturer’s instructions. Tumour cells were counted and plated at 1 million cells in two 75cm2 Primaria flasks, one containing OCMI media and the second containing a 50:50 OCMI media: ascitic fluid mix. Chemo naïve samples were plated onto collagen-coated 75cm2 flasks and cultured in OCMI media containing 5% Hyclone FBS.Solid tumours were processed using a tumour dissociation kit (Miltenyi Biotec) following the manufacture’s instructions. In brief, samples were dissected into small pieces (2-4mm), transferred to a gentleMACS C tube containing RPMI media supplemented with enzymes H, R and A. Tubes were loaded on to the GentleMACS dissociator and the pre-programmed “h_tumour_01” was initiated. Once completed, the sample was incubated at 37oC with continuous, gentle rotation. This dissociation and incubation process was repeated two additional times. Samples were then filtered using a MACS SmartStrainer (Miltenyi Biotec), centrifuged at 300xg for 7 minutes and plated onto collagen-coated 12.5cm2 flask. For both Cultures were incubated for 2-4 days at 37oC in a humidified 5% CO2 and 5% O2 atmosphere. Media was replaced every 3-4 days. Upon cell attachment, stromal cells were separated from the mixed sample using 0.05% trypsin-EDTA, and plated in gelatin-coated flasks in OCMI media containing 5% FBS. Once tumour cells reach 95% confluency, cells were passaged using 0.25% Trypsin-EDTA, centrifuged in DMEM containing 20% FBS and replated at a 1:2 ratio. For long term storage, cells were frozen in Bambanker."
+      } ]
+    }, {
+      "accno" : "P-MTAB-112770",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-112770"
+      }, {
+        "name" : "Type",
+        "value" : "nucleic acid sequencing protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0004170"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "Paired-end sequencing 2x76bp."
+      }, {
+        "name" : "Hardware",
+        "value" : "Illumina HiSeq 4000"
+      } ]
+    }, {
+      "accno" : "P-MTAB-112769",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-112769"
+      }, {
+        "name" : "Type",
+        "value" : "nucleic acid library construction protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0004184"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "cDNA libraries were prepared following the TruSeq Stranded mRNA sample preparation protocol (Illumina)."
+      } ]
+    }, {
+      "accno" : "P-MTAB-112768",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-112768"
+      }, {
+        "name" : "Type",
+        "value" : "nucleic acid extraction protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0002944"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "RNA was extracted using RNeasy Plus Mini kit (Qiagen) from two 75cm2 flasks, quantified using a Qubit fluorometer (Life Technologies)."
+      } ]
+    } ], {
+      "type" : "Author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Bethany Barnes"
+      }, {
+        "name" : "Email",
+        "value" : "bethany.barnes@manchester.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "submitter"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "Author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Stephen Taylor"
+      }, {
+        "name" : "Email",
+        "value" : "stephen.taylor@manchester.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "investigator"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "Organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester"
+      }, {
+        "name" : "Address",
+        "value" : "Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom"
+      } ]
+    }, {
+      "accno" : "o2",
+      "type" : "Organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester"
+      }, {
+        "name" : "Address",
+        "value" : "Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom"
+      } ]
+    }, {
+      "type" : "Publication",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Distinct transcriptional programs stratify ovarian cancer cell lines into the five major histological subtypes"
+      }, {
+        "name" : "Authors",
+        "value" : "Barnes, B. M., Nelson, L, Tighe, A., Burghel, G.J., Lin, I.H., Desai, S., McGrail, J.C., Morgan, R. D. and Taylor, S. S."
+      }, {
+        "name" : "Status",
+        "value" : "submitted"
+      } ]
+    }, {
+      "accno" : "s-samples-factors-E-MTAB-10801",
+      "type" : "Samples",
+      "attributes" : [ {
+        "name" : "Sample count",
+        "value" : "36"
+      }, {
+        "name" : "Experimental Designs",
+        "value" : "disease state design",
+        "valqual" : [ {
+          "name" : "TermId",
+          "value" : "EFO:0001756"
+        } ]
+      }, {
+        "name" : "Experimental Factors",
+        "value" : "cell type",
+        "valqual" : [ {
+          "name" : "TermName",
+          "value" : "cell type"
+        } ]
+      }, {
+        "name" : "Experimental Factors",
+        "value" : "sampling site",
+        "valqual" : [ {
+          "name" : "TermName",
+          "value" : "sampling site"
+        } ]
+      } ],
+      "subsections" : [ {
+        "accno" : "exp_factor-E-MTAB-10801",
+        "type" : "Experimental Factors",
+        "attributes" : [ {
+          "name" : "Sampling site",
+          "value" : "stromal cells"
+        }, {
+          "name" : "Sampling site",
+          "value" : "tumour"
+        }, {
+          "name" : "Cell type",
+          "value" : "epithelial cell"
+        }, {
+          "name" : "Cell type",
+          "value" : "fibroblast"
+        } ],
+        "subsections" : [ [ {
+          "accno" : "factors_0",
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "17",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213188,ERS7213190,ERS7213192,ERS7213194,ERS7213196,ERS7213198,ERS7213200,ERS7213203,ERS7213205,ERS7213207,ERS7213210,ERS7213212,ERS7213214,ERS7213217,ERS7213218,ERS7213220,ERS7213222"
+            } ]
+          } ]
+        }, {
+          "accno" : "factors_1",
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "19",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213189,ERS7213191,ERS7213193,ERS7213195,ERS7213197,ERS7213199,ERS7213201,ERS7213202,ERS7213204,ERS7213206,ERS7213208,ERS7213209,ERS7213211,ERS7213213,ERS7213215,ERS7213216,ERS7213219,ERS7213221,ERS7213223"
+            } ]
+          } ]
+        } ] ]
+      }, {
+        "accno" : "source_chars-E-MTAB-10801",
+        "type" : "Source Characteristics",
+        "attributes" : [ {
+          "name" : "Organism",
+          "value" : "Homo sapiens"
+        }, {
+          "name" : "Cell line",
+          "value" : "primary cell line"
+        }, {
+          "name" : "Developmental stage",
+          "value" : "adult"
+        }, {
+          "name" : "Sex",
+          "value" : "female"
+        }, {
+          "name" : "Disease",
+          "value" : "ovarian carcinoma"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM195"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM86"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM109"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM167"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM80"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM118"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM124"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM99"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM191"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM165"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM152"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM231"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM110"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM161"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM149"
+        }, {
+          "name" : "Individual",
+          "value" : "... 1 other values"
+        }, {
+          "name" : "Age",
+          "value" : "57 year"
+        }, {
+          "name" : "Age",
+          "value" : "68 year"
+        }, {
+          "name" : "Age",
+          "value" : "81 year"
+        }, {
+          "name" : "Age",
+          "value" : "61 year"
+        }, {
+          "name" : "Age",
+          "value" : "84 year"
+        }, {
+          "name" : "Age",
+          "value" : "63 year"
+        }, {
+          "name" : "Age",
+          "value" : "69 year"
+        }, {
+          "name" : "Age",
+          "value" : "56 year"
+        }, {
+          "name" : "Age",
+          "value" : "41 year"
+        }, {
+          "name" : "Age",
+          "value" : "43 year"
+        }, {
+          "name" : "Age",
+          "value" : "47 year"
+        }, {
+          "name" : "Age",
+          "value" : "75 year"
+        }, {
+          "name" : "Age",
+          "value" : "51 year"
+        }, {
+          "name" : "Age",
+          "value" : "71 year"
+        }, {
+          "name" : "Age",
+          "value" : "74 year"
+        }, {
+          "name" : "Disease staging",
+          "value" : "3C"
+        }, {
+          "name" : "Disease staging",
+          "value" : "4A"
+        }, {
+          "name" : "Disease staging",
+          "value" : "4B"
+        }, {
+          "name" : "Disease staging",
+          "value" : "3A"
+        }, {
+          "name" : "Organism part",
+          "value" : "solid tumour"
+        }, {
+          "name" : "Organism part",
+          "value" : "ascites"
+        }, {
+          "name" : "Sampling site",
+          "value" : "stromal cells"
+        }, {
+          "name" : "Sampling site",
+          "value" : "tumour"
+        }, {
+          "name" : "Cell type",
+          "value" : "epithelial cell"
+        }, {
+          "name" : "Cell type",
+          "value" : "fibroblast"
+        } ],
+        "subsections" : [ [ {
+          "accno" : "source_0",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM109"
+          }, {
+            "name" : "age",
+            "value" : "61 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "4B"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213188"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_1",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM109"
+          }, {
+            "name" : "age",
+            "value" : "61 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "4B"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213189"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_2",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM110"
+          }, {
+            "name" : "age",
+            "value" : "57 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213190,ERS7213192"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_3",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM110"
+          }, {
+            "name" : "age",
+            "value" : "57 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213191,ERS7213193"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_4",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM118"
+          }, {
+            "name" : "age",
+            "value" : "41 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213194,ERS7213196"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_5",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM118"
+          }, {
+            "name" : "age",
+            "value" : "41 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213195,ERS7213197"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_6",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM124"
+          }, {
+            "name" : "age",
+            "value" : "56 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213198,ERS7213200"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_7",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM124"
+          }, {
+            "name" : "age",
+            "value" : "56 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213199,ERS7213201"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_8",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM149"
+          }, {
+            "name" : "age",
+            "value" : "51 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213202"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_9",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM152"
+          }, {
+            "name" : "age",
+            "value" : "68 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213203"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_10",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM152"
+          }, {
+            "name" : "age",
+            "value" : "68 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213204"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_11",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM161"
+          }, {
+            "name" : "age",
+            "value" : "81 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "4A"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213205"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_12",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM161"
+          }, {
+            "name" : "age",
+            "value" : "81 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "4A"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213206"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_13",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM165"
+          }, {
+            "name" : "age",
+            "value" : "71 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213207"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_14",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM165"
+          }, {
+            "name" : "age",
+            "value" : "71 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213208"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_15",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM167"
+          }, {
+            "name" : "age",
+            "value" : "68 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "solid tumour"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213209"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_16",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM191"
+          }, {
+            "name" : "age",
+            "value" : "43 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3A"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213210"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_17",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM191"
+          }, {
+            "name" : "age",
+            "value" : "43 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3A"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213211"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_18",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM195"
+          }, {
+            "name" : "age",
+            "value" : "84 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "4A"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213212"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_19",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM195"
+          }, {
+            "name" : "age",
+            "value" : "84 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "4A"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213213"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_20",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM231"
+          }, {
+            "name" : "age",
+            "value" : "63 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213214"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_21",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM231"
+          }, {
+            "name" : "age",
+            "value" : "63 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213215"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_22",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM80"
+          }, {
+            "name" : "age",
+            "value" : "74 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213216"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_23",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM80"
+          }, {
+            "name" : "age",
+            "value" : "74 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213217"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_24",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM86"
+          }, {
+            "name" : "age",
+            "value" : "75 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "4B"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213218"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_25",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM86"
+          }, {
+            "name" : "age",
+            "value" : "75 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "4B"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213219"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_26",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM92"
+          }, {
+            "name" : "age",
+            "value" : "47 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213220"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_27",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM92"
+          }, {
+            "name" : "age",
+            "value" : "47 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213221"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_28",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM99"
+          }, {
+            "name" : "age",
+            "value" : "69 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "stromal cells"
+          }, {
+            "name" : "cell type",
+            "value" : "fibroblast"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213222"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_29",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "OCM99"
+          }, {
+            "name" : "age",
+            "value" : "69 year"
+          }, {
+            "name" : "disease staging",
+            "value" : "3C"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "sampling site",
+            "value" : "tumour"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS7213223"
+            } ]
+          } ]
+        } ] ]
+      } ]
+    }, {
+      "accno" : "s-assays-data-E-MTAB-10801",
+      "type" : "Assays and Data",
+      "attributes" : [ {
+        "name" : "Assay count",
+        "value" : "36"
+      }, {
+        "name" : "Technology",
+        "value" : "Sequencing assay"
+      }, {
+        "name" : "Assay by Molecule",
+        "value" : "RNA assay"
+      } ],
+      "subsections" : [ {
+        "accno" : "mt-E-MTAB-10801",
+        "type" : "MAGE-TAB Files",
+        "files" : [ [ {
+          "path" : "E-MTAB-10801.idf.txt",
+          "size" : 6034,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "IDF File"
+          }, {
+            "name" : "Format",
+            "value" : "tab-delimited text"
+          }, {
+            "name" : "Description",
+            "value" : "Investigation Design Format (IDF)"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "E-MTAB-10801.sdrf.txt",
+          "size" : 38841,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SDRF File"
+          }, {
+            "name" : "Format",
+            "value" : "tab-delimited text"
+          }, {
+            "name" : "Description",
+            "value" : "Sample and Data Relationship Format (SDRF)"
+          } ],
+          "type" : "file"
+        } ] ]
+      } ]
+    }, {
+      "accno" : "score-E-MTAB-10801",
+      "type" : "MINSEQE Score",
+      "attributes" : [ {
+        "name" : "Exp. Design",
+        "value" : "*"
+      }, {
+        "name" : "Processed",
+        "value" : "-"
+      }, {
+        "name" : "Raw",
+        "value" : "*"
+      }, {
+        "name" : "Protocols",
+        "value" : "-"
+      }, {
+        "name" : "Variables",
+        "value" : "*"
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}

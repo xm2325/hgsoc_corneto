@@ -1,0 +1,11 @@
+source_biospecimen_id	canonical_ocm_id	reason	source
+OCM64	OCM64-1	First biopsy number omitted in E-MTAB-7223	Tighe2025 Table S1
+OCM66	OCM66-1	First biopsy number omitted in E-MTAB-7223	Tighe2025 Table S1
+OCM74	OCM74-1	First biopsy number omitted in E-MTAB-7223	Tighe2025 Table S1
+OCM110	OCM110-1	First biopsy number omitted in E-MTAB-10801	Tighe2025 Table S1
+OCM118	OCM118-1	First biopsy number omitted in E-MTAB-10801	Tighe2025 Table S1
+OCM124	OCM124-1	First biopsy number omitted in E-MTAB-10801	Tighe2025 Table S1
+OCM161	OCM161-1	First biopsy number omitted in E-MTAB-10801	Tighe2025 Table S1
+OCM231	OCM231-1	First biopsy number omitted in E-MTAB-10801	Tighe2025 Table S1
+OCM64-3-EPCAMNEG	OCM64-3-Ep-	EpCAM-negative fraction notation harmonisation	Tighe2025 Table S1
+OCM64-3-EPCAMPOS	OCM64-3-Ep+	EpCAM-positive fraction notation harmonisation	Tighe2025 Table S1

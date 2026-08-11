@@ -1,0 +1,47 @@
+Comment[ArrayExpressAccession]	E-MTAB-14568
+MAGE-TAB Version	1.1
+Comment[Submitted Name]	RNA-seq of human ex vivo ovarian cancer models - part IV				
+Investigation Title	RNA-seq of human ex vivo ovarian cancer models - part IV
+Experiment Description	Ascites or solid tumour samples from patients with ovarian cancer were collected and grown in culture as ex vivo models of purified tumour cells. RNA-seq was performed on these models to establish gene expression profiles, which allows identification of genes that are differentially expressed between models with differing tumour intrinsic properties. These samples have been interrogated (1) for their mRNA levels of the ATP-binding cassette (ABC) transporter protein ABCB1 and (2) for differentially expressed genes associated with sensitivity/resistance to the SAE inhibitor ML-792.  These samples are processed in the same manner as previous studies: E-MTAB-7223, E-MTAB-10801 and E-MTAB-11000 with no stromal counterparts included in this current sequencing batch.
+Experimental Design	disease state design
+Experimental Design Term Source REF	EFO
+Experimental Design Term Accession Number	EFO:0001756
+Experimental Factor Name	individual
+Experimental Factor Type	individual
+Experimental Factor Term Source REF
+Experimental Factor Term Accession Number
+Person Last Name	Barnes	Tighe	Littler	Lin	Taylor
+Person First Name	Bethany	Anthony	Samantha	I-Hsuan	Stephen
+Person Mid Initials	M				S
+Person Email	bethany.barnes@manchester.ac.uk	anthony.tighe@manchester.ac.uk	samantha.littler@manchester.ac.uk	i-hsuan.lin@manchester.ac.uk	stephen.taylor@manchester.ac.uk
+Person Phone
+Person Fax
+Person Address	Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom	Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom	Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom	Michael Smith Building, Dover Street, Manchester, M13 9PT, UK	Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom
+Person Affiliation	Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester	Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester	Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester	Bioinformatics Core Facility, Faculty of Biology, Medicine and Health, University of Manchester	Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester
+Person Roles	submitter	experiment performer	experiment performer	data analyst	investigator
+Date of Experiment	2024-01-01
+Public Release Date	2025-05-30
+PubMed ID
+Publication DOI
+Publication Author List	Anthony Tighe, Louisa Nelson, Robert D Morgan, Bethany M Barnes, I-Hsuan Lin, Samantha Littler, James Altringham, Jean Ling Tan, Joanne C McGrail, Stephen S Taylor
+Publication Title	Cabazitaxel overcomes ABCB1-mediated acquired taxol-resistance in relapsed high-grade serous ovarian cancer	Screening a living biobank of HGSOC models with an apex SUMO inhibitor exposes differential sensitivity driven by anti-corelated TGF-b/SMAD and MYC pathways
+Publication Status	in preparation	in preparation
+Publication Status Term Source REF	EFO	EFO
+Publication Status Term Accession Number	EFO_0001795	EFO_0001795
+Protocol Name	P-MTAB-148503	P-MTAB-148504	P-MTAB-148505	P-MTAB-148506	P-MTAB-148507
+Protocol Type	sample collection protocol	nucleic acid extraction protocol	nucleic acid library construction protocol	nucleic acid sequencing protocol	growth protocol
+Protocol Term Source REF	EFO	EFO	EFO	EFO	EFO
+Protocol Term Accession Number	EFO_0005518	EFO_0002944	EFO_0004184	EFO_0004170	EFO_0003789
+Protocol Description	Ascites was obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01). Solid tumour samples were obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01).	RNA was extracted using RNeasy Plus Mini kit (Qiagen) from two 75cm2 flasks, quantified using a Qubit fluorometer (Life Technologies).	cDNA libraries were prepared following the TruSeq Stranded mRNA sample preparation protocol (Illumina).	paired-end sequencing (59 + 59 cycles, plus indices)	The acsites fluid was centrifuged at 500xg for 10mins at 4oC and cell pellets pooled in HBSS. Red blood cells were removed using a red blood cell lysis buffer (Miltenyi Biotec) as per the manufacturer’s instructions. Tumour cells were counted and plated at 1 million cells in two 75cm2 Primaria flasks, one containing OCMI media and the second containing a 50:50 OCMI media: ascitic fluid mix. Chemo naïve samples were plated onto collagen-coated 75cm2 flasks and cultured in OCMI media containing 5% Hyclone FBS.Solid tumours were processed using a tumour dissociation kit (Miltenyi Biotec) following the manufacture’s instructions. In brief, samples were dissected into small pieces (2-4mm), transferred to a gentleMACS C tube containing RPMI media supplemented with enzymes H, R and A. Tubes were loaded on to the GentleMACS dissociator and the pre-programmed “h_tumour_01” was initiated. Once completed, the sample was incubated at 37oC with continuous, gentle rotation. This dissociation and incubation process was repeated two additional times. Samples were then filtered using a MACS SmartStrainer (Miltenyi Biotec), centrifuged at 300xg for 7 minutes and plated onto collagen-coated 12.5cm2 flask. For both Cultures were incubated for 2-4 days at 37oC in a humidified 5% CO2 and 5% O2 atmosphere. Media was replaced every 3-4 days. Upon cell attachment, stromal cells were separated from the mixed sample using 0.05% trypsin-EDTA, and plated in gelatin-coated flasks in OCMI media containing 5% FBS. Once tumour cells reach 95% confluency, cells were passaged using 0.25% Trypsin-EDTA, centrifuged in DMEM containing 20% FBS and replated at a 1:2 ratio. For long term storage, cells were frozen in Bambanker.
+Protocol Hardware				Illumina NovaSeq 6000
+Protocol Software
+Term Source Name	EFO
+Term Source File	http://www.ebi.ac.uk/efo/
+Term Source Version
+Comment[AEExperimentType]	RNA-seq of coding RNA
+Comment[TemplateType]	Cell line - High-throughput sequencing
+Comment[AEAnonymousReview]	yes
+Comment[RelatedExperiment]	 E-MTAB-10801	E-MTAB-7223	 E-MTAB-11000
+Comment[SecondaryAccession]	ERP165597
+Comment[SequenceDataURI]	http://www.ebi.ac.uk/ena/data/view/ERR13907037-ERR13907037	http://www.ebi.ac.uk/ena/data/view/ERR13907037-ERR13907038	http://www.ebi.ac.uk/ena/data/view/ERR13907038-ERR13907039	http://www.ebi.ac.uk/ena/data/view/ERR13907039-ERR13907040	http://www.ebi.ac.uk/ena/data/view/ERR13907040-ERR13907041	http://www.ebi.ac.uk/ena/data/view/ERR13907041-ERR13907042	http://www.ebi.ac.uk/ena/data/view/ERR13907042-ERR13907043	http://www.ebi.ac.uk/ena/data/view/ERR13907043-ERR13907044	http://www.ebi.ac.uk/ena/data/view/ERR13907044-ERR13907045	http://www.ebi.ac.uk/ena/data/view/ERR13907045-ERR13907046	http://www.ebi.ac.uk/ena/data/view/ERR13907046-ERR13907047	http://www.ebi.ac.uk/ena/data/view/ERR13907047-ERR13907048	http://www.ebi.ac.uk/ena/data/view/ERR13907048-ERR13907049	http://www.ebi.ac.uk/ena/data/view/ERR13907049-ERR13907050	http://www.ebi.ac.uk/ena/data/view/ERR13907050-ERR13907051	http://www.ebi.ac.uk/ena/data/view/ERR13907051-ERR13907052	http://www.ebi.ac.uk/ena/data/view/ERR13907052-ERR13907053	http://www.ebi.ac.uk/ena/data/view/ERR13907053-ERR13907054	http://www.ebi.ac.uk/ena/data/view/ERR13907054-ERR13907055	http://www.ebi.ac.uk/ena/data/view/ERR13907055-ERR13907056	http://www.ebi.ac.uk/ena/data/view/ERR13907056-ERR13907057	http://www.ebi.ac.uk/ena/data/view/ERR13907057-ERR13907058	http://www.ebi.ac.uk/ena/data/view/ERR13907058-ERR13907059	http://www.ebi.ac.uk/ena/data/view/ERR13907059-ERR13907060	http://www.ebi.ac.uk/ena/data/view/ERR13907060-ERR13907061	http://www.ebi.ac.uk/ena/data/view/ERR13907061-ERR13907062	http://www.ebi.ac.uk/ena/data/view/ERR13907062-ERR13907063	http://www.ebi.ac.uk/ena/data/view/ERR13907063-ERR13907064	http://www.ebi.ac.uk/ena/data/view/ERR13907064-ERR13907065	http://www.ebi.ac.uk/ena/data/view/ERR13907065-ERR13907066	http://www.ebi.ac.uk/ena/data/view/ERR13907066-ERR13907067	http://www.ebi.ac.uk/ena/data/view/ERR13907067-ERR13907068	http://www.ebi.ac.uk/ena/data/view/ERR13907068-ERR13907069	http://www.ebi.ac.uk/ena/data/view/ERR13907069-ERR13907069
+SDRF File	E-MTAB-14568.sdrf.txt

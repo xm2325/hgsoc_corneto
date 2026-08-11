@@ -1,0 +1,1233 @@
+{
+  "accno" : "E-MTAB-14568",
+  "attributes" : [ {
+    "name" : "ReviewType",
+    "value" : "DoubleBlind"
+  }, {
+    "name" : "Title",
+    "value" : "RNA-seq of human ex vivo ovarian cancer models - part IV"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2025-04-01"
+  }, {
+    "name" : "RootPath",
+    "value" : "E-MTAB-14568"
+  }, {
+    "name" : "AttachTo",
+    "value" : "ArrayExpress"
+  } ],
+  "section" : {
+    "accno" : "s-E-MTAB-14568",
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Title",
+      "value" : "RNA-seq of human ex vivo ovarian cancer models - part IV"
+    }, {
+      "name" : "Study type",
+      "value" : "RNA-seq of coding RNA",
+      "valqual" : [ {
+        "name" : "Ontology",
+        "value" : "EFO"
+      }, {
+        "name" : "TermId",
+        "value" : "EFO_0003738"
+      } ]
+    }, {
+      "name" : "Organism",
+      "value" : "Homo sapiens"
+    }, {
+      "name" : "Description",
+      "value" : "Ascites or solid tumour samples from patients with ovarian cancer were collected and grown in culture as ex vivo models of purified tumour cells. RNA-seq was performed on these models to establish gene expression profiles, which allows identification of genes that are differentially expressed between models with differing tumour intrinsic properties. These samples have been interrogated (1) for their mRNA levels of the ATP-binding cassette (ABC) transporter protein ABCB1 and (2) for differentially expressed genes associated with sensitivity/resistance to the SAE inhibitor ML-792.  These samples are processed in the same manner as previous studies: E-MTAB-7223, E-MTAB-10801 and E-MTAB-11000 with no stromal counterparts included in this current sequencing batch."
+    } ],
+    "links" : [ {
+      "url" : "E-MTAB-10801",
+      "attributes" : [ {
+        "name" : "Type",
+        "value" : "Biostudies"
+      } ]
+    }, {
+      "url" : "E-MTAB-7223",
+      "attributes" : [ {
+        "name" : "Type",
+        "value" : "Biostudies"
+      } ]
+    }, {
+      "url" : "E-MTAB-11000",
+      "attributes" : [ {
+        "name" : "Type",
+        "value" : "Biostudies"
+      } ]
+    }, {
+      "url" : "ERP165597",
+      "attributes" : [ {
+        "name" : "Type",
+        "value" : "ENA"
+      } ]
+    } ],
+    "subsections" : [ {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Bethany Barnes"
+      }, {
+        "name" : "Email",
+        "value" : "bethany.barnes@manchester.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "submitter"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Anthony Tighe"
+      }, {
+        "name" : "Email",
+        "value" : "anthony.tighe@manchester.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "experiment performer"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Samantha Littler"
+      }, {
+        "name" : "Email",
+        "value" : "samantha.littler@manchester.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "experiment performer"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "I-Hsuan Lin"
+      }, {
+        "name" : "Email",
+        "value" : "i-hsuan.lin@manchester.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "data analyst"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Stephen Taylor"
+      }, {
+        "name" : "Email",
+        "value" : "stephen.taylor@manchester.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "investigator"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "organisation",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester"
+      }, {
+        "name" : "Address",
+        "value" : "Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom"
+      } ]
+    }, {
+      "accno" : "o2",
+      "type" : "organisation",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Bioinformatics Core Facility, Faculty of Biology, Medicine and Health, University of Manchester"
+      }, {
+        "name" : "Address",
+        "value" : "Michael Smith Building, Dover Street, Manchester, M13 9PT, UK"
+      } ]
+    }, [ {
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-148503"
+      }, {
+        "name" : "Type",
+        "value" : "sample collection protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0005518"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "Ascites was obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01). Solid tumour samples were obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01)."
+      } ]
+    }, {
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-148504"
+      }, {
+        "name" : "Type",
+        "value" : "nucleic acid extraction protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0002944"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "RNA was extracted using RNeasy Plus Mini kit (Qiagen) from two 75cm2 flasks, quantified using a Qubit fluorometer (Life Technologies)."
+      } ]
+    }, {
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-148505"
+      }, {
+        "name" : "Type",
+        "value" : "nucleic acid library construction protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0004184"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "cDNA libraries were prepared following the TruSeq Stranded mRNA sample preparation protocol (Illumina)."
+      } ]
+    }, {
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-148506"
+      }, {
+        "name" : "Type",
+        "value" : "nucleic acid sequencing protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0004170"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "paired-end sequencing (59 + 59 cycles, plus indices)"
+      }, {
+        "name" : "Hardware",
+        "value" : "Illumina NovaSeq 6000"
+      } ]
+    }, {
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-148507"
+      }, {
+        "name" : "Type",
+        "value" : "growth protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0003789"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "The acsites fluid was centrifuged at 500xg for 10mins at 4oC and cell pellets pooled in HBSS. Red blood cells were removed using a red blood cell lysis buffer (Miltenyi Biotec) as per the manufacturer’s instructions. Tumour cells were counted and plated at 1 million cells in two 75cm2 Primaria flasks, one containing OCMI media and the second containing a 50:50 OCMI media: ascitic fluid mix. Chemo naïve samples were plated onto collagen-coated 75cm2 flasks and cultured in OCMI media containing 5% Hyclone FBS.Solid tumours were processed using a tumour dissociation kit (Miltenyi Biotec) following the manufacture’s instructions. In brief, samples were dissected into small pieces (2-4mm), transferred to a gentleMACS C tube containing RPMI media supplemented with enzymes H, R and A. Tubes were loaded on to the GentleMACS dissociator and the pre-programmed “h_tumour_01” was initiated. Once completed, the sample was incubated at 37oC with continuous, gentle rotation. This dissociation and incubation process was repeated two additional times. Samples were then filtered using a MACS SmartStrainer (Miltenyi Biotec), centrifuged at 300xg for 7 minutes and plated onto collagen-coated 12.5cm2 flask. For both Cultures were incubated for 2-4 days at 37oC in a humidified 5% CO2 and 5% O2 atmosphere. Media was replaced every 3-4 days. Upon cell attachment, stromal cells were separated from the mixed sample using 0.05% trypsin-EDTA, and plated in gelatin-coated flasks in OCMI media containing 5% FBS. Once tumour cells reach 95% confluency, cells were passaged using 0.25% Trypsin-EDTA, centrifuged in DMEM containing 20% FBS and replated at a 1:2 ratio. For long term storage, cells were frozen in Bambanker."
+      } ]
+    } ], {
+      "accno" : "s-samples-factors-E-MTAB-14568",
+      "type" : "Samples",
+      "attributes" : [ {
+        "name" : "Sample count",
+        "value" : "33"
+      }, {
+        "name" : "Experimental Factors",
+        "value" : "individual",
+        "valqual" : [ {
+          "name" : "TermName",
+          "value" : "individual"
+        } ]
+      }, {
+        "name" : "Experimental Designs",
+        "value" : "disease state design",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO:0001756"
+        } ]
+      } ],
+      "subsections" : [ {
+        "accno" : "exp_factor-E-MTAB-14568",
+        "type" : "Experimental Factors",
+        "attributes" : [ {
+          "name" : "Individual",
+          "value" : "295"
+        }, {
+          "name" : "Individual",
+          "value" : "303"
+        }, {
+          "name" : "Individual",
+          "value" : "83"
+        }, {
+          "name" : "Individual",
+          "value" : "267"
+        }, {
+          "name" : "Individual",
+          "value" : "334"
+        }, {
+          "name" : "Individual",
+          "value" : "333"
+        }, {
+          "name" : "Individual",
+          "value" : "288"
+        }, {
+          "name" : "Individual",
+          "value" : "361a"
+        }, {
+          "name" : "Individual",
+          "value" : "339"
+        }, {
+          "name" : "Individual",
+          "value" : "296"
+        }, {
+          "name" : "Individual",
+          "value" : "311"
+        }, {
+          "name" : "Individual",
+          "value" : "361b"
+        }, {
+          "name" : "Individual",
+          "value" : "320"
+        }, {
+          "name" : "Individual",
+          "value" : "376Ta"
+        }, {
+          "name" : "Individual",
+          "value" : "162"
+        }, {
+          "name" : "Individual",
+          "value" : "... 14 other values"
+        } ],
+        "subsections" : [ [ {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "130"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376681"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "162"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376682"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "250"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376683"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "267"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376684"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "288"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376685-ERS21376686"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "293"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376687"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "295"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376688"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "296"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376689-ERS21376690"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "301"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376691"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "303"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376692"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "311"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376693"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "314"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376694"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "316"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376695"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "320"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376696"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "322"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376697"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "324"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376698"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "327"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376699-ERS21376700"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "328"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376701"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "333"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376702-ERS21376703"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "334"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376704"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "339"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376705"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "341"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376706"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "346"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376707"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "358"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376708"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "361a"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376709"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "361b"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376710"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "376Ta"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376711"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "74"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376712"
+            } ]
+          } ]
+        }, {
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "83"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376713"
+            } ]
+          } ]
+        } ] ]
+      }, {
+        "accno" : "source_chars-E-MTAB-14568",
+        "type" : "Source Characteristics",
+        "attributes" : [ {
+          "name" : "Organism",
+          "value" : "Homo sapiens"
+        }, {
+          "name" : "Cell line",
+          "value" : "primary cell line"
+        }, {
+          "name" : "Sex",
+          "value" : "female"
+        }, {
+          "name" : "Cell type",
+          "value" : "tumour cell"
+        }, {
+          "name" : "Developmental stage",
+          "value" : "adult"
+        }, {
+          "name" : "Individual",
+          "value" : "295"
+        }, {
+          "name" : "Individual",
+          "value" : "303"
+        }, {
+          "name" : "Individual",
+          "value" : "83"
+        }, {
+          "name" : "Individual",
+          "value" : "267"
+        }, {
+          "name" : "Individual",
+          "value" : "334"
+        }, {
+          "name" : "Individual",
+          "value" : "333"
+        }, {
+          "name" : "Individual",
+          "value" : "288"
+        }, {
+          "name" : "Individual",
+          "value" : "361a"
+        }, {
+          "name" : "Individual",
+          "value" : "339"
+        }, {
+          "name" : "Individual",
+          "value" : "296"
+        }, {
+          "name" : "Individual",
+          "value" : "311"
+        }, {
+          "name" : "Individual",
+          "value" : "361b"
+        }, {
+          "name" : "Individual",
+          "value" : "320"
+        }, {
+          "name" : "Individual",
+          "value" : "376Ta"
+        }, {
+          "name" : "Individual",
+          "value" : "162"
+        }, {
+          "name" : "Individual",
+          "value" : "... 14 other values"
+        } ],
+        "subsections" : [ [ {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "130"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376681"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "162"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376682"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "250"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376683"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "267"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376684"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "288"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376685-ERS21376686"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "293"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376687"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "295"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376688"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "296"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376689-ERS21376690"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "301"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376691"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "303"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376692"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "311"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376693"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "314"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376694"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "316"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376695"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "320"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376696"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "322"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376697"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "324"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376698"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "327"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376699-ERS21376700"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "328"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376701"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "333"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376702-ERS21376703"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "334"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376704"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "339"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376705"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "341"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376706"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "346"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376707"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "358"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376708"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "361a"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376709"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "361b"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376710"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "376Ta"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376711"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "74"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376712"
+            } ]
+          } ]
+        }, {
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "individual",
+            "value" : "83"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS21376713"
+            } ]
+          } ]
+        } ] ]
+      } ]
+    }, {
+      "accno" : "s-assays-data-E-MTAB-14568",
+      "type" : "Assays and Data",
+      "attributes" : [ {
+        "name" : "Assay count",
+        "value" : "33"
+      }, {
+        "name" : "Technology",
+        "value" : "Sequencing assay"
+      }, {
+        "name" : "Assay by Molecule",
+        "value" : "RNA assay"
+      } ],
+      "subsections" : [ {
+        "accno" : "mt-E-MTAB-14568",
+        "type" : "MAGE-TAB Files",
+        "files" : [ {
+          "path" : "E-MTAB-14568.idf.txt",
+          "size" : 8456,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "IDF File"
+          }, {
+            "name" : "Format",
+            "value" : "tab-delimited text"
+          }, {
+            "name" : "Description",
+            "value" : "Investigation Design Format (IDF)"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "E-MTAB-14568.sdrf.txt",
+          "size" : 32302,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SDRF File"
+          }, {
+            "name" : "Format",
+            "value" : "tab-delimited text"
+          }, {
+            "name" : "Description",
+            "value" : "Sample and Data Relationship Format (SDRF)"
+          } ],
+          "type" : "file"
+        } ]
+      } ]
+    }, {
+      "accno" : "score-E-MTAB-14568",
+      "type" : "MINSEQE Score",
+      "attributes" : [ {
+        "name" : "Exp. Design",
+        "value" : "*"
+      }, {
+        "name" : "Protocols",
+        "value" : "*"
+      }, {
+        "name" : "Variables",
+        "value" : "*"
+      }, {
+        "name" : "Processed",
+        "value" : "-"
+      }, {
+        "name" : "Raw",
+        "value" : "*"
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}

@@ -1,0 +1,3 @@
+# Preserve the byte-exact public MAGE-TAB snapshots, including source line endings.
+data/raw/metadata/biostudies/*.idf.txt -text -diff
+data/raw/metadata/biostudies/*.sdrf.txt -text -diff

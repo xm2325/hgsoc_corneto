@@ -1,0 +1,105 @@
+contract_version: 1
+frozen_at: 2026-08-11
+
+scope:
+  disease: ovarian cancer
+  primary_histotype: HGSOC
+  model_system: patient-derived ex vivo ovarian cancer models
+  primary_material: tumour
+  excluded_from_primary:
+    - stromal cultures
+    - non-HGSOC or ambiguous histotypes
+    - cell-line controls
+    - duplicate later-passage RNA libraries
+  sensitivity_only:
+    - stromal cultures
+    - non-HGSOC histotypes
+    - spatial or fractionated models
+    - alternate passages
+
+track_a:
+  name: paclitaxel signalling/regulatory CORNETO
+  inference_is_label_blind: true
+  outcomes:
+    primary:
+      name: paclitaxel_auc
+      scale: continuous
+    secondary:
+      name: paclitaxel_gi50_nm
+      transform: log10
+  estimands:
+    cross_sectional:
+      definition: >-
+        Association between contemporaneous baseline tumour RNA/network features
+        and ex vivo paclitaxel response.
+    intrinsic:
+      definition: >-
+        Association restricted to explicitly zero-paclitaxel-exposure OCMs.
+      note: >-
+        Table S1 chemotherapy-naive status is retained as a proxy field but is
+        not equivalent to exact zero cumulative paclitaxel exposure.
+    acquired:
+      definition: >-
+        Within-patient change in network features versus change in paclitaxel
+        response, interpreted together with intervening treatment exposure.
+      claim_limit: treatment-associated rewiring, not treatment-caused rewiring
+  baselines:
+    M0: ABCB1 plus prespecified clinical/treatment covariates
+    M1: gene expression
+    M2: inferred TF activity
+    M3: CORNETO modules
+    M4: Barnes state plus ABCB1 plus CORNETO modules
+  validation:
+    grouping_unit: patient_id
+    allowed:
+      - leave-one-patient-out
+      - grouped nested cross-validation
+      - patient-level permutation
+    forbidden:
+      - random OCM-level split
+      - phenotype-informed network inference
+      - feature selection outside the training fold
+
+track_b:
+  name: Meeson metabolic CORNETO benchmark
+  stages:
+    - exact public-code audit and input-availability audit
+    - sequential reaction-order sensitivity
+    - alternative-optimum stability
+    - single-sample global formulation
+    - small joint multi-sample pilot
+    - dependency and TPI1 perturbation validation
+  comparison:
+    reference: Meeson sequential independent models
+    proposed: CORNETO global and joint models
+  novelty_boundary: >-
+    Human1 with sample-specific growth constraints and binary retain/relax
+    variables is a new formulation. It is not described as an off-the-shelf
+    CORNETO method or as a direct reproduction of the published MitoCore sFBA
+    benchmark.
+
+longitudinal_policy:
+  known_families:
+    - [OCM64-1, OCM64-3-Ep-, OCM64-3-Ep+]
+    - [OCM66-1, OCM66-5]
+    - [OCM74-1, OCM74-3, OCM74-5]
+    - [OCM110-1, OCM110-9]
+    - [OCM118-1, OCM118-7]
+    - [OCM124-1, OCM124-11]
+    - [OCM231-1, OCM231-5]
+    - [OCM341-1, OCM341-3]
+  anchors:
+    acquired:
+      - [OCM231-1, OCM231-5]
+      - [OCM341-1, OCM341-3]
+    stable_control:
+      - [OCM66-1, OCM66-5]
+  explicitly_not_longitudinal:
+    - [OCM361a, OCM361b]
+
+claim_boundaries:
+  - expression does not equal activity
+  - TF activity is inferred
+  - CORNETO networks are optimization-supported hypotheses
+  - association does not establish causality
+  - treatment-associated does not mean treatment-caused

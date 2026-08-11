@@ -1,0 +1,1765 @@
+{
+  "accno" : "E-MTAB-7223",
+  "attributes" : [ {
+    "name" : "Title",
+    "value" : "RNA-seq of human ex vivo ovarian cancer models with matched stromal cells"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2020-03-13"
+  }, {
+    "name" : "RootPath",
+    "value" : "E-MTAB-7223"
+  }, {
+    "name" : "AttachTo",
+    "value" : "ArrayExpress"
+  } ],
+  "section" : {
+    "accno" : "s-E-MTAB-7223",
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Title",
+      "value" : "RNA-seq of human ex vivo ovarian cancer models with matched stromal cells"
+    }, {
+      "name" : "Study type",
+      "value" : "RNA-seq of coding RNA",
+      "valqual" : [ {
+        "name" : "Ontology",
+        "value" : "EFO"
+      }, {
+        "name" : "TermId",
+        "value" : "EFO_0003738"
+      } ]
+    }, {
+      "name" : "Organism",
+      "value" : "Homo sapiens"
+    }, {
+      "name" : "Description",
+      "value" : "Ascites or solid tumour from patients with ovarian cancer was collected and grown in culture as ex vivo models. Each sample has a mixture of tumour and stromal cells which were separated into individual cultures. Therefore each patient has tumour and stromal cultures originating from the same tissue collection. RNA-seq was performed on these matched models to establish gene expression profiles which allow the assessment of the separation protocol and establish genes that are differentially expressed for use in future validation processes."
+    } ],
+    "links" : [ [ {
+      "url" : "E-MTAB-7225",
+      "attributes" : [ {
+        "name" : "Type",
+        "value" : "Biostudies"
+      } ]
+    } ], [ {
+      "url" : "ERP110953",
+      "attributes" : [ {
+        "name" : "Type",
+        "value" : "ENA"
+      } ]
+    } ] ],
+    "subsections" : [ [ {
+      "accno" : "P-MTAB-78993",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-78993"
+      }, {
+        "name" : "Type",
+        "value" : "sample collection protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0005518"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "Ascites was obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01). Solid tumour samples were obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01)."
+      }, {
+        "name" : "Hardware"
+      } ]
+    }, {
+      "accno" : "P-MTAB-78997",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-78997"
+      }, {
+        "name" : "Type",
+        "value" : "growth protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0003789"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "The acsites fluid was centrifuged at 500xg for 10mins at 4oC and cell pellets pooled in HBSS. Red blood cells were removed using a red blood cell lysis buffer (Miltenyi Biotec) as per the manufacturer’s instructions. Tumour cells were counted and plated at 1 million cells in two 75cm2 Primaria flasks, one containing OCMI media and the second containing a 50:50 OCMI media: ascitic fluid mix. Chemo naïve samples were plated onto collagen-coated 75cm2 flasks and cultured in OCMI media containing 5% Hyclone FBS.Solid tumours were processed using a tumour dissociation kit (Miltenyi Biotec) following the manufacture’s instructions. In brief, samples were dissected into small pieces (2-4mm), transferred to a gentleMACS C tube containing RPMI media supplemented with enzymes H, R and A. Tubes were loaded on to the GentleMACS dissociator and the pre-programmed “h_tumour_01” was initiated. Once completed, the sample was incubated at 37oC with continuous, gentle rotation. This dissociation and incubation process was repeated two additional times. Samples were then filtered using a MACS SmartStrainer (Miltenyi Biotec), centrifuged at 300xg for 7 minutes and plated onto collagen-coated 12.5cm2 flask. For both Cultures were incubated for 2-4 days at 37oC in a humidified 5% CO2 and 5% O2 atmosphere. Media was replaced every 3-4 days. Upon cell attachment, stromal cells were separated from the mixed sample using 0.05% trypsin-EDTA, and plated in gelatin-coated flasks in OCMI media containing 5% FBS. Once tumour cells reach 95% confluency, cells were passaged using 0.25% Trypsin-EDTA, centrifuged in DMEM containing 20% FBS and replated at a 1:2 ratio. For long term storage, cells were frozen in Bambanker."
+      }, {
+        "name" : "Hardware"
+      } ]
+    }, {
+      "accno" : "P-MTAB-78996",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-78996"
+      }, {
+        "name" : "Type",
+        "value" : "nucleic acid sequencing protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0004170"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "Paired-end sequencing 2x76bp."
+      }, {
+        "name" : "Hardware",
+        "value" : "Illumina HiSeq 4000"
+      } ]
+    }, {
+      "accno" : "P-MTAB-78995",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-78995"
+      }, {
+        "name" : "Type",
+        "value" : "nucleic acid library construction protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0004184"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "cDNA libraries were prepared following the TruSeq Stranded mRNA sample preparation protocol (Illumina)."
+      }, {
+        "name" : "Hardware"
+      } ]
+    }, {
+      "accno" : "P-MTAB-78994",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-78994"
+      }, {
+        "name" : "Type",
+        "value" : "nucleic acid extraction protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0002944"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "RNA was extracted using RNeasy Plus Mini kit (Qiagen) from two 75cm2 flasks, quantified using a Qubit fluorometer (Life Technologies)."
+      }, {
+        "name" : "Hardware"
+      } ]
+    } ], {
+      "type" : "Author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Ian Donaldson"
+      }, {
+        "name" : "Email",
+        "value" : "ian.donaldson@manchester.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "submitter"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "Author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Stephen Taylor"
+      }, {
+        "name" : "Email",
+        "value" : "stephen.taylor@manchester.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "investigator"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "Organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "University of Manchester"
+      }, {
+        "name" : "Address",
+        "value" : "Michael Smith building  University of Manchester Manchester UK"
+      } ]
+    }, {
+      "accno" : "o2",
+      "type" : "Organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "University of Manchester"
+      }, {
+        "name" : "Address",
+        "value" : "Manchester Cancer Research Centre University of Manchester Manchester UK"
+      } ]
+    }, {
+      "accno" : "s-samples-factors-E-MTAB-7223",
+      "type" : "Samples",
+      "attributes" : [ {
+        "name" : "Sample count",
+        "value" : "36"
+      }, {
+        "name" : "Experimental Designs",
+        "value" : "disease state design",
+        "valqual" : [ {
+          "name" : "TermId",
+          "value" : "EFO:0001756"
+        } ]
+      }, {
+        "name" : "Experimental Factors",
+        "value" : "cell line",
+        "valqual" : [ {
+          "name" : "TermName",
+          "value" : "cell line"
+        } ]
+      }, {
+        "name" : "Experimental Factors",
+        "value" : "disease",
+        "valqual" : [ {
+          "name" : "TermName",
+          "value" : "disease"
+        } ]
+      }, {
+        "name" : "Experimental Factors",
+        "value" : "cell type",
+        "valqual" : [ {
+          "name" : "TermName",
+          "value" : "cell type"
+        } ]
+      } ],
+      "subsections" : [ {
+        "accno" : "exp_factor-E-MTAB-7223",
+        "type" : "Experimental Factors",
+        "attributes" : [ {
+          "name" : "Cell line",
+          "value" : "Kuramochi"
+        }, {
+          "name" : "Cell line",
+          "value" : "FNE"
+        }, {
+          "name" : "Cell line",
+          "value" : "primary cell"
+        }, {
+          "name" : "Disease",
+          "value" : "normal"
+        }, {
+          "name" : "Disease",
+          "value" : "ovarian carcinoma"
+        }, {
+          "name" : "Cell type",
+          "value" : "stromal cell"
+        }, {
+          "name" : "Cell type",
+          "value" : "epithelial cell"
+        } ],
+        "subsections" : [ [ {
+          "accno" : "factors_0",
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "Kuramochi"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752798"
+            } ]
+          } ]
+        }, {
+          "accno" : "factors_1",
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "18",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752799-ERS2752816"
+            } ]
+          } ]
+        }, {
+          "accno" : "factors_2",
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "FNE"
+          }, {
+            "name" : "disease",
+            "value" : "normal"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752817"
+            } ]
+          } ]
+        }, {
+          "accno" : "factors_3",
+          "type" : "Factors Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "16",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752818-ERS2752833"
+            } ]
+          } ]
+        } ] ]
+      }, {
+        "accno" : "source_chars-E-MTAB-7223",
+        "type" : "Source Characteristics",
+        "attributes" : [ {
+          "name" : "Organism",
+          "value" : "Homo sapiens"
+        }, {
+          "name" : "Sex",
+          "value" : "female"
+        }, {
+          "name" : "Cell line",
+          "value" : "Kuramochi"
+        }, {
+          "name" : "Cell line",
+          "value" : "FNE"
+        }, {
+          "name" : "Cell line",
+          "value" : "primary cell"
+        }, {
+          "name" : "Disease",
+          "value" : "normal"
+        }, {
+          "name" : "Disease",
+          "value" : "ovarian carcinoma"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM.69"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM.33-2"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM.38"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM.46"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM.74"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM.79"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM.61a"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM.72"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM.59"
+        }, {
+          "name" : "Individual",
+          "value" : "not applicable"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM.64"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM.87"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM.66"
+        }, {
+          "name" : "Age",
+          "value" : "69 year"
+        }, {
+          "name" : "Age",
+          "value" : "81 year"
+        }, {
+          "name" : "Age",
+          "value" : "not available"
+        }, {
+          "name" : "Age",
+          "value" : "71 year"
+        }, {
+          "name" : "Age",
+          "value" : "58 year"
+        }, {
+          "name" : "Age",
+          "value" : "57 year"
+        }, {
+          "name" : "Age",
+          "value" : "72 year"
+        }, {
+          "name" : "Age",
+          "value" : "64 year"
+        }, {
+          "name" : "Age",
+          "value" : "25 year"
+        }, {
+          "name" : "Age",
+          "value" : "45 year"
+        }, {
+          "name" : "Age",
+          "value" : "53 year"
+        }, {
+          "name" : "Tumor grading",
+          "value" : "AO"
+        }, {
+          "name" : "Tumor grading",
+          "value" : "AOP"
+        }, {
+          "name" : "Tumor grading",
+          "value" : "AMO"
+        }, {
+          "name" : "Tumor grading",
+          "value" : "not available"
+        }, {
+          "name" : "Tumor grading",
+          "value" : "AP"
+        }, {
+          "name" : "Disease staging",
+          "value" : "not available"
+        }, {
+          "name" : "Disease staging",
+          "value" : "4"
+        }, {
+          "name" : "Disease staging",
+          "value" : "1a"
+        }, {
+          "name" : "Disease staging",
+          "value" : "1c"
+        }, {
+          "name" : "Disease staging",
+          "value" : "3b"
+        }, {
+          "name" : "Disease staging",
+          "value" : "3c"
+        }, {
+          "name" : "Organism part",
+          "value" : "ovary"
+        }, {
+          "name" : "Organism part",
+          "value" : "ascites"
+        }, {
+          "name" : "Organism part",
+          "value" : "fallopian tube"
+        }, {
+          "name" : "Cell type",
+          "value" : "stromal cell"
+        }, {
+          "name" : "Cell type",
+          "value" : "epithelial cell"
+        }, {
+          "name" : "Phenotype",
+          "value" : "Epcam positive"
+        }, {
+          "name" : "Phenotype",
+          "value" : "Epcam negative"
+        }, {
+          "name" : "Passage",
+          "value" : "15"
+        }, {
+          "name" : "Passage",
+          "value" : "5"
+        }, {
+          "name" : "Passage",
+          "value" : "4"
+        }, {
+          "name" : "Passage",
+          "value" : "14"
+        } ],
+        "subsections" : [ [ {
+          "accno" : "source_0",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "Kuramochi"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "not applicable"
+          }, {
+            "name" : "age",
+            "value" : "not available"
+          }, {
+            "name" : "tumor grading",
+            "value" : "not available"
+          }, {
+            "name" : "disease staging",
+            "value" : "not available"
+          }, {
+            "name" : "organism part",
+            "value" : "ovary"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752798"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_1",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.33-2"
+          }, {
+            "name" : "age",
+            "value" : "69 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AO"
+          }, {
+            "name" : "disease staging",
+            "value" : "4"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752799"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_2",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.38"
+          }, {
+            "name" : "age",
+            "value" : "81 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AOP"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752800"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_3",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.46"
+          }, {
+            "name" : "age",
+            "value" : "71 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AP"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage",
+            "value" : "14"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752801"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_4",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.46"
+          }, {
+            "name" : "age",
+            "value" : "71 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AP"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage",
+            "value" : "4"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752802"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_5",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.59"
+          }, {
+            "name" : "age",
+            "value" : "45 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AP"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752803"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_6",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.61a"
+          }, {
+            "name" : "age",
+            "value" : "53 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AMO"
+          }, {
+            "name" : "disease staging",
+            "value" : "1c"
+          }, {
+            "name" : "organism part",
+            "value" : "ovary"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752804"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_7",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.64"
+          }, {
+            "name" : "age",
+            "value" : "58 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AP"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752805-ERS2752806"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_8",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.64"
+          }, {
+            "name" : "age",
+            "value" : "58 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AP"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype",
+            "value" : "Epcam negative"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752807"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_9",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.64"
+          }, {
+            "name" : "age",
+            "value" : "58 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AP"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype",
+            "value" : "Epcam positive"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752808"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_10",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.66"
+          }, {
+            "name" : "age",
+            "value" : "64 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AO"
+          }, {
+            "name" : "disease staging",
+            "value" : "4"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752809-ERS2752810"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_11",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.69"
+          }, {
+            "name" : "age",
+            "value" : "not available"
+          }, {
+            "name" : "tumor grading",
+            "value" : "not available"
+          }, {
+            "name" : "disease staging",
+            "value" : "4"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752811"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_12",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.72"
+          }, {
+            "name" : "age",
+            "value" : "25 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AMO"
+          }, {
+            "name" : "disease staging",
+            "value" : "1a"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752812"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_13",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.74"
+          }, {
+            "name" : "age",
+            "value" : "64 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AO"
+          }, {
+            "name" : "disease staging",
+            "value" : "3b"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752813-ERS2752814"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_14",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.79"
+          }, {
+            "name" : "age",
+            "value" : "72 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AO"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752815"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_15",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.87"
+          }, {
+            "name" : "age",
+            "value" : "57 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AO"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752816"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_16",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "FNE"
+          }, {
+            "name" : "disease",
+            "value" : "normal"
+          }, {
+            "name" : "individual",
+            "value" : "not applicable"
+          }, {
+            "name" : "age",
+            "value" : "not available"
+          }, {
+            "name" : "tumor grading",
+            "value" : "not available"
+          }, {
+            "name" : "disease staging",
+            "value" : "not available"
+          }, {
+            "name" : "organism part",
+            "value" : "fallopian tube"
+          }, {
+            "name" : "cell type",
+            "value" : "epithelial cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752817"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_17",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.33-2"
+          }, {
+            "name" : "age",
+            "value" : "69 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AO"
+          }, {
+            "name" : "disease staging",
+            "value" : "4"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752818"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_18",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.38"
+          }, {
+            "name" : "age",
+            "value" : "81 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AOP"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752819"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_19",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.46"
+          }, {
+            "name" : "age",
+            "value" : "71 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AP"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage",
+            "value" : "15"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752820"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_20",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.46"
+          }, {
+            "name" : "age",
+            "value" : "71 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AP"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage",
+            "value" : "5"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752821"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_21",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.59"
+          }, {
+            "name" : "age",
+            "value" : "45 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AP"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752822"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_22",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.61a"
+          }, {
+            "name" : "age",
+            "value" : "53 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AMO"
+          }, {
+            "name" : "disease staging",
+            "value" : "1c"
+          }, {
+            "name" : "organism part",
+            "value" : "ovary"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752823"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_23",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.64"
+          }, {
+            "name" : "age",
+            "value" : "58 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AP"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752824-ERS2752825"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_24",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.66"
+          }, {
+            "name" : "age",
+            "value" : "64 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AO"
+          }, {
+            "name" : "disease staging",
+            "value" : "4"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752826-ERS2752827"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_25",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.69"
+          }, {
+            "name" : "age",
+            "value" : "not available"
+          }, {
+            "name" : "tumor grading",
+            "value" : "not available"
+          }, {
+            "name" : "disease staging",
+            "value" : "4"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752828"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_26",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.72"
+          }, {
+            "name" : "age",
+            "value" : "25 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AMO"
+          }, {
+            "name" : "disease staging",
+            "value" : "1a"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752829"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_27",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.74"
+          }, {
+            "name" : "age",
+            "value" : "64 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AO"
+          }, {
+            "name" : "disease staging",
+            "value" : "3b"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "2",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752830-ERS2752831"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_28",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.79"
+          }, {
+            "name" : "age",
+            "value" : "72 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AO"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752832"
+            } ]
+          } ]
+        }, {
+          "accno" : "source_29",
+          "type" : "Characteristics Table",
+          "attributes" : [ {
+            "name" : "cell line",
+            "value" : "primary cell"
+          }, {
+            "name" : "disease",
+            "value" : "ovarian carcinoma"
+          }, {
+            "name" : "individual",
+            "value" : "OCM.87"
+          }, {
+            "name" : "age",
+            "value" : "57 year"
+          }, {
+            "name" : "tumor grading",
+            "value" : "AO"
+          }, {
+            "name" : "disease staging",
+            "value" : "3c"
+          }, {
+            "name" : "organism part",
+            "value" : "ascites"
+          }, {
+            "name" : "cell type",
+            "value" : "stromal cell"
+          }, {
+            "name" : "phenotype"
+          }, {
+            "name" : "passage"
+          }, {
+            "name" : "No. of Samples",
+            "value" : "1",
+            "valqual" : [ {
+              "name" : "url",
+              "value" : "https://www.ebi.ac.uk/ena/browser/view/ERS2752833"
+            } ]
+          } ]
+        } ] ]
+      } ]
+    }, {
+      "accno" : "s-assays-data-E-MTAB-7223",
+      "type" : "Assays and Data",
+      "attributes" : [ {
+        "name" : "Assay count",
+        "value" : "36"
+      }, {
+        "name" : "Technology",
+        "value" : "Sequencing assay"
+      }, {
+        "name" : "Assay by Molecule",
+        "value" : "RNA assay"
+      } ],
+      "subsections" : [ {
+        "accno" : "mt-E-MTAB-7223",
+        "type" : "MAGE-TAB Files",
+        "files" : [ [ {
+          "path" : "E-MTAB-7223.idf.txt",
+          "size" : 5273,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "IDF File"
+          }, {
+            "name" : "Format",
+            "value" : "tab-delimited text"
+          }, {
+            "name" : "Description",
+            "value" : "Investigation Design Format (IDF)"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "E-MTAB-7223.sdrf.txt",
+          "size" : 53232,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SDRF File"
+          }, {
+            "name" : "Format",
+            "value" : "tab-delimited text"
+          }, {
+            "name" : "Description",
+            "value" : "Sample and Data Relationship Format (SDRF)"
+          } ],
+          "type" : "file"
+        } ] ]
+      } ]
+    }, {
+      "accno" : "score-E-MTAB-7223",
+      "type" : "MINSEQE Score",
+      "attributes" : [ {
+        "name" : "Exp. Design",
+        "value" : "*"
+      }, {
+        "name" : "Variables",
+        "value" : "*"
+      }, {
+        "name" : "Protocols",
+        "value" : "-"
+      }, {
+        "name" : "Raw",
+        "value" : "*"
+      }, {
+        "name" : "Processed",
+        "value" : "-"
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}

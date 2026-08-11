@@ -1,0 +1,71 @@
+MAGE-TAB Version	1.1
+Investigation Title	RNA-seq of human ex vivo ovarian cancer models with matched stromal cells - part II
+
+Experimental Design	disease state design
+Experimental Design Term Source REF	EFO
+Experimental Design Term Accession Number	EFO:0001756
+
+Experimental Factor Name	cell type	sampling site
+Experimental Factor Type	cell type	sampling site
+Experimental Factor Term Source REF
+Experimental Factor Term Accession Number
+
+Person Last Name	Barnes	Taylor
+Person First Name	Bethany	Stephen
+Person Mid Initials
+Person Email	bethany.barnes@manchester.ac.uk	stephen.taylor@manchester.ac.uk
+Person Phone
+Person Fax
+Person Affiliation	Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester	Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester
+Person Address	Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom	Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom
+Person Roles	submitter	investigator
+Person Roles Term Source REF
+Person Roles Term Accession Number
+
+Quality Control Type
+Quality Control Term Source REF
+Quality Control Term Accession Number
+
+Replicate Type
+Replicate Term Source REF
+Replicate Term Accession Number
+
+Normalization Type
+Normalization Term Source REF
+Normalization Term Accession Number
+
+Date of Experiment	2020-01-01
+Public Release Date	2021-08-05
+
+PubMed ID
+Publication DOI
+Publication Author List	Barnes, B. M., Nelson, L, Tighe, A., Burghel, G.J., Lin, I.H., Desai, S., McGrail, J.C., Morgan, R. D. and Taylor, S. S.
+Publication Title	Distinct transcriptional programs stratify ovarian cancer cell lines into the five major histological subtypes
+Publication Status	submitted
+Publication Status Term Source REF
+Publication Status Term Accession Number
+
+Experiment Description	Ascites or solid tumour from patients with ovarian cancer was collected and grown in culture as ex vivo models. Each sample has a tumour component and some samples have matched stromal cells, which were separated into individual cultures. RNA-seq was performed on these models to establish gene expression profiles, which allow the assessment of the separation protocol and identification of genes that are differentially expressed. The histological subtype from which the models were collected includes majorly high-grade serous, but also low-grade serous, clear cell and mucinous ovarian cancer. The sample subtypes have been assessed using a machine-learning based transcriptional classifier.  These samples are processed in the same manner as a previous study, “E-MTAB-7223 - RNA-seq of human ex vivo ovarian cancer models with matched stromal cells”
+
+Protocol Name	P-MTAB-112767	P-MTAB-112771	P-MTAB-112770	P-MTAB-112769	P-MTAB-112768
+Protocol Type	sample collection protocol	growth protocol	nucleic acid sequencing protocol	nucleic acid library construction protocol	nucleic acid extraction protocol
+Protocol Term Source REF	EFO	EFO	EFO	EFO	EFO
+Protocol Term Accession Number	EFO_0005518	EFO_0003789	EFO_0004170	EFO_0004184	EFO_0002944
+Protocol Description	Ascites was obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01). Solid tumour samples were obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01).	The acsites fluid was centrifuged at 500xg for 10mins at 4oC and cell pellets pooled in HBSS. Red blood cells were removed using a red blood cell lysis buffer (Miltenyi Biotec) as per the manufacturer’s instructions. Tumour cells were counted and plated at 1 million cells in two 75cm2 Primaria flasks, one containing OCMI media and the second containing a 50:50 OCMI media: ascitic fluid mix. Chemo naïve samples were plated onto collagen-coated 75cm2 flasks and cultured in OCMI media containing 5% Hyclone FBS.Solid tumours were processed using a tumour dissociation kit (Miltenyi Biotec) following the manufacture’s instructions. In brief, samples were dissected into small pieces (2-4mm), transferred to a gentleMACS C tube containing RPMI media supplemented with enzymes H, R and A. Tubes were loaded on to the GentleMACS dissociator and the pre-programmed “h_tumour_01” was initiated. Once completed, the sample was incubated at 37oC with continuous, gentle rotation. This dissociation and incubation process was repeated two additional times. Samples were then filtered using a MACS SmartStrainer (Miltenyi Biotec), centrifuged at 300xg for 7 minutes and plated onto collagen-coated 12.5cm2 flask. For both Cultures were incubated for 2-4 days at 37oC in a humidified 5% CO2 and 5% O2 atmosphere. Media was replaced every 3-4 days. Upon cell attachment, stromal cells were separated from the mixed sample using 0.05% trypsin-EDTA, and plated in gelatin-coated flasks in OCMI media containing 5% FBS. Once tumour cells reach 95% confluency, cells were passaged using 0.25% Trypsin-EDTA, centrifuged in DMEM containing 20% FBS and replated at a 1:2 ratio. For long term storage, cells were frozen in Bambanker.	Paired-end sequencing 2x76bp.	cDNA libraries were prepared following the TruSeq Stranded mRNA sample preparation protocol (Illumina).	RNA was extracted using RNeasy Plus Mini kit (Qiagen) from two 75cm2 flasks, quantified using a Qubit fluorometer (Life Technologies).
+Protocol Parameters
+Protocol Hardware			Illumina HiSeq 4000
+Protocol Software
+Protocol Contact
+
+Term Source Name	EFO	ArrayExpress
+Term Source File	http://www.ebi.ac.uk/efo/	http://www.ebi.ac.uk/arrayexpress/
+Term Source Version	2.38
+
+SDRF File	E-MTAB-10801.sdrf.txt
+Comment [Submitted Name]	RNA-seq of human ex vivo ovarian cancer models with matched stromal cells - part II
+Comment [TemplateType]	Cell line - High-throughput sequencing
+Comment [SecondaryAccession]	ERP130952
+Comment [SequenceDataURI]	http://www.ebi.ac.uk/ena/data/view/ERR6389066-ERR6389101
+Comment [AEExperimentType]	RNA-seq of coding RNA
+Comment[ArrayExpressAccession]	E-MTAB-10801
+Comment [RelatedExperiment]	E-MTAB-7223

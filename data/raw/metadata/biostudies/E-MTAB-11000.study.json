@@ -1,0 +1,437 @@
+{
+  "accno" : "E-MTAB-11000",
+  "attributes" : [ {
+    "name" : "Title",
+    "value" : "RNA-seq of human ex vivo ovarian cancer models - part III"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2021-10-10"
+  }, {
+    "name" : "RootPath",
+    "value" : "E-MTAB-11000"
+  }, {
+    "name" : "AttachTo",
+    "value" : "ArrayExpress"
+  } ],
+  "section" : {
+    "accno" : "s-E-MTAB-11000",
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Title",
+      "value" : "RNA-seq of human ex vivo ovarian cancer models - part III"
+    }, {
+      "name" : "Study type",
+      "value" : "RNA-seq of coding RNA",
+      "valqual" : [ {
+        "name" : "Ontology",
+        "value" : "EFO"
+      }, {
+        "name" : "TermId",
+        "value" : "EFO_0003738"
+      } ]
+    }, {
+      "name" : "Organism",
+      "value" : "Homo sapiens"
+    }, {
+      "name" : "Description",
+      "value" : "Ascites or solid tumour samples from patients with ovarian cancer were collected and grown in culture as ex vivo models of purified tumour cells. RNA-seq was performed on these models to establish gene expression profiles, which allow identification of genes that are differentially expressed between patients with differing tumour intrinsic properties. These samples have been interrogated for the presence of a gene expression signature indicative of sensitivity to an inhibitor of poly(ADP-ribose) glycohydrolase (PARG).  These samples are processed in the same manner as previous studies: “E-MTAB-7223 - RNA-seq of human ex vivo ovarian cancer models with matched stromal cells” and “E-MTAB-10801 - RNA-seq of human ex vivo ovarian cancer models with matched stromal cells - part II” with no stromal counterparts included in this current sequencing batch."
+    } ],
+    "links" : [ [ {
+      "url" : "E-MTAB-7223",
+      "attributes" : [ {
+        "name" : "Type",
+        "value" : "Biostudies"
+      } ]
+    } ], [ {
+      "url" : "ERP132146",
+      "attributes" : [ {
+        "name" : "Type",
+        "value" : "ENA"
+      } ]
+    } ] ],
+    "subsections" : [ [ {
+      "accno" : "P-MTAB-114759",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-114759"
+      }, {
+        "name" : "Type",
+        "value" : "nucleic acid sequencing protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0004170"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "Paired-end sequencing 2x76bp."
+      }, {
+        "name" : "Hardware",
+        "value" : "Illumina HiSeq 4000"
+      } ]
+    }, {
+      "accno" : "P-MTAB-114758",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-114758"
+      }, {
+        "name" : "Type",
+        "value" : "nucleic acid library construction protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0004184"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "cDNA libraries were prepared following the TruSeq Stranded mRNA sample preparation protocol (Illumina)."
+      }, {
+        "name" : "Hardware"
+      } ]
+    }, {
+      "accno" : "P-MTAB-114760",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-114760"
+      }, {
+        "name" : "Type",
+        "value" : "growth protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0003789"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "The acsites fluid was centrifuged at 500xg for 10mins at 4oC and cell pellets pooled in HBSS. Red blood cells were removed using a red blood cell lysis buffer (Miltenyi Biotec) as per the manufacturer’s instructions. Tumour cells were counted and plated at 1 million cells in two 75cm2 Primaria flasks, one containing OCMI media and the second containing a 50:50 OCMI media: ascitic fluid mix. Chemo naïve samples were plated onto collagen-coated 75cm2 flasks and cultured in OCMI media containing 5% Hyclone FBS.Solid tumours were processed using a tumour dissociation kit (Miltenyi Biotec) following the manufacture’s instructions. In brief, samples were dissected into small pieces (2-4mm), transferred to a gentleMACS C tube containing RPMI media supplemented with enzymes H, R and A. Tubes were loaded on to the GentleMACS dissociator and the pre-programmed “h_tumour_01” was initiated. Once completed, the sample was incubated at 37oC with continuous, gentle rotation. This dissociation and incubation process was repeated two additional times. Samples were then filtered using a MACS SmartStrainer (Miltenyi Biotec), centrifuged at 300xg for 7 minutes and plated onto collagen-coated 12.5cm2 flask. For both Cultures were incubated for 2-4 days at 37oC in a humidified 5% CO2 and 5% O2 atmosphere. Media was replaced every 3-4 days. Upon cell attachment, stromal cells were separated from the mixed sample using 0.05% trypsin-EDTA, and plated in gelatin-coated flasks in OCMI media containing 5% FBS. Once tumour cells reach 95% confluency, cells were passaged using 0.25% Trypsin-EDTA, centrifuged in DMEM containing 20% FBS and replated at a 1:2 ratio. For long term storage, cells were frozen in Bambanker."
+      }, {
+        "name" : "Hardware"
+      } ]
+    }, {
+      "accno" : "P-MTAB-114757",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-114757"
+      }, {
+        "name" : "Type",
+        "value" : "nucleic acid extraction protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0002944"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "RNA was extracted using RNeasy Plus Mini kit (Qiagen) from two 75cm2 flasks, quantified using a Qubit fluorometer (Life Technologies)."
+      }, {
+        "name" : "Hardware"
+      } ]
+    }, {
+      "accno" : "P-MTAB-114756",
+      "type" : "Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "P-MTAB-114756"
+      }, {
+        "name" : "Type",
+        "value" : "sample collection protocol",
+        "valqual" : [ {
+          "name" : "Ontology",
+          "value" : "EFO"
+        }, {
+          "name" : "TermId",
+          "value" : "EFO_0005518"
+        } ]
+      }, {
+        "name" : "Description",
+        "value" : "Ascites was obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01). Solid tumour samples were obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01)."
+      }, {
+        "name" : "Hardware"
+      } ]
+    } ], {
+      "type" : "Author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "I-Hsuan Lin"
+      }, {
+        "name" : "Email",
+        "value" : "i-hsuan.lin@manchester.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "data analyst"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "Author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Stephen Taylor"
+      }, {
+        "name" : "Email",
+        "value" : "stephen.taylor@manchester.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "investigator"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "Author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Bethany Barnes"
+      }, {
+        "name" : "Email",
+        "value" : "bethany.barnes@manchester.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "submitter"
+      }, {
+        "name" : "affiliation",
+        "value" : "o3",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "Author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Louisa Nelson"
+      }, {
+        "name" : "Email",
+        "value" : "louisa.nelson@manchester.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "experiment performer"
+      }, {
+        "name" : "affiliation",
+        "value" : "o4",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "Organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Bioinformatics Core Facility, Faculty of Biology, Medicine and Health, University of Manchester"
+      }, {
+        "name" : "Address",
+        "value" : "Michael Smith Building, Dover Street, Manchester, M13 9PT, UK"
+      } ]
+    }, {
+      "accno" : "o2",
+      "type" : "Organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester"
+      }, {
+        "name" : "Address",
+        "value" : "Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom"
+      } ]
+    }, {
+      "accno" : "o3",
+      "type" : "Organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester"
+      }, {
+        "name" : "Address",
+        "value" : "Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom"
+      } ]
+    }, {
+      "accno" : "o4",
+      "type" : "Organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester"
+      }, {
+        "name" : "Address",
+        "value" : "Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom"
+      } ]
+    }, {
+      "type" : "Publication",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Replication Catastrophe is Responsible for Intrinsic PAR Glycohydrolase Inhibitor-Sensitivity in Patient-Derived Ovarian Cancer Models"
+      }, {
+        "name" : "Authors",
+        "value" : "Camilla Coulson-Gilmer, Robert D. Morgan, Louisa Nelson, Bethany M. Barnes, Anthony Tighe, René Wardenaar, Diana C. J Spierings, Helene Schlecht, George J. Burghel, Floris Foijer, Sudha Desai, Joanne C. McGrail and Stephen S. Taylor"
+      }, {
+        "name" : "Status",
+        "value" : "submitted"
+      } ]
+    }, {
+      "accno" : "s-samples-factors-E-MTAB-11000",
+      "type" : "Samples",
+      "attributes" : [ {
+        "name" : "Sample count",
+        "value" : "12"
+      }, {
+        "name" : "Experimental Designs",
+        "value" : "disease state design",
+        "valqual" : [ {
+          "name" : "TermId",
+          "value" : "EFO:0001756"
+        } ]
+      }, {
+        "name" : "Experimental Factors",
+        "value" : "individual",
+        "valqual" : [ {
+          "name" : "TermName",
+          "value" : "individual"
+        } ]
+      } ],
+      "subsections" : [ {
+        "accno" : "exp_factor-E-MTAB-11000",
+        "type" : "Experimental Factors",
+        "attributes" : [ {
+          "name" : "Individual",
+          "value" : "OCM105"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM106"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM128"
+        }, {
+          "name" : "Individual",
+          "value" : "... 9 other values"
+        } ]
+      }, {
+        "accno" : "source_chars-E-MTAB-11000",
+        "type" : "Source Characteristics",
+        "attributes" : [ {
+          "name" : "Organism",
+          "value" : "Homo sapiens"
+        }, {
+          "name" : "Sex",
+          "value" : "female"
+        }, {
+          "name" : "Developmental stage",
+          "value" : "adult"
+        }, {
+          "name" : "Disease",
+          "value" : "ovarian carcinoma"
+        }, {
+          "name" : "Organism part",
+          "value" : "ascitic fluid"
+        }, {
+          "name" : "Sampling site",
+          "value" : "neoplasm"
+        }, {
+          "name" : "Cell line",
+          "value" : "primary cell line"
+        }, {
+          "name" : "Cell type",
+          "value" : "epithelial cell"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM105"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM106"
+        }, {
+          "name" : "Individual",
+          "value" : "OCM128"
+        }, {
+          "name" : "Individual",
+          "value" : "... 9 other values"
+        }, {
+          "name" : "Alternate_name",
+          "value" : "LN74_S2"
+        }, {
+          "name" : "Alternate_name",
+          "value" : "LN75_S3"
+        }, {
+          "name" : "Alternate_name",
+          "value" : "LN77_S5"
+        }, {
+          "name" : "Alternate_name",
+          "value" : "... 9 other values"
+        } ]
+      } ]
+    }, {
+      "accno" : "s-assays-data-E-MTAB-11000",
+      "type" : "Assays and Data",
+      "attributes" : [ {
+        "name" : "Assay count",
+        "value" : "12"
+      }, {
+        "name" : "Technology",
+        "value" : "Sequencing assay"
+      }, {
+        "name" : "Assay by Molecule",
+        "value" : "RNA assay"
+      } ],
+      "subsections" : [ {
+        "accno" : "mt-E-MTAB-11000",
+        "type" : "MAGE-TAB Files",
+        "files" : [ [ {
+          "path" : "E-MTAB-11000.idf.txt",
+          "size" : 6629,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "IDF File"
+          }, {
+            "name" : "Format",
+            "value" : "tab-delimited text"
+          }, {
+            "name" : "Description",
+            "value" : "Investigation Design Format (IDF)"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "E-MTAB-11000.sdrf.txt",
+          "size" : 13044,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SDRF File"
+          }, {
+            "name" : "Format",
+            "value" : "tab-delimited text"
+          }, {
+            "name" : "Description",
+            "value" : "Sample and Data Relationship Format (SDRF)"
+          } ],
+          "type" : "file"
+        } ] ]
+      } ]
+    }, {
+      "accno" : "score-E-MTAB-11000",
+      "type" : "MINSEQE Score",
+      "attributes" : [ {
+        "name" : "Exp. Design",
+        "value" : "*"
+      }, {
+        "name" : "Processed",
+        "value" : "-"
+      }, {
+        "name" : "Variables",
+        "value" : "*"
+      }, {
+        "name" : "Raw",
+        "value" : "*"
+      }, {
+        "name" : "Protocols",
+        "value" : "-"
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}

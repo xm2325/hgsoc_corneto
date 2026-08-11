@@ -1,0 +1,66 @@
+{
+  "manifest": {
+    "canonical_ocms_with_multiple_rna_runs": {
+      "OCM46-3|stroma": [
+        "OCM.46-3S-P15",
+        "OCM.46-3S-P5"
+      ],
+      "OCM46-3|tumour": [
+        "OCM.46-3T-P14",
+        "OCM.46-3T-P4"
+      ]
+    },
+    "primary_cohort_ocms": 60,
+    "primary_cohort_rna_runs": 60,
+    "rows": 117,
+    "tumour_ocms_without_tighe_table_s1_match": [
+      "OCM258",
+      "OCM61a",
+      "OCM64-3",
+      "OCM69"
+    ]
+  },
+  "phenotype_boundary": {
+    "exact_cumulative_paclitaxel_exposure_rows": 0,
+    "exact_paclitaxel_auc_rows": 0,
+    "exact_paclitaxel_gi50_rows": 0
+  },
+  "rna": {
+    "fastq_bytes_total": 477762645114,
+    "fastq_files_total": 234,
+    "runs_total": 117,
+    "sample_class_counts": {
+      "cell_line_control": 2,
+      "stroma": 33,
+      "tumour": 82
+    },
+    "studies": {
+      "E-MTAB-10801": {
+        "fastq_bytes": 172318782780,
+        "fastq_files": 72,
+        "runs": 36
+      },
+      "E-MTAB-11000": {
+        "fastq_bytes": 33440119254,
+        "fastq_files": 24,
+        "runs": 12
+      },
+      "E-MTAB-14568": {
+        "fastq_bytes": 83162442959,
+        "fastq_files": 66,
+        "runs": 33
+      },
+      "E-MTAB-7223": {
+        "fastq_bytes": 188841300121,
+        "fastq_files": 72,
+        "runs": 36
+      }
+    }
+  },
+  "tighe": {
+    "hgsoc_ocms": 66,
+    "table_s1_ocms": 83,
+    "table_s1_patients": 68,
+    "table_s2_ocms": 83
+  }
+}

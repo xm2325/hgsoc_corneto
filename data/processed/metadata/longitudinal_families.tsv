@@ -1,0 +1,14 @@
+patient_id	ocm_ids	n_ocms	relationship_type	analysis_role	source
+OCM64	OCM64-1;OCM64-3-Ep-;OCM64-3-Ep+	3	mixed_longitudinal_and_same_biopsy_fraction	none_prespecified	Tighe2025 Table S1; relationship labels from frozen contract
+OCM66	OCM66-1;OCM66-5	2	longitudinal	stable_control	Tighe2025 Table S1; relationship labels from frozen contract
+OCM74	OCM74-1;OCM74-3;OCM74-5	3	longitudinal	none_prespecified	Tighe2025 Table S1; relationship labels from frozen contract
+OCM110	OCM110-1;OCM110-9	2	longitudinal	none_prespecified	Tighe2025 Table S1; relationship labels from frozen contract
+OCM118	OCM118-1;OCM118-7	2	longitudinal	none_prespecified	Tighe2025 Table S1; relationship labels from frozen contract
+OCM124	OCM124-1;OCM124-11	2	longitudinal	none_prespecified	Tighe2025 Table S1; relationship labels from frozen contract
+OCM231	OCM231-1;OCM231-5	2	longitudinal	acquired_resistance_anchor	Tighe2025 Table S1; relationship labels from frozen contract
+OCM288	OCM288-4;OCM288-7	2	longitudinal	none_prespecified	Tighe2025 Table S1; relationship labels from frozen contract
+OCM296	OCM296-3;OCM296-5	2	longitudinal	none_prespecified	Tighe2025 Table S1; relationship labels from frozen contract
+OCM327	OCM327-1;OCM327-3	2	longitudinal	none_prespecified	Tighe2025 Table S1; relationship labels from frozen contract
+OCM333	OCM333-1;OCM333-3	2	longitudinal	none_prespecified	Tighe2025 Table S1; relationship labels from frozen contract
+OCM341	OCM341-1;OCM341-3	2	longitudinal	acquired_resistance_anchor	Tighe2025 Table S1; relationship labels from frozen contract
+OCM361	OCM361a;OCM361b	2	spatial_same_time_not_longitudinal	none_prespecified	Tighe2025 Table S1; relationship labels from frozen contract

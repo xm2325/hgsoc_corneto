@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/xm2325/hgsoc_corneto/schemas/ocm_master_manifest.schema.json",
+  "title": "OCM master manifest row",
+  "type": "object",
+  "required": [
+    "study_accession",
+    "ena_project",
+    "run_accession",
+    "source_name",
+    "sample_class",
+    "source_biospecimen_id",
+    "canonical_ocm_id",
+    "patient_id",
+    "primary_cohort_eligible",
+    "in_tighe_83_ocm_screen"
+  ],
+  "properties": {
+    "study_accession": { "type": "string", "pattern": "^E-MTAB-[0-9]+$" },
+    "ena_project": { "type": "string", "pattern": "^PRJEB[0-9]+$" },
+    "run_accession": { "type": "string", "pattern": "^ERR[0-9]+$" },
+    "source_name": { "type": "string", "minLength": 1 },
+    "sample_class": {
+      "enum": ["tumour", "stroma", "cell_line_control", "unknown"]
+    },
+    "source_biospecimen_id": { "type": ["string", "null"] },
+    "canonical_ocm_id": { "type": ["string", "null"] },
+    "patient_id": { "type": ["string", "null"] },
+    "histotype_reported": { "type": ["string", "null"] },
+    "histotype_group": { "type": ["string", "null"] },
+    "primary_cohort_eligible": { "type": "boolean" },
+    "in_tighe_83_ocm_screen": { "type": "boolean" },
+    "paclitaxel_auc": { "type": ["number", "null"] },
+    "paclitaxel_gi50_nm": { "type": ["number", "null"] }
+  },
+  "additionalProperties": true
+}

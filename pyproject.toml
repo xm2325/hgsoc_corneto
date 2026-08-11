@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hgsoc-corneto"
+version = "0.1.0"
+description = "Reproducible HGSOC OCM metadata, RNA-seq, and CORNETO analyses"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "hgsoc_corneto contributors" }]
+dependencies = []
+
+[project.optional-dependencies]
+metadata = [
+  "pdfplumber>=0.11,<0.12",
+  "PyYAML>=6,<7",
+]
+analysis = [
+  "numpy>=2.0,<3",
+  "pandas>=2.2,<3",
+  "scipy>=1.13,<2",
+  "scikit-learn>=1.5,<2",
+]
+metabolic = [
+  "cobra>=0.29,<0.31",
+]
+dev = [
+  "pytest>=8,<9",
+  "ruff>=0.8,<1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hgsoc_corneto"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

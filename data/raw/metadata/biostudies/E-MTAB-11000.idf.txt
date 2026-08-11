@@ -1,0 +1,72 @@
+MAGE-TAB Version	1.1
+Investigation Title	RNA-seq of human ex vivo ovarian cancer models - part III
+
+Experimental Design	disease state design
+Experimental Design Term Source REF	EFO
+Experimental Design Term Accession Number	EFO:0001756
+
+Experimental Factor Name	individual
+Experimental Factor Type	individual
+Experimental Factor Term Source REF
+Experimental Factor Term Accession Number
+
+Person Last Name	Lin	Taylor	Barnes	Nelson
+Person First Name	I-Hsuan	Stephen	Bethany	Louisa
+Person Mid Initials			M
+Person Email	i-hsuan.lin@manchester.ac.uk	stephen.taylor@manchester.ac.uk	bethany.barnes@manchester.ac.uk	louisa.nelson@manchester.ac.uk
+Person Phone
+Person Fax
+Person Affiliation	Bioinformatics Core Facility, Faculty of Biology, Medicine and Health, University of Manchester	Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester	Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester	Division of Cancer Sciences, Faculty of Biology, Medicine and Health, University of Manchester
+Person Address	Michael Smith Building, Dover Street, Manchester, M13 9PT, UK	Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom	Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom	Oglesby Cancer Research Building, 555 Wilmslow Road, Manchester M20 4GJ, United Kingdom
+Person Roles	data analyst	investigator	submitter	experiment performer
+Person Roles Term Source REF
+Person Roles Term Accession Number
+
+Quality Control Type
+Quality Control Term Source REF
+Quality Control Term Accession Number
+
+Replicate Type
+Replicate Term Source REF
+Replicate Term Accession Number
+
+Normalization Type
+Normalization Term Source REF
+Normalization Term Accession Number
+
+Date of Experiment	2021-03-01
+Public Release Date	2021-10-10
+
+PubMed ID	
+Publication DOI	
+Publication Author List	Camilla Coulson-Gilmer, Robert D. Morgan, Louisa Nelson, Bethany M. Barnes, Anthony Tighe, René Wardenaar, Diana C. J Spierings, Helene Schlecht, George J. Burghel, Floris Foijer, Sudha Desai, Joanne C. McGrail and Stephen S. Taylor
+Publication Title	Replication Catastrophe is Responsible for Intrinsic PAR Glycohydrolase Inhibitor-Sensitivity in Patient-Derived Ovarian Cancer Models
+Publication Status	submitted
+Publication Status Term Source REF
+Publication Status Term Accession Number
+
+Experiment Description	Ascites or solid tumour samples from patients with ovarian cancer were collected and grown in culture as ex vivo models of purified tumour cells. RNA-seq was performed on these models to establish gene expression profiles, which allow identification of genes that are differentially expressed between patients with differing tumour intrinsic properties. These samples have been interrogated for the presence of a gene expression signature indicative of sensitivity to an inhibitor of poly(ADP-ribose) glycohydrolase (PARG).  These samples are processed in the same manner as previous studies: “E-MTAB-7223 - RNA-seq of human ex vivo ovarian cancer models with matched stromal cells” and “E-MTAB-10801 - RNA-seq of human ex vivo ovarian cancer models with matched stromal cells - part II” with no stromal counterparts included in this current sequencing batch.
+
+Protocol Name	P-MTAB-114759	P-MTAB-114758	P-MTAB-114760	P-MTAB-114757	P-MTAB-114756
+Protocol Type	nucleic acid sequencing protocol	nucleic acid library construction protocol	growth protocol	nucleic acid extraction protocol	sample collection protocol
+Protocol Term Source REF	EFO	EFO	EFO	EFO	EFO
+Protocol Term Accession Number	EFO_0004170	EFO_0004184	EFO_0003789	EFO_0002944	EFO_0005518
+Protocol Description	Paired-end sequencing 2x76bp.	cDNA libraries were prepared following the TruSeq Stranded mRNA sample preparation protocol (Illumina).	The acsites fluid was centrifuged at 500xg for 10mins at 4oC and cell pellets pooled in HBSS. Red blood cells were removed using a red blood cell lysis buffer (Miltenyi Biotec) as per the manufacturer’s instructions. Tumour cells were counted and plated at 1 million cells in two 75cm2 Primaria flasks, one containing OCMI media and the second containing a 50:50 OCMI media: ascitic fluid mix. Chemo naïve samples were plated onto collagen-coated 75cm2 flasks and cultured in OCMI media containing 5% Hyclone FBS.Solid tumours were processed using a tumour dissociation kit (Miltenyi Biotec) following the manufacture’s instructions. In brief, samples were dissected into small pieces (2-4mm), transferred to a gentleMACS C tube containing RPMI media supplemented with enzymes H, R and A. Tubes were loaded on to the GentleMACS dissociator and the pre-programmed “h_tumour_01” was initiated. Once completed, the sample was incubated at 37oC with continuous, gentle rotation. This dissociation and incubation process was repeated two additional times. Samples were then filtered using a MACS SmartStrainer (Miltenyi Biotec), centrifuged at 300xg for 7 minutes and plated onto collagen-coated 12.5cm2 flask. For both Cultures were incubated for 2-4 days at 37oC in a humidified 5% CO2 and 5% O2 atmosphere. Media was replaced every 3-4 days. Upon cell attachment, stromal cells were separated from the mixed sample using 0.05% trypsin-EDTA, and plated in gelatin-coated flasks in OCMI media containing 5% FBS. Once tumour cells reach 95% confluency, cells were passaged using 0.25% Trypsin-EDTA, centrifuged in DMEM containing 20% FBS and replated at a 1:2 ratio. For long term storage, cells were frozen in Bambanker.	RNA was extracted using RNeasy Plus Mini kit (Qiagen) from two 75cm2 flasks, quantified using a Qubit fluorometer (Life Technologies).	Ascites was obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01). Solid tumour samples were obtained via the Manchester Cancer Research Centre Biobank (Study number: 16_STTA_01).
+Protocol Parameters
+Protocol Hardware	Illumina HiSeq 4000
+Protocol Software
+Protocol Contact
+
+Term Source Name	EFO	ArrayExpress
+Term Source File	http://www.ebi.ac.uk/efo/	http://www.ebi.ac.uk/arrayexpress/
+Term Source Version	http://www.ebi.ac.uk/efo/
+
+SDRF File	E-MTAB-11000.sdrf.txt
+Comment [Submitted Name]	RNA-seq of human ex vivo ovarian cancer models - part III
+Comment [TemplateType]	Cell line - High-throughput sequencing
+Comment [SecondaryAccession]	ERP132146
+Comment [SequenceDataURI]	http://www.ebi.ac.uk/ena/data/view/ERR6877941-ERR6877952
+Comment [AEExperimentType]	RNA-seq of coding RNA
+Comment[ArrayExpressAccession]	E-MTAB-11000
+Comment [RelatedExperiment]	E-MTAB-10801
+Comment [RelatedExperiment]	E-MTAB-7223
