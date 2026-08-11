@@ -20,6 +20,7 @@ HUMAN_GEM=${INPUT_ROOT}/downloads/Human-GEM-v1.4.1.xml
 
 if ! type module >/dev/null 2>&1; then
     set +u
+    export CSC_ENV_INIT_NON_INTERACTIVE=yes
     source /etc/profile.d/zz-csc-env.sh
     set -u
 fi

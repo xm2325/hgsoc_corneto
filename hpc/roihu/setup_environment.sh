@@ -9,6 +9,7 @@ CORNETO_COMMIT=c2d24f6c914e2d9fd3ebd5a19fc566f9ddc180a8
 if ! type module >/dev/null 2>&1; then
     # Non-interactive SSH commands do not always initialize Lmod.
     set +u
+    export CSC_ENV_INIT_NON_INTERACTIVE=yes
     source /etc/profile.d/zz-csc-env.sh
     set -u
 fi
