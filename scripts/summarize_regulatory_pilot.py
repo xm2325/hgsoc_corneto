@@ -1,6 +1,3 @@
-** WARNING: connection is not using a post-quantum key exchange algorithm.
-** This session may be vulnerable to "store now, decrypt later" attacks.
-** The server may need to be upgraded. See https://openssh.com/pq.html
 #!/usr/bin/env python3
 """Summarize a response-blind regulatory CORNETO receipt.
 
