@@ -44,6 +44,10 @@ The RNA workflow is designed for Slurm/CSF3 because the public FASTQs do not fit
 on a typical laptop. See [`docs/rna_reproduction.md`](docs/rna_reproduction.md)
 before starting any transfer.
 
+Dependency-heavy metabolic execution is deployed to Roihu CPU from an immutable
+Git commit. See [`docs/roihu_execution.md`](docs/roihu_execution.md) for the
+environment, paths, scheduler script, and low-frequency monitoring policy.
+
 ## Scientific boundaries
 
 - Expression is observed; TF activity is inferred.
