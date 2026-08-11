@@ -24,3 +24,7 @@ data/raw/metadata/*supplementaryFiles*.zip
 # Scheduler artefacts
 slurm-*.out
 .snakemake/
+
+# Commercial solver license files never enter version control.
+*.lic
+*.license
