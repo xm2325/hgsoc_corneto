@@ -1,6 +1,11 @@
 from pathlib import Path
 
-from hgsoc_corneto.rna import FastqSpec, load_rna_run_specs, validate_fastq_file
+from hgsoc_corneto.rna import (
+    FastqSpec,
+    load_rna_run_specs,
+    resumable_curl_command,
+    validate_fastq_file,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "data/processed/metadata/rna_runs.tsv"
@@ -37,3 +42,18 @@ def test_fastq_file_validation_checks_size_and_md5(tmp_path: Path) -> None:
 
     wrong_size = FastqSpec(mate=1, url=expected.url, md5=expected.md5, bytes=13)
     assert validate_fastq_file(target, wrong_size) == (False, "size_mismatch:12")
+
+
+def test_resumable_curl_retries_all_errors_and_stalls(tmp_path: Path) -> None:
+    target = tmp_path / "run.fastq.gz.partial"
+    command = resumable_curl_command(
+        url="https://example.invalid/run.fastq.gz",
+        target=target,
+    )
+    assert command[:3] == ["curl", "--location", "--fail"]
+    assert command[command.index("--retry") + 1] == "12"
+    assert "--retry-all-errors" in command
+    assert command[command.index("--speed-limit") + 1] == "1024"
+    assert command[command.index("--speed-time") + 1] == "120"
+    assert command[command.index("--continue-at") + 1] == "-"
+    assert command[-3:] == ["--output", str(target), "https://example.invalid/run.fastq.gz"]
