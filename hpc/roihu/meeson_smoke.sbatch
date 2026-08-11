@@ -43,6 +43,11 @@ srun "${VENV_ROOT}/bin/python" scripts/run_toy_order_benchmark.py \
     --output data/processed/meeson/toy_order_published.json
 srun "${VENV_ROOT}/bin/python" scripts/run_corneto_toy_retention.py \
     --output data/processed/meeson/toy_corneto_global_retention.json
+srun "${VENV_ROOT}/bin/python" scripts/run_corneto_joint_fba_toy.py \
+    --output data/processed/meeson/toy_corneto_joint_fba.json
 
-printf 'completed_at_utc\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-    > data/processed/meeson/roihu_smoke_completion.tsv
+{
+    printf 'slurm_job_id\t%s\n' "${SLURM_JOB_ID}"
+    printf 'repo_commit\t%s\n' "$(git rev-parse HEAD)"
+    printf 'completed_at_utc\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+} > data/processed/meeson/roihu_smoke_completion.tsv
