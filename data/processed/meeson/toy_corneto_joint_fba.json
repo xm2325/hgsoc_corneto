@@ -1,0 +1,174 @@
+{
+  "checks": {
+    "independent_samples_choose_opposite_routes": true,
+    "joint_active_union_is_smaller": true,
+    "joint_samples_share_one_route": true
+  },
+  "comparison": {
+    "active_tolerance": 1e-07,
+    "conditions": [
+      "sample_prefers_A",
+      "sample_prefers_B"
+    ],
+    "independent": [
+      {
+        "active_by_flux": [
+          "UPTAKE",
+          "ROUTE_A",
+          "BIOMASS"
+        ],
+        "active_by_indicator": [
+          "UPTAKE",
+          "ROUTE_A",
+          "BIOMASS"
+        ],
+        "condition": "sample_prefers_A",
+        "nonzero_fluxes": [
+          [
+            "UPTAKE",
+            6.0
+          ],
+          [
+            "ROUTE_A",
+            6.0
+          ],
+          [
+            "BIOMASS",
+            6.0
+          ]
+        ],
+        "problem_objective_value": 0.30000000000000004,
+        "status": "optimal"
+      },
+      {
+        "active_by_flux": [
+          "UPTAKE",
+          "ROUTE_B",
+          "BIOMASS"
+        ],
+        "active_by_indicator": [
+          "UPTAKE",
+          "ROUTE_B",
+          "BIOMASS"
+        ],
+        "condition": "sample_prefers_B",
+        "nonzero_fluxes": [
+          [
+            "UPTAKE",
+            6.0
+          ],
+          [
+            "ROUTE_B",
+            6.0
+          ],
+          [
+            "BIOMASS",
+            6.0
+          ]
+        ],
+        "problem_objective_value": 0.30000000000000004,
+        "status": "optimal"
+      }
+    ],
+    "independent_active_union": [
+      "BIOMASS",
+      "ROUTE_A",
+      "ROUTE_B",
+      "UPTAKE"
+    ],
+    "independent_active_union_size": 4,
+    "independent_lambda": 0.1,
+    "joint": [
+      {
+        "active_by_flux": [
+          "UPTAKE",
+          "ROUTE_B",
+          "BIOMASS"
+        ],
+        "active_by_indicator": [
+          "UPTAKE",
+          "ROUTE_B",
+          "BIOMASS"
+        ],
+        "condition": "sample_prefers_A",
+        "nonzero_fluxes": [
+          [
+            "UPTAKE",
+            6.0
+          ],
+          [
+            "ROUTE_B",
+            6.0
+          ],
+          [
+            "BIOMASS",
+            6.0
+          ]
+        ],
+        "problem_objective_value": 36.0,
+        "status": "optimal"
+      },
+      {
+        "active_by_flux": [
+          "UPTAKE",
+          "ROUTE_B",
+          "BIOMASS"
+        ],
+        "active_by_indicator": [
+          "UPTAKE",
+          "ROUTE_B",
+          "BIOMASS"
+        ],
+        "condition": "sample_prefers_B",
+        "nonzero_fluxes": [
+          [
+            "UPTAKE",
+            6.0
+          ],
+          [
+            "ROUTE_B",
+            6.0
+          ],
+          [
+            "BIOMASS",
+            6.0
+          ]
+        ],
+        "problem_objective_value": 36.0,
+        "status": "optimal"
+      }
+    ],
+    "joint_active_union": [
+      "BIOMASS",
+      "ROUTE_B",
+      "UPTAKE"
+    ],
+    "joint_active_union_size": 3,
+    "joint_lambda": 10.0,
+    "solver": "highs"
+  },
+  "design": {
+    "biomass_fixed_per_sample": 6.0,
+    "independent_lambda": 0.1,
+    "joint_lambda": 10.0,
+    "model": "two interchangeable routes with shared uptake",
+    "sample_specific_linear_cost": 1.0
+  },
+  "independent_route_choices": {
+    "sample_prefers_A": [
+      "ROUTE_A"
+    ],
+    "sample_prefers_B": [
+      "ROUTE_B"
+    ]
+  },
+  "interpretation": "Independent sparse FBA follows each sample's weak route preference, whereas CORNETO's joint logical-OR penalty selects a shared route and reduces the cross-sample active-reaction union. This verifies the multi-sample mechanism; it is not yet evidence from OCM data.",
+  "joint_route_choices": {
+    "sample_prefers_A": [
+      "ROUTE_B"
+    ],
+    "sample_prefers_B": [
+      "ROUTE_B"
+    ]
+  }
+}
