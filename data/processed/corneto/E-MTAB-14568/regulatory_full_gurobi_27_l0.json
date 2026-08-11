@@ -1,0 +1,1913 @@
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+{
+  "finished_at_utc": "2026-08-11T16:25:01+00:00",
+  "input_counts": {
+    "collectri_edges": 60023,
+    "expression_genes": 59368,
+    "expression_samples": 33,
+    "manifest_rows": 27,
+    "pkn_edges": 70675,
+    "selected_samples": 27
+  },
+  "inputs": {
+    "collectri": "/scratch/project_2012997/xiaomei/hgsoc_corneto_regulatory/collectri_tf_target.tsv.gz",
+    "expression": "/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/aggregated/E-MTAB-14568/gene_tpm.tsv.gz",
+    "manifest": "data/processed/metadata/ocm_master_manifest.tsv",
+    "pkn": "/scratch/project_2012997/xiaomei/hgsoc_corneto_regulatory/omnipath_signed_pkn.tsv.gz"
+  },
+  "method": {
+    "activity_method": "signed_collecTRI_regulon_zscore",
+    "exclusive_signal_paths": true,
+    "input_policy": "expression-derived upstream prior; not a perturbation experiment",
+    "lambda_reg": 0.0,
+    "max_depth": 3,
+    "max_edges": 3000,
+    "max_flow": 100,
+    "max_inputs": 3,
+    "max_outputs": 6,
+    "min_targets": 5,
+    "name": "CarnivalFlow",
+    "response_blind": true
+  },
+  "primary_only": true,
+  "samples": [
+    {
+      "inputs": {
+        "PTPN5": 1.0,
+        "TFAP2B": 1.0,
+        "UBE2E3": -1.0
+      },
+      "network_edges": 7,
+      "objective": 2.0,
+      "outputs": {
+        "NFKB1_RELA": -1.0,
+        "NFKB2": -1.0
+      },
+      "processed_edges": 12,
+      "processed_vertices": 9,
+      "regulon_count": 763,
+      "run_accession": "ERR13907037",
+      "selected_edges": [],
+      "status": "blocked_no_selected_edges",
+      "top_tf_scores": [
+        {
+          "score": -12.362088882334918,
+          "target_count": 817,
+          "tf": "REL"
+        },
+        {
+          "score": -12.269841301205512,
+          "target_count": 820,
+          "tf": "NFKB2"
+        },
+        {
+          "score": -11.960618711110454,
+          "target_count": 815,
+          "tf": "RELB"
+        },
+        {
+          "score": -11.93741908036973,
+          "target_count": 794,
+          "tf": "NFKB1_NFKB2"
+        },
+        {
+          "score": -11.93741908036973,
+          "target_count": 794,
+          "tf": "NFKB1_REL"
+        },
+        {
+          "score": -11.93741908036973,
+          "target_count": 794,
+          "tf": "NFKB1_RELA"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "CD40LG": 1.0,
+        "DYNLL1": -1.0,
+        "NR1I3": 1.0
+      },
+      "network_edges": 9,
+      "objective": 1.0,
+      "outputs": {
+        "MYC": 1.0,
+        "REL": 1.0
+      },
+      "processed_edges": 14,
+      "processed_vertices": 11,
+      "regulon_count": 763,
+      "run_accession": "ERR13907038",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "ESR1",
+          "target": "MYC"
+        },
+        {
+          "sign": 1,
+          "source": "NR1I3",
+          "target": "RXRA"
+        },
+        {
+          "sign": 1,
+          "source": "RXRA",
+          "target": "ESR1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 7.32546225691519,
+          "target_count": 295,
+          "tf": "E2F1"
+        },
+        {
+          "score": 7.226623046851652,
+          "target_count": 776,
+          "tf": "MYC"
+        },
+        {
+          "score": 6.523302570511044,
+          "target_count": 161,
+          "tf": "E2F4"
+        },
+        {
+          "score": 5.50483344928611,
+          "target_count": 820,
+          "tf": "NFKB2"
+        },
+        {
+          "score": 5.434247079967639,
+          "target_count": 958,
+          "tf": "NFKB1"
+        },
+        {
+          "score": 5.3883523768072505,
+          "target_count": 817,
+          "tf": "REL"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "GATA1": 1.0,
+        "GRM7": 1.0,
+        "IL9R": 1.0
+      },
+      "network_edges": 8,
+      "objective": 0.0,
+      "outputs": {
+        "JUN": 1.0,
+        "NFE2L2": 1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR13907039",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "DVL1",
+          "target": "JUN"
+        },
+        {
+          "sign": 1,
+          "source": "EIF2AK3",
+          "target": "NFE2L2"
+        },
+        {
+          "sign": 1,
+          "source": "GNAO1",
+          "target": "DVL1"
+        },
+        {
+          "sign": 1,
+          "source": "GRM7",
+          "target": "GNAO1"
+        },
+        {
+          "sign": 1,
+          "source": "IL9R",
+          "target": "JAK1"
+        },
+        {
+          "sign": 1,
+          "source": "JAK1",
+          "target": "EIF2AK3"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": -3.017168485450187,
+          "target_count": 8,
+          "tf": "BACH2"
+        },
+        {
+          "score": 2.9716941667025263,
+          "target_count": 14,
+          "tf": "CREB3"
+        },
+        {
+          "score": 2.9006172957829706,
+          "target_count": 11,
+          "tf": "KAT6A"
+        },
+        {
+          "score": 2.7789754231116954,
+          "target_count": 28,
+          "tf": "TBX2"
+        },
+        {
+          "score": 2.7217249032981,
+          "target_count": 182,
+          "tf": "NFE2L2"
+        },
+        {
+          "score": 2.6305985457927017,
+          "target_count": 898,
+          "tf": "JUN"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "AVPR1A": 1.0,
+        "CSH1": 1.0,
+        "IFNA5": 1.0
+      },
+      "network_edges": 9,
+      "objective": 1.0,
+      "outputs": {
+        "IRF3": 1.0,
+        "STAT1": 1.0
+      },
+      "processed_edges": 14,
+      "processed_vertices": 11,
+      "regulon_count": 763,
+      "run_accession": "ERR13907040",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "CSH1",
+          "target": "PRLR"
+        },
+        {
+          "sign": 1,
+          "source": "IFNA5",
+          "target": "IFNAR1"
+        },
+        {
+          "sign": 1,
+          "source": "IFNAR1",
+          "target": "JAK1"
+        },
+        {
+          "sign": 1,
+          "source": "JAK1",
+          "target": "STAT1"
+        },
+        {
+          "sign": 1,
+          "source": "PRLR",
+          "target": "JAK2"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 3.4132583321019645,
+          "target_count": 79,
+          "tf": "IRF3"
+        },
+        {
+          "score": 3.2420025917790314,
+          "target_count": 52,
+          "tf": "ATF6"
+        },
+        {
+          "score": 3.161878328573929,
+          "target_count": 291,
+          "tf": "STAT1"
+        },
+        {
+          "score": 2.6349090376681685,
+          "target_count": 112,
+          "tf": "ATF4"
+        },
+        {
+          "score": 2.610767696815129,
+          "target_count": 7,
+          "tf": "FHL2"
+        },
+        {
+          "score": 2.399852822986954,
+          "target_count": 5,
+          "tf": "VENTX"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "CHAD": 1.0,
+        "GATA1": 1.0,
+        "PTPN7": 1.0
+      },
+      "network_edges": 6,
+      "objective": 1.0,
+      "outputs": {
+        "NFKB1": -1.0,
+        "RELA": -1.0,
+        "SPI1": -1.0
+      },
+      "processed_edges": 12,
+      "processed_vertices": 9,
+      "regulon_count": 763,
+      "run_accession": "ERR13907041",
+      "selected_edges": [
+        {
+          "sign": -1,
+          "source": "GATA1",
+          "target": "SPI1"
+        },
+        {
+          "sign": 1,
+          "source": "MAPK1",
+          "target": "RELA"
+        },
+        {
+          "sign": -1,
+          "source": "PTPN7",
+          "target": "MAPK1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": -4.673760320492306,
+          "target_count": 319,
+          "tf": "SPI1"
+        },
+        {
+          "score": -4.4761718614480035,
+          "target_count": 988,
+          "tf": "RELA"
+        },
+        {
+          "score": 4.441280491685504,
+          "target_count": 5,
+          "tf": "RORB"
+        },
+        {
+          "score": -4.2821486462737095,
+          "target_count": 958,
+          "tf": "NFKB1"
+        },
+        {
+          "score": -4.207753020990048,
+          "target_count": 817,
+          "tf": "REL"
+        },
+        {
+          "score": -4.128250225740088,
+          "target_count": 815,
+          "tf": "RELB"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "HTR2A": 1.0,
+        "NTRK1": 1.0,
+        "PRRX1": 1.0
+      },
+      "network_edges": 7,
+      "objective": 0.0,
+      "outputs": {
+        "JUN": 1.0
+      },
+      "processed_edges": 11,
+      "processed_vertices": 8,
+      "regulon_count": 763,
+      "run_accession": "ERR13907042",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "ABL1",
+          "target": "JUN"
+        },
+        {
+          "sign": -1,
+          "source": "GNAQ",
+          "target": "GSK3B"
+        },
+        {
+          "sign": 1,
+          "source": "HTR2A",
+          "target": "GNAQ"
+        },
+        {
+          "sign": 1,
+          "source": "NTRK1",
+          "target": "ABL1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 4.805270802214016,
+          "target_count": 898,
+          "tf": "JUN"
+        },
+        {
+          "score": 4.459624800893189,
+          "target_count": 624,
+          "tf": "JUND"
+        },
+        {
+          "score": 4.412632524091893,
+          "target_count": 589,
+          "tf": "FOSB_JUN"
+        },
+        {
+          "score": 4.412632524091893,
+          "target_count": 589,
+          "tf": "FOSB_JUNB"
+        },
+        {
+          "score": 4.412632524091893,
+          "target_count": 589,
+          "tf": "FOSB_JUND"
+        },
+        {
+          "score": 4.412632524091893,
+          "target_count": 589,
+          "tf": "FOSL1_JUN"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "AGTR2": 1.0,
+        "CHRM1": 1.0,
+        "PCDHA9": 1.0
+      },
+      "network_edges": 7,
+      "objective": 2.0,
+      "outputs": {
+        "MYC": -1.0,
+        "NFKB1": -1.0
+      },
+      "processed_edges": 12,
+      "processed_vertices": 9,
+      "regulon_count": 763,
+      "run_accession": "ERR13907043",
+      "selected_edges": [],
+      "status": "blocked_no_selected_edges",
+      "top_tf_scores": [
+        {
+          "score": -13.696747198333412,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": -13.563701975499272,
+          "target_count": 776,
+          "tf": "MYC"
+        },
+        {
+          "score": -11.555161969882176,
+          "target_count": 988,
+          "tf": "RELA"
+        },
+        {
+          "score": -11.506838791902615,
+          "target_count": 958,
+          "tf": "NFKB1"
+        },
+        {
+          "score": -11.2370588340812,
+          "target_count": 815,
+          "tf": "RELB"
+        },
+        {
+          "score": -11.15946078309415,
+          "target_count": 820,
+          "tf": "NFKB2"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "DRD1": 1.0,
+        "GREB1": 1.0,
+        "MCHR1": 1.0
+      },
+      "network_edges": 7,
+      "objective": 2.0,
+      "outputs": {
+        "E2F4": -1.0,
+        "SNAI2": -1.0
+      },
+      "processed_edges": 12,
+      "processed_vertices": 9,
+      "regulon_count": 763,
+      "run_accession": "ERR13907044",
+      "selected_edges": [],
+      "status": "blocked_no_selected_edges",
+      "top_tf_scores": [
+        {
+          "score": 4.151027068588956,
+          "target_count": 33,
+          "tf": "TFAP2C"
+        },
+        {
+          "score": 3.280669022749365,
+          "target_count": 60,
+          "tf": "NFIA"
+        },
+        {
+          "score": -3.249204655240076,
+          "target_count": 161,
+          "tf": "E2F4"
+        },
+        {
+          "score": -3.192152732111423,
+          "target_count": 16,
+          "tf": "FOXQ1"
+        },
+        {
+          "score": -3.1774360072000243,
+          "target_count": 57,
+          "tf": "ZEB1"
+        },
+        {
+          "score": -3.1388666730318984,
+          "target_count": 41,
+          "tf": "SNAI2"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "ARHGDIA": -1.0,
+        "CCR5": 1.0,
+        "MOS": 1.0
+      },
+      "network_edges": 9,
+      "objective": 0.0,
+      "outputs": {
+        "JUN": -1.0,
+        "RELA": -1.0
+      },
+      "processed_edges": 14,
+      "processed_vertices": 11,
+      "regulon_count": 763,
+      "run_accession": "ERR13907045",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "CCR5",
+          "target": "JAK3"
+        },
+        {
+          "sign": -1,
+          "source": "GSK3B",
+          "target": "JUN"
+        },
+        {
+          "sign": 1,
+          "source": "JAK3",
+          "target": "STAT1"
+        },
+        {
+          "sign": 1,
+          "source": "MAP2K1",
+          "target": "GSK3B"
+        },
+        {
+          "sign": 1,
+          "source": "MOS",
+          "target": "MAP2K1"
+        },
+        {
+          "sign": -1,
+          "source": "STAT1",
+          "target": "RELA"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": -10.481373085972232,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": -8.16543228923146,
+          "target_count": 898,
+          "tf": "JUN"
+        },
+        {
+          "score": -7.601130783650845,
+          "target_count": 988,
+          "tf": "RELA"
+        },
+        {
+          "score": -7.4837587994401495,
+          "target_count": 958,
+          "tf": "NFKB1"
+        },
+        {
+          "score": -7.43216386182825,
+          "target_count": 820,
+          "tf": "NFKB2"
+        },
+        {
+          "score": -7.398925121313474,
+          "target_count": 817,
+          "tf": "REL"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "FCGR3A": 1.0,
+        "FGF16": 1.0,
+        "GSTP1": -1.0
+      },
+      "network_edges": 9,
+      "objective": 0.0,
+      "outputs": {
+        "NFKB1_RELA": -1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR13907046",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "FGF16",
+          "target": "FGFR3"
+        },
+        {
+          "sign": 1,
+          "source": "FGFR3",
+          "target": "STAT1"
+        },
+        {
+          "sign": -1,
+          "source": "STAT1",
+          "target": "NFKB1_RELA"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": -11.013511557367915,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": -7.975071038519357,
+          "target_count": 820,
+          "tf": "NFKB2"
+        },
+        {
+          "score": -7.952641719837402,
+          "target_count": 815,
+          "tf": "RELB"
+        },
+        {
+          "score": -7.924945199353973,
+          "target_count": 794,
+          "tf": "NFKB1_NFKB2"
+        },
+        {
+          "score": -7.924945199353973,
+          "target_count": 794,
+          "tf": "NFKB1_REL"
+        },
+        {
+          "score": -7.924945199353973,
+          "target_count": 794,
+          "tf": "NFKB1_RELA"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "COMP": 1.0,
+        "CRK": -1.0,
+        "RELN": 1.0
+      },
+      "network_edges": 6,
+      "objective": 0.0,
+      "outputs": {
+        "JUN": -1.0,
+        "NFKB1": -1.0
+      },
+      "processed_edges": 11,
+      "processed_vertices": 8,
+      "regulon_count": 763,
+      "run_accession": "ERR13907047",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "CRK",
+          "target": "MAPK8"
+        },
+        {
+          "sign": 1,
+          "source": "ITGB1",
+          "target": "PRKACA"
+        },
+        {
+          "sign": 1,
+          "source": "MAPK8",
+          "target": "JUN"
+        },
+        {
+          "sign": 1,
+          "source": "PRKACA",
+          "target": "NFKB1"
+        },
+        {
+          "sign": -1,
+          "source": "RELN",
+          "target": "ITGB1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": -10.879569803189314,
+          "target_count": 776,
+          "tf": "MYC"
+        },
+        {
+          "score": -8.778812486945144,
+          "target_count": 958,
+          "tf": "NFKB1"
+        },
+        {
+          "score": -8.590023365034106,
+          "target_count": 988,
+          "tf": "RELA"
+        },
+        {
+          "score": -8.552337523880423,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": -8.540408670782131,
+          "target_count": 898,
+          "tf": "JUN"
+        },
+        {
+          "score": -8.331466885092038,
+          "target_count": 815,
+          "tf": "RELB"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "DCST1": 1.0,
+        "GHSR": 1.0,
+        "ZNRF4": 1.0
+      },
+      "network_edges": 9,
+      "objective": 0.0,
+      "outputs": {
+        "MYC": 1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR13907048",
+      "selected_edges": [
+        {
+          "sign": -1,
+          "source": "DCST1",
+          "target": "STAT2"
+        },
+        {
+          "sign": 1,
+          "source": "GHSR",
+          "target": "GNAQ"
+        },
+        {
+          "sign": -1,
+          "source": "GNAQ",
+          "target": "GSK3B"
+        },
+        {
+          "sign": -1,
+          "source": "GSK3B",
+          "target": "MYC"
+        },
+        {
+          "sign": 1,
+          "source": "STAT2",
+          "target": "STAT1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 5.124263564294373,
+          "target_count": 16,
+          "tf": "RFXAP"
+        },
+        {
+          "score": 5.0122558759110705,
+          "target_count": 23,
+          "tf": "RFX5"
+        },
+        {
+          "score": 4.838240799330204,
+          "target_count": 18,
+          "tf": "RFXANK"
+        },
+        {
+          "score": 4.820740050750908,
+          "target_count": 319,
+          "tf": "SPI1"
+        },
+        {
+          "score": 4.501301827944436,
+          "target_count": 776,
+          "tf": "MYC"
+        },
+        {
+          "score": 4.456822822215018,
+          "target_count": 1303,
+          "tf": "SP1"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "HTR1A": 1.0,
+        "MC3R": 1.0,
+        "PAX7": 1.0
+      },
+      "network_edges": 7,
+      "objective": 1.0,
+      "outputs": {
+        "NFKB1": 1.0,
+        "RELA": 1.0
+      },
+      "processed_edges": 12,
+      "processed_vertices": 9,
+      "regulon_count": 763,
+      "run_accession": "ERR13907051",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "ASH2L_DPY30_KMT2D_RBBP5_SETD1A_SETD1B_WDR5",
+          "target": "CREBBP_EP300"
+        },
+        {
+          "sign": 1,
+          "source": "CREBBP_EP300",
+          "target": "RELA"
+        },
+        {
+          "sign": 1,
+          "source": "PAX7",
+          "target": "ASH2L_DPY30_KMT2D_RBBP5_SETD1A_SETD1B_WDR5"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": -12.323909422312491,
+          "target_count": 79,
+          "tf": "REST"
+        },
+        {
+          "score": 8.114349675825245,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": 7.914537722004128,
+          "target_count": 988,
+          "tf": "RELA"
+        },
+        {
+          "score": 7.616207984971981,
+          "target_count": 958,
+          "tf": "NFKB1"
+        },
+        {
+          "score": 7.2887847194598265,
+          "target_count": 794,
+          "tf": "NFKB1_NFKB2"
+        },
+        {
+          "score": 7.2887847194598265,
+          "target_count": 794,
+          "tf": "NFKB1_REL"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "HGF": 1.0,
+        "ICOS": 1.0,
+        "PTCRA": 1.0
+      },
+      "network_edges": 9,
+      "objective": 1.0,
+      "outputs": {
+        "AR": 1.0,
+        "JUN": 1.0
+      },
+      "processed_edges": 14,
+      "processed_vertices": 11,
+      "regulon_count": 763,
+      "run_accession": "ERR13907052",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "ABL1",
+          "target": "JUN"
+        },
+        {
+          "sign": 1,
+          "source": "LCK",
+          "target": "ABL1"
+        },
+        {
+          "sign": 1,
+          "source": "PTCRA",
+          "target": "LCK"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 6.818865209766622,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": 3.820837703618332,
+          "target_count": 277,
+          "tf": "NR3C1"
+        },
+        {
+          "score": 3.467236078754992,
+          "target_count": 431,
+          "tf": "SP3"
+        },
+        {
+          "score": 3.4139743186400158,
+          "target_count": 898,
+          "tf": "JUN"
+        },
+        {
+          "score": 3.357815542933967,
+          "target_count": 440,
+          "tf": "AR"
+        },
+        {
+          "score": 3.2747050645839004,
+          "target_count": 13,
+          "tf": "SCX"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "CYSLTR2": 1.0,
+        "HTR1F": 1.0,
+        "NR0B2": 1.0
+      },
+      "network_edges": 9,
+      "objective": 1.0,
+      "outputs": {
+        "FOXM1": 1.0,
+        "SREBF2": -1.0
+      },
+      "processed_edges": 14,
+      "processed_vertices": 11,
+      "regulon_count": 763,
+      "run_accession": "ERR13907053",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "CYSLTR2",
+          "target": "GNAQ"
+        },
+        {
+          "sign": -1,
+          "source": "GNAQ",
+          "target": "GSK3B"
+        },
+        {
+          "sign": -1,
+          "source": "GSK3B",
+          "target": "FOXM1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 4.401001904850374,
+          "target_count": 161,
+          "tf": "E2F4"
+        },
+        {
+          "score": 4.067108977999913,
+          "target_count": 93,
+          "tf": "FOXM1"
+        },
+        {
+          "score": 3.837140603597349,
+          "target_count": 137,
+          "tf": "MYCN"
+        },
+        {
+          "score": 3.6971424425882438,
+          "target_count": 13,
+          "tf": "TET1"
+        },
+        {
+          "score": 3.5610576196985595,
+          "target_count": 82,
+          "tf": "MBD2"
+        },
+        {
+          "score": -3.529698063589767,
+          "target_count": 68,
+          "tf": "SREBF2"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "IFNG": 1.0,
+        "KLHL6": 1.0,
+        "MYD88": -1.0
+      },
+      "network_edges": 9,
+      "objective": 0.0,
+      "outputs": {
+        "IRF1": -1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR13907055",
+      "selected_edges": [
+        {
+          "sign": -1,
+          "source": "CDK2",
+          "target": "MDM2"
+        },
+        {
+          "sign": -1,
+          "source": "KLHL6",
+          "target": "CDK2"
+        },
+        {
+          "sign": -1,
+          "source": "MDM2",
+          "target": "IRF1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 4.665742467948432,
+          "target_count": 8,
+          "tf": "PRDM4"
+        },
+        {
+          "score": 4.49365044835625,
+          "target_count": 149,
+          "tf": "HNF1A"
+        },
+        {
+          "score": -3.725327923237938,
+          "target_count": 16,
+          "tf": "RFXAP"
+        },
+        {
+          "score": 3.6801301114165352,
+          "target_count": 64,
+          "tf": "NKX2-5"
+        },
+        {
+          "score": 3.477648955384743,
+          "target_count": 6,
+          "tf": "TRIM28"
+        },
+        {
+          "score": -3.449861735952291,
+          "target_count": 159,
+          "tf": "IRF1"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "FFAR4": 1.0,
+        "HTR4": 1.0,
+        "PRLHR": 1.0
+      },
+      "network_edges": 5,
+      "objective": 1.0,
+      "outputs": {
+        "NFKB1": 1.0
+      },
+      "processed_edges": 9,
+      "processed_vertices": 6,
+      "regulon_count": 763,
+      "run_accession": "ERR13907056",
+      "selected_edges": [],
+      "status": "blocked_no_selected_edges",
+      "top_tf_scores": [
+        {
+          "score": -12.053100422719833,
+          "target_count": 79,
+          "tf": "REST"
+        },
+        {
+          "score": 7.026688099342738,
+          "target_count": 988,
+          "tf": "RELA"
+        },
+        {
+          "score": 6.740756925281577,
+          "target_count": 958,
+          "tf": "NFKB1"
+        },
+        {
+          "score": 6.653169947726259,
+          "target_count": 624,
+          "tf": "JUND"
+        },
+        {
+          "score": 6.520275342172217,
+          "target_count": 589,
+          "tf": "FOSB_JUN"
+        },
+        {
+          "score": 6.520275342172217,
+          "target_count": 589,
+          "tf": "FOSB_JUNB"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "ARHGAP30": 1.0,
+        "BDKRB2": 1.0,
+        "SOX10": 1.0
+      },
+      "network_edges": 8,
+      "objective": 0.0,
+      "outputs": {
+        "CIITA": 1.0,
+        "IRF1": 1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR13907057",
+      "selected_edges": [
+        {
+          "sign": -1,
+          "source": "ARHGAP30",
+          "target": "CDC42"
+        },
+        {
+          "sign": -1,
+          "source": "CDC42",
+          "target": "GSK3B"
+        },
+        {
+          "sign": 1,
+          "source": "GSK3B",
+          "target": "CIITA"
+        },
+        {
+          "sign": 1,
+          "source": "RET",
+          "target": "STAT1"
+        },
+        {
+          "sign": 1,
+          "source": "SOX10",
+          "target": "RET"
+        },
+        {
+          "sign": 1,
+          "source": "STAT1",
+          "target": "IRF1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 6.219628544139875,
+          "target_count": 16,
+          "tf": "RFXAP"
+        },
+        {
+          "score": 6.173665307720002,
+          "target_count": 23,
+          "tf": "RFX5"
+        },
+        {
+          "score": 5.179684857456038,
+          "target_count": 159,
+          "tf": "IRF1"
+        },
+        {
+          "score": 4.914740917708548,
+          "target_count": 27,
+          "tf": "CIITA"
+        },
+        {
+          "score": 4.284325113572666,
+          "target_count": 18,
+          "tf": "RFXANK"
+        },
+        {
+          "score": -3.7852085075285005,
+          "target_count": 6,
+          "tf": "AIP"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "BTK": 1.0,
+        "KL": 1.0,
+        "MSTN": 1.0
+      },
+      "network_edges": 9,
+      "objective": 0.0,
+      "outputs": {
+        "E2F1": 1.0,
+        "SP1": 1.0
+      },
+      "processed_edges": 14,
+      "processed_vertices": 11,
+      "regulon_count": 763,
+      "run_accession": "ERR13907058",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "ACVR2B",
+          "target": "SMAD2"
+        },
+        {
+          "sign": -1,
+          "source": "INSR",
+          "target": "PTEN"
+        },
+        {
+          "sign": -1,
+          "source": "KL",
+          "target": "INSR"
+        },
+        {
+          "sign": 1,
+          "source": "MSTN",
+          "target": "ACVR2B"
+        },
+        {
+          "sign": 1,
+          "source": "PTEN",
+          "target": "E2F1"
+        },
+        {
+          "sign": 1,
+          "source": "SMAD2",
+          "target": "SP1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": -4.604203872361056,
+          "target_count": 5,
+          "tf": "HOXA2"
+        },
+        {
+          "score": 4.037449526588829,
+          "target_count": 161,
+          "tf": "E2F4"
+        },
+        {
+          "score": 3.782625060425915,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": 3.6163223458548472,
+          "target_count": 18,
+          "tf": "SOX5"
+        },
+        {
+          "score": 3.509901131657585,
+          "target_count": 295,
+          "tf": "E2F1"
+        },
+        {
+          "score": -3.418017196658001,
+          "target_count": 16,
+          "tf": "HOXA13"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "GPR119": 1.0,
+        "GPR50": 1.0,
+        "TCL1A": 1.0
+      },
+      "network_edges": 9,
+      "objective": 0.0,
+      "outputs": {
+        "HIF1A": 1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR13907059",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "AKT1",
+          "target": "EP300"
+        },
+        {
+          "sign": 1,
+          "source": "EP300",
+          "target": "HIF1A"
+        },
+        {
+          "sign": -1,
+          "source": "GNAQ",
+          "target": "GSK3B"
+        },
+        {
+          "sign": 1,
+          "source": "GPR119",
+          "target": "GNAQ"
+        },
+        {
+          "sign": 1,
+          "source": "TCL1A",
+          "target": "AKT1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 4.551377383719902,
+          "target_count": 416,
+          "tf": "HIF1A"
+        },
+        {
+          "score": 4.4230086862261375,
+          "target_count": 23,
+          "tf": "NFYC"
+        },
+        {
+          "score": 4.0839353385582395,
+          "target_count": 60,
+          "tf": "KLF2"
+        },
+        {
+          "score": 3.6130155744528927,
+          "target_count": 44,
+          "tf": "MAX"
+        },
+        {
+          "score": 3.4634054303043356,
+          "target_count": 16,
+          "tf": "ERF"
+        },
+        {
+          "score": 3.4326725782327587,
+          "target_count": 39,
+          "tf": "NFYB"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "ARHGAP9": 1.0,
+        "GZMA": 1.0,
+        "NMUR1": 1.0
+      },
+      "network_edges": 8,
+      "objective": 1.0,
+      "outputs": {
+        "MYC": 1.0,
+        "RELB": 1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR13907060",
+      "selected_edges": [
+        {
+          "sign": -1,
+          "source": "GNAQ",
+          "target": "GSK3B"
+        },
+        {
+          "sign": -1,
+          "source": "GSK3B",
+          "target": "MYC"
+        },
+        {
+          "sign": 1,
+          "source": "NMUR1",
+          "target": "GNAQ"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 13.150450658575023,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": 10.807177746732224,
+          "target_count": 776,
+          "tf": "MYC"
+        },
+        {
+          "score": 10.03346970709439,
+          "target_count": 988,
+          "tf": "RELA"
+        },
+        {
+          "score": 9.884989088177683,
+          "target_count": 817,
+          "tf": "REL"
+        },
+        {
+          "score": 9.845356096071935,
+          "target_count": 820,
+          "tf": "NFKB2"
+        },
+        {
+          "score": 9.843517641627068,
+          "target_count": 815,
+          "tf": "RELB"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "FGF6": 1.0,
+        "IFNA7": 1.0,
+        "POU3F2": 1.0
+      },
+      "network_edges": 8,
+      "objective": 0.0,
+      "outputs": {
+        "STAT1": 1.0
+      },
+      "processed_edges": 12,
+      "processed_vertices": 9,
+      "regulon_count": 763,
+      "run_accession": "ERR13907061",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "FGF6",
+          "target": "FGFR4"
+        },
+        {
+          "sign": 1,
+          "source": "FGFR4",
+          "target": "STAT1"
+        },
+        {
+          "sign": 1,
+          "source": "IFNA7",
+          "target": "IFNAR1"
+        },
+        {
+          "sign": 1,
+          "source": "IFNAR1",
+          "target": "JAK1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 5.475870217288709,
+          "target_count": 32,
+          "tf": "IRF7"
+        },
+        {
+          "score": 5.14875102980134,
+          "target_count": 159,
+          "tf": "IRF1"
+        },
+        {
+          "score": 4.833793935611694,
+          "target_count": 291,
+          "tf": "STAT1"
+        },
+        {
+          "score": 4.648450936086296,
+          "target_count": 68,
+          "tf": "SREBF2"
+        },
+        {
+          "score": 4.552277908698961,
+          "target_count": 79,
+          "tf": "IRF3"
+        },
+        {
+          "score": 4.532605046757279,
+          "target_count": 958,
+          "tf": "NFKB1"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "CDH20": 1.0,
+        "LCMT1": -1.0,
+        "SFRP2": 1.0
+      },
+      "network_edges": 8,
+      "objective": 0.0,
+      "outputs": {
+        "HIF1A": 1.0
+      },
+      "processed_edges": 12,
+      "processed_vertices": 9,
+      "regulon_count": 763,
+      "run_accession": "ERR13907062",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "CDH20",
+          "target": "CTNNB1"
+        },
+        {
+          "sign": 1,
+          "source": "CTNNB1",
+          "target": "NOTCH1"
+        },
+        {
+          "sign": 1,
+          "source": "NOTCH1",
+          "target": "HIF1A"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 5.646939599733344,
+          "target_count": 16,
+          "tf": "RFXAP"
+        },
+        {
+          "score": 5.418580598489901,
+          "target_count": 18,
+          "tf": "FOXJ1"
+        },
+        {
+          "score": 4.879999139528358,
+          "target_count": 5,
+          "tf": "HOXD10"
+        },
+        {
+          "score": 4.404227374215757,
+          "target_count": 319,
+          "tf": "SPI1"
+        },
+        {
+          "score": 4.139300022702806,
+          "target_count": 416,
+          "tf": "HIF1A"
+        },
+        {
+          "score": 4.130081346008249,
+          "target_count": 18,
+          "tf": "RFXANK"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "GDF5": 1.0,
+        "GNRHR": 1.0,
+        "PLG": 1.0
+      },
+      "network_edges": 9,
+      "objective": 0.0,
+      "outputs": {
+        "E2F1": 1.0,
+        "MYC": 1.0
+      },
+      "processed_edges": 14,
+      "processed_vertices": 11,
+      "regulon_count": 763,
+      "run_accession": "ERR13907063",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "CTNNB1",
+          "target": "TRRAP"
+        },
+        {
+          "sign": 1,
+          "source": "GNRHR",
+          "target": "CTNNB1"
+        },
+        {
+          "sign": 1,
+          "source": "ITGB1",
+          "target": "PRKACA"
+        },
+        {
+          "sign": 1,
+          "source": "PLG",
+          "target": "ITGB1"
+        },
+        {
+          "sign": 1,
+          "source": "PRKACA",
+          "target": "E2F1"
+        },
+        {
+          "sign": 1,
+          "source": "TRRAP",
+          "target": "MYC"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 6.531495566078093,
+          "target_count": 776,
+          "tf": "MYC"
+        },
+        {
+          "score": 3.312190918500561,
+          "target_count": 295,
+          "tf": "E2F1"
+        },
+        {
+          "score": 3.1368929571503745,
+          "target_count": 30,
+          "tf": "TFDP1"
+        },
+        {
+          "score": -3.0064727341431188,
+          "target_count": 25,
+          "tf": "IRF9"
+        },
+        {
+          "score": 2.9616472335083115,
+          "target_count": 137,
+          "tf": "MYCN"
+        },
+        {
+          "score": 2.9317176884402323,
+          "target_count": 161,
+          "tf": "E2F4"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "CSMD1": 1.0,
+        "FAM83C": 1.0,
+        "FFAR2": 1.0
+      },
+      "network_edges": 7,
+      "objective": 1.0,
+      "outputs": {
+        "JUN": 1.0,
+        "MYC": 1.0
+      },
+      "processed_edges": 12,
+      "processed_vertices": 9,
+      "regulon_count": 763,
+      "run_accession": "ERR13907064",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "DVL1",
+          "target": "JUN"
+        },
+        {
+          "sign": 1,
+          "source": "FFAR2",
+          "target": "GNAO1"
+        },
+        {
+          "sign": 1,
+          "source": "GNAO1",
+          "target": "DVL1"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 7.251462879004766,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": 5.924245284909519,
+          "target_count": 295,
+          "tf": "E2F1"
+        },
+        {
+          "score": 5.660963112357207,
+          "target_count": 776,
+          "tf": "MYC"
+        },
+        {
+          "score": 5.5489695436527855,
+          "target_count": 817,
+          "tf": "REL"
+        },
+        {
+          "score": 5.525289275296118,
+          "target_count": 898,
+          "tf": "JUN"
+        },
+        {
+          "score": 5.458830049843521,
+          "target_count": 815,
+          "tf": "RELB"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "ERBB2": 1.0,
+        "MKRN4P": 1.0,
+        "PPP1R1B": 1.0
+      },
+      "network_edges": 8,
+      "objective": 1.0,
+      "outputs": {
+        "IRF3": -1.0,
+        "MYC": 1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR13907067",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "AXIN1",
+          "target": "MYC"
+        },
+        {
+          "sign": -1,
+          "source": "PPP1CA",
+          "target": "AXIN1"
+        },
+        {
+          "sign": -1,
+          "source": "PPP1R1B",
+          "target": "PPP1CA"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": 4.3268129748543505,
+          "target_count": 776,
+          "tf": "MYC"
+        },
+        {
+          "score": 3.520182821457623,
+          "target_count": 11,
+          "tf": "ATOH7"
+        },
+        {
+          "score": -3.0464781758393866,
+          "target_count": 13,
+          "tf": "NR2E3"
+        },
+        {
+          "score": -2.937454850360847,
+          "target_count": 291,
+          "tf": "STAT1"
+        },
+        {
+          "score": 2.748723347779849,
+          "target_count": 23,
+          "tf": "BHLHE41"
+        },
+        {
+          "score": -2.678029891524273,
+          "target_count": 79,
+          "tf": "IRF3"
+        }
+      ]
+    },
+    {
+      "inputs": {
+        "CASP12": 1.0,
+        "CDH15": 1.0,
+        "PCDHA2": 1.0
+      },
+      "network_edges": 9,
+      "objective": 0.0,
+      "outputs": {
+        "RELA": -1.0
+      },
+      "processed_edges": 13,
+      "processed_vertices": 10,
+      "regulon_count": 763,
+      "run_accession": "ERR13907068",
+      "selected_edges": [
+        {
+          "sign": 1,
+          "source": "CASP12",
+          "target": "CASP9"
+        },
+        {
+          "sign": -1,
+          "source": "CASP3",
+          "target": "RELA"
+        },
+        {
+          "sign": 1,
+          "source": "CASP9",
+          "target": "CASP3"
+        }
+      ],
+      "status": "optimal",
+      "top_tf_scores": [
+        {
+          "score": -5.6695182179569175,
+          "target_count": 1303,
+          "tf": "SP1"
+        },
+        {
+          "score": -5.4828378406248035,
+          "target_count": 988,
+          "tf": "RELA"
+        },
+        {
+          "score": -5.373059604043058,
+          "target_count": 817,
+          "tf": "REL"
+        },
+        {
+          "score": -5.3332116393434195,
+          "target_count": 815,
+          "tf": "RELB"
+        },
+        {
+          "score": -5.284831354694235,
+          "target_count": 794,
+          "tf": "NFKB1_NFKB2"
+        },
+        {
+          "score": -5.284831354694235,
+          "target_count": 794,
+          "tf": "NFKB1_REL"
+        }
+      ]
+    }
+  ],
+  "schema_version": "corneto_regulatory_pilot.v1",
+  "solver": {
+    "requested": "gurobi",
+    "selected": "GUROBI"
+  },
+  "source_sha256": {
+    "collectri": "ecdb62986b37d740180244dc92e49e0828266134a7135eaaef658aa20a2de753",
+    "expression": "56acd7ef633d2f38d27a22fecdd48992d33513c3edbca56a5650562d6bdbdf2a",
+    "manifest": "acb46c6cc5a62b076fdc94cc9a3913f1fad37262b5b0ac9a0a9ca3969a2df69b",
+    "pkn": "9b693925dc54e918e3766f514ecb44f3d3780d6cdd9085bb0a3df2c3a8c83c68"
+  },
+  "started_at_utc": "2026-08-11T16:24:51+00:00",
+  "status": "completed",
+  "study": "E-MTAB-14568"
+}
