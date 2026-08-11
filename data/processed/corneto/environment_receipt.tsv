@@ -1,0 +1,11 @@
+repo_commit	6d5e9de68e000d4f71b066fabb4a870e0adcc725
+environment_root	/scratch/project_2012997/xiaomei/hgsoc_corneto_env
+python	Python 3.12.13
+numpy	2.4.6
+cobra	0.30.0
+corneto	1.0.0rc5.post2.dev0+c2d24f6
+highspy	1.15.1
+gurobipy	installed
+grb_license_file	configured_readable
+mosek	installed
+moseklm_license_file	configured_readable
