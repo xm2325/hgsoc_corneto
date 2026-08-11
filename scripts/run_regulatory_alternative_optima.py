@@ -165,6 +165,16 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--primary-only", action="store_true")
     parser.add_argument("--max-samples", type=int, default=1)
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument(
+        "--sample-index",
+        type=int,
+        help="Zero-based index in the deterministic study/run-sorted eligible sample list.",
+    )
+    selection.add_argument(
+        "--sample-run",
+        help="Run accession to select from the eligible expression/manifest overlap.",
+    )
     parser.add_argument("--min-targets", type=int, default=5)
     parser.add_argument("--max-inputs", type=int, default=5)
     parser.add_argument("--max-outputs", type=int, default=10)
@@ -242,9 +252,21 @@ def main() -> int:
         zscores = _z_scores(expression, expression_samples)
         collectri = _load_edges(args.collectri)
         pkn = _load_edges(args.pkn)
-        selected = [
+        eligible = [
             row for row in manifest_rows if row["run_accession"] in set(expression_samples)
-        ][: args.max_samples]
+        ]
+        if args.sample_index is not None:
+            if args.sample_index < 0 or args.sample_index >= len(eligible):
+                raise ValueError(
+                    f"sample-index {args.sample_index} outside eligible range 0..{len(eligible) - 1}"
+                )
+            selected = [eligible[args.sample_index]]
+        elif args.sample_run is not None:
+            selected = [row for row in eligible if row["run_accession"] == args.sample_run]
+            if not selected:
+                raise ValueError(f"sample-run {args.sample_run!r} is not eligible for {args.study}")
+        else:
+            selected = eligible[: args.max_samples]
         if not selected:
             raise ValueError("no manifest samples overlap expression columns")
         sample_index = {sample: index for index, sample in enumerate(expression_samples)}
@@ -254,6 +276,7 @@ def main() -> int:
             "expression_genes": len(expression),
             "collectri_edges": len(collectri),
             "pkn_edges": len(pkn),
+            "eligible_samples": len(eligible),
             "selected_samples": len(selected),
         }
         for sample_number, row in enumerate(selected):
