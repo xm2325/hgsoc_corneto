@@ -6,7 +6,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=24G
+#SBATCH --mem=48G
 #SBATCH --output=/scratch/project_2012997/xiaomei/hgsoc_corneto/logs/salmon-%A_%a.out
 
 set -euo pipefail

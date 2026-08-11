@@ -85,6 +85,13 @@ partial files, HTTP range resumption, retries for all curl transfer errors, and
 a two-minute low-speed timeout so a stalled ENA connection is resumed instead
 of occupying an array slot indefinitely.
 
+Quantification requests 48 GiB per task. An initial 24 GiB request was rejected
+after `ERR13907051` exceeded that limit during index loading/quantification;
+verified FASTQs and the failed staging directory are retained for audit. After
+the original array reaches a terminal state, collect every failed array index
+and repair them in one `%1` array before aggregation. This avoids overlapping
+retries and prevents a partly complete cohort from entering downstream stages.
+
 Monitoring remains stage-based: record the job ID, wait for the expected stage
 duration, then inspect one terminal `sacct` record together with the job log and
 receipt. Do not poll the server in a tight loop.

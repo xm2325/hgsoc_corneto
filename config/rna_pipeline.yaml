@@ -51,5 +51,5 @@ slurm:
     partition: small
     time: "08:00:00"
     cpus: 8
-    memory: 24G
+    memory: 48G
     maximum_concurrent_tasks: 4
