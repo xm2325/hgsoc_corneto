@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+#SBATCH --account=project_2012997
+#SBATCH --partition=small
+#SBATCH --time=00:30:00
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=2
+#SBATCH --mem=16G
+#SBATCH --job-name=reg-ms-input60
+
+set -euo pipefail
+ROOT=${REPO_ROOT:-/scratch/project_2012997/xiaomei/hgsoc_corneto}
+RNA_ROOT=${RNA_ROOT:-/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/aggregated}
+SOURCE_DIR=${REGULATORY_SOURCE_DIR:-/scratch/project_2012997/xiaomei/hgsoc_corneto_regulatory}
+cd "$ROOT"
+export PYTHONNOUSERSITE=1 PYTHONPATH="$ROOT/src"
+PY=/scratch/project_2012997/xiaomei/hgsoc_corneto_env/bin/python
+OUT=data/processed/corneto/regulatory_multisample/v1/input_bundle.json
+
+test ! -e "$OUT"
+exec srun "$PY" scripts/prepare_regulatory_multisample.py \
+  --manifest data/processed/metadata/ocm_master_manifest.tsv \
+  --expression E-MTAB-7223="$RNA_ROOT/E-MTAB-7223/gene_tpm.tsv.gz" \
+  --expression E-MTAB-10801="$RNA_ROOT/E-MTAB-10801/gene_tpm.tsv.gz" \
+  --expression E-MTAB-11000="$RNA_ROOT/E-MTAB-11000/gene_tpm.tsv.gz" \
+  --expression E-MTAB-14568="$RNA_ROOT/E-MTAB-14568/gene_tpm.tsv.gz" \
+  --collectri "$SOURCE_DIR/collectri_tf_target.tsv.gz" \
+  --pkn "$SOURCE_DIR/omnipath_signed_pkn.tsv.gz" \
+  --output "$OUT" --min-targets 5 --max-inputs 3 --max-outputs 6 \
+  --max-depth 3 --max-edges 3000
