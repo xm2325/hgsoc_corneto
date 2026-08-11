@@ -10,10 +10,10 @@
 
 set -euo pipefail
 ROOT=${REPO_ROOT:-/scratch/project_2012997/xiaomei/hgsoc_corneto}
-OUT=${REGULATORY_OUT:-/scratch/project_2012997/xiaomei/hgsoc_corneto_regulatory}
+OUT=${REGULATORY_OUT:-$ROOT/data/processed/regulatory_sources}
 cd "$ROOT"
 export PYTHONNOUSERSITE=1 PYTHONPATH="$ROOT/src"
 PY=${PYTHON_BIN:-/scratch/project_2012997/xiaomei/hgsoc_corneto_env/bin/python}
 test -x "$PY"
-test ! -e "$OUT/regulatory_source_receipt.json"
-exec "$PY" scripts/fetch_regulatory_sources.py --out-dir "$OUT"
+test ! -e "$OUT/regulatory_sources_receipt.json"
+exec "$PY" scripts/fetch_regulatory_sources.py --output-dir "$OUT"
