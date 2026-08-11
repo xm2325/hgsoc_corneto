@@ -115,7 +115,9 @@ def _read_regulatory(
     if not isinstance(samples, list) or not samples:
         raise ComparisonError(f"regulatory receipt {path} has no samples")
     method = root.get("method") if isinstance(root.get("method"), dict) else {}
-    observed_lambda = method.get("lambda_reg", root.get("lambda_reg"))
+    observed_lambda = method.get(
+        "lambda_reg_reported", method.get("lambda_reg", root.get("lambda_reg"))
+    )
     if observed_lambda is not None and _lambda_label(observed_lambda) != expected_lambda:
         raise ComparisonError(
             f"regulatory receipt {path} lambda={observed_lambda!r}, expected {expected_lambda}"
@@ -297,7 +299,7 @@ def _read_assignments(
     if not rows or "run_accession" not in rows[0]:
         raise ComparisonError(f"NMF assignments {path} are empty or lack run_accession")
     candidates = [state_column] if state_column else [
-        "pooled_state", "independent_state", "nmf_state", "state", "cluster"
+        "pooled_state", "independent_state", "technical_state", "nmf_state", "state", "cluster"
     ]
     selected = next((column for column in candidates if column and column in rows[0]), None)
     if selected is None:
