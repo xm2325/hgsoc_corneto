@@ -1,188 +1,183 @@
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
 #!/usr/bin/env python3
-"""Fetch small, public regulatory priors and write provenance receipts.
+"""Fetch and normalize public CollecTRI and OmniPath interaction tables.
 
-The downloaded tables are intentionally kept outside Git.  This command
-records the exact URL, retrieval time, byte count, SHA-256, declared licence
-note, and tabular column statistics.  It does not query a solver or read any
-phenotype/licence file.
+The raw and normalized tables are intentionally external to Git.  This script
+creates a provenance receipt containing URLs, retrieval time, byte counts,
+SHA256 digests, source columns and filtering counts.  It does not read any
+phenotype or license-file content.
 """
 
 from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import hashlib
 import json
 import os
+import shutil
 import tempfile
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
 
 
-def _load_yaml(path: Path) -> dict[str, Any]:
-    try:
-        import yaml
-    except ImportError as error:  # pragma: no cover - environment dependent
-        raise RuntimeError("PyYAML is required to read the regulatory source config") from error
-    value = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if not isinstance(value, dict):
-        raise ValueError(f"Expected a mapping in {path}")
-    return value
+DEFAULT_COLLECTRI = (
+    "https://omnipathdb.org/interactions?datasets=collectri&genesymbols=yes&format=tsv"
+)
+DEFAULT_OMNIPATH = (
+    "https://omnipathdb.org/interactions?datasets=omnipath&genesymbols=yes&format=tsv"
+)
+REQUIRED = (
+    "source_genesymbol",
+    "target_genesymbol",
+    "is_directed",
+    "consensus_stimulation",
+    "consensus_inhibition",
+)
 
 
-def _sha256(path: Path) -> str:
+def _truthy(value: object) -> bool:
+    return str(value).strip().lower() in {"1", "true", "t", "yes", "y"}
+
+
+def _sha256(path: Path) -> tuple[str, int]:
     digest = hashlib.sha256()
+    size = 0
     with path.open("rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
-    return digest.hexdigest()
+            size += len(chunk)
+    return digest.hexdigest(), size
 
 
-def _column_stats(path: Path, required_any: list[list[str]]) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8", errors="replace", newline="") as handle:
-        reader = csv.reader(handle, delimiter="\t")
-        try:
-            header = next(reader)
-        except StopIteration as error:
-            raise ValueError(f"Empty regulatory table: {path}") from error
-        if not header or len(header) != len(set(header)):
-            raise ValueError(f"Missing or duplicate header columns: {path}")
-        rows = sum(1 for _ in reader)
-    missing_groups = [group for group in required_any if not set(group).intersection(header)]
-    return {
-        "rows": rows,
-        "columns": len(header),
-        "column_names": header,
-        "missing_required_any_groups": missing_groups,
-    }
-
-
-def _download(
-    *,
-    url: str,
-    destination: Path,
-    user_agent: str,
-    timeout: int,
-    max_bytes: int,
-    overwrite: bool,
-) -> dict[str, Any]:
-    if destination.exists() and not overwrite:
-        raise FileExistsError(f"Refusing to overwrite existing source: {destination}")
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    partial = destination.with_suffix(destination.suffix + ".partial")
-    if partial.exists():
-        partial.unlink()
-    started = datetime.now(timezone.utc)
-    request = urllib.request.Request(url, headers={"User-Agent": user_agent})
-    byte_count = 0
-    with urllib.request.urlopen(request, timeout=timeout) as response, partial.open("wb") as handle:
-        content_length = response.headers.get("Content-Length")
-        declared_bytes = int(content_length) if content_length and content_length.isdigit() else None
-        if declared_bytes is not None and declared_bytes > max_bytes:
-            raise ValueError(f"Refusing {url}: Content-Length {declared_bytes} exceeds {max_bytes}")
+def _download(url: str, destination: Path) -> dict[str, object]:
+    request = urllib.request.Request(
+        url,
+        headers={"User-Agent": "hgsoc-corneto-regulatory/1.0", "Accept-Encoding": "identity"},
+    )
+    part = destination.with_suffix(destination.suffix + ".part")
+    digest = hashlib.sha256()
+    size = 0
+    with urllib.request.urlopen(request, timeout=120) as response, part.open("wb") as out:
         while True:
             chunk = response.read(1024 * 1024)
             if not chunk:
                 break
-            byte_count += len(chunk)
-            if byte_count > max_bytes:
-                raise ValueError(f"Refusing {url}: download exceeds {max_bytes} bytes")
-            handle.write(chunk)
-    os.replace(partial, destination)
-    finished = datetime.now(timezone.utc)
+            out.write(chunk)
+            digest.update(chunk)
+            size += len(chunk)
+    os.replace(part, destination)
     return {
         "url": url,
-        "retrieved_at_utc": finished.isoformat(),
-        "started_at_utc": started.isoformat(),
-        "bytes": byte_count,
-        "sha256": _sha256(destination),
-        "content_type": response.headers.get("Content-Type"),
-        "declared_content_length": declared_bytes,
+        "http_status": getattr(response, "status", None),
+        "content_type": response.headers.get("content-type"),
+        "etag": response.headers.get("etag"),
+        "last_modified": response.headers.get("last-modified"),
+        "bytes": size,
+        "sha256": digest.hexdigest(),
     }
 
 
-def fetch(
-    *, config_path: Path, output_dir: Path, overwrite: bool = False
-) -> dict[str, Any]:
-    config = _load_yaml(config_path)
-    retrieval = config.get("retrieval", {})
-    sources = config.get("sources")
-    if not isinstance(sources, dict) or not sources:
-        raise ValueError("Config must contain a non-empty sources mapping")
-    output_dir.mkdir(parents=True, exist_ok=True)
-    receipt: dict[str, Any] = {
-        "schema_version": config.get("schema_version"),
-        "status": "completed",
-        "config_path": str(config_path),
-        "sources": {},
-        "response_blind": True,
-    }
-    failures: list[str] = []
-    for name, raw in sources.items():
-        if not isinstance(raw, dict):
-            failures.append(f"{name}: source config is not a mapping")
-            continue
-        destination = output_dir / str(raw.get("output", f"{name}.tsv"))
-        record: dict[str, Any] = {
-            "role": raw.get("role"),
-            "license": raw.get("license"),
-            "path": str(destination),
-            "url": raw.get("url"),
-        }
-        try:
-            url = str(raw["url"])
-            transfer = _download(
-                url=url,
-                destination=destination,
-                user_agent=str(retrieval.get("user_agent", "hgsoc-corneto-regulatory")),
-                timeout=int(retrieval.get("timeout_seconds", 120)),
-                max_bytes=int(retrieval.get("max_bytes", 50_000_000)),
-                overwrite=overwrite,
-            )
-            required_any = [list(group) for group in raw.get("required_any_columns", [])]
-            columns = _column_stats(destination, required_any)
-            if columns["missing_required_any_groups"]:
-                raise ValueError(
-                    f"{name}: required column groups missing: "
-                    f"{columns['missing_required_any_groups']}"
-                )
-            record.update(transfer)
-            record["column_stats"] = columns
-            record["status"] = "downloaded"
-        except Exception as error:  # preserve a machine-readable blocked receipt
-            record.update({"status": "blocked", "error": f"{type(error).__name__}: {error}"})
-            failures.append(f"{name}: {error}")
-        receipt["sources"][name] = record
-
-    if failures:
-        receipt["status"] = "blocked_download"
-        receipt["errors"] = failures
-    receipt_path = output_dir / "regulatory_sources_receipt.json"
-    if receipt_path.exists() and not overwrite:
-        raise FileExistsError(f"Refusing to overwrite receipt: {receipt_path}")
-    with tempfile.NamedTemporaryFile(
-        "w", encoding="utf-8", dir=output_dir, delete=False
-    ) as handle:
-        temporary = Path(handle.name)
-        json.dump(receipt, handle, indent=2, sort_keys=True)
-        handle.write("\n")
-    os.replace(temporary, receipt_path)
-    if failures:
-        raise RuntimeError("; ".join(failures))
-    return receipt
+def _normalize(raw: Path, output: Path, source_name: str) -> dict[str, object]:
+    output.parent.mkdir(parents=True, exist_ok=True)
+    counts = {"input_rows": 0, "kept_rows": 0, "skipped_missing": 0,
+              "skipped_undirected": 0, "skipped_ambiguous_sign": 0,
+              "skipped_self_loop": 0}
+    unique: set[tuple[str, str, int]] = set()
+    columns: list[str] = []
+    with raw.open("r", encoding="utf-8", errors="replace", newline="") as handle:
+        reader = csv.DictReader(handle, delimiter="\t")
+        columns = list(reader.fieldnames or [])
+        missing = [column for column in REQUIRED if column not in columns]
+        if missing:
+            raise ValueError(f"{source_name}: missing required columns: {missing}")
+        for row in reader:
+            counts["input_rows"] += 1
+            source = (row.get("source_genesymbol") or "").strip()
+            target = (row.get("target_genesymbol") or "").strip()
+            if not source or not target:
+                counts["skipped_missing"] += 1
+                continue
+            if not _truthy(row.get("is_directed")):
+                counts["skipped_undirected"] += 1
+                continue
+            stimulation = _truthy(row.get("consensus_stimulation"))
+            inhibition = _truthy(row.get("consensus_inhibition"))
+            if stimulation == inhibition:
+                counts["skipped_ambiguous_sign"] += 1
+                continue
+            if source == target:
+                counts["skipped_self_loop"] += 1
+                continue
+            unique.add((source, target, 1 if stimulation else -1))
+    with gzip.open(output, "wt", encoding="utf-8", newline="") as handle:
+        writer = csv.writer(handle, delimiter="\t", lineterminator="\n")
+        writer.writerow(["source", "target", "sign"])
+        for source, target, sign in sorted(unique):
+            writer.writerow([source, target, sign])
+    counts["kept_rows"] = len(unique)
+    digest, size = _sha256(output)
+    return {"source": source_name, "columns": columns, **counts,
+            "normalized_path": str(output), "normalized_bytes": size,
+            "normalized_sha256": digest}
 
 
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=Path, default=Path("config/regulatory_sources.yaml"))
-    parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument("--out-dir", type=Path, required=True)
+    parser.add_argument("--collectri-url", default=DEFAULT_COLLECTRI)
+    parser.add_argument("--omnipath-url", default=DEFAULT_OMNIPATH)
+    parser.add_argument("--keep-raw", action="store_true")
     args = parser.parse_args()
-    receipt = fetch(config_path=args.config, output_dir=args.output_dir, overwrite=args.overwrite)
+    args.out_dir.mkdir(parents=True, exist_ok=True)
+    retrieved = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+    receipt: dict[str, object] = {
+        "schema_version": "regulatory_sources.v1",
+        "status": "running",
+        "organism": "human",
+        "retrieved_at_utc": retrieved,
+        "normalization": {
+            "require_directed": True,
+            "require_unambiguous_consensus_sign": True,
+            "remove_self_loops": True,
+        },
+        "sources": {},
+    }
+    raw_paths: list[Path] = []
+    try:
+        for name, url, normalized_name in (
+            ("collectri", args.collectri_url, "collectri_tf_target.tsv.gz"),
+            ("omnipath", args.omnipath_url, "omnipath_signed_pkn.tsv.gz"),
+        ):
+            raw = args.out_dir / f"{name}.raw.tsv"
+            raw_paths.append(raw)
+            download = _download(url, raw)
+            normalized = _normalize(raw, args.out_dir / normalized_name, name)
+            receipt["sources"][name] = {**download, **normalized,
+                "license_note": (
+                    "CollecTRI GPL-3 and original resource terms apply."
+                    if name == "collectri" else
+                    "OmniPath resource-specific licensing and attribution terms apply."
+                )}
+        receipt["status"] = "completed"
+    except Exception as exc:
+        receipt["status"] = "failed"
+        receipt["error_class"] = type(exc).__name__
+        receipt["error_message"] = str(exc)[:500]
+        raise
+    finally:
+        receipt_path = args.out_dir / "regulatory_source_receipt.json"
+        receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        if not args.keep_raw:
+            for raw in raw_paths:
+                raw.unlink(missing_ok=True)
     print(json.dumps(receipt, indent=2, sort_keys=True))
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
