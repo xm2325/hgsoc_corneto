@@ -1,0 +1,1110 @@
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+{
+  "claim_limit": "descriptive response-blind overlap; no drug-response or causal interpretation",
+  "cohorts": {
+    "E-MTAB-10801": {
+      "edge_count": 47,
+      "path": "data/processed/corneto/E-MTAB-10801/regulatory_full_gurobi_13_l0.json",
+      "samples": 13,
+      "status_counts": {
+        "blocked_no_selected_edges": 2,
+        "optimal": 11
+      },
+      "tf_count": 17
+    },
+    "E-MTAB-11000": {
+      "edge_count": 41,
+      "path": "data/processed/corneto/E-MTAB-11000/regulatory_full_gurobi_11_l0.json",
+      "samples": 11,
+      "status_counts": {
+        "blocked_no_selected_edges": 2,
+        "optimal": 9
+      },
+      "tf_count": 15
+    },
+    "E-MTAB-14568": {
+      "edge_count": 84,
+      "path": "data/processed/corneto/E-MTAB-14568/regulatory_full_gurobi_27_l0.json",
+      "samples": 27,
+      "status_counts": {
+        "blocked_no_selected_edges": 4,
+        "optimal": 23
+      },
+      "tf_count": 22
+    },
+    "E-MTAB-7223": {
+      "edge_count": 26,
+      "path": "data/processed/corneto/E-MTAB-7223/regulatory_full_gurobi_9_l0.json",
+      "samples": 9,
+      "status_counts": {
+        "blocked_no_selected_edges": 1,
+        "optimal": 8
+      },
+      "tf_count": 10
+    }
+  },
+  "edge_cohort_frequency": [
+    {
+      "cohort_count": 4,
+      "sign": -1,
+      "source": "GNAQ",
+      "target": "GSK3B"
+    },
+    {
+      "cohort_count": 3,
+      "sign": 1,
+      "source": "SMAD2",
+      "target": "SP1"
+    },
+    {
+      "cohort_count": 3,
+      "sign": 1,
+      "source": "HTR2A",
+      "target": "GNAQ"
+    },
+    {
+      "cohort_count": 3,
+      "sign": 1,
+      "source": "PRKACA",
+      "target": "E2F1"
+    },
+    {
+      "cohort_count": 3,
+      "sign": -1,
+      "source": "GSK3B",
+      "target": "MYC"
+    },
+    {
+      "cohort_count": 3,
+      "sign": 1,
+      "source": "ITGB1",
+      "target": "PRKACA"
+    },
+    {
+      "cohort_count": 3,
+      "sign": 1,
+      "source": "AXIN1",
+      "target": "MYC"
+    },
+    {
+      "cohort_count": 2,
+      "sign": 1,
+      "source": "MOS",
+      "target": "MAP2K1"
+    },
+    {
+      "cohort_count": 2,
+      "sign": 1,
+      "source": "PTPN5",
+      "target": "MAPK14"
+    },
+    {
+      "cohort_count": 2,
+      "sign": 1,
+      "source": "ACVR2A",
+      "target": "SMAD2"
+    },
+    {
+      "cohort_count": 2,
+      "sign": 1,
+      "source": "PTEN",
+      "target": "E2F1"
+    },
+    {
+      "cohort_count": 2,
+      "sign": -1,
+      "source": "KLHL6",
+      "target": "CDK2"
+    },
+    {
+      "cohort_count": 2,
+      "sign": 1,
+      "source": "FGFR3",
+      "target": "STAT1"
+    },
+    {
+      "cohort_count": 2,
+      "sign": 1,
+      "source": "GNAS",
+      "target": "AXIN1"
+    },
+    {
+      "cohort_count": 2,
+      "sign": 1,
+      "source": "GNRHR",
+      "target": "CTNNB1"
+    },
+    {
+      "cohort_count": 2,
+      "sign": 1,
+      "source": "STAT1",
+      "target": "IRF1"
+    },
+    {
+      "cohort_count": 2,
+      "sign": 1,
+      "source": "GNAI1",
+      "target": "SRC"
+    },
+    {
+      "cohort_count": 2,
+      "sign": 1,
+      "source": "FGF6",
+      "target": "FGFR4"
+    },
+    {
+      "cohort_count": 2,
+      "sign": 1,
+      "source": "CREBBP_EP300",
+      "target": "RELA"
+    },
+    {
+      "cohort_count": 2,
+      "sign": 1,
+      "source": "GNAO1",
+      "target": "DVL1"
+    },
+    {
+      "cohort_count": 2,
+      "sign": 1,
+      "source": "DVL1",
+      "target": "JUN"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "E2F1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "SOST",
+      "target": "LRP5"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "GDF7",
+      "target": "ACVR2A"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CDK1",
+      "target": "E2F1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "JAK2",
+      "target": "PPP2CA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "PPP2CA",
+      "target": "RELA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "EP300",
+      "target": "RELA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "PTPRO",
+      "target": "ERBB2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "MAGI2",
+      "target": "PTEN"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CDK2",
+      "target": "MYC"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "GSK3B",
+      "target": "NFKB1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "ERBB2",
+      "target": "CDK1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "MAPK14",
+      "target": "RELA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "MAP2K1",
+      "target": "MAPK1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "AKT1",
+      "target": "CDK2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "IL5RA",
+      "target": "JAK2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "GSK3B",
+      "target": "NFKB2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "TCL1B",
+      "target": "AKT1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "LRP5",
+      "target": "GSK3B"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "AGTR2",
+      "target": "GNAQ"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "CDK2",
+      "target": "GATA3"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "AVPR1B",
+      "target": "GNAI1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "MAPK14",
+      "target": "STAT1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "TP53",
+      "target": "NFKB2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "GRPR",
+      "target": "GNAI1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "MYD88",
+      "target": "IRAK1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "STAT3",
+      "target": "SPI1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CCKAR",
+      "target": "GNAQ"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "TP53",
+      "target": "CREBBP_EP300"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "PRKAA1_PRKAA2_PRKAB1_PRKAB2_PRKAG1_PRKAG2_PRKAG3",
+      "target": "TP53"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "FGFR4",
+      "target": "STAT3"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "IL13RA1",
+      "target": "JAK2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "GRM7",
+      "target": "GNAS"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "GSK3B",
+      "target": "ERG"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "FGF23",
+      "target": "FGFR3"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "GNRH2",
+      "target": "GNRHR"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "MC3R",
+      "target": "GNAQ"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "IL4",
+      "target": "IL13RA1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "AKT1",
+      "target": "GATA2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "TFAP2B",
+      "target": "TP53"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "IRAK1",
+      "target": "IRF7"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "SOCS1",
+      "target": "JAK2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "TLR7",
+      "target": "MYD88"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CTNNB1",
+      "target": "HNF1A"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "JAK2",
+      "target": "MYC"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "TMIGD2",
+      "target": "PRKAA1_PRKAA2_PRKAB1_PRKAB2_PRKAG1_PRKAG2_PRKAG3"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "STAT1",
+      "target": "MYC"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CHRM1",
+      "target": "GNAQ"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "SRC",
+      "target": "TP53"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "FGA",
+      "target": "ITGB1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "BLK",
+      "target": "SOCS1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "ID1",
+      "target": "AKT1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "COMP",
+      "target": "ITGB1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CHRM5",
+      "target": "GNAI1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "JAK2",
+      "target": "ESR1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "AKT1",
+      "target": "NRF1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "IKBKB",
+      "target": "NFKB1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CSN1S1",
+      "target": "RELA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "PIK3CG",
+      "target": "PDPK1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "IL22",
+      "target": "IL10RA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "GZMB",
+      "target": "CASP3"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "GDF2",
+      "target": "ACVR2A"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "GSK3B",
+      "target": "NFKB1_RELA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "PDPK1",
+      "target": "AKT1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "RIPK2",
+      "target": "IKBKB"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "HTR1E",
+      "target": "GNAO1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CDH1",
+      "target": "ANAPC1_ANAPC10_ANAPC11_ANAPC13_ANAPC2_ANAPC4_ANAPC5_ANAPC7_CDC16_CDC23_CDC26_CDC27"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CASP3",
+      "target": "PAK2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "NR0B2",
+      "target": "ESR1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "RELA",
+      "target": "CREBBP_EP300"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "FFAR4",
+      "target": "GNAQ"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "IL10RA",
+      "target": "JAK2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CTNNA3",
+      "target": "CDH1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "PAK2",
+      "target": "MYC"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "SRC",
+      "target": "STAT1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "ANAPC1_ANAPC10_ANAPC11_ANAPC13_ANAPC2_ANAPC4_ANAPC5_ANAPC7_CDC16_CDC23_CDC26_CDC27",
+      "target": "SKIL"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "ESR1",
+      "target": "GATA3"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "ZNRF4",
+      "target": "RIPK2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CREBBP_EP300",
+      "target": "SMAD3"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "PRLHR",
+      "target": "GNAQ"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "MC2R",
+      "target": "GNAS"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "IL9R",
+      "target": "JAK1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "STAT1",
+      "target": "RELA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "PRLR",
+      "target": "JAK2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "RET",
+      "target": "STAT1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "ESR1",
+      "target": "MYC"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CSH1",
+      "target": "PRLR"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "CDC42",
+      "target": "GSK3B"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "FFAR2",
+      "target": "GNAO1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "ABL1",
+      "target": "JUN"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "FGF16",
+      "target": "FGFR3"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CCR5",
+      "target": "JAK3"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CRK",
+      "target": "MAPK8"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "TCL1A",
+      "target": "AKT1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "RXRA",
+      "target": "ESR1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "FGFR4",
+      "target": "STAT1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "PLG",
+      "target": "ITGB1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "GHSR",
+      "target": "GNAQ"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "CASP3",
+      "target": "RELA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "PRKACA",
+      "target": "NFKB1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "PAX7",
+      "target": "ASH2L_DPY30_KMT2D_RBBP5_SETD1A_SETD1B_WDR5"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "ACVR2B",
+      "target": "SMAD2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "NTRK1",
+      "target": "ABL1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "AKT1",
+      "target": "EP300"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "TRRAP",
+      "target": "MYC"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CDH20",
+      "target": "CTNNB1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "ASH2L_DPY30_KMT2D_RBBP5_SETD1A_SETD1B_WDR5",
+      "target": "CREBBP_EP300"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "GPR119",
+      "target": "GNAQ"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "JAK1",
+      "target": "EIF2AK3"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "EIF2AK3",
+      "target": "NFE2L2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "NOTCH1",
+      "target": "HIF1A"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CYSLTR2",
+      "target": "GNAQ"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "PPP1CA",
+      "target": "AXIN1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "RELA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "PTCRA",
+      "target": "LCK"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "LCK",
+      "target": "ABL1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CASP9",
+      "target": "CASP3"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "STAT1",
+      "target": "NFKB1_RELA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CTNNB1",
+      "target": "NOTCH1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "IFNA5",
+      "target": "IFNAR1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CASP12",
+      "target": "CASP9"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "CTNNB1",
+      "target": "TRRAP"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "EP300",
+      "target": "HIF1A"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "GRM7",
+      "target": "GNAO1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "RELN",
+      "target": "ITGB1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "PTPN7",
+      "target": "MAPK1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "MDM2",
+      "target": "IRF1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "MSTN",
+      "target": "ACVR2B"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "JAK3",
+      "target": "STAT1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "ARHGAP30",
+      "target": "CDC42"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "PPP1R1B",
+      "target": "PPP1CA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "GSK3B",
+      "target": "JUN"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "GSK3B",
+      "target": "CIITA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "STAT2",
+      "target": "STAT1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "JAK1",
+      "target": "STAT1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "IFNAR1",
+      "target": "JAK1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "IFNA7",
+      "target": "IFNAR1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "GSK3B",
+      "target": "FOXM1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "KL",
+      "target": "INSR"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "MAP2K1",
+      "target": "GSK3B"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "CDK2",
+      "target": "MDM2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "GATA1",
+      "target": "SPI1"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "NR1I3",
+      "target": "RXRA"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "NMUR1",
+      "target": "GNAQ"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "INSR",
+      "target": "PTEN"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "SOX10",
+      "target": "RET"
+    },
+    {
+      "cohort_count": 1,
+      "sign": -1,
+      "source": "DCST1",
+      "target": "STAT2"
+    },
+    {
+      "cohort_count": 1,
+      "sign": 1,
+      "source": "MAPK8",
+      "target": "JUN"
+    }
+  ],
+  "pairwise_edge_jaccard": [
+    {
+      "intersection": 7,
+      "jaccard": 0.08641975308641975,
+      "left": "E-MTAB-10801",
+      "right": "E-MTAB-11000",
+      "union": 81
+    },
+    {
+      "intersection": 11,
+      "jaccard": 0.09166666666666666,
+      "left": "E-MTAB-10801",
+      "right": "E-MTAB-14568",
+      "union": 120
+    },
+    {
+      "intersection": 2,
+      "jaccard": 0.028169014084507043,
+      "left": "E-MTAB-10801",
+      "right": "E-MTAB-7223",
+      "union": 71
+    },
+    {
+      "intersection": 9,
+      "jaccard": 0.07758620689655173,
+      "left": "E-MTAB-11000",
+      "right": "E-MTAB-14568",
+      "union": 116
+    },
+    {
+      "intersection": 4,
+      "jaccard": 0.06349206349206349,
+      "left": "E-MTAB-11000",
+      "right": "E-MTAB-7223",
+      "union": 63
+    },
+    {
+      "intersection": 5,
+      "jaccard": 0.047619047619047616,
+      "left": "E-MTAB-14568",
+      "right": "E-MTAB-7223",
+      "union": 105
+    }
+  ],
+  "response_blind": true,
+  "schema_version": "regulatory_cross_cohort.v1"
+}
