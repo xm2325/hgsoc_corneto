@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "cohort": {
+    "name": "HGSOC tumour-only primary OCM cohort",
+    "primary_ocms": 60,
+    "mapping_source": "data/processed/metadata/ocm_master_manifest.tsv",
+    "mapping_key": "canonical_ocm_id",
+    "patient_key": "patient_id"
+  },
+  "endpoints": {
+    "paclitaxel_auc": {
+      "role": "primary",
+      "drug": "paclitaxel",
+      "constraint": "nonnegative",
+      "accepted_units": [
+        "source_reported_auc"
+      ],
+      "transform_after_gate": null,
+      "note": "The endpoint_definition field must preserve the source's exact AUC convention and dose domain."
+    },
+    "paclitaxel_gi50": {
+      "role": "secondary",
+      "drug": "paclitaxel",
+      "constraint": "positive",
+      "accepted_units": [
+        "nM"
+      ],
+      "transform_after_gate": "log10",
+      "note": "The gate validates raw positive GI50 in nM; log10 is analysis-stage only."
+    },
+    "cumulative_paclitaxel_exposure": {
+      "role": "exposure",
+      "drug": "paclitaxel",
+      "constraint": "nonnegative",
+      "accepted_units": [
+        "mg"
+      ],
+      "transform_after_gate": null,
+      "note": "If the source uses mg/m2 or another basis, update this schema explicitly; do not relabel or convert silently."
+    }
+  },
+  "analysis_readiness": {
+    "primary_endpoint": "paclitaxel_auc",
+    "secondary_endpoint": "paclitaxel_gi50",
+    "exposure_endpoint": "cumulative_paclitaxel_exposure",
+    "missing_policy": "fail_closed",
+    "duplicate_policy": "reject",
+    "unknown_ocm_policy": "reject",
+    "patient_mapping_conflict_policy": "reject",
+    "unit_conversion_policy": "no_implicit_conversion",
+    "proxy_or_imputation_policy": "reject"
+  }
+}

@@ -83,15 +83,40 @@ reused, while an incomplete final output is preserved for inspection rather
 than silently overwritten. FASTQ transfers use checksum validation, retained
 partial files, HTTP range resumption, retries for all curl transfer errors, and
 a two-minute low-speed timeout so a stalled ENA connection is resumed instead
-of occupying an array slot indefinitely.
+of occupying an array slot indefinitely. A full-length partial file that fails
+its ENA MD5 is timestamped and quarantined, then downloaded once from byte zero;
+the invalid copy remains available for audit.
 
-Monitoring remains stage-based: record the job ID, wait for the expected stage
-duration, then inspect one terminal `sacct` record together with the job log and
-receipt. Do not poll the server in a tight loop.
+Quantification requests 48 GiB per task. An initial 24 GiB request was rejected
+after `ERR13907051` exceeded that limit during index loading/quantification;
+verified FASTQs and the failed staging directory are retained for audit. After
+the original array reaches a terminal state, collect every failed array index
+and repair them in one explicitly capped array before aggregation. The recorded
+E-MTAB-14568 repair used `%4`; this kept the intended four-transfer ceiling and
+completed all seven missing runs. This avoids uncontrolled retries and prevents
+a partly complete cohort from entering downstream stages.
+
+Monitoring uses a fast-failure gate followed by stage-based checks. At 30--60
+seconds after submission, inspect the scheduler state, the log tail, and the
+first expected output marker once; this catches import, schema, path, and parser
+failures before a long wait. If startup is healthy, wait for the expected stage
+duration and then inspect one terminal `sacct` record together with the full log
+and receipt. Do not poll the server in a tight loop.
+
+Compact terminal-state audits for the first E-MTAB-14568 array are retained in
+`data/processed/rna/etab_14568_salmon_array_summary.tsv` and
+`data/processed/rna/etab_14568_salmon_array_failures.tsv`. They distinguish the
+actual scheduler settings and per-task failure evidence from the recommended
+submission settings above.
 
 After all 33 runs have passed, aggregate transcripts to genes. Counts and TPM
 are summed using the versioned transcript-to-gene mapping in the same frozen
 GENCODE v32 GTF used to construct the Salmon reference:
+
+GENCODE's repeated `ont` and `tag` attributes are treated as legal
+multi-valued metadata. The parser retains their first value because neither is
+used for transcript-to-gene assignment, while conflicting repeated identifiers
+such as `gene_id` or `transcript_id` remain fatal.
 
 ```bash
 sbatch --export=ALL,STUDY_ACCESSION=E-MTAB-14568 \
