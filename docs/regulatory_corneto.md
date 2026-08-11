@@ -1,3 +1,6 @@
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
 # Regulatory CORNETO pilot
 
 This track is a response-blind, reproducible network-inference pilot. It uses
@@ -7,21 +10,21 @@ Taxol claim.
 ## Public inputs
 
 `scripts/fetch_regulatory_sources.py` downloads the human CollecTRI and
-OmniPath tables from their public OmniPath endpoints and preserves the raw TSVs.
-The pilot normalizes source/target/sign at read time, retaining only directed,
-unambiguous signed edges and removing self-loops. The receipt records retrieval
-time, URL, response metadata, SHA256, row/column counts, column names and any
-missing required column groups. Raw and normalized tables belong on Roihu project
-scratch; they are not committed to GitHub. Source-specific licensing and attribution terms must
+OmniPath tables from their public OmniPath endpoints. It filters to directed,
+unambiguous consensus stimulation/inhibition edges, removes self-loops and
+writes normalized `source`, `target`, `sign` TSVs. The receipt records the
+retrieval timestamp, URL, response metadata, SHA256, row counts and skipped-row
+counts. Raw and normalized tables belong on Roihu project scratch; they are
+not committed to GitHub. Source-specific licensing and attribution terms must
 be retained with any redistribution.
 
 ## Inference policy
 
 The pilot computes signed CollecTRI regulon z-scores from log1p TPM, selects
 deterministic extreme TF outputs, chooses bounded upstream expression-derived
-priors, and emits normalized signed-PKN edges; the CORNETO/CARNIVAL solve is explicitly blocked.
+priors, and solves CORNETO `CarnivalFlow` on a bounded OmniPath subgraph.
 Expression-derived priors are not perturbation experiments. Each sample records
-the source hashes, selected nodes/edges, corneto blocked status and any blocked/error
+the source hashes, selected nodes/edges, solver/status and any blocked/error
 reason. A blocked sample is not silently treated as a network result.
 
 The first pilot is E-MTAB-14568 primary tumour samples (8–12 samples). Only
