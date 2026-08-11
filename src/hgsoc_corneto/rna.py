@@ -14,6 +14,8 @@ from urllib.parse import urlparse
 
 from hgsoc_corneto.io import read_tsv
 
+_MULTIVALUED_GTF_ATTRIBUTES = frozenset({"ont", "tag"})
+
 
 @dataclass(frozen=True)
 class FastqSpec:
@@ -193,7 +195,7 @@ def resumable_curl_command(
 
 
 def parse_gtf_attributes(value: str) -> dict[str, str]:
-    """Parse the semicolon-delimited attribute field from a GENCODE GTF row."""
+    """Parse a GENCODE GTF attribute field, retaining the first multivalue."""
 
     attributes: dict[str, str] = {}
     for item in value.split(";"):
@@ -206,8 +208,10 @@ def parse_gtf_attributes(value: str) -> dict[str, str]:
         parsed_value = raw_value.strip()
         if len(parsed_value) >= 2 and parsed_value[0] == parsed_value[-1] == '"':
             parsed_value = parsed_value[1:-1]
-        if key in attributes and attributes[key] != parsed_value:
-            raise ValueError(f"Conflicting GTF attribute {key!r}")
+        if key in attributes:
+            if attributes[key] != parsed_value and key not in _MULTIVALUED_GTF_ATTRIBUTES:
+                raise ValueError(f"Conflicting GTF attribute {key!r}")
+            continue
         attributes[key] = parsed_value
     return attributes
 

@@ -1,9 +1,12 @@
 import hashlib
 from pathlib import Path
 
+import pytest
+
 from hgsoc_corneto.rna import (
     FastqSpec,
     load_rna_run_specs,
+    parse_gtf_attributes,
     resumable_curl_command,
     validate_fastq_file,
 )
@@ -92,3 +95,16 @@ def test_download_quarantines_full_checksum_mismatch(
     assert quarantined[0].read_bytes() == b"fail payload"
     assert receipt["verification"] == "verified"
     assert receipt["quarantined_partials"][0]["reason"].startswith("md5_mismatch:")
+
+
+def test_gtf_parser_accepts_gencode_multivalued_attributes() -> None:
+    attributes = parse_gtf_attributes(
+        'gene_id "ENSG1"; ont "PGO:0000005"; ont "PGO:0000019"; '
+        'tag "basic"; tag "MANE_Select";'
+    )
+    assert attributes["gene_id"] == "ENSG1"
+    assert attributes["ont"] == "PGO:0000005"
+    assert attributes["tag"] == "basic"
+
+    with pytest.raises(ValueError, match="Conflicting GTF attribute 'gene_id'"):
+        parse_gtf_attributes('gene_id "ENSG1"; gene_id "ENSG2";')

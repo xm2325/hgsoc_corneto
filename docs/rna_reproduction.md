@@ -108,6 +108,11 @@ After all 33 runs have passed, aggregate transcripts to genes. Counts and TPM
 are summed using the versioned transcript-to-gene mapping in the same frozen
 GENCODE v32 GTF used to construct the Salmon reference:
 
+GENCODE's repeated `ont` and `tag` attributes are treated as legal
+multi-valued metadata. The parser retains their first value because neither is
+used for transcript-to-gene assignment, while conflicting repeated identifiers
+such as `gene_id` or `transcript_id` remain fatal.
+
 ```bash
 sbatch --export=ALL,STUDY_ACCESSION=E-MTAB-14568 \
   hpc/roihu/aggregate_salmon.sbatch
