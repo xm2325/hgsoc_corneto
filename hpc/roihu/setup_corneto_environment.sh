@@ -34,24 +34,45 @@ if [[ "${INSTALL_GUROBI:-0}" == "1" ]]; then
     "${PYTHON}" -m pip install gurobipy
 fi
 
+# MOSEK is optional because its client package and license are site/user
+# state. If requested, install the Python bindings; the caller must provide
+# MOSEKLM_LICENSE_FILE at solve time. Never copy or print the license.
+if [[ "${INSTALL_MOSEK:-0}" == "1" ]]; then
+    "${PYTHON}" -m pip install Mosek
+fi
+
 mkdir -p "${REPO_ROOT}/logs" "${REPO_ROOT}/data/processed/corneto"
 {
     printf 'repo_commit\t%s\n' "$(git -C "${REPO_ROOT}" rev-parse HEAD)"
     printf 'environment_root\t%s\n' "${ENV_ROOT}"
-    printf 'python\t%s\n' "$("${PYTHON}" --version 2>&1)"
-    printf 'numpy\t%s\n' "$("${PYTHON}" -c 'from importlib.metadata import version; print(version("numpy"))')"
-    printf 'cobra\t%s\n' "$("${PYTHON}" -c 'from importlib.metadata import version; print(version("cobra"))')"
-    printf 'corneto\t%s\n' "$("${PYTHON}" -c 'from importlib.metadata import version; print(version("corneto"))')"
-    printf 'highspy\t%s\n' "$("${PYTHON}" -c 'from importlib.metadata import version; print(version("highspy"))')"
-    if "${PYTHON}" -c 'import gurobipy' >/dev/null 2>&1; then
+    printf 'python\t%s\n' "$(${PYTHON} --version 2>&1)"
+    printf 'numpy\t%s\n' "$(${PYTHON} -c 'from importlib.metadata import version; print(version("numpy"))')"
+    printf 'cobra\t%s\n' "$(${PYTHON} -c 'from importlib.metadata import version; print(version("cobra"))')"
+    printf 'corneto\t%s\n' "$(${PYTHON} -c 'from importlib.metadata import version; print(version("corneto"))')"
+    printf 'highspy\t%s\n' "$(${PYTHON} -c 'from importlib.metadata import version; print(version("highspy"))')"
+    if ${PYTHON} -c 'import gurobipy' >/dev/null 2>&1; then
         printf 'gurobipy\tinstalled\n'
     else
         printf 'gurobipy\tnot_installed\n'
     fi
-    if [[ -n "${GRB_LICENSE_FILE:-}" ]]; then
-        printf 'grb_license_file\tconfigured\n'
+    if [[ -r "${GRB_LICENSE_FILE:-}" ]]; then
+        printf 'grb_license_file\tconfigured_readable\n'
+    elif [[ -n "${GRB_LICENSE_FILE:-}" ]]; then
+        printf 'grb_license_file\tconfigured_unreadable\n'
     else
         printf 'grb_license_file\tnot_configured\n'
+    fi
+    if ${PYTHON} -c 'import mosek' >/dev/null 2>&1; then
+        printf 'mosek\tinstalled\n'
+    else
+        printf 'mosek\tnot_installed\n'
+    fi
+    if [[ -r "${MOSEKLM_LICENSE_FILE:-}" ]]; then
+        printf 'moseklm_license_file\tconfigured_readable\n'
+    elif [[ -n "${MOSEKLM_LICENSE_FILE:-}" ]]; then
+        printf 'moseklm_license_file\tconfigured_unreadable\n'
+    else
+        printf 'moseklm_license_file\tnot_configured\n'
     fi
 } > "${REPO_ROOT}/data/processed/corneto/environment_receipt.tsv"
 
