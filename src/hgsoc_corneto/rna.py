@@ -159,6 +159,39 @@ def validate_fastq_file(path: str | Path, spec: FastqSpec) -> tuple[bool, str]:
     return True, "verified"
 
 
+def resumable_curl_command(
+    *,
+    url: str,
+    target: str | Path,
+    retries: int = 12,
+) -> list[str]:
+    """Build a curl transfer that retries all failures from a partial file."""
+
+    if retries < 1:
+        raise ValueError("retries must be positive")
+    return [
+        "curl",
+        "--location",
+        "--fail",
+        "--retry",
+        str(retries),
+        "--retry-all-errors",
+        "--retry-delay",
+        "15",
+        "--connect-timeout",
+        "30",
+        "--speed-limit",
+        "1024",
+        "--speed-time",
+        "120",
+        "--continue-at",
+        "-",
+        "--output",
+        str(target),
+        url,
+    ]
+
+
 def parse_gtf_attributes(value: str) -> dict[str, str]:
     """Parse the semicolon-delimited attribute field from a GENCODE GTF row."""
 

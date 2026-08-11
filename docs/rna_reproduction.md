@@ -80,7 +80,10 @@ sbatch --array=0-32%4 \
 The `%4` concurrency cap deliberately limits simultaneous ENA transfers and
 shared-filesystem pressure. Each run is idempotent: a completed receipt is
 reused, while an incomplete final output is preserved for inspection rather
-than silently overwritten.
+than silently overwritten. FASTQ transfers use checksum validation, retained
+partial files, HTTP range resumption, retries for all curl transfer errors, and
+a two-minute low-speed timeout so a stalled ENA connection is resumed instead
+of occupying an array slot indefinitely.
 
 Monitoring remains stage-based: record the job ID, wait for the expected stage
 duration, then inspect one terminal `sacct` record together with the job log and

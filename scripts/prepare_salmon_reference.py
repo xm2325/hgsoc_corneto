@@ -17,7 +17,7 @@ from typing import Any
 import yaml
 
 from hgsoc_corneto.io import write_json
-from hgsoc_corneto.rna import file_md5
+from hgsoc_corneto.rna import file_md5, resumable_curl_command
 
 
 def _run(command: list[str], *, capture: bool = False) -> str:
@@ -37,22 +37,7 @@ def _download(url: str, target: Path, expected_md5: str) -> dict[str, Any]:
             raise ValueError(f"Existing reference has wrong MD5: {target} ({actual_md5})")
     else:
         partial = target.with_name(target.name + ".partial")
-        _run(
-            [
-                "curl",
-                "--location",
-                "--fail",
-                "--retry",
-                "5",
-                "--retry-delay",
-                "10",
-                "--continue-at",
-                "-",
-                "--output",
-                str(partial),
-                url,
-            ]
-        )
+        _run(resumable_curl_command(url=url, target=partial))
         actual_md5 = file_md5(partial)
         if actual_md5 != expected_md5:
             raise ValueError(f"Downloaded reference has wrong MD5: {partial} ({actual_md5})")

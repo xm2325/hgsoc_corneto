@@ -13,7 +13,12 @@ from pathlib import Path
 from typing import Any
 
 from hgsoc_corneto.io import write_json
-from hgsoc_corneto.rna import FastqSpec, load_rna_run_specs, validate_fastq_file
+from hgsoc_corneto.rna import (
+    FastqSpec,
+    load_rna_run_specs,
+    resumable_curl_command,
+    validate_fastq_file,
+)
 
 
 def _run(command: list[str], *, capture: bool = False) -> str:
@@ -32,22 +37,7 @@ def _download_fastq(spec: FastqSpec, target: Path) -> dict[str, Any]:
         raise ValueError(f"Existing FASTQ requires inspection: {target} ({reason})")
     if not valid:
         partial = target.with_name(target.name + ".partial")
-        _run(
-            [
-                "curl",
-                "--location",
-                "--fail",
-                "--retry",
-                "8",
-                "--retry-delay",
-                "15",
-                "--continue-at",
-                "-",
-                "--output",
-                str(partial),
-                spec.url,
-            ]
-        )
+        _run(resumable_curl_command(url=spec.url, target=partial))
         valid, reason = validate_fastq_file(partial, spec)
         if not valid:
             raise ValueError(f"Downloaded FASTQ failed verification: {partial} ({reason})")
