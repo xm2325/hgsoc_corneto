@@ -109,7 +109,7 @@ def _select_network(all_edges, scores, zscores, sample_index, max_outputs, max_i
     selected = sorted(selected, key=lambda item: (item[0], item[1], item[2]))[:max_edges]
     return inputs, outputs, selected
 
-
+\ndef _normalize_network(network, zscores, sample_index, inputs):\n    source_values = [abs(zscores[source][sample_index]) for source in inputs if source in zscores]\n    scale = max(source_values, default=0.0) or 1.0\n    normalized = []\n    for source, target, sign in network:\n        source_score = zscores.get(source, [0.0])[sample_index] if source in zscores else 0.0\n        normalized.append({\n            "source": source,\n            "target": target,\n            "sign": sign,\n            "source_zscore": source_score,\n            "normalized_edge_weight": sign * source_score / scale,\n        })\n    return normalized, scale\n
 def _solve_carnival(edges, inputs, outputs, solver, max_flow, max_seconds):
     import corneto as cn
     from corneto.methods.carnival import CarnivalFlow
