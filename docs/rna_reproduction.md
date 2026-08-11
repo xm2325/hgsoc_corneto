@@ -98,6 +98,12 @@ Monitoring remains stage-based: record the job ID, wait for the expected stage
 duration, then inspect one terminal `sacct` record together with the job log and
 receipt. Do not poll the server in a tight loop.
 
+Compact terminal-state audits for the first E-MTAB-14568 array are retained in
+`data/processed/rna/etab_14568_salmon_array_summary.tsv` and
+`data/processed/rna/etab_14568_salmon_array_failures.tsv`. They distinguish the
+actual scheduler settings and per-task failure evidence from the recommended
+submission settings above.
+
 After all 33 runs have passed, aggregate transcripts to genes. Counts and TPM
 are summed using the versioned transcript-to-gene mapping in the same frozen
 GENCODE v32 GTF used to construct the Salmon reference:

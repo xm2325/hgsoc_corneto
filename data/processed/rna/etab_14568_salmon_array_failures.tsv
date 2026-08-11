@@ -1,0 +1,8 @@
+original_array_job_id	array_task_index	slurm_allocation_id	run_accession	canonical_ocm_id	failure_class	evidence	requested_memory	retained_path
+578067	2	578073	ERR13907039	OCM250-2	transfer_interrupted	curl_exit_18	24G	/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/fastq/E-MTAB-14568/ERR13907039/ERR13907039_1.fastq.gz.partial
+578067	14	579543	ERR13907051	OCM316	out_of_memory	slurm_OUT_OF_MEMORY	24G	/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/quant/E-MTAB-14568/.ERR13907051.cm93yxx4
+578067	15	579547	ERR13907052	OCM320	out_of_memory	slurm_OUT_OF_MEMORY	24G	/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/quant/E-MTAB-14568/.ERR13907052.l7cuhb48
+578067	18	579839	ERR13907055	OCM327-1	out_of_memory	slurm_OUT_OF_MEMORY	24G	/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/quant/E-MTAB-14568/.ERR13907055.zztbd7rf
+578067	21	579976	ERR13907058	OCM333-1	checksum_mismatch	md5_mismatch:06b84bb8c8abffd173283863595c2807	24G	/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/fastq/E-MTAB-14568/ERR13907058/ERR13907058_2.fastq.gz.partial
+578067	22	580125	ERR13907059	OCM333-3	checksum_mismatch	md5_mismatch:e83b7f70c0d897caf5ace7190a75aa0e	24G	/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/fastq/E-MTAB-14568/ERR13907059/ERR13907059_1.fastq.gz.partial
+578067	29	580209	ERR13907066	OCM361b	out_of_memory	slurm_OUT_OF_MEMORY	24G	/scratch/project_2012997/xiaomei/hgsoc_corneto_rna/quant/E-MTAB-14568/.ERR13907066.6qytv1jo

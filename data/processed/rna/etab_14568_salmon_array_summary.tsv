@@ -1,0 +1,2 @@
+study_accession	job_id	terminal_audit_utc	expected_tasks	valid_receipts	missing_receipts	job_state	requested_memory	array_task_throttle	receipt_repo_commits	mapping_rate_min_percent	mapping_rate_median_percent	mapping_rate_max_percent
+E-MTAB-14568	578067	2026-08-11T08:57:01Z	33	26	7	FAILED	24G	13	c23b6a9b52ea300016de407d6baa1334d9c3181c:6;05e825f777f2044b1aae25b9e7f279150e75d9d2:10;016cb59d5e9171f0da17207e5bfc629ce4145f4c:10	80.85813070522522	91.18751414589295	93.52762387744474
