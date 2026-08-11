@@ -1,0 +1,96 @@
+{
+  "checkout_directory_name": "PhD_2024-1b0e9050720be8fb6769a9a7ab14a4b19bbce8c3",
+  "expected_commit": "1b0e9050720be8fb6769a9a7ab14a4b19bbce8c3",
+  "human_gem": {
+    "biomass_sbml_ids": [
+      "R_biomass_human"
+    ],
+    "bytes": 37906640,
+    "genes": 3628,
+    "gpr_and": 653,
+    "gpr_and_or": 129,
+    "gpr_no_gene": 5060,
+    "gpr_or": 3972,
+    "gpr_partition_complete": true,
+    "gpr_single_gene": 3282,
+    "gpr_unclassified": 0,
+    "path": "/scratch/project_2012997/xiaomei/hgsoc_corneto_inputs/downloads/Human-GEM-v1.4.1.xml",
+    "reactions": 13096,
+    "sha256": "57d1b137f0c90d83a3e4f9a8225d74d37523594e6ee99f622b160a014d9f7050"
+  },
+  "human_gem_expected": {
+    "genes": 3628,
+    "gpr_and": 653,
+    "gpr_and_or": 129,
+    "gpr_no_gene": 5060,
+    "gpr_or": 3972,
+    "gpr_single_gene": 3282,
+    "reactions": 13096
+  },
+  "human_gem_fingerprint_matches": true,
+  "human_gem_mismatches": {},
+  "key_files": {
+    "integration_implementation": {
+      "bytes": 19634,
+      "exists": true,
+      "path": "src/integrate_omics.py",
+      "sha256": "8cdab739fdbec2b41dcb399d68eee780a32d8dd7c4e5a43e26e7c3e486247386"
+    },
+    "ocm_flux_output": {
+      "bytes": 1012869,
+      "exists": true,
+      "path": "ocm_patient_modelling/OCM_clusters_and_fluxes.csv",
+      "sha256": "40957fe647851ae3366885993c3dcce54b7b75d1db8380d74de604af1268e858"
+    },
+    "ocm_notebook": {
+      "bytes": 899352,
+      "exists": true,
+      "path": "ocm_patient_modelling/Building_OCM-specific_models.ipynb",
+      "sha256": "6c0f19865de798056f6fd99758df81263aaf1f7336ae98e9a71ddc7a3467047a"
+    },
+    "tpi1_validation": {
+      "bytes": 256167,
+      "exists": true,
+      "path": "siTPI1_validation/siTPI1_experimental_simulation_comparison.csv",
+      "sha256": "1696ac3ced409d283297d560664abaf0d428a3e18f57478ebe7a1faef949c76d"
+    }
+  },
+  "license_files_at_repository_root": [],
+  "notebook": {
+    "absolute_input_csv_references": [
+      "/Users/katemeeson/Library/Mobile Documents/com~apple~CloudDocs/MRC-DTP_PhD_UoM/OCM_work/datasets/bc_rnaseq_with_growths_adjusted.csv"
+    ],
+    "input_csv_references": [
+      "/Users/katemeeson/Library/Mobile Documents/com~apple~CloudDocs/MRC-DTP_PhD_UoM/OCM_work/datasets/bc_rnaseq_with_growths_adjusted.csv"
+    ],
+    "mentions_and_or_group_but_no_integration_loop": true,
+    "mentions_manual_excel_adjustment": true,
+    "output_csv_references": [
+      "OCM46_3_T_P4_adjusted.csv",
+      "ocm_t_2.csv"
+    ],
+    "restored_ipython_variables": [
+      "ocm_t",
+      "ocmi_2",
+      "ocmi_essential_genes",
+      "ocmi_essential_reactions",
+      "t"
+    ],
+    "unresolved_input_csv_references": [
+      "/Users/katemeeson/Library/Mobile Documents/com~apple~CloudDocs/MRC-DTP_PhD_UoM/OCM_work/datasets/bc_rnaseq_with_growths_adjusted.csv"
+    ]
+  },
+  "ocm_flux_output": {
+    "cluster_column": "cluster",
+    "columns": 4141,
+    "contains_biomass_human": true,
+    "duplicate_samples": [],
+    "reaction_flux_columns": 4139,
+    "rows": 49,
+    "sample_column_as_written": "sample",
+    "unique_samples": 49
+  },
+  "reproduction_boundary": "Exact 49-OCM regeneration is blocked by the absent expression-plus-growth input; algorithm and public output auditing remain reproducible.",
+  "upstream_repository": "https://github.com/katemeeson/PhD_2024",
+  "vendoring_permitted_by_audit": false
+}

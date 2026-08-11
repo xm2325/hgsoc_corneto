@@ -30,7 +30,11 @@ The exact OCM-level paclitaxel AUC/GI50 and cumulative exposure values are not
 contained in the public supplementary spreadsheets. They remain intentionally
 missing rather than being digitized from figures.
 
-## Quick start
+## Optional local metadata checks
+
+The local environment is not used for CORNETO, COBRApy, Salmon, NMF, or any
+full-data analysis. It only supports fast parser/unit checks while editing the
+repository:
 
 ```bash
 python3 -m venv .venv
@@ -40,8 +44,9 @@ python3 -m venv .venv
 .venv/bin/python -m pytest
 ```
 
-The RNA workflow is designed for Slurm/CSF3 because the public FASTQs do not fit
-on a typical laptop. See [`docs/rna_reproduction.md`](docs/rna_reproduction.md)
+All dependency-heavy and full-data execution runs under Slurm on Roihu. The RNA
+workflow is designed for cluster scratch because the public FASTQs do not fit on
+a typical laptop. See [`docs/rna_reproduction.md`](docs/rna_reproduction.md)
 before starting any transfer.
 
 Dependency-heavy metabolic execution is deployed to Roihu CPU from an immutable

@@ -1,0 +1,251 @@
+{
+  "checks": {
+    "both_symmetric_global_optima_enumerated": true,
+    "global_optimum_retains_one_constraint": true,
+    "sequential_orders_choose_different_members_of_global_ensemble": true
+  },
+  "global": {
+    "alternative_optima": [
+      {
+        "growth": 6.000001,
+        "objective_value": -1.0,
+        "reopened_reactions": [
+          "ROUTE_B"
+        ],
+        "retained_reactions": [
+          "ROUTE_A"
+        ],
+        "retained_vector": [
+          1,
+          0
+        ],
+        "status": "optimal"
+      },
+      {
+        "growth": 6.000001,
+        "objective_value": -1.0,
+        "reopened_reactions": [
+          "ROUTE_A"
+        ],
+        "retained_reactions": [
+          "ROUTE_B"
+        ],
+        "retained_vector": [
+          0,
+          1
+        ],
+        "status": "optimal"
+      }
+    ],
+    "alternatives_truncated": false,
+    "biomass_id": "BIOMASS",
+    "candidate_reactions": [
+      "ROUTE_A",
+      "ROUTE_B"
+    ],
+    "formulation": "CORNETO stoichiometric flow MILP; maximize simultaneous retention of expression-derived reaction bounds subject to experimental growth",
+    "growth_threshold": 6.0,
+    "optimal_retained_count": 1,
+    "primary": {
+      "growth": 6.000001,
+      "objective_value": -1.0,
+      "reopened_reactions": [
+        "ROUTE_B"
+      ],
+      "retained_reactions": [
+        "ROUTE_A"
+      ],
+      "retained_vector": [
+        1,
+        0
+      ],
+      "status": "optimal"
+    },
+    "solver": "highs",
+    "strict_margin": 1e-06
+  },
+  "interpretation": "The global MILP removes arbitrary reaction iteration order, but the symmetric model still has two alternative optima. The correct reporting unit is therefore the solution ensemble, not whichever single optimum the solver returns first.",
+  "sequential": {
+    "candidate_upper_bound": 2.0,
+    "growth_threshold": 6.0,
+    "interpretation": "Each constraint is feasible alone; the second makes growth fall to four and is reopened. Reversing order therefore reverses the retained reaction.",
+    "model": "two interchangeable routes with shared uptake capacity 10",
+    "order_dependence_observed": true,
+    "retained_set_jaccard": 0.0,
+    "runs": {
+      "ROUTE_A_then_ROUTE_B": {
+        "decisions": [
+          {
+            "category": "single_gene_forward",
+            "final_bounds": [
+              0.0,
+              2.0
+            ],
+            "genes": [
+              "gene_a"
+            ],
+            "order_index": 0,
+            "post_decision_growth": 10.0,
+            "post_decision_status": "optimal",
+            "previous_bounds": [
+              0.0,
+              1000.0
+            ],
+            "proposed_bounds": [
+              0.0,
+              2.0
+            ],
+            "reaction_id": "ROUTE_A",
+            "reason": "growth_strictly_above_threshold",
+            "retained": true,
+            "trial_bounds": [
+              0.0,
+              2.0
+            ],
+            "trial_growth": 10.0,
+            "trial_status": "optimal"
+          },
+          {
+            "category": "single_gene_forward",
+            "final_bounds": [
+              0.0,
+              1000.0
+            ],
+            "genes": [
+              "gene_b"
+            ],
+            "order_index": 1,
+            "post_decision_growth": 10.0,
+            "post_decision_status": "optimal",
+            "previous_bounds": [
+              0.0,
+              1000.0
+            ],
+            "proposed_bounds": [
+              0.0,
+              2.0
+            ],
+            "reaction_id": "ROUTE_B",
+            "reason": "growth_at_or_below_threshold",
+            "retained": false,
+            "trial_bounds": [
+              0.0,
+              2.0
+            ],
+            "trial_growth": 4.0,
+            "trial_status": "optimal"
+          }
+        ],
+        "final_growth": 10.0,
+        "final_status": "optimal",
+        "fva_at_optimum": {
+          "ROUTE_A": {
+            "maximum": 2.0,
+            "minimum": 0.0
+          },
+          "ROUTE_B": {
+            "maximum": 10.0,
+            "minimum": 8.0
+          }
+        },
+        "growth_threshold": 6.0,
+        "initial_growth": 10.0,
+        "initial_status": "optimal",
+        "reopened_reactions": [
+          "ROUTE_B"
+        ],
+        "retained_reactions": [
+          "ROUTE_A"
+        ],
+        "semantics": "bounds_safe"
+      },
+      "ROUTE_B_then_ROUTE_A": {
+        "decisions": [
+          {
+            "category": "single_gene_forward",
+            "final_bounds": [
+              0.0,
+              2.0
+            ],
+            "genes": [
+              "gene_b"
+            ],
+            "order_index": 0,
+            "post_decision_growth": 10.0,
+            "post_decision_status": "optimal",
+            "previous_bounds": [
+              0.0,
+              1000.0
+            ],
+            "proposed_bounds": [
+              0.0,
+              2.0
+            ],
+            "reaction_id": "ROUTE_B",
+            "reason": "growth_strictly_above_threshold",
+            "retained": true,
+            "trial_bounds": [
+              0.0,
+              2.0
+            ],
+            "trial_growth": 10.0,
+            "trial_status": "optimal"
+          },
+          {
+            "category": "single_gene_forward",
+            "final_bounds": [
+              0.0,
+              1000.0
+            ],
+            "genes": [
+              "gene_a"
+            ],
+            "order_index": 1,
+            "post_decision_growth": 10.0,
+            "post_decision_status": "optimal",
+            "previous_bounds": [
+              0.0,
+              1000.0
+            ],
+            "proposed_bounds": [
+              0.0,
+              2.0
+            ],
+            "reaction_id": "ROUTE_A",
+            "reason": "growth_at_or_below_threshold",
+            "retained": false,
+            "trial_bounds": [
+              0.0,
+              2.0
+            ],
+            "trial_growth": 4.0,
+            "trial_status": "optimal"
+          }
+        ],
+        "final_growth": 10.0,
+        "final_status": "optimal",
+        "fva_at_optimum": {
+          "ROUTE_A": {
+            "maximum": 10.0,
+            "minimum": 8.0
+          },
+          "ROUTE_B": {
+            "maximum": 2.0,
+            "minimum": 0.0
+          }
+        },
+        "growth_threshold": 6.0,
+        "initial_growth": 10.0,
+        "initial_status": "optimal",
+        "reopened_reactions": [
+          "ROUTE_A"
+        ],
+        "retained_reactions": [
+          "ROUTE_B"
+        ],
+        "semantics": "bounds_safe"
+      }
+    },
+    "semantics": "bounds_safe"
+  }
+}
