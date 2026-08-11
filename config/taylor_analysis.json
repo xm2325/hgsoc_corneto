@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "source_manifest": "data/processed/metadata/ocm_master_manifest.tsv",
+  "source_longitudinal_families": "data/processed/metadata/longitudinal_families.tsv",
+  "cohort": {
+    "all_runs": 117,
+    "primary_runs": 60,
+    "primary_ocms": 60,
+    "primary_patients": 52,
+    "primary_predicate": "primary_cohort_eligible == true",
+    "required_sample_class": "tumour",
+    "required_histotype_group": "HGSOC",
+    "required_representative_flag": "true"
+  },
+  "outcomes": {
+    "primary": {
+      "column": "paclitaxel_auc",
+      "availability_column": "exact_paclitaxel_auc_available",
+      "type": "continuous_nonnegative",
+      "required_for": [
+        "cross_sectional",
+        "intrinsic",
+        "acquired"
+      ]
+    },
+    "secondary": {
+      "column": "paclitaxel_gi50_nm",
+      "availability_column": "exact_paclitaxel_gi50_available",
+      "type": "continuous_positive",
+      "transform": "log10",
+      "required_for": [
+        "cross_sectional",
+        "intrinsic",
+        "acquired"
+      ]
+    }
+  },
+  "exposure": {
+    "column": "cumulative_paclitaxel_exposure_mg",
+    "availability_column": "exact_cumulative_paclitaxel_exposure_available",
+    "intrinsic_rule": "exact exposure available and equal to zero",
+    "proxy_not_allowed": "chemo_naive_at_biopsy"
+  },
+  "validation": {
+    "group_column": "patient_id",
+    "cv_method": "deterministic_greedy_group_assignment",
+    "cv_splits": 5,
+    "forbidden_splits": [
+      "random OCM-level split",
+      "feature selection outside the training fold",
+      "phenotype-informed network inference"
+    ]
+  },
+  "tracks": {
+    "cross_sectional": {
+      "unit": "representative tumour OCM RNA library",
+      "cohort": "primary cohort",
+      "estimand": "baseline feature association with contemporaneous paclitaxel response",
+      "cv_group": "patient_id"
+    },
+    "intrinsic": {
+      "unit": "representative tumour OCM RNA library",
+      "cohort": "primary cohort with exact cumulative paclitaxel exposure equal to zero",
+      "estimand": "baseline feature association restricted to explicitly zero-exposure OCMs",
+      "cv_group": "patient_id",
+      "missing_data_status": "blocked; chemotherapy-naive-at-biopsy is not an exact-zero substitute"
+    },
+    "acquired": {
+      "unit": "within-patient longitudinal OCM family",
+      "cohort": "longitudinal families intersected with the primary cohort",
+      "estimand": "within-patient change in features versus change in paclitaxel response",
+      "cv_group": "patient_id",
+      "claim_limit": "treatment-associated rewiring, not treatment-caused rewiring"
+    }
+  }
+}
