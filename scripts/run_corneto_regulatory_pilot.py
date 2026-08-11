@@ -132,7 +132,7 @@ def _regulon_scores(edges, zscores, sample_index, min_targets):
     return scores, {tf: len(v) for tf, v in targets.items() if len(v) >= min_targets}
 
 
-def _select_network(all_edges, scores, zscores, max_outputs, max_inputs, max_depth, max_edges):
+def _select_network(all_edges, scores, zscores, sample_index, max_outputs, max_inputs, max_depth, max_edges):
     outputs = [(node, value) for node, value in scores.items() if math.isfinite(value) and abs(value) > 1.0]
     outputs.sort(key=lambda item: (-abs(item[1]), item[0]))
     outputs = outputs[:max_outputs]
@@ -156,12 +156,12 @@ def _select_network(all_edges, scores, zscores, max_outputs, max_inputs, max_dep
         upstream.update(nxt)
         frontier = nxt
     source_candidates = [node for node in upstream if indegree[node] == 0 and node in zscores]
-    source_candidates.sort(key=lambda node: (-abs(zscores[node][0]), node))
+    source_candidates.sort(key=lambda node: (-abs(zscores[node][sample_index]), node))
     # When an upstream component has no explicit source, use high-scoring
     # boundary nodes as expression-derived priors and record that policy.
     if not source_candidates:
         source_candidates = [node for node in upstream if node in zscores]
-        source_candidates.sort(key=lambda node: (-abs(zscores[node][0]), node))
+        source_candidates.sort(key=lambda node: (-abs(zscores[node][sample_index]), node))
     inputs = source_candidates[:max_inputs]
     relevant = set(inputs) | output_nodes
     # Keep a bounded union of paths: reverse reachability from outputs and
@@ -269,7 +269,7 @@ def main() -> int:
             scores, target_counts = _regulon_scores(edges_collectri, zscores, index, args.min_targets)
             # Recompute source ranking for this sample (the helper uses the first
             # column only for fallback source ranking, so replace it below).
-            inputs, outputs, network = _select_network(edges_pkn, scores, zscores, args.max_outputs, args.max_inputs, args.max_depth, args.max_edges)
+            inputs, outputs, network = _select_network(edges_pkn, scores, zscores, index, args.max_outputs, args.max_inputs, args.max_depth, args.max_edges)
             input_values = {node: (1.0 if zscores.get(node, [0.0] * len(expression_samples))[index] >= 0 else -1.0) for node in inputs}
             output_values = {node: (1.0 if value >= 0 else -1.0) for node, value in outputs}
             sample_result = {"run_accession": run, "regulon_count": len(scores),
