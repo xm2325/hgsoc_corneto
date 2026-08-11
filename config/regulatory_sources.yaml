@@ -1,0 +1,18 @@
+# Public regulatory-network inputs for the response-blind CORNETO pilot.
+# The downloader records the retrieved URL, timestamp, byte count and SHA256
+# in a receipt. The large TSV files stay on project scratch and are never
+# committed to this repository.
+organism: human
+organism_id: 9606
+collectri:
+  url: https://omnipathdb.org/interactions?datasets=collectri&organisms=9606&genesymbols=yes&format=tsv
+  role: signed TF-target regulon
+  license_note: CollecTRI is distributed under GPL-3; individual source-resource terms apply.
+omnipath:
+  url: https://omnipathdb.org/interactions?datasets=omnipath&organisms=9606&genesymbols=yes&format=tsv
+  role: signed directed signaling prior-knowledge network
+  license_note: OmniPath resource-specific licensing and attribution terms apply.
+normalization:
+  require_directed: true
+  require_unambiguous_consensus_sign: true
+  remove_self_loops: true
