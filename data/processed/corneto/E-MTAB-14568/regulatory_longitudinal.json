@@ -1,0 +1,77 @@
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+{
+  "claim_limit": "within-family descriptive rewiring only; no treatment causality or phenotype association",
+  "families": "data/processed/taylor_preflight/acquired_family_design.tsv",
+  "pair_count": 4,
+  "pairs": [
+    {
+      "analysis_role": "none_prespecified",
+      "baseline_edge_count": 3,
+      "baseline_run": "ERR13907041",
+      "baseline_status": "optimal",
+      "current_edge_count": 4,
+      "current_run": "ERR13907042",
+      "current_status": "optimal",
+      "edge_jaccard": 0.0,
+      "family_id": "OCM288",
+      "gained_edge_count": 4,
+      "lost_edge_count": 3,
+      "pair_status": "pair_ready",
+      "patient_id": "OCM288"
+    },
+    {
+      "analysis_role": "none_prespecified",
+      "baseline_edge_count": 6,
+      "baseline_run": "ERR13907045",
+      "baseline_status": "optimal",
+      "current_edge_count": 3,
+      "current_run": "ERR13907046",
+      "current_status": "optimal",
+      "edge_jaccard": 0.0,
+      "family_id": "OCM296",
+      "gained_edge_count": 3,
+      "lost_edge_count": 6,
+      "pair_status": "pair_ready",
+      "patient_id": "OCM296"
+    },
+    {
+      "analysis_role": "none_prespecified",
+      "baseline_edge_count": 3,
+      "baseline_run": "ERR13907055",
+      "baseline_status": "optimal",
+      "current_edge_count": 0,
+      "current_run": "ERR13907056",
+      "current_status": "blocked_no_selected_edges",
+      "edge_jaccard": 0.0,
+      "family_id": "OCM327",
+      "gained_edge_count": 0,
+      "lost_edge_count": 3,
+      "pair_status": "pair_ready",
+      "patient_id": "OCM327"
+    },
+    {
+      "analysis_role": "none_prespecified",
+      "baseline_edge_count": 6,
+      "baseline_run": "ERR13907058",
+      "baseline_status": "optimal",
+      "current_edge_count": 5,
+      "current_run": "ERR13907059",
+      "current_status": "optimal",
+      "edge_jaccard": 0.0,
+      "family_id": "OCM333",
+      "gained_edge_count": 5,
+      "lost_edge_count": 6,
+      "pair_status": "pair_ready",
+      "patient_id": "OCM333"
+    }
+  ],
+  "pilot": "data/processed/corneto/E-MTAB-14568/regulatory_full_gurobi_27_l0.json",
+  "response_blind": true,
+  "schema_version": "regulatory_longitudinal.v1",
+  "status_counts": {
+    "optimal__blocked_no_selected_edges": 1,
+    "optimal__optimal": 3
+  }
+}
