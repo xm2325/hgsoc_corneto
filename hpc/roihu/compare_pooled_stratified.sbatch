@@ -23,8 +23,6 @@ ARGS=(
   --manifest data/processed/metadata/ocm_master_manifest.tsv
   --require-joint-pooled
   --pooled-nmf data/processed/rna/pooled_primary60/nmf/rank_3/assignments.tsv
-  --pooled-state-column state
-  --cohort-state-column state
   --output-json data/processed/corneto/pooled_vs_cohort_joint_nmf_comparison.json
   --output-dir data/processed/corneto/pooled_vs_cohort_joint_nmf_tables
 )
@@ -48,4 +46,20 @@ for study in "${STUDIES[@]}"; do
   ARGS+=(--cohort-nmf "${study}|${assignments}")
 done
 
-exec srun "$PY" scripts/compare_pooled_stratified.py "${ARGS[@]}"
+srun "$PY" scripts/compare_pooled_stratified.py "${ARGS[@]}"
+
+# Rank 2 was more stable than rank 3 in the completed 100-start screening for
+# all five targets. Compare it separately so the frozen rank-3 benchmark is
+# retained without treating k=3 as the only defensible structure.
+NMF2_ARGS=(
+  --manifest data/processed/metadata/ocm_master_manifest.tsv
+  --pooled-nmf data/processed/rna/pooled_primary60/nmf/rank_2/assignments.tsv
+  --output-json data/processed/corneto/pooled_vs_cohort_nmf_rank2_comparison.json
+  --output-dir data/processed/corneto/pooled_vs_cohort_nmf_rank2_tables
+)
+for study in "${STUDIES[@]}"; do
+  assignments=data/processed/rna/${study}/nmf_primary/rank_2/assignments.tsv
+  test -s "$assignments"
+  NMF2_ARGS+=(--cohort-nmf "${study}|${assignments}")
+done
+srun "$PY" scripts/compare_pooled_stratified.py "${NMF2_ARGS[@]}"
