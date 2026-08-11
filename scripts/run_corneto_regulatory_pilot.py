@@ -141,10 +141,11 @@ def main() -> int:
     parser.add_argument("--expression", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--collectri", type=Path, required=True)
-    parser.add_argument("--pkn", type=Path, required=True)
+    parser.add_argument("--pkn", "--omnipath", dest="pkn", type=Path, required=True)
     parser.add_argument("--study", required=True)
-    parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--primary-only", action="store_true")
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--output-dir", type=Path)
+    parser.add_argument("--primary-only", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--max-samples", type=int, default=8)
     parser.add_argument("--min-targets", type=int, default=5)
     parser.add_argument("--max-inputs", type=int, default=5)
@@ -155,7 +156,13 @@ def main() -> int:
     parser.add_argument("--max-seconds", type=int, default=600)
     parser.add_argument("--solver", choices=("auto", "gurobi", "highs"), default="auto")
     args = parser.parse_args()
+    if args.output is None:
+        if args.output_dir is None:
+            parser.error("one of --output or --output-dir is required")
+        args.output = args.output_dir / "regulatory_pilot_summary.json"
     args.output.parent.mkdir(parents=True, exist_ok=True)
+    if not 8 <= args.max_samples <= 12:
+        parser.error("--max-samples must be between 8 and 12")
     receipt = {
         "schema_version": "corneto_regulatory_pilot.v1",
         "status": "running",
