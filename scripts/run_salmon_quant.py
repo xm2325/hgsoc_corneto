@@ -31,17 +31,52 @@ def _run(command: list[str], *, capture: bool = False) -> str:
     return result.stdout.strip() if capture else ""
 
 
+def _quarantine_invalid_partial(partial: Path, reason: str) -> dict[str, str]:
+    timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S.%fZ")
+    quarantined = partial.with_name(f"{partial.name}.invalid-{timestamp}")
+    os.replace(partial, quarantined)
+    event = {
+        "action": "quarantine_invalid_partial",
+        "path": str(quarantined),
+        "reason": reason,
+    }
+    print(json.dumps(event, sort_keys=True))
+    return event
+
+
 def _download_fastq(spec: FastqSpec, target: Path) -> dict[str, Any]:
     valid, reason = validate_fastq_file(target, spec)
     if not valid and target.exists():
         raise ValueError(f"Existing FASTQ requires inspection: {target} ({reason})")
+    quarantined_partials: list[dict[str, str]] = []
     if not valid:
         partial = target.with_name(target.name + ".partial")
-        _run(resumable_curl_command(url=spec.url, target=partial))
-        valid, reason = validate_fastq_file(partial, spec)
-        if not valid:
-            raise ValueError(f"Downloaded FASTQ failed verification: {partial} ({reason})")
-        os.replace(partial, target)
+        if partial.exists() and not partial.is_file():
+            raise ValueError(f"Partial FASTQ requires inspection: {partial} (not_a_file)")
+        if partial.is_file():
+            partial_valid, partial_reason = validate_fastq_file(partial, spec)
+            if partial_valid:
+                os.replace(partial, target)
+            elif partial.stat().st_size >= spec.bytes:
+                quarantined_partials.append(
+                    _quarantine_invalid_partial(partial, partial_reason)
+                )
+        if not target.is_file():
+            for validation_attempt in range(2):
+                _run(resumable_curl_command(url=spec.url, target=partial))
+                partial_valid, partial_reason = validate_fastq_file(partial, spec)
+                if partial_valid:
+                    os.replace(partial, target)
+                    break
+                if partial.is_file():
+                    quarantined_partials.append(
+                        _quarantine_invalid_partial(partial, partial_reason)
+                    )
+                if validation_attempt == 1:
+                    raise ValueError(
+                        "Downloaded FASTQ failed verification twice; invalid files "
+                        f"were quarantined for inspection ({partial_reason})"
+                    )
     return {
         "mate": spec.mate,
         "url": spec.url,
@@ -49,6 +84,7 @@ def _download_fastq(spec: FastqSpec, target: Path) -> dict[str, Any]:
         "bytes": spec.bytes,
         "md5": spec.md5,
         "verification": "verified",
+        "quarantined_partials": quarantined_partials,
     }
 
 

@@ -83,7 +83,9 @@ reused, while an incomplete final output is preserved for inspection rather
 than silently overwritten. FASTQ transfers use checksum validation, retained
 partial files, HTTP range resumption, retries for all curl transfer errors, and
 a two-minute low-speed timeout so a stalled ENA connection is resumed instead
-of occupying an array slot indefinitely.
+of occupying an array slot indefinitely. A full-length partial file that fails
+its ENA MD5 is timestamped and quarantined, then downloaded once from byte zero;
+the invalid copy remains available for audit.
 
 Quantification requests 48 GiB per task. An initial 24 GiB request was rejected
 after `ERR13907051` exceeded that limit during index loading/quantification;
