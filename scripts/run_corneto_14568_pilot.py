@@ -83,7 +83,12 @@ def _candidate_sets(
     run_ids: list[str],
     *,
     max_candidates: int,
-) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]], list[str]]:
+) -> tuple[
+    dict[str, dict[str, Any]],
+    dict[str, dict[str, Any]],
+    list[str],
+    dict[str, float],
+]:
     per_sample: dict[str, dict[str, Any]] = {}
     audits: dict[str, dict[str, Any]] = {}
     for run_id in run_ids:
@@ -117,22 +122,60 @@ def _candidate_sets(
     selected = [reaction_id for _, reaction_id in scores[:max_candidates]]
     if not selected:
         raise ValueError("No positive expression-derived reaction candidates remain")
-    return per_sample, audits, selected
+    selected_scores = {reaction_id: score for score, reaction_id in scores[:max_candidates]}
+    return per_sample, audits, selected, selected_scores
 
 
 def _reaction_bounds(
+    model: Any,
     per_sample: dict[str, dict[str, Any]],
     run_ids: list[str],
     selected: list[str],
-) -> dict[str, dict[str, tuple[float, float]]]:
+    growth_fraction: float,
+) -> tuple[
+    dict[str, dict[str, tuple[float, float]]],
+    dict[str, float],
+    dict[str, float],
+    dict[str, int],
+]:
     bounds: dict[str, dict[str, tuple[float, float]]] = {}
+    optima: dict[str, float] = {}
+    targets: dict[str, float] = {}
+    skipped: dict[str, int] = {}
     for run_id in run_ids:
-        bounds[run_id] = {
-            reaction_id: per_sample[run_id][reaction_id].proposed_bounds
-            for reaction_id in selected
-            if reaction_id in per_sample[run_id]
-        }
-    return bounds
+        sample_bounds: dict[str, tuple[float, float]] = {}
+        skipped_count = 0
+        for reaction_id in selected:
+            candidate = per_sample[run_id].get(reaction_id)
+            if candidate is None:
+                continue
+            reaction = model.reactions.get_by_id(reaction_id)
+            lower = max(float(reaction.lower_bound), float(candidate.proposed_lower))
+            upper = min(float(reaction.upper_bound), float(candidate.proposed_upper))
+            if lower > upper:
+                skipped_count += 1
+                continue
+            sample_bounds[reaction_id] = (lower, upper)
+
+        constrained = model.copy()
+        for reaction_id, reaction_bounds in sample_bounds.items():
+            constrained.reactions.get_by_id(reaction_id).bounds = reaction_bounds
+        constrained.objective = "biomass_human"
+        optimum_solution = constrained.optimize()
+        optimum = float(optimum_solution.objective_value or 0.0)
+        if not math.isfinite(optimum) or optimum < 0:
+            raise RuntimeError(f"Non-finite or negative biomass optimum for {run_id}")
+        biomass = model.reactions.get_by_id("biomass_human")
+        target = growth_fraction * optimum
+        sample_bounds["biomass_human"] = (
+            max(float(biomass.lower_bound), target),
+            float(biomass.upper_bound),
+        )
+        bounds[run_id] = sample_bounds
+        optima[run_id] = optimum
+        targets[run_id] = target
+        skipped[run_id] = skipped_count
+    return bounds, optima, targets, skipped
 
 
 def main() -> None:
@@ -145,6 +188,12 @@ def main() -> None:
     parser.add_argument("--primary-only", action="store_true")
     parser.add_argument("--max-samples", type=int, default=3)
     parser.add_argument("--max-candidates", type=int, default=250)
+    parser.add_argument(
+        "--growth-fraction",
+        type=float,
+        default=0.9,
+        help="Minimum fraction of each expression-constrained biomass optimum.",
+    )
     parser.add_argument(
         "--expression-transform",
         choices=("raw_tpm", "log1p_tpm", "log1p_tpm_div5"),
@@ -165,11 +214,15 @@ def main() -> None:
     requested_solver = args.solver
     solver, available_solvers, fallback_reason = _solver_choice(requested_solver)
 
-    per_sample, candidate_audits, selected = _candidate_sets(
+    per_sample, candidate_audits, selected, selected_scores = _candidate_sets(
         model, expression, run_ids, max_candidates=args.max_candidates
     )
-    objectives = {run_id: {"biomass_human": 1.0} for run_id in run_ids}
-    reaction_bounds = _reaction_bounds(per_sample, run_ids, selected)
+    if not 0 < args.growth_fraction <= 1:
+        raise ValueError("--growth-fraction must be in (0, 1]")
+    reaction_bounds, growth_optima, growth_targets, bounds_skipped = _reaction_bounds(
+        model, per_sample, run_ids, selected, args.growth_fraction
+    )
+    objectives = {run_id: {"biomass_human": -1.0} for run_id in run_ids}
 
     solver_fallback: str | None = None
     try:
@@ -182,8 +235,13 @@ def main() -> None:
             solver=solver,
         )
     except Exception as error:
-        if requested_solver == "auto" and solver == "gurobi":
-            solver_fallback = f"Gurobi solve failed: {type(error).__name__}: {error}"
+        error_text = str(error).casefold()
+        if (
+            requested_solver == "auto"
+            and solver == "gurobi"
+            and ("gurobi" in error_text or "license" in error_text)
+        ):
+            solver_fallback = f"Gurobi solve failed: {type(error).__name__}"
             solver = "highs"
             comparison = compare_independent_and_joint_sparse_fba(
                 model,
@@ -226,9 +284,20 @@ def main() -> None:
             "policy": "positive candidates ranked by median proposed upper bound; lowest retained",
             "max_candidates": args.max_candidates,
             "selected_count": len(selected),
+            "selected_reaction_ids": selected,
+            "selected_median_proposed_upper": selected_scores,
             "audits_by_sample": candidate_audits,
+            "bounds_clamped_to_human_gem": True,
+            "bounds_skipped_as_empty_intersection": bounds_skipped,
         },
-        "objective": {"independent_lambda": args.independent_lambda, "joint_lambda": args.joint_lambda},
+        "objective": {
+            "biomass_coefficient": -1.0,
+            "growth_fraction": args.growth_fraction,
+            "growth_optima": growth_optima,
+            "growth_targets": growth_targets,
+            "independent_lambda": args.independent_lambda,
+            "joint_lambda": args.joint_lambda,
+        },
         "corneto": comparison.to_dict(),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
