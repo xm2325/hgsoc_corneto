@@ -16,6 +16,8 @@ RNA_ROOT=/scratch/project_2012997/xiaomei/hgsoc_corneto_rna
 INPUT_ROOT=/scratch/project_2012997/xiaomei/hgsoc_corneto_inputs
 VENV_ROOT=${HGSOC_CORNETO_ENV:-/scratch/project_2012997/xiaomei/hgsoc_corneto_env}
 SOLVER=${SOLVER:-auto}
+MOSEK_LICENSE=${MOSEKLM_LICENSE_FILE:-${REPO_ROOT}/mosek_xm.lic}
+GUROBI_LICENSE=${GRB_LICENSE_FILE:-${REPO_ROOT}/gurobi_xm.lic}
 
 if ! type module >/dev/null 2>&1; then
     set +u
@@ -26,6 +28,20 @@ fi
 module load python-data/3.12
 export PYTHONNOUSERSITE=1
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
+if [[ "${SOLVER}" == "mosek" && ! -r "${MOSEK_LICENSE}" ]]; then
+    echo "SOLVER=mosek but MOSEK license is not readable: ${MOSEK_LICENSE}" >&2
+    exit 2
+fi
+if [[ "${SOLVER}" == "gurobi" && ! -r "${GUROBI_LICENSE}" ]]; then
+    echo "SOLVER=gurobi but Gurobi license is not readable: ${GUROBI_LICENSE}" >&2
+    exit 2
+fi
+if [[ -r "${MOSEK_LICENSE}" ]]; then
+    export MOSEKLM_LICENSE_FILE="${MOSEK_LICENSE}"
+fi
+if [[ -r "${GUROBI_LICENSE}" ]]; then
+    export GRB_LICENSE_FILE="${GUROBI_LICENSE}"
+fi
 export HGSOC_CORNETO_REPO_COMMIT=$(git -C "${REPO_ROOT}" rev-parse HEAD)
 cd "${REPO_ROOT}"
 
