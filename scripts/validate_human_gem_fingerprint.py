@@ -30,7 +30,7 @@ def main() -> None:
             metabolite_count += 1
         elif tag == "reaction":
             reaction_id = element.attrib.get("id", "")
-            if reaction_id == "biomass_human":
+            if reaction_id in {"biomass_human", "R_biomass_human"}:
                 biomass_ids.append(reaction_id)
         element.clear()
     receipt["metabolites"] = metabolite_count
@@ -48,9 +48,10 @@ def main() -> None:
         optional["manifest_unique_runs"] = len({(r.get("study_accession"), r.get("run_accession")) for r in manifest_rows})
     if optional:
         receipt["optional_input_counts"] = optional
+    receipt["biomass_human_present"] = bool(biomass_ids)
     receipt["validation"] = {
         "status": "complete",
-        "biomass_detected": bool(receipt["biomass_sbml_ids"]),
+        "biomass_detected": bool(receipt["biomass_human_present"]),
         "gpr_partition_complete": bool(receipt["gpr_partition_complete"]),
     }
     text = json.dumps(receipt, indent=2, sort_keys=True) + "\n"
