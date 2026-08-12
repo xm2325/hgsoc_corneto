@@ -219,8 +219,9 @@ cumulative exposure.
 
 ## Recurring monitor
 
-The Codex heartbeat **HGSOC CORNETO Roihu pipeline monitor** is active in the
-current task and runs every 30 minutes. This cadence is deliberate:
+The Codex project-scoped cron **HGSOC CORNETO Roihu pipeline monitor** is active
+for this project and runs every 30 minutes. It is explicitly pinned to
+`gpt-5.6-luna` with `max` reasoning. This cadence is deliberate:
 
 - Slurm dependencies already launch valid successors, so minute-scale polling
   would not accelerate the pipeline.
