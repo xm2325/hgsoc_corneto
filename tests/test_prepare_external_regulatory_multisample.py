@@ -36,6 +36,14 @@ def test_external_bundle_is_independently_standardized_and_patient_aware(
     _tsv(collectri, [["source", "target", "sign"], ["TF1", "GENE1", 1]])
     pkn = tmp_path / "pkn.tsv"
     _tsv(pkn, [["source", "target", "sign"], ["SRC", "TF1", 1]])
+    signature = tmp_path / "signature.tsv"
+    _tsv(
+        signature,
+        [
+            ["feature_type", "feature_id", "source", "target", "sign"],
+            ["edge", "X|Y|+", "X", "Y", 1],
+        ],
+    )
     output = tmp_path / "bundle.json"
     result = build_bundle(
         argparse.Namespace(
@@ -43,6 +51,7 @@ def test_external_bundle_is_independently_standardized_and_patient_aware(
             manifest=manifest,
             collectri=collectri,
             pkn=pkn,
+            required_signature=signature,
             study="GSETEST",
             output=output,
             expected_count=3,
@@ -59,5 +68,6 @@ def test_external_bundle_is_independently_standardized_and_patient_aware(
     assert result["status"] == "completed"
     assert result["input_counts"]["selected_conditions"] == 3
     assert result["input_counts"]["unique_patients"] == 3
-    assert result["input_counts"]["frozen_graph_union_edges"] == 1
+    assert result["input_counts"]["frozen_graph_union_edges"] == 2
+    assert result["input_counts"]["required_signature_edges"] == 1
     assert {row["patient_id"] for row in result["conditions"]} == {"P1", "P2", "P3"}

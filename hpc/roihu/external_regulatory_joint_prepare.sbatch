@@ -21,6 +21,7 @@ SOURCE_DIR=${SOURCE_DIR:-/scratch/project_2012997/xiaomei/hgsoc_corneto_regulato
 : "${OUTPUT_BUNDLE:?}"
 : "${EXPECTED_COUNT:?}"
 : "${PATIENT_ID_FIELD:?}"
+SIGNATURE=${SIGNATURE:-${ROOT}/data/processed/corneto/external_validation/taylor_regulatory_signature_l0p001.tsv}
 
 cd "${ROOT}"
 export PYTHONNOUSERSITE=1 PYTHONPATH="${ROOT}/src"
@@ -33,6 +34,7 @@ args=(
     --manifest "${MANIFEST}"
     --collectri "${SOURCE_DIR}/collectri_tf_target.tsv.gz"
     --pkn "${SOURCE_DIR}/omnipath_signed_pkn.tsv.gz"
+    --required-signature "${SIGNATURE}"
     --study "${STUDY_ACCESSION}"
     --output "${OUTPUT_BUNDLE}"
     --expected-count "${EXPECTED_COUNT}"

@@ -35,7 +35,14 @@ ALLOWED_INPUT_SCALES = {
     "standardized_rank",
 }
 SIGNATURE_COLUMNS = {"feature_type", "feature_id", "expected_direction"}
-EVIDENCE_COLUMNS = {"patient_id", "feature_type", "feature_id", "selected", "direction"}
+EVIDENCE_COLUMNS = {
+    "patient_id",
+    "feature_type",
+    "feature_id",
+    "evaluable",
+    "selected",
+    "direction",
+}
 
 
 def _sha256(path: Path) -> str:
@@ -181,6 +188,11 @@ def _read_group(
         if key in seen:
             raise ExternalValidationError(f"{label} evidence duplicates patient-feature {key!r}")
         seen.add(key)
+        evaluable = _boolean(row["evaluable"], f"{label} evidence line {line} evaluable")
+        if not evaluable:
+            raise ExternalValidationError(
+                f"{label} evidence line {line}: frozen feature was not evaluable"
+            )
         selected = _boolean(row["selected"], f"{label} evidence line {line} selected")
         direction = _direction(row["direction"], f"{label} evidence line {line} direction")
         if not selected and direction != 0:
@@ -377,7 +389,9 @@ def compare(
                     feature for feature in features if left_draw[feature][0] >= prevalence_threshold
                 }
                 right_set = {
-                    feature for feature in features if right_draw[feature][0] >= prevalence_threshold
+                    feature
+                    for feature in features
+                    if right_draw[feature][0] >= prevalence_threshold
                 }
                 value = _jaccard(left_set, right_set)
                 if value is not None:

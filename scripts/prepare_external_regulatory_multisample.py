@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import os
 import tempfile
@@ -34,7 +35,13 @@ except ModuleNotFoundError:
 
 
 def build_bundle(args: argparse.Namespace) -> dict[str, object]:
-    for path in (args.expression, args.manifest, args.collectri, args.pkn):
+    for path in (
+        args.expression,
+        args.manifest,
+        args.collectri,
+        args.pkn,
+        args.required_signature,
+    ):
         if not path.is_file():
             raise FileNotFoundError(path)
     if args.output.exists():
@@ -75,6 +82,22 @@ def build_bundle(args: argparse.Namespace) -> dict[str, object]:
     zscores = _z_scores(values, run_ids)
     collectri_edges = _load_edges(args.collectri)
     pkn_edges = _load_edges(args.pkn)
+    with args.required_signature.open(encoding="utf-8", newline="") as handle:
+        signature_rows = list(csv.DictReader(handle, delimiter="\t"))
+    required_edges: set[tuple[str, str, int]] = set()
+    for row in signature_rows:
+        if row.get("feature_type") != "edge":
+            raise ValueError("external regulatory bundle accepts edge signatures only")
+        source, target = row.get("source", "").strip(), row.get("target", "").strip()
+        try:
+            sign = int(row.get("sign", ""))
+        except ValueError as error:
+            raise ValueError("signature edge has an invalid sign") from error
+        if not source or not target or sign not in {-1, 1}:
+            raise ValueError("signature edge is incomplete")
+        required_edges.add((source, target, sign))
+    if not required_edges or len(required_edges) != len(signature_rows):
+        raise ValueError("signature is empty or contains duplicate edges")
 
     conditions: list[dict[str, object]] = []
     graph_union: set[tuple[str, str, int]] = set()
@@ -136,6 +159,10 @@ def build_bundle(args: argparse.Namespace) -> dict[str, object]:
     included = sum(row["preprocessing_status"] == "included" for row in conditions)
     if included < 2 or not graph_union:
         raise ValueError("fewer than two usable external conditions or empty graph union")
+    # Make every Taylor-frozen feature part of the formal external candidate
+    # universe.  Otherwise absence from an external solution could mean either
+    # "not selected" or simply "never available to the model".
+    graph_union.update(required_edges)
     result: dict[str, object] = {
         "schema_version": "regulatory_multisample_input.v1",
         "status": "completed",
@@ -162,6 +189,7 @@ def build_bundle(args: argparse.Namespace) -> dict[str, object]:
             "collectri_edges": len(collectri_edges),
             "pkn_edges": len(pkn_edges),
             "frozen_graph_union_edges": len(graph_union),
+            "required_signature_edges": len(required_edges),
         },
         "parameters": {
             "min_targets": args.min_targets,
@@ -177,6 +205,10 @@ def build_bundle(args: argparse.Namespace) -> dict[str, object]:
             "expression": {"path": str(args.expression), "sha256": _sha(args.expression)},
             "collectri": {"path": str(args.collectri), "sha256": _sha(args.collectri)},
             "pkn": {"path": str(args.pkn), "sha256": _sha(args.pkn)},
+            "required_signature": {
+                "path": str(args.required_signature),
+                "sha256": _sha(args.required_signature),
+            },
         },
         "graph": [
             {"source": source, "target": target, "sign": sign}
@@ -207,6 +239,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--manifest", type=Path, required=True)
     result.add_argument("--collectri", type=Path, required=True)
     result.add_argument("--pkn", type=Path, required=True)
+    result.add_argument("--required-signature", type=Path, required=True)
     result.add_argument("--study", required=True)
     result.add_argument("--output", type=Path, required=True)
     result.add_argument("--expected-count", type=int, required=True)

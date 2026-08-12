@@ -57,6 +57,7 @@ def _fixture(tmp_path: Path) -> tuple[Path, list[str], dict[str, Path]]:
                         "patient_id": patient,
                         "feature_type": feature_type,
                         "feature_id": feature_id,
+                        "evaluable": 1,
                         "selected": int(selected),
                         "direction": direction,
                     }
@@ -143,4 +144,17 @@ def test_incomplete_patient_signature_grid_fails_closed(tmp_path: Path) -> None:
     contract["evidence_sha256"] = _sha(evidence)
     contracts["tumour"].write_text(json.dumps(contract), encoding="utf-8")
     with pytest.raises(ExternalValidationError, match="complete frozen grid"):
+        compare(signature_path=signature, group_specs=specs, bootstrap_iterations=100)
+
+
+def test_unevaluable_signature_feature_fails_closed(tmp_path: Path) -> None:
+    signature, specs, contracts = _fixture(tmp_path)
+    evidence = Path(specs[0].split("=", 1)[1].split(",", 1)[0])
+    rows = list(csv.DictReader(evidence.open(encoding="utf-8"), delimiter="\t"))
+    rows[0]["evaluable"] = "0"
+    _tsv(evidence, rows)
+    contract = json.loads(contracts["tumour"].read_text(encoding="utf-8"))
+    contract["evidence_sha256"] = _sha(evidence)
+    contracts["tumour"].write_text(json.dumps(contract), encoding="utf-8")
+    with pytest.raises(ExternalValidationError, match="not evaluable"):
         compare(signature_path=signature, group_specs=specs, bootstrap_iterations=100)
