@@ -4,7 +4,10 @@ import importlib.util
 
 import pytest
 
-from hgsoc_corneto.metabolic.joint_fba import compare_independent_and_joint_sparse_fba
+from hgsoc_corneto.metabolic.joint_fba import (
+    compare_independent_and_joint_sparse_fba,
+    solve_joint_sparse_fba,
+)
 from hgsoc_corneto.metabolic.toy import parallel_pathway_model
 
 pytestmark = pytest.mark.skipif(
@@ -42,3 +45,20 @@ def test_joint_sparse_fba_reduces_cross_sample_union() -> None:
     assert len({tuple(sorted(routes)) for routes in joint_routes}) == 1
     assert len(joint_routes[0]) == 1
     assert len(result.joint_active_union) < len(result.independent_active_union)
+
+
+def test_joint_only_sparse_fba_preserves_condition_order() -> None:
+    objectives = {
+        "condition_A": {"ROUTE_B": 1.0},
+        "condition_B": {"ROUTE_A": 1.0},
+    }
+    bounds = {condition: {"BIOMASS": (6.0, 6.0)} for condition in objectives}
+    result = solve_joint_sparse_fba(
+        parallel_pathway_model(),
+        objectives=objectives,
+        reaction_bounds=bounds,
+        joint_lambda=10.0,
+    )
+    assert result.conditions == tuple(objectives)
+    assert tuple(item.condition for item in result.joint) == tuple(objectives)
+    assert result.to_dict()["joint_active_union_size"] == len(result.joint_active_union)

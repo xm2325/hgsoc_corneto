@@ -36,6 +36,23 @@ class SparseFBAComparison:
         return result
 
 
+@dataclass(frozen=True)
+class JointSparseFBAResult:
+    """Joint-only sparse-FBA result for a pre-defined condition collection."""
+
+    solver: str
+    joint_lambda: float
+    active_tolerance: float
+    conditions: tuple[str, ...]
+    joint: tuple[ConditionFluxSolution, ...]
+    joint_active_union: tuple[str, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        result = asdict(self)
+        result["joint_active_union_size"] = len(self.joint_active_union)
+        return result
+
+
 def _corneto_components(model: Any) -> tuple[Any, Any, list[str]]:
     try:
         from corneto.io import cobra_model_to_graph
@@ -115,6 +132,61 @@ def _active_union(solutions: Sequence[ConditionFluxSolution]) -> tuple[str, ...]
         reaction for solution in solutions for reaction in solution.active_by_flux
     }
     return tuple(sorted(active))
+
+
+def solve_joint_sparse_fba(
+    model: Any,
+    *,
+    objectives: Mapping[str, Mapping[str, float]],
+    reaction_bounds: Mapping[
+        str,
+        Mapping[str, tuple[float | None, float | None]],
+    ],
+    joint_lambda: float,
+    solver: str = "highs",
+    active_tolerance: float = 1e-7,
+) -> JointSparseFBAResult:
+    """Solve one joint union-sparse FBA without repeating independent MILPs."""
+
+    conditions = tuple(objectives)
+    if not conditions:
+        raise ValueError("At least one condition is required")
+    if set(conditions) != set(reaction_bounds):
+        raise ValueError("objectives and reaction_bounds must name the same conditions")
+    if joint_lambda < 0:
+        raise ValueError("Regularization weight must be non-negative")
+    if active_tolerance <= 0:
+        raise ValueError("active_tolerance must be positive")
+
+    MultiSampleFBA, graph, reaction_ids = _corneto_components(model)
+    problem = MultiSampleFBA(lambda_reg=joint_lambda).build_many(
+        graph,
+        objectives={condition: dict(objectives[condition]) for condition in conditions},
+        reaction_bounds={
+            condition: dict(reaction_bounds[condition]) for condition in conditions
+        },
+    )
+    solution = problem.solve(solver=solver)
+    summaries = _summaries(
+        problem,
+        solution,
+        reaction_ids,
+        conditions,
+        active_tolerance=active_tolerance,
+    )
+    if any(
+        summary.status.casefold() not in {"optimal", "optimal_inaccurate"}
+        for summary in summaries
+    ):
+        raise RuntimeError(f"Joint conditions failed: {summaries[0].status}")
+    return JointSparseFBAResult(
+        solver=solver,
+        joint_lambda=joint_lambda,
+        active_tolerance=active_tolerance,
+        conditions=conditions,
+        joint=summaries,
+        joint_active_union=_active_union(summaries),
+    )
 
 
 def compare_independent_and_joint_sparse_fba(
