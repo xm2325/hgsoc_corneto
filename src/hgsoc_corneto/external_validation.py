@@ -470,13 +470,15 @@ def iter_candidate_symbols(path: str | Path) -> Iterator[str]:
 
 def read_gene_map(path: str | Path) -> dict[str, str]:
     rows = read_tsv_rows(path)
-    required = {"gene_id", "gene_symbol"}
-    if not rows or required - set(rows[0]):
-        raise ValueError("gene-map TSV must contain gene_id and gene_symbol columns")
+    if not rows or "gene_id" not in rows[0]:
+        raise ValueError("gene-map TSV must contain a gene_id column")
+    symbol_column = "gene_symbol" if "gene_symbol" in rows[0] else "gene_name"
+    if symbol_column not in rows[0]:
+        raise ValueError("gene-map TSV must contain gene_symbol or gene_name")
     mapping: dict[str, str] = {}
     for row in rows:
         gene_id = row["gene_id"].strip()
-        symbol = row["gene_symbol"].strip()
+        symbol = row[symbol_column].strip()
         if not gene_id or not symbol:
             raise ValueError("gene-map TSV contains an empty gene_id or gene_symbol")
         previous = mapping.get(gene_id)
