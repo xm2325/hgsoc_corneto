@@ -13,7 +13,7 @@ set -euo pipefail
 
 ROOT=${REPO_ROOT:-/scratch/project_2012997/xiaomei/hgsoc_corneto}
 PY=${PYTHON_BIN:-/scratch/project_2012997/xiaomei/hgsoc_corneto_env/bin/python}
-OUT=${EXTERNAL_DATA_ROOT:-/scratch/project_2012997/xiaomei/hgsoc_external}
+OUT=${EXTERNAL_DATA_ROOT:-/scratch/project_2012997/xiaomei/hgsoc_corneto_external}
 RECEIPT=${GSE208216_RECEIPT:-${OUT}/receipts/gse208216_fetch_audit.json}
 
 cd "${ROOT}"

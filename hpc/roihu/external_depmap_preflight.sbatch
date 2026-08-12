@@ -13,7 +13,7 @@ set -euo pipefail
 
 ROOT=${REPO_ROOT:-/scratch/project_2012997/xiaomei/hgsoc_corneto}
 PY=${PYTHON_BIN:-/scratch/project_2012997/xiaomei/hgsoc_corneto_env/bin/python}
-OUT=${EXTERNAL_DATA_ROOT:-/scratch/project_2012997/xiaomei/hgsoc_external}
+OUT=${EXTERNAL_DATA_ROOT:-/scratch/project_2012997/xiaomei/hgsoc_corneto_external}
 RECEIPT=${DEPMAP_PREFLIGHT_RECEIPT:-${OUT}/receipts/depmap_preflight.json}
 
 cd "${ROOT}"

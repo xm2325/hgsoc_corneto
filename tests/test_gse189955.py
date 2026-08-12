@@ -98,12 +98,12 @@ def test_patient_metadata_roles_and_pseudobulk(tmp_path):
     assert epithelial["malignancy_status"] == "candidate"
 
     counts = tmp_path / "counts.csv.gz"
-    output = tmp_path / "pseudobulk.csv.gz"
+    output = tmp_path / "pseudobulk.tsv.gz"
     _write_counts(counts)
     receipt = aggregate_pseudobulk(counts, cells, output, expected_genes=2)
     assert receipt["input_count_sum"] == receipt["output_count_sum"] == 21
     with gzip.open(output, "rt", encoding="utf-8", newline="") as handle:
-        rows = list(csv.reader(handle))
+        rows = list(csv.reader(handle, delimiter="\t"))
     assert rows[0][0] == "gene"
     gene1 = dict(zip(rows[0], rows[1], strict=True))
     assert gene1["GSE189955__OC01__primary_tumour__epithelial_cells"] == "3"

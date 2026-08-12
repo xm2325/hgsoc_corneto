@@ -409,7 +409,10 @@ def aggregate_pseudobulk(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with _open_text(counts_path, "rt") as source, _open_text(output_path, "wt") as target:
         reader = csv.reader(source)
-        writer = csv.writer(target)
+        # Emit a tab-separated matrix because the project CORNETO readers use
+        # TSV (optionally gzip-compressed) expression inputs.  The official
+        # source remains CSV; this derived artifact is deliberately named TSV.
+        writer = csv.writer(target, delimiter="\t", lineterminator="\n")
         header = next(reader, None)
         if header is None or header[0] not in ("", "gene"):
             raise ValueError("Count matrix lacks the expected leading gene column")
@@ -501,7 +504,7 @@ def prepare(
     aggregation = aggregate_pseudobulk(
         paths["counts"],
         cells,
-        output_dir / "patient_celltype_site_raw_counts.csv.gz",
+        output_dir / "patient_celltype_site_raw_counts.tsv.gz",
         expected_genes=int(config["expected"]["genes"]),
     )
     receipt: dict[str, object] = {

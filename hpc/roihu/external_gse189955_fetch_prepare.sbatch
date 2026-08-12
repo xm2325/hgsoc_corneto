@@ -36,7 +36,7 @@ srun "${PYTHON_BIN}" scripts/prepare_gse189955_external_baseline.py \
 
 test -s "${STAGE_DIR}/processed/receipt.json"
 test -s "${STAGE_DIR}/processed/corneto_manifest.tsv"
-test -s "${STAGE_DIR}/processed/patient_celltype_site_raw_counts.csv.gz"
+test -s "${STAGE_DIR}/processed/patient_celltype_site_raw_counts.tsv.gz"
 
 "${PYTHON_BIN}" -c \
     'import json, pathlib, sys; p=pathlib.Path(sys.argv[1]); r=json.loads(p.read_text()); assert r["status"] == "valid"; assert r["corneto_manifest"]["rows"] == r["aggregation"]["groups"]; assert r["corneto_manifest"]["definitive_malignant_rows"] == 0' \
