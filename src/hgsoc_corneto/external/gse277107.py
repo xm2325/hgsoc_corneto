@@ -211,6 +211,10 @@ def build_paired_metadata(
                 "study_accession": accession,
                 "geo_sample_accession": gsm,
                 "sample_id": description,
+                # Compatibility alias for existing CORNETO runners.  This is
+                # deliberately the matrix column identifier, not an SRR/ERR.
+                "run_accession": description,
+                "run_accession_semantics": "GEO_TPM_matrix_column_identifier_not_SRA_run",
                 "pair_id": pair_id,
                 "aliquot_key": description_match["aliquot"],
                 "reported_site_code": site_code,
@@ -352,6 +356,8 @@ def prepare_dataset(
         "study_accession",
         "geo_sample_accession",
         "sample_id",
+        "run_accession",
+        "run_accession_semantics",
         "pair_id",
         "aliquot_key",
         "reported_site_code",
@@ -436,6 +442,9 @@ def prepare_dataset(
                 "gene_symbol_aggregation": "sum TPM over Ensembl rows sharing gene_name",
                 "paired_delta": "log2(TPM_symbol_sum + 1) omentum minus ovary within pair",
                 "clinical_patient_id_available": False,
+                "run_accession": (
+                    "compatibility alias equal to sample_id/TPM column; not an SRR/ERR accession"
+                ),
             },
             "metadata_anomalies_preserved": anomalies,
             "claim_limits": [
@@ -455,3 +464,117 @@ def prepare_dataset(
         for path in [*output_paths, receipt_path]:
             path.replace(output_dir / path.name)
     return receipt
+
+
+def audit_prepared_dataset(processed_dir: Path) -> dict[str, Any]:
+    """Revalidate a completed output bundle without downloading or recomputing it."""
+
+    receipt_path = processed_dir / "receipt.json"
+    if not receipt_path.is_file():
+        raise GSE277107Error(f"missing preparation receipt: {receipt_path}")
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    if receipt.get("schema_version") != "gse277107_preparation_receipt.v1":
+        raise GSE277107Error("unsupported preparation receipt schema")
+    if receipt.get("status") != "completed" or receipt.get("study_accession") != "GSE277107":
+        raise GSE277107Error("preparation receipt is not a completed GSE277107 receipt")
+
+    expected_outputs = {
+        "paired_sample_manifest.tsv",
+        "gene_symbol_tpm.tsv.gz",
+        "paired_log2_tpm_delta_omentum_minus_ovary.tsv.gz",
+        "gene_id_to_symbol.tsv.gz",
+    }
+    recorded_outputs = receipt.get("outputs", {})
+    if set(recorded_outputs) != expected_outputs:
+        raise GSE277107Error("preparation receipt output inventory is incomplete")
+    for name in sorted(expected_outputs):
+        path = processed_dir / name
+        record = recorded_outputs[name]
+        if not path.is_file():
+            raise GSE277107Error(f"missing prepared output: {name}")
+        if path.stat().st_size != int(record["bytes"]) or sha256(path) != record["sha256"]:
+            raise GSE277107Error(f"prepared output provenance mismatch: {name}")
+
+    source_manifest = receipt.get("source_manifest", {})
+    source_manifest_path = Path(str(source_manifest.get("path", "")))
+    if not source_manifest_path.is_file():
+        raise GSE277107Error("recorded source manifest is unavailable")
+    if sha256(source_manifest_path) != source_manifest.get("sha256"):
+        raise GSE277107Error("source-manifest provenance mismatch")
+    for role, record in receipt.get("sources", {}).items():
+        source_path = Path(str(record.get("path", "")))
+        if not source_path.is_file():
+            raise GSE277107Error(f"recorded source is unavailable: {role}")
+        if source_path.stat().st_size != int(record["bytes"]) or sha256(source_path) != record[
+            "sha256"
+        ]:
+            raise GSE277107Error(f"recorded source provenance mismatch: {role}")
+
+    manifest_path = processed_dir / "paired_sample_manifest.tsv"
+    with manifest_path.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle, delimiter="\t")
+        fields = set(reader.fieldnames or [])
+        required = {
+            "study_accession",
+            "sample_id",
+            "run_accession",
+            "run_accession_semantics",
+            "pair_id",
+            "normalized_site",
+        }
+        if not required.issubset(fields):
+            raise GSE277107Error(f"paired manifest missing fields: {sorted(required - fields)}")
+        rows = list(reader)
+    dimensions = receipt.get("validated_dimensions", {})
+    if len(rows) != int(dimensions.get("rna_samples", -1)):
+        raise GSE277107Error("paired manifest sample count disagrees with receipt")
+    run_ids = [row["run_accession"] for row in rows]
+    if len(run_ids) != len(set(run_ids)):
+        raise GSE277107Error("paired manifest has duplicate run_accession aliases")
+    for row in rows:
+        if row["study_accession"] != "GSE277107":
+            raise GSE277107Error("paired manifest contains another study")
+        if row["run_accession"] != row["sample_id"]:
+            raise GSE277107Error("run_accession alias must equal the TPM matrix sample_id")
+        if row["run_accession_semantics"] != "GEO_TPM_matrix_column_identifier_not_SRA_run":
+            raise GSE277107Error("run_accession alias semantics are missing or changed")
+    pairs: dict[str, set[str]] = defaultdict(set)
+    for row in rows:
+        pairs[row["pair_id"]].add(row["normalized_site"])
+    if len(pairs) != int(dimensions.get("matched_pairs", -1)) or any(
+        sites != {"ovary", "omentum"} for sites in pairs.values()
+    ):
+        raise GSE277107Error("paired manifest no longer contains complete ovary/omentum pairs")
+
+    with gzip.open(processed_dir / "gene_symbol_tpm.tsv.gz", "rt", encoding="utf-8") as handle:
+        expression_header = next(csv.reader(handle, delimiter="\t"))
+    if expression_header[0] != "gene_name" or expression_header[1:] != run_ids:
+        raise GSE277107Error("CORNETO expression columns disagree with paired manifest order")
+    pair_ids = list(dict.fromkeys(row["pair_id"] for row in rows))
+    with gzip.open(
+        processed_dir / "paired_log2_tpm_delta_omentum_minus_ovary.tsv.gz",
+        "rt",
+        encoding="utf-8",
+    ) as handle:
+        delta_header = next(csv.reader(handle, delimiter="\t"))
+    if delta_header != ["gene_name", *pair_ids]:
+        raise GSE277107Error("paired-delta columns disagree with paired manifest order")
+
+    return {
+        "schema_version": "gse277107_receipt_gate.v1",
+        "status": "completed",
+        "audited_at_utc": datetime.now(UTC).replace(microsecond=0).isoformat(),
+        "study_accession": "GSE277107",
+        "preparation_receipt": {
+            "path": str(receipt_path),
+            "sha256": sha256(receipt_path),
+        },
+        "validated_dimensions": dimensions,
+        "regulatory_runner_contract": {
+            "study_accession": "GSE277107",
+            "run_accession_field_present": True,
+            "run_accession_matches_expression_columns": True,
+            "run_accession_semantics": "GEO TPM matrix column identifier, not SRA run",
+        },
+        "scientific_success": True,
+    }

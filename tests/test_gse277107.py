@@ -3,12 +3,14 @@ import gzip
 import importlib.util
 import json
 import math
+import subprocess
 from pathlib import Path
 
 import pytest
 
 from hgsoc_corneto.external.gse277107 import (
     GSE277107Error,
+    audit_prepared_dataset,
     build_paired_metadata,
     prepare_dataset,
 )
@@ -173,6 +175,26 @@ def test_prepare_aggregates_symbols_and_builds_paired_delta(tmp_path: Path) -> N
     )
     assert {row["run_accession"] for row in loaded_manifest} == set(loaded_samples)
     assert loaded_values["A"][0] == pytest.approx(math.log1p(3.0))
+    gate = audit_prepared_dataset(output)
+    assert gate["scientific_success"] is True
+    assert gate["regulatory_runner_contract"]["run_accession_matches_expression_columns"]
+
+
+def test_receipt_gate_rejects_output_drift(tmp_path: Path) -> None:
+    raw = tmp_path / "raw"
+    raw.mkdir()
+    soft = raw / "family.soft.gz"
+    tpm = raw / "tpm.txt.gz"
+    source_manifest = tmp_path / "sources.json"
+    _write_soft(soft)
+    _write_tpm(tpm)
+    _source_manifest(source_manifest, soft, tpm)
+    output = tmp_path / "processed"
+    prepare_dataset(source_manifest_path=source_manifest, source_dir=raw, output_dir=output)
+    with (output / "paired_sample_manifest.tsv").open("a", encoding="utf-8") as handle:
+        handle.write("corruption\n")
+    with pytest.raises(GSE277107Error, match="provenance mismatch"):
+        audit_prepared_dataset(output)
 
 
 def test_prepare_rejects_negative_tpm(tmp_path: Path) -> None:
@@ -190,3 +212,13 @@ def test_prepare_rejects_negative_tpm(tmp_path: Path) -> None:
             source_dir=raw,
             output_dir=tmp_path / "processed",
         )
+
+
+def test_roihu_sbatch_is_syntax_valid_and_solver_free() -> None:
+    script = ROOT / "hpc/roihu/gse277107_fetch_prepare.sbatch"
+    subprocess.run(["bash", "-n", str(script)], check=True)
+    text = script.read_text(encoding="utf-8")
+    assert "audit_gse277107_receipt.py" in text
+    assert "EXTERNAL_ROOT" in text
+    assert "Gurobi" not in text
+    assert "gurobi" not in text
