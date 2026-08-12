@@ -1,0 +1,111 @@
+{
+  "claim_count": 13,
+  "claim_status_counts": {
+    "blocked": 3,
+    "falsified": 1,
+    "pending": 3,
+    "supported under tested conditions": 3,
+    "weakened": 3
+  },
+  "cohort": {
+    "by_study": {
+      "E-MTAB-10801": {
+        "all_runs": 36,
+        "cell_line_control": 0,
+        "fastq_bytes": 172318782780,
+        "fastq_objects": 72,
+        "primary_hgsoc_tumour": 13,
+        "primary_patients_within_study": 12,
+        "stroma_reference": 17,
+        "tumour_non_hgsoc_or_ambiguous": 6,
+        "tumour_nonrepresentative_duplicate": 0,
+        "tumour_not_in_tighe_screen": 0
+      },
+      "E-MTAB-11000": {
+        "all_runs": 12,
+        "cell_line_control": 0,
+        "fastq_bytes": 33440119254,
+        "fastq_objects": 24,
+        "primary_hgsoc_tumour": 11,
+        "primary_patients_within_study": 11,
+        "stroma_reference": 0,
+        "tumour_non_hgsoc_or_ambiguous": 0,
+        "tumour_nonrepresentative_duplicate": 0,
+        "tumour_not_in_tighe_screen": 1
+      },
+      "E-MTAB-14568": {
+        "all_runs": 33,
+        "cell_line_control": 0,
+        "fastq_bytes": 83162442959,
+        "fastq_objects": 66,
+        "primary_hgsoc_tumour": 27,
+        "primary_patients_within_study": 23,
+        "stroma_reference": 0,
+        "tumour_non_hgsoc_or_ambiguous": 6,
+        "tumour_nonrepresentative_duplicate": 0,
+        "tumour_not_in_tighe_screen": 0
+      },
+      "E-MTAB-7223": {
+        "all_runs": 36,
+        "cell_line_control": 2,
+        "fastq_bytes": 188841300121,
+        "fastq_objects": 72,
+        "primary_hgsoc_tumour": 9,
+        "primary_patients_within_study": 7,
+        "stroma_reference": 16,
+        "tumour_non_hgsoc_or_ambiguous": 5,
+        "tumour_nonrepresentative_duplicate": 1,
+        "tumour_not_in_tighe_screen": 3
+      }
+    },
+    "dispositions": {
+      "cell_line_control": 2,
+      "primary_hgsoc_tumour": 60,
+      "stroma_reference": 33,
+      "tumour_non_hgsoc_or_ambiguous": 17,
+      "tumour_nonrepresentative_duplicate": 1,
+      "tumour_not_in_tighe_screen": 4
+    },
+    "fastq_bytes": 477762645114,
+    "fastq_gib": 444.95113670267165,
+    "fastq_objects": 234,
+    "manifest_rows": 117,
+    "one_per_patient_selection_count": 192,
+    "patient_multiplicity": {
+      "1": 45,
+      "2": 6,
+      "3": 1
+    },
+    "primary_ocms": 60,
+    "primary_patients": 52,
+    "repeated_patients": 7,
+    "rows_from_repeated_patients": 15
+  },
+  "derivation_script": "scripts/build_manuscript_evidence.py",
+  "failure_count": 9,
+  "paper_resource_count": 17,
+  "remote_snapshot_sha256": "ed89c20c8b75e71e4e8fa1644ff146fce300004698ab87a89ae2a9642c349855",
+  "schema_version": "manuscript_evidence_snapshot.v1",
+  "source_sha256": {
+    "data/processed/meeson/ocm_output_index.tsv": "7569dfe5aea08d298f2a30800c9ed4e285b5f339d47b5053163dc976d848253f",
+    "data/processed/meeson/toy_corneto_global_retention.json": "7f3a0a67318ad84f3d5015a47aaa174d446b176cb74a2780dc12eb23bac2312b",
+    "data/processed/meeson/toy_corneto_joint_fba.json": "8ed27fd180d70a31882474e26553a2744ec5724210a1b0a770992d54af2f15c8",
+    "data/processed/meeson/upstream_audit.json": "71f5e1a082d32be18a20147f4f1b7657bbab3fb09c27d885523e948d28972a74",
+    "data/processed/metadata/manifest_audit.json": "6933b6b1cde2423226f590acc80288614e62edb5430cccfdfb882c12aacc4f41",
+    "data/processed/metadata/ocm_master_manifest.tsv": "acb46c6cc5a62b076fdc94cc9a3913f1fad37262b5b0ac9a0a9ca3969a2df69b",
+    "data/processed/metadata/tighe_abcb1.tsv": "e4698d9cc9de6a5e472bf4d7d1b540b2e1fe8f80905554ab6cb99a53018ae4b2",
+    "data/processed/metadata/tighe_ocm_characteristics.tsv": "4413bf54cda89d7f192d0e7e60434f8aa99f7b960ad90250249a20a0e26a5860",
+    "data/raw/metadata/biostudies/E-MTAB-10801.idf.txt": "e680a80cc39b0daf62b74e6e7431e3f1ca8c8d60cc3453bc7d9a688e0566e5eb",
+    "data/raw/metadata/biostudies/E-MTAB-10801.sdrf.txt": "c0844528e7753d01a8f610b9088aeb1c49af14e0199ecab3bdc0b846542f78eb",
+    "data/raw/metadata/biostudies/E-MTAB-11000.idf.txt": "5bf156b19849cf54f6ded1c5e88b9866e428f215f661e7c911304540e3b93462",
+    "data/raw/metadata/biostudies/E-MTAB-11000.sdrf.txt": "21d59bb5676205b65405c97a48a842e8eeaaca2b67980d4eb55bc0255b395cbf",
+    "data/raw/metadata/biostudies/E-MTAB-14568.idf.txt": "37118763eaaa6d9431b4677a05eb91146cf573a25441424af655234f248cd639",
+    "data/raw/metadata/biostudies/E-MTAB-14568.sdrf.txt": "83c7ef2723bfa7931a13fa691c07d71745eb2ec9cfcb9df1a54eb81095fc593c",
+    "data/raw/metadata/biostudies/E-MTAB-7223.idf.txt": "0e1e7031eb64f4799547e5e549a922074e7726b2e005cb3e55d1fe3f00fa7e6d",
+    "data/raw/metadata/biostudies/E-MTAB-7223.sdrf.txt": "165850c9f2eca0cf7b406103ee956ec918c517342da68e525a8938c3d2ac5ef7",
+    "evidence/claims.tsv": "0a2d443ade659bb5fbe87f841cf78abb303634e3376f638a47017cc0c1156ee3",
+    "evidence/failures.tsv": "088f7f07c14bc002d4a73c66110e5bab07ca22384ec8a05b38f643b04788c06a",
+    "evidence/paper_ocm_evidence.tsv": "065ee97e60b141c1af73ff6e041aad6eea63c05649a20181060e72df45f09c33",
+    "evidence/roihu_result_snapshot.json": "ed89c20c8b75e71e4e8fa1644ff146fce300004698ab87a89ae2a9642c349855"
+  }
+}

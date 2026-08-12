@@ -1,7 +1,7 @@
 \documentclass[10pt]{article}
 
-% The repository includes the supplied arxiv.sty next to this manuscript so that
-% an arXiv-style build is self-contained.
+% The supplied arxiv.sty is committed beside this file for a self-contained
+% arXiv-style build.
 \usepackage{arxiv}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -10,8 +10,8 @@
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{enumitem}
-\usepackage[hidelinks]{hyperref}
 \usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
 
 \newcommand{\hgsoc}{HGSOC}
 \newcommand{\ocm}{OCM}
@@ -21,882 +21,630 @@
 \newcommand{\tpm}{TPM}
 \newcommand{\logtpm}{\mathrm{log1p}(\tpm)}
 \newcommand{\responseblind}{response-blind}
-\newcommand{\statusnote}[1]{\textit{#1}}
+\newcommand{\supported}{\textit{supported under tested conditions}}
+\newcommand{\weakened}{\textit{weakened}}
+\newcommand{\falsified}{\textit{falsified}}
+\newcommand{\blocked}{\textit{blocked}}
+\newcommand{\pending}{\textit{pending}}
+
+\input{tex/generated/evidence_values.tex}
 
 \title{Cross-cohort metabolic--regulatory state inference in patient-derived\\
 high-grade serous ovarian cancer models:\\
-a reproducible analysis and Taylor-group OCM resource compendium}
+a falsifiable analysis and Taylor-group OCM evidence atlas}
+\renewcommand{\shorttitle}{Cross-cohort HGSOC OCM states}
 
 \author{HGSOC CORNETO Research Team}
-
-\date{Draft manuscript -- analysis snapshot 12 August 2026}
+\date{Evidence snapshot: 12 August 2026}
 
 \begin{document}
-
 \maketitle
 
 \begin{abstract}
-Patient-derived ovarian cancer models (OCMs) preserve clinically relevant
-heterogeneity, but a network state inferred from a single cohort can reflect
-patient repetition, tissue composition, prior-knowledge coverage, or a solver's
-arbitrary optimum. We describe a reproducible, response-blind framework for
-testing whether metabolic and regulatory states in high-grade serous ovarian
-cancer (HGSOC) OCMs are cross-cohort reproducible and robust to these choices.
-We harmonized 117 paired-end RNA-seq runs from four public studies and froze a
-primary cohort of 60 tumour OCMs from 52 patients (9, 13, 11, and 27 models per
-study). Signed transcriptional and signalling priors from CollecTRI and
-OmniPath were contextualized with CORNETO/CARNIVALFlow, while the Meeson
-constraint-integration algorithm was audited against global and joint metabolic
-formulations using Human-GEM. As technical controls, NMF was run separately by
-cohort and on a pooled 60-OCM matrix, with patient-balanced sensitivity
-analysis.
+\textbf{Question.} We ask whether high-grade serous ovarian cancer (HGSOC)
+ovarian cancer models (OCMs) contain metabolic--regulatory states that are
+reproducible across public cohorts, robust to repeated patients and modelling
+choices, enriched relative to labelled reference samples, and supported by
+independent mechanisms.  This is a conjunction of testable claims, not one
+binary assertion.
 
-The completed response-blind results show substantial but incomplete agreement
-between pooled and cohort-stratified NMF states (rank-3 adjusted Rand index
-0.377--0.723; mapped assignment agreement 0.727--0.889). A deterministic
-patient-balanced analysis increased agreement to 0.942 (ARI 0.842). Regulatory
-solution summaries were available for 45 pooled/cohort fits across nine
-pre-specified regularization values; the patient-balanced pooled network had
-union Jaccard 0.890 and mean per-sample Jaccard 0.899. A richer prior-knowledge
-network reduced agreement (pooled union Jaccard 0.202; mean per-sample Jaccard
-0.108), demonstrating that stable modules, rather than individual edges, are
-the appropriate reporting unit. Meeson toy benchmarks independently showed
-sequential-order sensitivity (retained-set Jaccard 0) and symmetric global
-alternative optima. The four full-cohort metabolic jobs were still undergoing
-solver/receipt validation at the manuscript snapshot and are not interpreted
-as biological results. Exact OCM-linked paclitaxel AUC, GI50, and cumulative
-exposure tables are unavailable; consequently this work does not claim drug
-response prediction, intrinsic resistance, or acquired resistance.
+\textbf{Evidence.} A deterministic metadata contract links \ManifestRunCount{}
+RNA-seq runs (\FastqObjectCount{} FASTQ objects; exactly \FastqByteCount{}
+compressed bytes) to \PrimaryOCMCount{} primary HGSOC tumour OCMs from
+\PrimaryPatientCount{} patients.  Fixed-rank pooled and cohort-local NMF fits
+show substantial but incomplete \emph{same-data} concordance: rank-3 adjusted
+Rand indices span 0.377--0.723 and mapped agreement spans 0.727--0.889.  Rank 2
+has stronger pooled stability than rank 3, falsifying any claim that rank 3 is
+the uniquely supported dimension.  One lexicographic one-OCM-per-patient
+sensitivity yields ARI 0.842 and agreement 0.942, but does not establish
+robustness over all valid patient representatives.  A receipt-valid
+multi-condition regulatory grid contains 45 fits over nine nominal
+regularisation values.  At nominal $\lambda=0.001$, patient de-duplication
+retains high edge overlap (union Jaccard 0.890), whereas a bundled richer graph
+policy changes inputs, outputs, and search depth and produces low pooled
+agreement (union Jaccard 0.202).  This demonstrates material graph-policy
+sensitivity, not a stable causal core.  Near-optimal sampling in E-MTAB-14568
+produces 26 non-empty receipt-valid ensembles and one blocked zero-edge
+optimum.
+
+\textbf{Boundary.} Full-cohort metabolic solutions, tumour--reference
+enrichment, OCM-specific TPI1 dependency, and treatment-response claims are not
+declared positive here.  Exact OCM-linked paclitaxel AUC, raw GI50, and
+cumulative exposure are absent from the validated public table.  We therefore
+report a layered evidence atlas: what is supported, what has been falsified,
+what remains weakened or pending, and the observations that would overturn
+each statement.
 \end{abstract}
 
-\keywords{high-grade serous ovarian cancer \and patient-derived models \and CORNETO \and CARNIVAL \and Human-GEM \and NMF \and reproducibility}
+\keywords{high-grade serous ovarian cancer \and patient-derived models \and
+CORNETO \and CARNIVAL \and Human-GEM \and NMF \and falsifiability \and
+reproducibility}
 
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{1}
 \tableofcontents
 \clearpage
 
-\section{Introduction}
+\section{Answer first: the central proposition is only partly supported}
 
-High-grade serous ovarian cancer is molecularly heterogeneous and most patients
-eventually relapse after platinum--taxane therapy. The Taylor-group living
-biobank established patient-derived ex vivo ovarian cancer models (OCMs) with
-extensive proliferative capacity and later expanded this platform to an
-83-model drug screen\cite{nelson2020,tighe2025}. These models provide a controlled setting in
-which molecular heterogeneity and drug response can be studied together, but
-their usefulness depends on separating
-tumour biology from cohort, passage, tissue-composition, and patient-repetition
-effects. The public Taylor-group resources contain both tumour and non-tumour
-material, as well as repeated models from some patients. Treating every RNA
-library as an independent observation can therefore inflate apparent
-replication.
-
-Network contextualisation adds a second source of uncertainty. A signed prior
-knowledge network (PKN) is incomplete and unevenly supported, transcription
-factor (TF) activity is inferred rather than measured, and integer optimisation
-can have multiple equivalent solutions. In metabolic modelling, the published
-Meeson workflow proposes expression-derived reaction constraints sequentially;
-the retained reaction set can depend on candidate order\cite{meesonrepo}. A global formulation
-can remove this particular order dependence but can still have alternative
-optima. In signalling, a multi-condition penalty can encourage a shared network,
-yet the result depends on the PKN and the regularisation convention.
-
-We therefore ask a deliberately narrower question than ``which edge causes
-paclitaxel resistance?'':
+The project centres on the following proposition:
 
 \begin{quote}
-Do HGSOC OCMs contain metabolic and regulatory states that reproduce across
-cohorts, remain robust to repeated patients and modelling choices, are enriched
-relative to stromal/reference material, and receive support from external
-mechanistic evidence?
+HGSOC OCMs contain metabolic--regulatory states that reproduce across cohorts,
+remain robust to patient repetition and model choice, are enriched relative to
+stroma or other labelled references, and receive independent mechanistic
+support.
 \end{quote}
 
-The analysis contract separates four evidence layers. Primary tumour-only
-models define the main estimand; pooled and patient-balanced fits test
-robustness; stroma, non-HGSOC, and cell-line samples are reference contrasts;
-and the Meeson/TPI1 analyses provide model-level mechanistic checks. Drug
-response is intentionally downstream of inference. This separation prevents a
-response value from influencing source selection, network construction,
-regularisation, or stability tuning.
+No single analysis can establish that conjunction.  We therefore split it into
+13 claims (Appendix~\ref{app:claims}).  The frozen sample universe is
+\supported.  NMF pooled-versus-local concordance is measurable, but independent
+cross-cohort reproduction is \weakened{} because each tested cohort also
+contributes to the pooled fit.  Rank 3 as the unique latent dimension is
+\falsified.  Regulatory patient de-duplication is encouraging under one
+deterministic selection, while graph-policy invariance is \weakened.  A
+cross-cohort metabolic state, tumour--reference enrichment, and independent
+mechanistic replication remain \pending.  OCM-specific TPI1 dependency,
+paclitaxel response, and intrinsic/acquired-resistance estimands are \blocked{}
+by absent validated inputs or results.
 
-\section{Study design and data}
-
-\subsection{Public RNA cohorts and the primary OCM universe}
-
-We archived run-level metadata and paired-end FASTQ reports for four BioStudies
-accessions: E-MTAB-7223, E-MTAB-10801, E-MTAB-11000, and E-MTAB-14568. These
-studies support the living-biobank, subtype-classification, PARG-inhibitor, and
-taxol/cabazitaxel--SUMOylation publications, respectively
-\cite{nelson2020,barnes2021,coulsongilmer2021,tighe2025,littler2025}. The
-committed manifest contains 117 RNA runs (234 FASTQ files; 444.951~GiB
-compressed). Salmon quantification and one-reference aggregation were performed
-on Roihu scratch storage, with run receipts and byte-level checks retained.
-The primary analysis includes one representative tumour RNA library per OCM,
-restricted to HGSOC and excluding stromal cultures, non-HGSOC or ambiguous
-histotypes, cell-line controls, and duplicate later passages.
-
-\begin{table}[t]
-\centering
-\caption{Frozen sample universe used by the response-blind analyses.}
-\label{tab:cohorts}
-\begin{tabular}{lrrp{5.0cm}}
-\toprule
-Study & All runs & Primary HGSOC OCMs & Reference or excluded material \\
-\midrule
-E-MTAB-7223 & 36 & 9 & 16 stroma; 2 cell-line controls; other exclusions \\
-E-MTAB-10801 & 36 & 13 & 17 stroma; 6 non-HGSOC \\
-E-MTAB-11000 & 12 & 11 & 1 non-primary tumour run \\
-E-MTAB-14568 & 33 & 27 & 6 non-HGSOC \\
-\midrule
-Total & 117 & 60 / 52 patients & 57 reference or excluded runs \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-The 60 primary OCMs represent 52 patients: most patients contribute one model,
-six contribute two, and one contributes three. All patient-grouped sensitivity
-analyses use patient identity rather than OCM identity as the resampling unit.
-The remaining runs are retained for quality control and explicitly labelled
-reference categories; they are never silently pooled with the primary tumour
-cohort.
-
-\subsection{Phenotype boundary}
-
-The prespecified phenotype outcomes are paclitaxel area under the curve (AUC)
-as primary and raw GI50 in nM, analysed as $\log_{10}(\mathrm{GI50})$, as
-secondary. The public supplementary tables available to this repository do not
-contain machine-readable exact OCM-level AUC, GI50, or cumulative paclitaxel
-exposure values. The frozen phenotype-intake gate therefore reports zero exact
-rows and blocks all response association, intrinsic-exposure, and
-acquired-resistance claims. Chemotherapy-naive-at-biopsy is retained as a
-metadata field but is not treated as proof of zero cumulative exposure.
-
-\section{Response-blind regulatory inference}
-
-\subsection{Prior networks and TF activity}
-
-CollecTRI signed TF--target interactions\cite{collectri} and OmniPath directed signed
-interactions\cite{omnipath} were downloaded from public endpoints, normalised to remove
-self-loops and ambiguous signs, and retained on scratch storage with URL,
-timestamp, response metadata, and SHA256 receipts. For each sample, gene-level
-expression was transformed as $\logtpm$. Signed regulon scores provide TF
-activity evidence; they are not measurements of protein activity or causal
-perturbations.
-
-\subsection{CORNETO formulation and sensitivity grid}
-
-The signalling model uses CORNETO's CARNIVALFlow formulation\cite{liu2019,corneto}: a signed directed
-subgraph is selected to connect expression-supported TF outputs through an
-OmniPath prior while trading fit against network size. We evaluated a
-pre-specified nominal regularisation grid
-\[
-  \lambda_{\mathrm{reported}} \in
-  \{0,0.001,0.01,0.05,0.1,0.25,0.5,1,2\}.
-\]
-For a multi-condition problem with $n$ included samples, the implementation
-uses the equivalent solver penalty $\lambda_{\mathrm{solver}} = n\lambda_{\mathrm{reported}}$
-so that a reported value has the same meaning when the data-fit term is
-expressed as a mean rather than a sum. Pooled, cohort-stratified, and
-patient-balanced runs use the same source-policy contract and record the
-condition set, network hashes, solver status, and blocked/error reasons.
-
-The primary reporting objects are module recurrence, per-edge selection
-frequency, solution ensembles, and patient/study-aware uncertainty. A single
-edge selected by one optimum is not treated as a stable mechanistic discovery.
-
-\section{Metabolic modelling and Meeson audit}
-
-\subsection{Human-GEM fingerprint}
-
-The metabolic track pins Human-GEM v1.4.1\cite{human1} (SHA256
-\texttt{57d1b137f0c90d83a3e4f9a8225d74d37523594e6ee99f622b160a014d9f7050}),
-with 13,096 reactions, 3,628 genes, a complete GPR partition, and the biomass
-reaction SBML identifier \texttt{R\_biomass\_human}. The model-level audit maps
-TPI1 to \texttt{ENSG00000111669} and reaction \texttt{HMR\_4391}; this is an
-input/model check, not an OCM-specific knockout result.
-
-\subsection{Sequential, global, and joint formulations}
-
-For a sample $s$ and candidate reaction $r$, expression-derived bounds are
-represented by retain variables $z_{sr}$. The Meeson-style sequential method
-tests candidates one at a time and reopens a bound when the growth threshold
-would be violated. The global formulation maximises simultaneous retention
-under the same feasibility constraint. The proposed joint formulation adds a
-shared indicator $u_r$ and a cross-sample penalty, so a reaction can be reused
-across conditions:
-\begin{equation}
-  \min_{z,u}\; \sum_s E_s(z_s) + \lambda \sum_r u_r,
-  \qquad z_{sr} \leq u_r,
-\end{equation}
-subject to stoichiometric steady state and sample-specific growth targets.
-This is a new formulation built with CORNETO primitives; it is not described as
-an exact reproduction of the published MitoCore sFBA implementation.
-
-The four cohort full metabolic jobs use Human-GEM v1.4.1, primary tumour-only
-samples, $\logtpm$, candidate budget 25, growth fraction 0.9, independent
-$\lambda=0.1$, joint $\lambda=1.0$, and explicit Gurobi without fallback. At
-the current manuscript snapshot their final receipts were still undergoing
-content validation; consequently no cohort metabolic objective, flux, or
-cross-cohort biological claim is included below.
-
-\section{NMF and patient-balanced comparisons}
-
-For technical state comparison, non-negative matrix factorisation was run on
-the primary tumour expression matrices using the top 6,000 median-absolute-
-deviation genes, ranks 2--10 where supported by cohort size, and 100 starts per
-rank, following the consensus/stability logic introduced by Brunet et
-al.\cite{brunet2004}. The pooled matrix contains all 60 primary OCMs; cohort matrices are
-analysed independently. Rank-3 was retained as a pre-specified comparability
-anchor because it was used by the existing 14568 integration, while rank-2
-stability is reported as a sensitivity rather than silently replacing the
-anchor. Cluster labels are aligned by maximum-overlap matching before ARI,
-NMI, agreement, loading Spearman correlation, and study-association tests.
-
-The patient-balanced analysis selects one deterministic representative per
-patient (52 OCMs), preserving the study-aware input contract. This is a
-sensitivity analysis, not a claim that one representative is biologically
-privileged; a resampling distribution would be a stronger future analysis.
+These labels have operational meanings.  ``Supported under tested conditions''
+requires a source or receipt and survives the perturbations already performed;
+it is not proof.  ``Weakened'' means a narrower wording survives but a stronger
+one does not.  ``Falsified'' identifies a claim contradicted by an observed
+counter-result.  ``Blocked'' means the estimand is not identifiable from the
+current inputs.  ``Pending'' means the inputs may exist but the specified test
+has not yet supplied a valid answer.
 
 \section{Results}
 
-\subsection{Cohort and reproducibility gates}
+Unless a primary paper is cited directly, model-derived numbers in this section
+come from the SHA-pinned receipt fields in
+\path{evidence/roihu_result_snapshot.json}; their tidy source/key/derivation
+index is \path{evidence/numeric_ledger.tsv}.  Cohort counts come from the
+deterministic manifest build recorded in
+\path{evidence/manuscript_evidence_snapshot.json}.
 
-All four RNA studies passed strict quantification and aggregation gates. Matrix
-columns, run receipts, sample QC, and manifest accession sets were aligned, and
-the primary tumour counts were 9, 13, 11, and 27 (Table~\ref{tab:cohorts}).
-The primary cohort therefore supports a 60-OCM analysis while retaining 57
-reference/excluded runs for explicitly labelled contrasts. No exact phenotype
-intake table passed validation at the analysis snapshot.
+\subsection{The frozen primary universe is 60 OCMs, not 60 independent patients}
 
-\subsection{Pooled versus cohort-stratified NMF}
-
-Pooled rank-3 solutions had cluster sizes 23, 20, and 17, with cophenetic
-correlation 0.939 and silhouette 0.770. Rank 2 was technically more stable
-(cophenetic 0.972; silhouette 0.899), so rank 3 should be interpreted as a
-comparability anchor rather than a uniquely data-driven optimum.
+BioStudies MAGE-TAB SDRF files identify biospecimens, source labels, culture
+fractions, and passages; ENA read-run reports identify run accessions and FASTQ
+objects.  Tighe 2025 Table S1 supplies the frozen patient and histotype
+crosswalk\cite{tighe2025}.  Joining those sources produces \ManifestRunCount{}
+unique run accessions.  A primary row must be tumour, match the Tighe screen,
+have strict HGSOC histotype, and be the representative RNA library for its OCM.
+Table~\ref{tab:cohorts} is generated from that rule rather than typed manually.
 
 \begin{table}[t]
 \centering
-\caption{Pooled-versus-stratified rank-3 NMF agreement.}
-\label{tab:nmf}
-\begin{tabular}{lrrr}
+\caption{Frozen RNA universe.  The final column is a mutually exclusive
+disposition derived from the master manifest.  Within-study patient counts sum
+to 53 because patient OCM74 occurs in two accessions; global de-duplication
+gives 52.}
+\label{tab:cohorts}
+\begin{tabular}{lrrrp{6.0cm}}
 \toprule
-Cohort & Adjusted Rand index & Assignment agreement & Loading Spearman $\rho$ \\
+Study & All runs & Primary OCMs & Patients & Reference or excluded material \\
 \midrule
-E-MTAB-7223 & 0.723 & 0.889 & 0.825 \\
-E-MTAB-10801 & 0.529 & 0.846 & 0.843 \\
-E-MTAB-11000 & 0.377 & 0.727 & 0.805 \\
-E-MTAB-14568 & 0.569 & 0.741 & 0.798 \\
-\midrule
-Patient-balanced 52 & 0.842 & 0.942 & -- \\
+\input{tex/generated/cohort_table_rows.tex}
 \bottomrule
 \end{tabular}
 \end{table}
 
-The pooled state--study association was not statistically clear (chi-square
-$p=0.207$, Cramer's $V=0.265$), although the non-zero effect size motivates
-study-aware sensitivity. Patient balancing increased the rank-3 ARI to 0.842
-and mapped agreement to 0.942, supporting technical robustness to the observed
-repeated-patient structure while not eliminating cohort heterogeneity.
+The \PrimaryOCMCount{} primary rows comprise 45 patients represented once, six
+represented twice (OCM66, OCM110, OCM288, OCM296, OCM327, and OCM333), and one
+represented three times (OCM74).  Thus patient-grouped validation prevents
+train--test leakage but does not by itself remove repeated-patient weighting.
+The complete study/run/raw-label/canonical-OCM/patient registry is printed in
+Appendix~\ref{app:studyregistry} and stored as
+\path{evidence/study_ocm_registry.tsv}.
 
-\subsection{Regulatory network robustness}
+The four aggregation receipts are complete, contain respectively
+36/36/12/33 runs, and share 60,609 genes and 227,462 transcripts.  Their paths
+and SHA256 values are frozen in
+\path{evidence/roihu_result_snapshot.json}.  This statement is deliberately
+narrower than inferring biological comparability from equal matrix dimensions.
 
-The completed response-blind regulatory summary contains 45 pooled/cohort
-receipts across the nine nominal $\lambda$ values. The patient-balanced pooled
-network retained high overlap with the corresponding 52-patient analysis
-(union Jaccard 0.890; mean per-sample Jaccard 0.899). In contrast, replacing
-the narrow prior graph with a richer PKN produced a pooled union Jaccard of
-0.202 and mean per-sample Jaccard of 0.108; cohort union Jaccards were
-approximately 0.108--0.143. Thus the evidence supports a stable core plus
-uncertain alternatives, not an invariant list of individual signalling edges.
+\subsection{NMF shows same-data concordance, not independent replication}
 
-Regulatory--NMF integration was a descriptive same-input join. It is useful for
-asking whether model-supported edges are distributed differently across
-technical expression states, but it is not independent validation, subtype
-discovery, or evidence of paclitaxel mechanism. The longitudinal summary covers
-60 runs and eight within-family transitions; treatment-associated rewiring
-remains blocked until paired exposure and phenotype data are available.
+NMF used the top 6,000 median-absolute-deviation genes and 100 starts per rank.
+The pooled 60-OCM matrix and each cohort were fitted separately.  Rank 3 was
+frozen as a comparison anchor because it was used by the earlier E-MTAB-14568
+integration.  It is not the data-driven optimum: pooled rank 2 has cophenetic
+correlation \NmfRankTwoCophenetic{} and silhouette
+\NmfRankTwoSilhouette{}, both above rank 3
+(\NmfRankThreeCophenetic{} and \NmfRankThreeSilhouette{}).  Rank-3 pooled
+cluster sizes are 23, 20, and 17; the labels are technical states and are not
+named clinical subtypes.
 
-\subsection{Meeson toy benchmarks expose order and optimum ambiguity}
+\begin{table}[t]
+\centering
+\caption{Fixed-rank-3 pooled-versus-cohort-local NMF concordance.  The same
+cohort samples contribute to the pooled and local fits; these are therefore
+same-data robustness metrics, not held-out replication.}
+\label{tab:nmf}
+\begin{tabular}{lrrrr}
+\toprule
+Cohort & ARI & NMI & Mapped agreement & Loading Spearman $\rho$ \\
+\midrule
+\input{tex/generated/nmf_table_rows.tex}
+\bottomrule
+\end{tabular}
+\end{table}
 
-The public-code audit and toy tests provide a direct methodological result.
-With two interchangeable routes and a shared uptake capacity, the two
-sequential candidate orders produced opposite retained reactions and retained-
-set Jaccard 0. The global MILP removed this iteration-order dependence but had
-two symmetric optimal solutions (growth 6.000001; objective $-1$), one retaining
-each route. In the two-condition joint toy, independent models activated a
-four-reaction union (biomass, uptake, and both routes), whereas the joint model
-used a three-reaction union by sharing one route across conditions. These tests
-validate the intended computational mechanisms; they are not evidence from
-human OCMs.
+At rank 3, ARI ranges from 0.377 to 0.723 and mapped assignment agreement from
+0.727 to 0.889 (Table~\ref{tab:nmf}).  The pooled state--study contingency test
+has $\chi^2=8.455$, $p=0.207$, and Cramer's $V=0.265$.  Failure to reject the
+null does not prove absence of a study effect; the non-zero effect size and
+small cohorts instead motivate a leave-one-study-out projection and a
+patient-blocked permutation null.
+
+One deterministic 52-OCM sensitivity selects a single row per patient by
+lexicographic study/run order.  Its ARI is 0.842, NMI 0.825, and mapped
+agreement 0.942 relative to the corresponding pooled assignments.  Because
+this is only one of $2^6\times3=192$ valid one-per-patient choices for the six
+pairs and one triplet, it supports only a narrow outcome-blind sensitivity.
+It does not establish general robustness to patient representation.
+
+\subsection{Regulatory inference is stable to one patient selection but not to graph policy}
+
+CollecTRI signed TF--target interactions\cite{collectri} and OmniPath directed
+signed interactions\cite{omnipath} provide prior evidence for CORNETO
+CARNIVALFlow\cite{liu2019,corneto}.  The true multi-condition grid uses
+\[
+\lambda_{\mathrm{reported}}\in
+\{0,0.001,0.01,0.05,0.1,0.25,0.5,1,2\}.
+\]
+Under the recorded CORNETO convention that condition errors are summed, the
+implementation sets
+$\lambda_{\mathrm{solver}}=n\lambda_{\mathrm{reported}}$ for $n$ included
+conditions.  Small exact-equivalence tests can falsify that convention if the
+objective implementation changes.
+
+The scientific summary validates five modes (pooled plus four cohort-local
+fits) at nine values: 45 receipt-valid optimisations.  At nominal
+$\lambda=0.001$, a deterministic 52-patient regulatory fit has union Jaccard
+0.890 and mean per-sample Jaccard 0.899 against the 52 shared rows of the
+60-OCM fit.  This again evaluates one patient selection, not all 192.
+
+A second sensitivity changes the bundled graph policy from at most 3 inputs,
+6 outputs, and depth 3 to at most 5 inputs, 10 outputs, and depth 4.  At the
+same nominal $\lambda=0.001$, pooled union Jaccard falls to 0.202 and mean
+per-sample Jaccard to 0.108; cohort union Jaccards range 0.108--0.143.  Because
+three design dimensions change together, the result establishes material
+\emph{graph-policy sensitivity}.  It cannot identify PKN breadth as the sole
+cause, and low edge overlap does not logically prove that an untested stable
+module or core exists.
+
+\subsection{Near-optimal regulatory solutions expose uncertainty hidden by one incumbent}
+
+For 27 E-MTAB-14568 primary OCMs at $\lambda=0.1$, the final alternative-optima
+summary contains 26 non-empty receipt-valid ensembles and one
+\texttt{blocked\_no\_selected\_edges} condition.  Each non-empty sample accepted
+30 alternatives; medians are 5.5 incumbent edges, 6 union edges, and 5 core
+edges.  The median pairwise Jaccard is 1.0, but individual-sample receipt values
+include substantially lower agreement.  The median therefore cannot be used to
+claim invariance for every OCM.  A mathematically optimal zero-edge solution is
+blocked, not re-labelled as biological inactivity.
+
+The Meeson toy benchmarks provide a separate counterexample.  Two candidate
+orders retain opposite interchangeable routes (retained-set Jaccard 0).  A
+global formulation removes that iteration order but has two symmetric optima
+(growth 6.000001; objective $-1$).  A two-condition joint toy reduces the active
+reaction union from four to three by sharing one route.  These are mechanism
+tests of the code; the smaller union is mechanically encouraged by the joint
+objective and is not biological superiority.
+
+\subsection{Metabolic, reference-enrichment, TPI1 and phenotype conclusions remain gated}
+
+The pinned Human-GEM v1.4.1 fingerprint has SHA256
+\texttt{57d1b137f0c90d83a3e4f9a8225d74d37523594e6ee99f622b160a014d9f7050},
+13,096 reactions, 8,400 metabolites, 3,628 genes, a complete GPR partition, and
+SBML biomass ID \texttt{R\_biomass\_human}\cite{human1}.  TPI1 maps to
+\texttt{ENSG00000111669} and reaction \texttt{HMR\_4391}.  These are model
+identity checks only.  They do not show that TPI1 deletion affects any OCM.
+
+The pooled-60 metabolic input gate is valid (60 samples, 52 patients, 60,609
+genes), but an input gate is not a solution.  Full-cohort and pooled metabolic
+claims require receipt-valid objectives, growth targets, flux summaries,
+alternative-optimum/FVA sensitivity, and comparison against a frozen null.
+Accordingly, this snapshot does not claim a cross-cohort metabolic state.
+
+The manifest retains 33 stroma runs, two cell-line controls, 17 non-HGSOC or
+ambiguous tumour runs, four tumour runs not matched to Tighe Table S1, and one
+non-representative duplicate.  These categories can answer useful secondary
+questions, but only with study-aware estimands.  Tumour--stroma inference should
+be paired within accession where possible; cell lines are descriptive controls,
+and non-HGSOC samples are heterogeneous references rather than a single
+comparator.  No such contrast is declared complete here.
+
+Finally, the frozen manifest contains zero exact OCM-linked paclitaxel AUC,
+raw GI50, and cumulative exposure rows.  Chemotherapy-naive-at-biopsy is not a
+substitute for zero cumulative exposure.  Drug-response prediction,
+intrinsic-resistance, acquired-resistance, and treatment-caused rewiring are
+therefore not identifiable from the validated public table.
 
 \section{Discussion}
 
-This project separates three kinds of reproducibility that are often conflated:
-agreement of expression-derived technical states, agreement of optimisation-
-supported network hypotheses, and external biological validation. The NMF
-results show that pooled and cohort-stratified structure is neither identical
-nor completely cohort-specific. The patient-balanced increase in agreement
-supports explicit control of repeated-patient weighting. The regulatory results
-show that network conclusions are sensitive to PKN breadth, making module- and
-ensemble-level recurrence more defensible than a single selected edge. The
-Meeson toy demonstrates why sequential order and alternative optima must be
-reported rather than hidden behind one output file.
+\subsection{What the current evidence answers}
 
-The analysis does not yet justify a claim of a cross-cohort metabolic state.
-The four full-cohort metabolic runs must first produce valid receipts, including
-sample counts, solver status, growth targets, objectives, active-flux unions,
-and provenance. Only then can cohort comparison, pooled-60 metabolic inference,
-TPI1/FVA, and reference contrasts be interpreted. This fail-closed ordering is
-important because a Slurm completion or a non-empty log is not a scientific
-result.
+The strongest result is methodological rather than translational.  The project
+establishes a traceable 60-OCM/52-patient contract, demonstrates incomplete
+same-data NMF concordance, falsifies rank 3 as the uniquely stable rank, and
+shows that regulatory conclusions depend materially on graph policy and
+optimum choice.  These observations justify reporting distributions,
+recurrence, modules defined independently of the tested solution, and explicit
+claim limits rather than a single attractive network.
 
-The central translational question is also intentionally unresolved. Exact
-paclitaxel AUC, GI50, and cumulative exposure are absent from the validated
-input table, so response association, intrinsic resistance, and acquired
-resistance prediction are not estimable from the current public snapshot. Once
-these tables become available, the prespecified M0--M4 models (ABCB1/covariates,
-expression, TF activity, CORNETO modules, and their integrated extension) must
-use patient-grouped nested validation. Random OCM-level splits would leak
-patient information.
+Patient repetition matters conceptually even though one de-duplicated analysis
+has high agreement.  Seven of 52 patients contribute repeated primary models;
+their 15 rows are one quarter of the 60-OCM matrix.  A defensible robustness
+claim requires all 192 valid one-per-patient selections or inverse-multiplicity
+weights, compared with a study-matched random-deletion null.  Patient-grouped
+cross-validation solves leakage, not weighting.
 
-\section{Limitations and planned analyses}
+\subsection{What would change the conclusion}
+
+Independent cross-cohort NMF reproduction requires fitting without the tested
+study and projecting its held-out samples.  A regulatory stable-core claim
+requires a core definition frozen before testing, recurrence above a
+degree-aware graph null, and stability across lambda, graph-policy factors,
+patient selections, and alternative optima.  A metabolic-state claim requires
+valid cohort and pooled receipts plus robustness to medium, expression
+transform, growth target, candidate budget and feasible-flux ranges.  A TPI1
+dependency claim requires OCM-specific constrained WT/knockout effects and an
+independent perturbation test.  A response claim requires exact outcomes and
+patient-grouped nested validation against simpler baselines.
+
+\subsection{Claim hierarchy for the eventual paper}
+
+The eventual confirmatory narrative should proceed in this order:
 
 \begin{enumerate}[leftmargin=*]
-  \item Expression is a proxy for activity; TF activity is inferred, and
-  CORNETO paths are optimisation-supported hypotheses rather than causal
-  posteriors.
-  \item Public reference categories are unbalanced. Tumour--stroma contrasts
-  should be run within accession where possible and reported with study-aware
-  uncertainty; cell-line controls are descriptive QC only.
-  \item The patient-balanced result is one deterministic selection of 52 OCMs.
-  Patient-level bootstrap or repeated one-per-patient sampling is needed to
-  quantify its uncertainty.
-  \item PKN breadth changes regulatory overlap substantially. Stable cores,
-  edge frequency, alternative-optima frequency, and multiplicity-controlled
-  contrasts should replace simple set subtraction.
-  \item Exact Meeson 49-OCM regeneration is blocked by the absent public
-  expression-plus-growth input. The repository therefore distinguishes public
-  algorithm auditing from exact numerical reproduction.
-  \item No result in this manuscript establishes that a treatment caused a
-  longitudinal network change; at most, future paired analyses can support a
-  treatment-associated rewiring claim.
+  \item define the frozen OCM/patient universe and reference categories;
+  \item demonstrate held-out, patient-aware expression-state transportability;
+  \item quantify regulatory and metabolic recurrence under pre-specified nulls;
+  \item test patient, graph, solver and optimum sensitivities;
+  \item test tumour--reference enrichment within study;
+  \item freeze targets/modules before external perturbation validation; and
+  \item only then introduce exact drug response and exposure.
 \end{enumerate}
 
-\section{Taylor-group HGSOC/OCM resource compendium}
-\label{sec:compendium}
+This ordering prevents cohort labels, response values, or post-hoc literature
+matches from selecting the network that is later described as validated.
 
-This section turns the manuscript into a citable working reference for the
-Taylor-group ovarian-cancer programme and the public resources that enable the
-present analysis. ``Taylor-group resource'' is used here in a project-specific
-sense: the catalogue includes publications that generated, characterised, or
-mechanistically interrogated the living OCM biobank, plus directly enabling
-metabolic and network resources. It is not intended to reproduce all of
-Professor Stephen Taylor's research output in unrelated systems. The
-authoritative full career list (77 articles, two reviews, and one preprint at
-the date accessed) and ORCID 0000-0003-4621-9326 are available through the
-University of Manchester profile\cite{taylorprofile}.
+\section{Methods}
 
-\subsection{How the resource programme fits together}
+\subsection{Evidence provenance and deterministic manuscript build}
 
-The programme can be read as four connected layers. First, mechanistic studies
-of mitotic fate, replication stress, TP53 loss, MYC, and drug efflux define
-testable vulnerabilities. Second, the living biobank provides early-passage,
-patient-derived tumour and matched stromal cultures with longitudinal and
-inter-patient heterogeneity. Third, drug screens and transcriptomic studies
-connect those models to PARG, ATR/CHK1, SUMOylation, taxol/cabazitaxel, subtype,
-and HRD questions. Fourth, the Meeson studies add transcriptome-constrained
-Human1 models and TPI1 perturbation evidence. The present CORNETO project joins
-these layers computationally but keeps response-blind discovery, reference
-contrasts, and phenotype validation separate.
+Every manuscript statement is classified as an observed source fact,
+deterministic derivation, model output, or configured/planned analysis.  Local
+counts are rebuilt by \path{scripts/build_manuscript_evidence.py}.  Remote model
+values are admitted only through a receipt snapshot containing the original
+Roihu path, SHA256, selected JSON/TSV fields, retrieval date, and claim limit.
+The original receipt remains authoritative.  Slurm status, log existence, and
+status-register prose do not substitute for a scientific receipt.
 
-\subsection{Project-relevant Taylor-group and supporting publications}
+The generator validates the 117 unique runs, the mutually exclusive disposition
+counts, 60 primary OCMs, 52 patients, 9/13/11/27 study split, 234 FASTQ objects,
+and exactly 477,762,645,114 compressed bytes.  It generates Table~\ref{tab:cohorts},
+Table~\ref{tab:nmf}, the complete study registry, and the claim/failure tables.
+The source and generated files are committed so the arXiv build does not depend
+on running project-specific Python.
 
-\small
-\begin{longtable}{p{0.9cm}p{4.1cm}p{5.0cm}p{3.6cm}}
-\caption{Chronological map of publications most directly useful to this project.
-The final column states the resource role rather than implying that every paper
-generated a reusable expression matrix.}\label{tab:taylor-papers}\\
+\subsection{How Table 1 is derived from BioStudies and ENA}
+
+For each E-MTAB accession, the BioStudies/ArrayExpress IDF identifies the study
+and publication, while the SDRF supplies one row per assay relationship with
+source labels, tumour/stroma/control annotations, passage or fraction labels,
+and ENA links.  The ENA project \texttt{read\_run.tsv} report supplies stable
+run, experiment and sample accessions plus the two FASTQ URLs, MD5 values and
+byte counts.  Two paired FASTQ objects map to each of the 117 unique runs.
+
+Source labels are parsed into canonical OCM and material class by the committed
+metadata code, then cross-referenced to Tighe Table S1.  A primary row satisfies
+all four predicates: tumour material, exact Tighe-screen match, strict HGSOC
+histotype, and representative RNA library.  The current only later-passage
+duplicate exclusion is OCM46-3 P14, for which P4 is retained.  Missing or
+ambiguous histotype remains ambiguous; suffixes are never guessed.  The
+mutually exclusive exclusion order is primary, stroma, control, unmatched
+Tighe tumour, non-HGSOC/ambiguous tumour, and non-representative duplicate.
+
+\subsection{NMF estimand and falsification}
+
+NMF is an unsupervised technical decomposition of log-transformed expression,
+not a measured pathway activity or clinical subtype.  Pooled and cohort-local
+rank-3 labels are matched by maximum overlap before ARI, NMI and agreement are
+computed; loading Spearman correlation uses common loading genes.  The current
+comparison is not independent because the pooled fit contains all cohorts.
+The required falsification test for a transportability claim is
+leave-one-study-out fitting followed by held-out projection and comparison with
+a patient-blocked permutation null.  Candidate rank, feature selection and
+bootstrap stability must be reported rather than selected by the desired
+biological narrative.
+
+\subsection{Regulatory estimand and sensitivity}
+
+CARNIVALFlow selects a signed subgraph connecting expression-derived TF
+evidence to a versioned OmniPath search graph.  TF scores are inferred evidence,
+not protein measurements.  Pooled and cohort fits use a frozen input bundle,
+record condition sets and source hashes, and solve all conditions in one
+multi-condition object.  The lambda grid is outcome-blind.  The patient and
+richer-policy comparisons reported here are fixed at nominal $\lambda=0.001$;
+this is an illustrative low-penalty sensitivity, not a phenotype-selected
+primary lambda.
+
+The richer-policy comparison is factorially confounded because it changes input
+cap, output cap and path depth together.  A future decomposition must vary one
+factor at a time and compare against degree-preserving PKN and sign-permutation
+nulls.  Edges should be summarised by ensemble frequency and predefined modules,
+not declared causal because one optimum contains them.
+
+\subsection{Metabolic and Meeson boundary}
+
+The Meeson sequential algorithm is audited separately from new global and
+joint formulations.  Exact recreation of the public 49-OCM flux table is
+blocked because the repository points to an unavailable author-local
+expression-plus-growth input.  The output labels are therefore preserved
+verbatim in Appendix~\ref{app:paperocm}; uncertain aliases are not forced into
+the Tighe canonical namespace.  Human-GEM identity, toy mechanisms, and public
+outputs can be audited without claiming exact numerical reproduction.
+
+\subsection{Reference and phenotype analysis plan}
+
+Tumour--stroma contrasts will use within-study, preferably within-patient,
+differences and study-specific effects before any meta-analysis.  Cell-line
+controls are QC references only.  HGSOC versus non-HGSOC analysis must preserve
+reported histotype because the reference category includes ambiguous ovarian
+cancer labels.  Set subtraction alone is insufficient; effect size,
+uncertainty, multiplicity control and model sensitivity are required.
+
+The phenotype contract specifies paclitaxel AUC as primary and positive raw
+GI50 in nM, analysed on a $\log_{10}$ scale, as secondary.  Exact cumulative
+exposure and verified sample order are required for intrinsic/acquired
+estimands.  No value is digitised from a plot or replaced by a proxy.
+
+\section{Limitations}
+
+\begin{enumerate}[leftmargin=*]
+  \item Four public RNA accessions are not four independent biological
+  replications: patient OCM74 crosses studies, and pooled NMF contains each
+  cohort used in the local comparison.
+  \item One lexicographic patient-balanced set is not a sampling distribution.
+  \item Regulatory graph-policy sensitivity is bundled across three factors;
+  no single-factor PKN conclusion is available.
+  \item Expression-derived TF activity, selected signalling edges, and sparse
+  metabolic fluxes are model-supported hypotheses, not direct measurements.
+  \item The current public phenotype boundary prevents response and treatment-
+  associated claims.
+  \item Some paper panels report exact counts but not machine-readable complete
+  OCM ID sets.  Unknown members remain unknown.
+\end{enumerate}
+
+\section{Data, code and evidence availability}
+
+The project repository is
+\url{https://github.com/xm2325/hgsoc_corneto}.  It contains the frozen manifest,
+metadata snapshots, tests, code, evidence ledgers, generated manuscript tables,
+and bilingual pipeline registers.  Raw FASTQ, large solver outputs and licensed
+materials are not committed.  The evidence build plan is
+\path{docs/manuscript_evidence_plan.md}; machine-readable ledgers are in
+\path{evidence/}.  No licence file is an input to the manuscript build.
+
+\appendix
+
+\section{Claim--estimand--falsification ledger}
+\label{app:claims}
+
+The machine-readable source is \path{evidence/claims.tsv}.  A positive sentence
+in the main text is permitted only when it remains inside the corresponding
+wording boundary.
+
+\scriptsize
+\begin{longtable}{p{0.7cm}p{3.1cm}p{3.2cm}p{4.1cm}p{2.2cm}}
+\caption{Falsifiable claim register.}\label{tab:claims}\\
 \toprule
-Year & Publication & Scientific contribution & Reusable object for this project \\
+ID & Question & Estimand & Observation that would overturn the claim & Status \\
 \midrule
 \endfirsthead
 \toprule
-Year & Publication & Scientific contribution & Reusable object for this project \\
+ID & Question & Estimand & Observation that would overturn the claim & Status \\
 \midrule
 \endhead
-2015 & Topham et al., \emph{MYC Is a Major Determinant of Mitotic Cell
-Fate}\cite{topham2015} & Establishes the MYC--BH3/Bcl-xL axis as a determinant
-of response to mitotic perturbation. & Mechanistic prior for MYC, apoptosis,
-and taxane interpretation; not an OCM cohort. \\
-2019 & Pillay et al., \emph{DNA Replication Vulnerabilities Render Ovarian
-Cancer Cells Sensitive to PARG Inhibitors}\cite{pillay2019} & Links PARG
-dependence to fork stalling and replication catastrophe in ovarian cell lines
-and patient-derived models. & PARG/replication-stress mechanism and OCM
-validation context. \\
-2020 & Nelson et al., \emph{A living biobank of ovarian cancer ex vivo models
-reveals profound mitotic heterogeneity}\cite{nelson2020} & Establishes the
-living-biobank workflow and characterises 15 OCMs by molecular, karyotypic,
-imaging, and drug assays. & E-MTAB-7223, paper source data, matched tumour--stroma
-design, and the OCM naming system. \\
-2020 & Williams et al., \emph{Targeted nanopore sequencing for the
-identification of ABCB1 promoter translocations in cancer}\cite{williams2020}
-& Provides structural evidence for ABCB1 promoter fusions in relapsed HGSC. &
-Independent mechanism supporting MDR1/ABCB1 interpretation; not part of the
-117-run RNA atlas. \\
-2021 & Bronder et al., \emph{TP53 loss initiates chromosomal instability in
-fallopian tube epithelial cells}\cite{bronder2021} & Shows that TP53 loss alone
-can deregulate cell-cycle programmes and initiate CIN in FNE1 cells. &
-Mechanistic reference for TP53/CIN and fallopian-tube origin; FNE1 is a
-reference system, not an OCM. \\
-2021 & Barnes et al., \emph{Distinct transcriptional programs stratify ovarian
-cancer cell lines into the five major histological subtypes}\cite{barnes2021}
-& Uses NMF and classifiers to define histotype-aware transcriptional states and
-tests them in OCMs. & E-MTAB-10801, CCLE comparison, and methodological precedent
-for NMF without naming technical clusters as clinical subtypes. \\
-2021 & Coulson-Gilmer et al., \emph{Replication catastrophe is responsible for
-intrinsic PARG inhibitor sensitivity in patient-derived OCMs}
-\cite{coulsongilmer2021} & Extends PARG-inhibitor screening and replication-
-catastrophe phenotyping across patient-derived OCMs. & E-MTAB-11000 and a
-mechanism-focused sensitive/resistant comparison. \\
-2022 & Golder et al., \emph{Multiple-low-dose therapy: effective killing of
-HGSOC cells with ATR and CHK1 inhibitors}\cite{golder2022} & Tests replication-
-stress-response combinations in 16 OCMs and a non-transformed FNE1 reference. &
-External drug-mechanism evidence and a precedent for reference-cell controls. \\
-2023 & Nelson et al., \emph{Exploiting a living biobank to delineate mechanisms
-underlying disease-specific chromosome instability}\cite{nelson2023} & Reviews
-the expansion to more than 120 OCMs and connects CIN, longitudinal models, and
-cell-cycle vulnerabilities. & Best programme-level guide to biobank scope and
-model provenance. \\
-2023 & Morgan et al., \emph{Homologous recombination deficiency in newly
-diagnosed stage III/IV high-grade ovarian cancer}\cite{morgan2023} & Provides
-clinical HRD prevalence/testing context in advanced disease. & Clinical
-stratification context; not an OCM expression input. \\
-2024 & Meeson and Schwartz, \emph{Constraint-based modelling predicts metabolic
-signatures of low- and high-grade serous ovarian cancer}\cite{meeson2024} &
-Develops Human1 transcriptome/growth-constrained models and validates subtype
-dependencies with public functional-genomics evidence. & Algorithmic precursor,
-CCLE/DepMap sources, Human1, and the public PhD repository. \\
-2025 & Littler et al., \emph{Targeting SUMOylation in ovarian cancer:
-sensitivity, resistance, and the role of MYC}\cite{littler2025} & Connects
-SUMO-pathway sensitivity/resistance to MYC and TGF-$\beta$/SMAD programmes. &
-E-MTAB-14568 and mechanistic hypotheses for regulatory-network modules. \\
-2025 & Tighe et al., \emph{Screening a living biobank identifies cabazitaxel
-as a strategy to combat acquired taxol resistance}\cite{tighe2025} & Screens 83
-OCMs and identifies ABCB1/MDR1-associated acquired taxol resistance and
-cabazitaxel sensitivity. & Four E-MTAB accessions, Table S1 clinical/model
-metadata, and Table S2 ABCB1 counts; the article reports no original code. \\
-2025 & Morgan et al., \emph{Homologous recombination deficiency in unselected
-cases of high-grade ovarian carcinoma}\cite{morgan2025} & Extends HRD genomic-
-scar and BRCA-context evidence in an unselected clinical series. & External
-clinical evidence for future HRD-aware interpretation. \\
-2026 & Meeson et al., \emph{Transcriptome-driven constraint-based modelling
-reveals metabolic targets for ovarian cancer}\cite{meeson2026} & Uses CCLE-
-constrained Human1 models to nominate TPI1, validates knockdown experimentally,
-and feeds perturbation RNA-seq back into the model. & E-MTAB-16770,
-\texttt{katemeeson/PhD\_2024}, public cell-line outputs, and the TPI1 validation
-framework. \\
+\input{tex/generated/claim_ledger_rows.tex}
 \bottomrule
 \end{longtable}
 \normalsize
 
-\subsection{Theses and extended programme records}
+\section{Failed, blocked and superseded analyses}
+\label{app:failures}
 
-Doctoral theses are especially useful here because they connect individual
-papers into longer experimental programmes, document negative or intermediate
-results, and often describe code and dataset provenance in more detail than a
-journal article. They remain secondary sources: numerical claims in the present
-analysis are tied to public data and machine-readable receipts rather than
-being transcribed from thesis figures.
+Failures are included only when they change scientific interpretation.  Routine
+SSH, queue waiting and harmless operational noise are excluded.  The full
+machine-readable ledger is \path{evidence/failures.tsv}.
 
-\small
-\begin{longtable}{p{1.0cm}p{4.6cm}p{5.0cm}p{3.2cm}}
-\caption{Taylor-linked doctoral theses with direct relevance to the OCM,
-mechanistic, or metabolic programme.}\label{tab:theses}\\
+\scriptsize
+\begin{longtable}{p{0.7cm}p{2.2cm}p{3.2cm}p{3.4cm}p{3.5cm}}
+\caption{Science-affecting failures and corrections.}\label{tab:failures}\\
 \toprule
-Year & Thesis & Contribution to the programme & Use in this project \\
+ID & Analysis & Observed event & Correction/disposition & Scientific impact \\
 \midrule
 \endfirsthead
 \toprule
-Year & Thesis & Contribution to the programme & Use in this project \\
+ID & Analysis & Observed event & Correction/disposition & Scientific impact \\
 \midrule
 \endhead
-2021 & Golder, \emph{Development of a drug profiling platform for
-patient-derived ovarian tumour cultures}\cite{golderthesis2021} & Documents
-living-biobank assay development and ATR, CHK1, PARG, and WEE1 inhibitor
-profiling. & Experimental-design and reference-control context. \\
-2021 & Bronder, \emph{Modelling chromosomal instability in high-grade serous
-ovarian cancer}\cite{bronderthesis2021} & Connects TP53, BRCA1, MYC, FNE1, and
-chromosomal-instability models. & Mechanistic priors and explicit distinction
-between engineered reference cells and patient-derived OCMs. \\
-2021 & Morgan, \emph{Novel therapeutic strategies to treat high-grade serous
-ovarian carcinoma by targeting modulators of PAR dynamics}
-\cite{morganthesis2021} & Extends PARG-inhibitor work across OCMs and in vivo
-models. & Replication-stress/PAR-dynamics validation context. \\
-2023 & Owen, \emph{Exploiting SUMOylation to target MYC-driven cancers}
-\cite{owenthesis2023} & Develops the MYC--SUMOylation programme and links it to
-TGF-$\beta$, cytokinesis, and resistance mechanisms. & Regulatory-module prior
-for interpreting the E-MTAB-14568 network results. \\
-2024 & Meeson, \emph{Multi-omics modelling to identify actionable targets in
-epithelial ovarian cancer}\cite{meesonthesis2024} & Describes Human1-based
-integration, OCM model construction, four metabolic signatures, and TPI1
-validation. & Most complete methods companion to the public
-\texttt{PhD\_2024} repository and the two Meeson papers. \\
+\input{tex/generated/failure_ledger_rows.tex}
 \bottomrule
 \end{longtable}
 \normalsize
 
-\subsection{Public expression datasets and supplementary data}
+\section{Complete public study/run/OCM registry}
+\label{app:studyregistry}
 
-The four OCM studies are separate submissions rather than technical batches of
-one experiment. Their shared gene universe allows pooled analysis, but study
-identity must remain in every statistical and network comparison. Raw sequence
-reads reside in ENA; BioStudies/ArrayExpress supplies MAGE-TAB metadata and
-links. E-MTAB-16770 is a distinct perturbation experiment and must not be added
-to the 60-OCM observational matrix.
+This attachment preserves every accession-specific run and raw source label so
+that a reader can map the manuscript back to ENA and the originating study.
+`Disposition' is derived by the frozen rule, not copied from a paper.  The TSV
+version includes ENA sample accession, passage, Tighe row, representative flag,
+first-public date, and metadata-source description.
 
-\small
-\begin{longtable}{p{2.7cm}p{2.1cm}p{5.2cm}p{4.0cm}}
-\caption{Dataset registry and analysis role.}\label{tab:datasets}\\
+\scriptsize
+\begin{longtable}{p{1.65cm}p{1.75cm}p{2.0cm}p{1.55cm}p{1.3cm}p{1.15cm}p{1.4cm}p{2.5cm}}
+\caption{All 117 public RNA runs and their analysis disposition.}\label{tab:registry}\\
 \toprule
-Accession/resource & Size in this audit & Contents and associated paper(s) &
-Permitted use and principal caveat \\
+Study & ENA run & Raw source & Canonical OCM & Patient & Class & Histotype group & Disposition \\
 \midrule
 \endfirsthead
 \toprule
-Accession/resource & Size in this audit & Contents and associated paper(s) &
-Permitted use and principal caveat \\
+Study & ENA run & Raw source & Canonical OCM & Patient & Class & Histotype group & Disposition \\
 \midrule
 \endhead
-E-MTAB-7223 / PRJEB28709 & 36 runs & Part I: ex vivo tumour models with
-matched stroma; 18 tumour, 16 stroma, Kuramochi and FNE controls; living-biobank
-study\cite{nelson2020}. & Nine frozen primary HGSOC OCMs for the main estimand;
-matched stroma is a study-aware reference, not a pooled normal cohort. \\
-E-MTAB-10801 / PRJEB46736 & 36 runs & Part II: 19 tumour and 17 matched stromal
-runs; subtype-classification study\cite{barnes2021}. & Thirteen primary HGSOC
-OCMs; non-HGSOC and stroma support labelled sensitivity contrasts. \\
-E-MTAB-11000 / PRJEB47842 & 12 runs & Part III: tumour OCM transcriptomes linked
-to the PARG-inhibitor study\cite{coulsongilmer2021}. & Eleven primary HGSOC OCMs;
-one additional tumour run is excluded by the frozen primary contract. \\
-E-MTAB-14568 / PRJEB81794 & 33 runs & Part IV: tumour OCM transcriptomes linked
-to taxol/cabazitaxel and SUMOylation studies\cite{tighe2025,littler2025}. &
-Twenty-seven primary HGSOC OCMs; six non-HGSOC models remain explicit reference
-material. \\
-E-MTAB-16770 & Separate perturbation dataset & OV56 non-targeting-siRNA and
-siTPI1 RNA-seq generated for the Meeson experimental/model validation
-\cite{meeson2026}. & External TPI1 mechanism validation; not one of the 117 OCM
-runs and not evidence of an OCM-wide response. \\
-Tighe 2025 Table S1 & 83 OCMs / 68 patients & Stage, histotype, biopsy type,
-chemo-naive-at-biopsy, TP53 and provenance fields. & Defines the wider living-
-biobank universe and longitudinal families; chemo-naive-at-biopsy is not exact
-cumulative exposure. \\
-Tighe 2025 Table S2 & 83 OCMs & Normalised ABCB1 read counts used in the MDR1
-analysis. & Valuable molecular covariate; the public table does not supply the
-exact OCM-level AUC/GI50 matrix required for response modelling. \\
-Meeson public OCM output & 49 OCM rows; 4,139 reaction-flux columns &
-\texttt{OCM\_clusters\_and\_fluxes.csv} in the pinned PhD repository. & Public
-output and algorithm can be audited, but exact regeneration is blocked because
-the expression-plus-growth input is referenced by an author-local absolute
-path and is absent from the repository. \\
-Living-biobank material and microscopy & More than 120 models described by
-2023\cite{nelson2023} & Cultures, images, longitudinal material, karyotypes, and
-functional assays. & Biological material and some microscopy are controlled or
-available on request, not a bulk-download public dataset. \\
+\input{tex/generated/study_ocm_registry_rows.tex}
 \bottomrule
 \end{longtable}
 \normalsize
 
-The four core accessions can be opened at
-\url{https://www.ebi.ac.uk/biostudies/arrayexpress/studies/} by appending the
-accession, while ENA projects can be opened at
-\url{https://www.ebi.ac.uk/ena/browser/view/}. The repository archives local
-IDF, SDRF, study JSON, ENA run reports, and SHA256 checksums so that changes in
-the public portals do not silently change the analysis contract.
+\section{Paper-to-OCM evidence atlas}
+\label{app:paperocm}
 
-\subsection{Code, models, databases, and portals}
+A study association does not imply that every run or OCM appears in the linked
+paper experiment.  This table separates direct IDs, later Tighe crosswalks,
+count-only panels, non-OCM systems and unresolved resources.  Exact ID lists are
+shown when they are recoverable without inference; otherwise the missing member
+or incomplete panel is stated.  The source is
+\path{evidence/paper_ocm_evidence.tsv}.
 
-\small
-\begin{longtable}{p{3.8cm}p{4.3cm}p{5.9cm}}
-\caption{Software and knowledge-resource registry.}\label{tab:software}\\
+\scriptsize
+\begin{longtable}{p{1.9cm}p{2.0cm}p{4.5cm}p{3.0cm}p{3.0cm}}
+\caption{Taylor-group and supporting paper/resource links to OCM identifiers.}\label{tab:paperocm}\\
 \toprule
-Resource & Role & Location and reproducibility note \\
+Paper/resource & Reported scope & Exact IDs recoverable under the stated evidence rule & Source locator & Claim limit \\
 \midrule
 \endfirsthead
 \toprule
-Resource & Role & Location and reproducibility note \\
+Paper/resource & Reported scope & Exact IDs recoverable under the stated evidence rule & Source locator & Claim limit \\
 \midrule
 \endhead
-HGSOC CORNETO project & Manifests, RNA pipeline, NMF, regulatory/metabolic
-runners, tests, receipts, and bilingual status registers. &
-\url{https://github.com/xm2325/hgsoc_corneto}; code and small provenance files
-are public, whereas raw reads, licensed solver material, and large outputs are
-not committed. \\
-Meeson PhD\_2024 & Single-omics integration implementation, notebooks, OCM flux
-output, knockout simulations, and siTPI1 validation. &
-\url{https://github.com/katemeeson/PhD_2024}; this project pins and hashes a
-specific commit and records the missing-input boundary. \\
-Human-GEM / Human1 & Generic human genome-scale metabolic reconstruction and
-SBML model used for FBA, FVA, and gene deletion\cite{human1}. &
-\url{https://github.com/SysBioChalmers/Human-GEM}; this analysis pins v1.4.1 and
-its model SHA rather than using a moving default branch. \\
-CORNETO & Constraint-based optimisation primitives, including CARNIVALFlow and
-multi-condition network models\cite{corneto}. &
-\url{https://github.com/saezlab/corneto}; solver/backend/version are written to
-receipts because API and optimisation behaviour can change. \\
-CollecTRI & Signed TF--target regulons used to estimate transcription-factor
-activity\cite{collectri}. & \url{https://github.com/saezlab/CollecTRI}; source
-URL, retrieval time, columns, signs, and SHA are retained. \\
-OmniPath & Directed, signed intracellular signalling prior\cite{omnipath}. &
-\url{https://omnipathdb.org/} and
-\url{https://github.com/saezlab/omnipath}; downloaded edges are treated as a
-versioned input, not live-queried during production solves. \\
-COBRApy and MEWpy & FBA/FVA/gene-deletion infrastructure and comparison methods
-used by the Meeson workflow. & \url{https://github.com/opencobra/cobrapy} and
-\url{https://github.com/BioSystemsUM/mewpy}; package and solver versions belong
-in every model receipt. \\
-CCLE and DepMap & Cell-line expression, growth/dependency evidence, and external
-validation used by the Meeson studies. & \url{https://depmap.org/portal/}; a
-portal release is external evidence and must not be conflated with the OCM RNA
-cohorts. \\
-Salmon and reference annotation & Transcript-level quantification followed by
-gene aggregation for the 117 public runs. &
-\url{https://github.com/COMBINE-lab/salmon}; the repository records reference
-FASTA/GTF identifiers, checksums, commands, and per-run verification receipts. \\
-BioStudies/ArrayExpress and ENA & Study metadata, MAGE-TAB sample annotations,
-and raw read access. & \url{https://www.ebi.ac.uk/arrayexpress/} and
-\url{https://www.ebi.ac.uk/ena/browser/home}; accession identifiers, rather than
-mutable download URLs, are the stable cross-reference. \\
-Taylor profile and laboratory site & Authoritative full output catalogue,
-programme description, and current contact context. &
-\url{https://research.manchester.ac.uk/en/persons/stephen-taylor} and
-\url{https://www.bub1.com/}; useful for discovery, but individual scientific
-claims should cite the primary paper. \\
+\input{tex/generated/paper_ocm_evidence_rows.tex}
 \bottomrule
 \end{longtable}
 \normalsize
 
-\subsection{Question-to-resource reading guide}
+\section{Taylor-group publications, datasets and reusable resources}
+\label{app:resources}
 
-\begin{itemize}[leftmargin=*]
-  \item \textbf{What is an OCM and how is the living biobank organised?}
-  Start with Nelson 2020, then the Nelson 2023 review, and use Tighe 2025 Table
-  S1 for the expanded model/patient index.
-  \item \textbf{Which public RNA-seq files define the present 60-OCM cohort?}
-  Use E-MTAB-7223, E-MTAB-10801, E-MTAB-11000, and E-MTAB-14568 together with
-  the frozen master manifest; never infer primary eligibility from an accession
-  alone.
-  \item \textbf{How should tumour, stroma, cell-line, and non-HGSOC comparisons
-  be interpreted?} Use 7223/10801 for within-study tumour--stroma contrasts,
-  Kuramochi/FNE only as descriptive controls, and the Barnes histotype work for
-  non-HGSOC context. Set overlap should be accompanied by effect sizes,
-  uncertainty, and multiplicity control rather than ``present/absent'' claims.
-  \item \textbf{What supports replication-stress and CIN mechanisms?} Read
-  Pillay 2019, Bronder 2021, Coulson-Gilmer 2021, Golder 2022, and Nelson 2023;
-  these provide mechanistic context but do not substitute for validation of a
-  CORNETO-selected module.
-  \item \textbf{What supports taxol/MDR1/cabazitaxel hypotheses?} Use Topham
-  2015 for mitotic fate, Williams 2020 for ABCB1 structural activation, and
-  Tighe 2025 for the 83-OCM screen. Exact model-level response association
-  remains blocked until AUC/GI50/exposure values pass the intake gate.
-  \item \textbf{What supports metabolic and TPI1 hypotheses?} Use Meeson 2024
-  for the integration method, Meeson 2026 and E-MTAB-16770 for experimental
-  TPI1 perturbation, the pinned PhD repository for code/output auditing, and
-  Human-GEM for the model. The 49-OCM historical output is an external
-  comparator, not an exactly regenerated result.
-\end{itemize}
+This atlas uses a project-relevance rule rather than claiming to reproduce an
+entire career bibliography: an item is included when it generated an OCM,
+experimentally interrogated an OCM mechanism, supplied one of the analysed
+datasets, or directly defined the metabolic/regulatory method.  The University
+of Manchester profile is the moving catalogue for outputs outside that scope
+\cite{taylorprofile}.  Counts on that profile are dynamic and are therefore not
+used as scientific results.
 
-\subsection{Known access and reproducibility boundaries}
+\subsection{Reading map}
 
-The reference catalogue deliberately records negative availability statements.
-The four OCM RNA studies are fully public and locally receipt-validated; exact
-OCM-linked paclitaxel AUC, GI50, and cumulative exposure are not present in the
-validated public tables. Tighe 2025 reports no original code. Exact regeneration
-of the Meeson 49-OCM models is blocked by a missing expression-plus-growth input,
-although the algorithm, model fingerprint, and final public flux table can be
-audited. E-MTAB-16770 is public but answers a cell-line perturbation question,
-not the observational 60-OCM question. Living cultures, some images, and
-additional clinical annotations require controlled access or author contact.
-These boundaries are part of the result: unavailable data are not reconstructed
-from plots, inferred from labels, or replaced with proxies.
+Nelson 2020 establishes the living OCM biobank and naming system
+\cite{nelson2020}; Barnes 2021 supplies histotype-aware transcriptional
+classification context\cite{barnes2021}; Coulson-Gilmer 2021 and Golder 2022
+develop replication-stress and drug-combination mechanisms
+\cite{coulsongilmer2021,golder2022}; Littler 2025 and Tighe 2025 address
+SUMOylation, taxol/MDR1 and cabazitaxel\cite{littler2025,tighe2025}; Meeson 2024
+and 2026 provide metabolic-model and TPI1 context\cite{meeson2024,meeson2026}.
+Topham 2015, Williams 2020 and Bronder 2021 provide MYC/mitotic-fate,
+ABCB1-fusion and TP53/CIN mechanisms without defining an OCM RNA cohort
+\cite{topham2015,williams2020,bronder2021}.  Coulson-Gilmer 2024 directly tests
+nucleoside rescue in OCM109 and OCM246\cite{coulsongilmer2024}.
 
-\section{Data and code availability}
+\subsection{Doctoral theses as methods companions}
 
-The analysis contract, manifest, scripts, tests, source registry, status
-register, and manuscript are maintained at
-\url{https://github.com/xm2325/hgsoc_corneto}. Large FASTQ, regulatory-network,
-Human-GEM, and solver outputs remain on project scratch storage when licensing,
-size, or credentials prevent redistribution. Every derived receipt records
-input identifiers and hashes without committing license files or secrets. The
-English and Chinese pipeline status registers document which jobs are complete,
-pending, blocked, or scheduler-only.
+Five theses add detail that is not always recoverable from article methods:
+Golder documents the OCM drug-profiling platform\cite{golderthesis2021}; Bronder
+separates engineered FNE chromosomal-instability systems from OCM evidence
+\cite{bronderthesis2021}; Morgan develops PAR/PARG therapeutic work
+\cite{morganthesis2021}; Owen develops the MYC--SUMOylation programme
+\cite{owenthesis2023}; and Meeson records the OCM metabolic integration and its
+public-code boundary\cite{meesonthesis2024}.  A thesis is a methods/provenance
+resource, not an independent replication of a result that first appeared in
+the same programme.
+
+\subsection{Dataset registry}
+
+\begin{longtable}{p{3.0cm}p{2.5cm}p{5.0cm}p{4.0cm}}
+\toprule
+Resource & Audited size & What it contains & Permitted use and boundary \\
+\midrule
+E-MTAB-7223 / PRJEB28709 & 36 runs & Tumour, matched stroma, Kuramochi and FNE controls from the living-biobank study & Nine primary HGSOC OCMs; within-study stroma reference, not pooled normal \\
+E-MTAB-10801 / PRJEB46736 & 36 runs & Nineteen tumour and 17 stromal profiles linked to the histotype-classifier study & Thirteen primary HGSOC OCMs; Barnes also reused E-MTAB-7223 profiles \\
+E-MTAB-11000 / PRJEB47842 & 12 runs & RNA subset linked to the wider 32-OCM PARG-inhibitor screen & Eleven primary HGSOC OCMs; accession is not the complete drug-screen panel \\
+E-MTAB-14568 / PRJEB81794 & 33 runs & Tumour RNA used in taxol/ABCB1 and SUMOylation work & Twenty-seven primary HGSOC OCMs; not the complete 30- or 83-model screens \\
+E-MTAB-16770 & Cell-line perturbation & OV56 siTPI1 and non-targeting RNA-seq & External TPI1 mechanism resource; not an OCM cohort \\
+Tighe 2025 Table S1 & 83 OCMs / 68 patients & Histotype, stage, biopsy, TP53 and provenance crosswalk & Wider biobank index; chemo-naive is not cumulative exposure \\
+Tighe 2025 Table S2 & 83 OCMs & Normalised ABCB1 counts & Molecular covariate; not exact AUC/GI50 \\
+Meeson PhD output & 49 raw OCM labels / 4,139 flux columns & Public final output and code & Output audit only; exact input is absent and several aliases are unresolved \\
+\bottomrule
+\end{longtable}
+
+BioStudies/ArrayExpress supplies IDF/SDRF metadata at
+\url{https://www.ebi.ac.uk/biostudies/arrayexpress/studies/}; ENA supplies run
+reports and reads at \url{https://www.ebi.ac.uk/ena/browser/home}.  The stable
+cross-reference is the accession, not a mutable download URL.
+
+\subsection{Code, models and knowledge resources}
+
+\begin{longtable}{p{3.4cm}p{5.1cm}p{5.4cm}}
+\toprule
+Resource & Role & Location and boundary \\
+\midrule
+HGSOC CORNETO project & Frozen manifests, RNA/NMF/network/metabolic code, tests, receipts and manuscript evidence & \url{https://github.com/xm2325/hgsoc_corneto}; large and licensed inputs excluded \\
+Meeson \texttt{PhD\_2024} & Public integration code and OCM output audit & \url{https://github.com/katemeeson/PhD_2024}; missing author-local input blocks exact regeneration \\
+Human-GEM / Human1 & Generic human metabolic reconstruction & \url{https://github.com/SysBioChalmers/Human-GEM}; pinned v1.4.1 and SHA \\
+CORNETO & Constraint-based network optimisation and CARNIVALFlow & \url{https://github.com/saezlab/corneto}; API, backend and solver must be versioned \\
+CollecTRI & Signed TF--target prior & \url{https://github.com/saezlab/CollecTRI}; versioned input, not ground truth \\
+OmniPath & Directed signed signalling prior & \url{https://omnipathdb.org/}; versioned input, not ground truth \\
+COBRApy / MEWpy & FBA, FVA and gene-deletion infrastructure & \url{https://github.com/opencobra/cobrapy}; \url{https://github.com/BioSystemsUM/mewpy} \\
+CCLE / DepMap & External cell-line expression and dependency context & \url{https://depmap.org/portal/}; not interchangeable with OCMs \\
+Salmon & Transcript quantification & \url{https://github.com/COMBINE-lab/salmon}; reference and per-run receipts are versioned \\
+Taylor profile / laboratory & Programme discovery and current output catalogue & \url{https://research.manchester.ac.uk/en/persons/stephen-taylor}; \url{https://www.bub1.com/}; scientific claims cite primary papers \\
+\bottomrule
+\end{longtable}
+
+\section{Evidence and access boundaries}
+
+The four RNA studies and their metadata are public.  Exact OCM-linked
+paclitaxel AUC, raw GI50 and cumulative exposure are not present in the
+validated public table.  Tighe 2025 Table S1 and S2 are locally frozen, but
+some paper panels report only counts or non-machine-readable example IDs.
+The Meeson 49-OCM output is public while its generating input is absent.
+E-MTAB-16770 addresses cell-line perturbation, not the observational OCM
+question.  Living cultures, some imaging and additional clinical annotation
+may require author contact or controlled access.  Unknown information is not
+reconstructed from figures, suffixes or convenient proxies.
 
 \section*{Acknowledgements}
 
-We thank the authors and maintainers of the Taylor-group OCM resources, ENA,
-BioStudies, Human-GEM, CORNETO, CollecTRI, OmniPath, and the public Meeson
-repository. Computation was performed on the Roihu CPU partition.
+We thank the authors and maintainers of the Taylor-group OCM resources,
+BioStudies, ENA, Human-GEM, CORNETO, CollecTRI, OmniPath and the public Meeson
+repository.  Computation was performed on CSC's Roihu CPU system.
 
-\begin{thebibliography}{99}
-
-\bibitem{topham2015}
-Topham C, Tighe A, Ly P, et al. MYC Is a Major Determinant of Mitotic Cell
-Fate. \emph{Cancer Cell}. 2015;28:129--140.\
-\url{https://doi.org/10.1016/j.ccell.2015.06.001}.
-
-\bibitem{pillay2019}
-Pillay N, Tighe A, Nelson L, et al. DNA Replication Vulnerabilities Render
-Ovarian Cancer Cells Sensitive to Poly(ADP-Ribose) Glycohydrolase Inhibitors.
-\emph{Cancer Cell}. 2019;35:519--533.e8.\
-\url{https://doi.org/10.1016/j.ccell.2019.02.004}.
-
-\bibitem{nelson2020}
-Nelson L, Tighe A, Golder A, et al. A living biobank of ovarian cancer ex vivo
-models reveals profound mitotic heterogeneity. \emph{Nature Communications}.
-2020;11:822.\
-\url{https://doi.org/10.1038/s41467-020-14551-2}.
-
-\bibitem{williams2020}
-Williams MS, Basma NJ, Amaral FMR, et al. Targeted nanopore sequencing for the
-identification of ABCB1 promoter translocations in cancer. \emph{BMC Cancer}.
-2020;20:1075.\
-\url{https://doi.org/10.1186/s12885-020-07571-0}.
-
-\bibitem{bronder2021}
-Bronder D, Tighe A, Wangsa D, et al. TP53 loss initiates chromosomal
-instability in fallopian tube epithelial cells. \emph{Disease Models \&
-Mechanisms}. 2021;14:dmm049001.\
-\url{https://doi.org/10.1242/dmm.049001}.
-
-\bibitem{barnes2021}
-Barnes BM, Nelson L, Tighe A, et al. Distinct transcriptional programs
-stratify ovarian cancer cell lines into the five major histological subtypes.
-\emph{Genome Medicine}. 2021;13:140.\
-\url{https://doi.org/10.1186/s13073-021-00952-5}.
-
-\bibitem{coulsongilmer2021}
-Coulson-Gilmer C, Morgan RD, Nelson L, et al. Replication catastrophe is
-responsible for intrinsic PAR glycohydrolase inhibitor-sensitivity in
-patient-derived ovarian cancer models. \emph{Journal of Experimental \&
-Clinical Cancer Research}. 2021;40:323.\
-\url{https://doi.org/10.1186/s13046-021-02124-0}.
-
-\bibitem{golder2022}
-Golder A, Nelson L, Tighe A, et al. Multiple-low-dose therapy: effective
-killing of high-grade serous ovarian cancer cells with ATR and CHK1
-inhibitors. \emph{NAR Cancer}. 2022;4:zcac036.\
-\url{https://doi.org/10.1093/narcan/zcac036}.
-
-\bibitem{nelson2023}
-Nelson L, Barnes BM, Tighe A, et al. Exploiting a living biobank to delineate
-mechanisms underlying disease-specific chromosome instability.
-\emph{Chromosome Research}. 2023;31:21.\
-\url{https://doi.org/10.1007/s10577-023-09731-x}.
-
-\bibitem{morgan2023}
-Morgan RD, Clamp AR, Barnes BM, et al. Homologous recombination deficiency in
-newly diagnosed FIGO stage III/IV high-grade epithelial ovarian cancer: a
-multi-national observational study. \emph{International Journal of
-Gynecological Cancer}. 2023;33:1253--1259.\
-\url{https://doi.org/10.1136/ijgc-2022-004211}.
-
-\bibitem{meeson2024}
-Meeson KE, Schwartz J-M. Constraint-based modelling predicts metabolic
-signatures of low- and high-grade serous ovarian cancer. \emph{npj Systems
-Biology and Applications}. 2024;10:96.\
-\url{https://doi.org/10.1038/s41540-024-00418-5}.
-
-\bibitem{littler2025}
-Littler S, Barnes BM, Owen R, et al. Targeting SUMOylation in ovarian cancer:
-sensitivity, resistance, and the role of MYC. \emph{iScience}.
-2025;28:112555.\
-\url{https://doi.org/10.1016/j.isci.2025.112555}.
-
-\bibitem{tighe2025}
-Tighe A, Nelson L, Morgan RD, et al. Screening a living biobank identifies
-cabazitaxel as a strategy to combat acquired taxol resistance in high-grade
-serous ovarian cancer. \emph{Cell Reports Medicine}. 2025;6:102160.\
-\url{https://doi.org/10.1016/j.xcrm.2025.102160}.
-
-\bibitem{morgan2025}
-Morgan RD, Burghel GJ, Shaw J, et al. Homologous recombination deficiency in
-unselected cases of high-grade ovarian carcinoma. \emph{Journal of Medical
-Genetics}. 2025; advance online publication.\
-\url{https://doi.org/10.1136/jmg-2025-110903}.
-
-\bibitem{meeson2026}
-Meeson KE, McGrail JC, Schwartz J-M, Taylor SS. Transcriptome-driven
-constraint-based modelling reveals metabolic targets for ovarian cancer.
-\emph{Cancer \& Metabolism}. 2026;14:7.\
-\url{https://doi.org/10.1186/s40170-026-00425-6}.
-
-\bibitem{taylorprofile}
-University of Manchester Research Explorer. Stephen Taylor, BSc, PhD:
-research interests, outputs, projects, and ORCID. Accessed 12 August 2026.\
-\url{https://research.manchester.ac.uk/en/persons/stephen-taylor}.
-
-\bibitem{golderthesis2021}
-Golder A. \emph{Development of a drug profiling platform for patient-derived
-ovarian tumour cultures}. PhD thesis, University of Manchester, 2021.\
-\url{https://research.manchester.ac.uk/en/studentTheses/development-of-a-drug-profiling-platform-for-patient-derived-ovar/}.
-
-\bibitem{bronderthesis2021}
-Bronder D. \emph{Modelling chromosomal instability in high-grade serous
-ovarian cancer}. PhD thesis, University of Manchester, 2021.\
-\url{https://research.manchester.ac.uk/en/studentTheses/modelling-chromosomal-instability-in-high-grade-serous-ovarian-ca/}.
-
-\bibitem{morganthesis2021}
-Morgan RD. \emph{Novel therapeutic strategies to treat high-grade serous
-ovarian carcinoma by targeting modulators of PAR dynamics}. PhD thesis,
-University of Manchester, 2021.\
-\url{https://research.manchester.ac.uk/en/studentTheses/novel-therapeutic-strategies-to-treat-high-grade-serous-ovarian-c/}.
-
-\bibitem{owenthesis2023}
-Owen R. \emph{Exploiting SUMOylation to target MYC-driven cancers}. PhD thesis,
-University of Manchester, 2023.\
-\url{https://research.manchester.ac.uk/en/studentTheses/exploiting-sumoylation-to-target-myc-driven-cancers}.
-
-\bibitem{meesonthesis2024}
-Meeson KE. \emph{Multi-omics modelling to identify actionable targets in
-epithelial ovarian cancer}. PhD thesis, University of Manchester, 2024.\
-\url{https://research.manchester.ac.uk/en/studentTheses/multi-omics-modelling-to-identify-actionable-targets-in-epithelia/}.
-
-\bibitem{liu2019}
-Liu A, Trairatphisan P, Gjerga E, et al. From expression footprints to causal
-pathways: contextualizing large signaling networks with CARNIVAL.
-\emph{npj Systems Biology and Applications}. 2019;5:40.\
-\url{https://doi.org/10.1038/s41540-019-0109-6}.
-
-\bibitem{corneto}
-Saez-Rodriguez J, et al. CORNETO: Constraint-based Optimization for the
-Reconstruction of NETworks from Omics. Documentation and software repository.\
-\url{https://corneto.org/latest/guide/signaling/carnival.html}.
-
-\bibitem{omnipath}
-Türei D, et al. Integrated intra- and intercellular signaling knowledge for
-multicellular omics analysis. \emph{Molecular Systems Biology}. 2021;17:e9923.\
-\url{https://doi.org/10.15252/msb.20209923}.
-
-\bibitem{collectri}
-Müller-Dott S, Tsirvouli E, Vazquez M, et al. Expanding the coverage of regulons
-from high-confidence prior knowledge for accurate estimation of transcription
-factor activities. \emph{Nucleic Acids Research}. 2023;51:10934--10949.\
-\url{https://doi.org/10.1093/nar/gkad841}.
-
-\bibitem{human1}
-Robinson JL, Kocabaş P, Wang H, et al. An atlas of human metabolism.
-\emph{Science Signaling}. 2020;13(624):eaaz1482.\
-\url{https://doi.org/10.1126/scisignal.aaz1482}.
-
-\bibitem{brunet2004}
-Brunet J-P, Tamayo P, Golub TR, Mesirov JP. Metagenes and molecular pattern
-discovery using matrix factorization. \emph{Proceedings of the National Academy
-of Sciences USA}. 2004;101:4164--4169.\
-\url{https://doi.org/10.1073/pnas.0308531101}.
-
-\bibitem{meesonrepo}
-Meeson K, et al. PhD\_2024: public code and outputs for OCM metabolic
-integration. GitHub repository, pinned commit audited by this project.\
-\url{https://github.com/katemeeson/PhD_2024}.
-
-\end{thebibliography}
+\input{tex/references.tex}
 
 \end{document}

@@ -1,0 +1,193 @@
+{
+  "schema_version": "manuscript_roihu_receipt_snapshot.v1",
+  "retrieved_on": "2026-08-12",
+  "host_alias": "roihu_cpu",
+  "project_root": "/scratch/project_2012997/xiaomei/hgsoc_corneto",
+  "purpose": "Selected values and source hashes for manuscript verification; original receipts remain authoritative.",
+  "receipts": {
+    "rna_aggregation": {
+      "claim_limit": "Aggregation completion and dimensions only; this snapshot does not replace per-run quantification receipts.",
+      "studies": [
+        {
+          "study_accession": "E-MTAB-7223",
+          "path": "data/processed/rna/E-MTAB-7223/aggregation/aggregation_receipt.json",
+          "sha256": "0923b2782c2635723e9ddb733584d5598127a93bf67e41d755b09130b4c8cbf9",
+          "status": "completed",
+          "run_count": 36,
+          "gene_count": 60609,
+          "transcript_count": 227462
+        },
+        {
+          "study_accession": "E-MTAB-10801",
+          "path": "data/processed/rna/E-MTAB-10801/aggregation/aggregation_receipt.json",
+          "sha256": "45c48d734920120bd457f145734111f20e4a672972216f6f914221f49f43dafb",
+          "status": "completed",
+          "run_count": 36,
+          "gene_count": 60609,
+          "transcript_count": 227462
+        },
+        {
+          "study_accession": "E-MTAB-11000",
+          "path": "data/processed/rna/E-MTAB-11000/aggregation/aggregation_receipt.json",
+          "sha256": "275595de8f5451615c12191b7868dc9af921eb2ac986ab942f4511ff3688602b",
+          "status": "completed",
+          "run_count": 12,
+          "gene_count": 60609,
+          "transcript_count": 227462
+        },
+        {
+          "study_accession": "E-MTAB-14568",
+          "path": "data/processed/rna/E-MTAB-14568/aggregation/aggregation_receipt.json",
+          "sha256": "3edf9b50191e0a5fa1832b5b4d423dd7703a0b71e491c92c2decff79b8c18dc6",
+          "status": "completed",
+          "run_count": 33,
+          "gene_count": 60609,
+          "transcript_count": 227462
+        }
+      ]
+    },
+    "nmf_pooled_rank_summary": {
+      "path": "data/processed/rna/pooled_primary60/nmf/rank_summary.tsv",
+      "sha256": "8025bcb254d12ee9a5547cba0313acd2f30f1a3c10f51af0849a5e5196b764aa",
+      "claim_limit": "Technical decomposition stability; rank labels are not clinical subtypes.",
+      "rows": {
+        "2": {
+          "sample_count": 60,
+          "gene_count": 6000,
+          "nmf_runs": 100,
+          "cophenetic_correlation": 0.972012231796,
+          "average_silhouette": 0.898941483184,
+          "cluster_sizes": [38, 22],
+          "converged_runs": 100
+        },
+        "3": {
+          "sample_count": 60,
+          "gene_count": 6000,
+          "nmf_runs": 100,
+          "cophenetic_correlation": 0.939411650185,
+          "average_silhouette": 0.769797886657,
+          "cluster_sizes": [23, 20, 17],
+          "converged_runs": 100
+        }
+      }
+    },
+    "nmf_pooled_vs_cohort": {
+      "path": "data/processed/rna/nmf_pooled_vs_stratified/comparison_receipt.json",
+      "sha256": "346542cd20a2f29f497f6eca0f577a841fd99b0b462af1aedecd8d7f546466c4",
+      "status": "completed",
+      "rank": 3,
+      "pooled_sample_count": 60,
+      "claim_limit": "Same-data pooled-versus-local concordance, not independent cohort replication.",
+      "cohort_metrics": [
+        {"study_accession": "E-MTAB-7223", "sample_count": 9, "adjusted_rand_index": 0.723076923077, "normalized_mutual_information": 0.8, "mapped_assignment_agreement": 0.888888888889, "mean_matched_loading_spearman": 0.82527084612},
+        {"study_accession": "E-MTAB-10801", "sample_count": 13, "adjusted_rand_index": 0.529411764706, "normalized_mutual_information": 0.635185112383, "mapped_assignment_agreement": 0.846153846154, "mean_matched_loading_spearman": 0.843150150706},
+        {"study_accession": "E-MTAB-11000", "sample_count": 11, "adjusted_rand_index": 0.377358490566, "normalized_mutual_information": 0.549863187987, "mapped_assignment_agreement": 0.727272727273, "mean_matched_loading_spearman": 0.804862818225},
+        {"study_accession": "E-MTAB-14568", "sample_count": 27, "adjusted_rand_index": 0.568609461822, "normalized_mutual_information": 0.639119497579, "mapped_assignment_agreement": 0.740740740741, "mean_matched_loading_spearman": 0.797630416332}
+      ],
+      "pooled_state_by_study": {
+        "counts": [[3, 4, 2], [3, 4, 6], [5, 1, 5], [12, 11, 4]],
+        "chi_square": 8.454702444472266,
+        "p_value": 0.2066463281272105,
+        "cramers_v": 0.2654352156439223
+      }
+    },
+    "nmf_patient_balanced": {
+      "path": "data/processed/rna/pooled_patient_balanced52/patient_balanced_vs_pooled_rank3_v2.json",
+      "sha256": "af0ae10e37d2546c6b472ace42e8e0bed1ec8b4de96339d9dc0b4156bd8e87bc",
+      "status": "completed",
+      "common_run_count": 52,
+      "adjusted_rand_index": 0.8420647887542755,
+      "normalized_mutual_information": 0.8248908171552536,
+      "mapped_assignment_agreement": 0.9423076923076923,
+      "claim_limit": "One deterministic response-blind patient-weighting sensitivity; not a distribution over valid selections."
+    },
+    "regulatory_grid": {
+      "path": "data/processed/corneto/regulatory_multisample/v1/pooled_vs_cohort_summary.json",
+      "sha256": "defaf6a90c9cfdf0f378f691b9d0d533489880afc0217494534d826b991d2670",
+      "status": "completed",
+      "response_blind": true,
+      "bundle_sha256": "4cc393e59131af5f42b2c1ac886a34470a3e2dd11b6e44d2bb3e33a7466bf056",
+      "lambda_values": [0.0, 0.001, 0.01, 0.05, 0.1, 0.25, 0.5, 1.0, 2.0],
+      "lambda_scaling": "mean condition fit + nominal lambda * union edge count",
+      "mode_count": 5,
+      "fit_count": 45,
+      "claim_limit": "Method stability only; lambda must not be selected using held-out phenotype."
+    },
+    "regulatory_patient_balanced": {
+      "path": "data/processed/corneto/regulatory_multisample/patient_balanced52/pooled_vs_patient_balanced.json",
+      "sha256": "1831a86633bd0a8f2d00cbdd2eeda1ae33bd6b617ede47b898ca66f17367099e",
+      "status": "completed",
+      "lambda_nominal": 0.001,
+      "common_run_count": 52,
+      "pooled_edge_union": 138,
+      "patient_balanced_edge_union": 136,
+      "union_jaccard": 0.8896551724137931,
+      "mean_sample_jaccard": 0.898992673992674,
+      "claim_limit": "One patient-weighting sensitivity only; no phenotype or causal interpretation."
+    },
+    "regulatory_richer_policy": {
+      "path": "data/processed/corneto/regulatory_multisample/richer_v1/narrow_vs_richer_l0p001.json",
+      "sha256": "1965d1c4424a1bc7fa7c2cd8c0d701a2a5dde6963e6a846847d5f66774c8e88e",
+      "status": "completed",
+      "lambda_nominal": 0.001,
+      "narrow_policy": "max_inputs=3 max_outputs=6 max_depth=3",
+      "richer_policy": "max_inputs=5 max_outputs=10 max_depth=4",
+      "groups": [
+        {"group": "pooled", "sample_count": 60, "union_jaccard": 0.20224719101123595, "mean_sample_jaccard": 0.1084582519310107},
+        {"group": "E-MTAB-7223", "sample_count": 9, "union_jaccard": 0.1076923076923077, "mean_sample_jaccard": 0.06481481481481481},
+        {"group": "E-MTAB-10801", "sample_count": 13, "union_jaccard": 0.11764705882352941, "mean_sample_jaccard": 0.11423685720360913},
+        {"group": "E-MTAB-11000", "sample_count": 11, "union_jaccard": 0.13095238095238096, "mean_sample_jaccard": 0.10031145325262973},
+        {"group": "E-MTAB-14568", "sample_count": 27, "union_jaccard": 0.14285714285714285, "mean_sample_jaccard": 0.05849665709056834}
+      ],
+      "claim_limit": "Bundled graph-policy sensitivity; the changed inputs, outputs and depth prevent attribution to PKN breadth alone."
+    },
+    "regulatory_alternative_optima": {
+      "path": "data/processed/corneto/alternative_optima/E-MTAB-14568/l0p1_final_summary.json",
+      "sha256": "e60c7c1615bc7cfe623ae0a1d83cf6a6e870d07fc63c62a817184c1286737ccb",
+      "status": "completed",
+      "study": "E-MTAB-14568",
+      "lambda_reg": 0.1,
+      "expected_samples": 27,
+      "status_counts": {"completed": 26, "blocked_no_selected_edges": 1},
+      "usable_nonempty_samples": 26,
+      "median_accepted_alternative_count": 30.0,
+      "median_core_edge_count": 5.0,
+      "median_edge_union_count": 6.0,
+      "median_incumbent_edge_count": 5.5,
+      "median_mean_pairwise_jaccard": 1.0,
+      "claim_limit": "Near-optimal response-blind edge stability in one study; zero-edge optima are blocked and no drug or causal claim is supported."
+    },
+    "tpi1_model_gate": {
+      "path": "data/processed/corneto/tpi1_model_gate.json",
+      "sha256": "a65caebf8521f351bb09cc9494adbe6722458622aeac95594e2238f6c5b771b8",
+      "status": "valid",
+      "reaction_count": 13096,
+      "gene_count": 3628,
+      "tpi1_hits": ["gene:ENSG00000111669", "reaction:HMR_4391"],
+      "claim_limit": "Model identity/input gate only; no knockout, FVA, OCM or phenotype result."
+    },
+    "human_gem_fingerprint": {
+      "path": "data/processed/corneto/human_gem_fingerprint.json",
+      "sha256": "d4f36931ac3692c895d3e928dbc622ba440416a63761c8db36f0487e5c01fe7f",
+      "model_sha256": "57d1b137f0c90d83a3e4f9a8225d74d37523594e6ee99f622b160a014d9f7050",
+      "bytes": 37906640,
+      "reactions": 13096,
+      "metabolites": 8400,
+      "genes": 3628,
+      "gpr_partition_complete": true,
+      "biomass_sbml_ids": ["R_biomass_human"],
+      "legacy_boolean_caveat": "biomass_human_present is false because an early strict-name predicate did not canonicalise the R_ prefix; validation.biomass_detected and biomass_sbml_ids identify the reaction."
+    },
+    "pooled_metabolic_input_gate": {
+      "path": "data/processed/corneto/pooled_primary_60/metabolic_input_gate.json",
+      "sha256": "a3518e5dbd180a21a4336327721881e94c858e280891da03f99613790c4a0998",
+      "status": "valid",
+      "sample_count": 60,
+      "ocm_count": 60,
+      "patient_count": 52,
+      "gene_count": 60609,
+      "study_counts": {"E-MTAB-7223": 9, "E-MTAB-10801": 13, "E-MTAB-11000": 11, "E-MTAB-14568": 27},
+      "claim_limit": "Input/code gate only; no metabolic solution or phenotype claim."
+    }
+  }
+}
