@@ -4,13 +4,14 @@
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 from pathlib import Path
 from typing import Any
 
 from hgsoc_corneto.external_validation import (
     audit_gse_count_matrix,
+    depmap_download_preflight,
+    download_verified,
     extract_depmap_gene_effects,
     extract_gse_candidate_log_cpm,
     file_sha256,
@@ -28,17 +29,6 @@ from hgsoc_corneto.io import write_json, write_tsv
 def _load_json(path: Path) -> Any:
     with path.open(encoding="utf-8") as handle:
         return json.load(handle)
-
-
-def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    if not rows:
-        path.write_text("", encoding="utf-8")
-        return
-    with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
-        writer.writeheader()
-        writer.writerows(rows)
 
 
 def audit_gse(args: argparse.Namespace) -> None:
@@ -104,6 +94,46 @@ def prepare_gse(args: argparse.Namespace) -> None:
             ),
         },
     )
+
+
+def fetch_gse(args: argparse.Namespace) -> None:
+    contract = _load_json(args.contract)
+    source = contract["count_matrix"]
+    target = args.output_dir / Path(source["url"]).name
+    download = download_verified(
+        source["url"],
+        target,
+        expected_sha256=source["sha256"],
+    )
+    audit = audit_gse_count_matrix(
+        target,
+        expected_sha256=source["sha256"],
+        expected_samples=[row["sample_id"] for row in contract["samples"]],
+        expected_gene_rows=source["gene_rows"],
+    )
+    write_json(
+        args.receipt,
+        {
+            **audit,
+            "accession": contract["accession"],
+            "source_url": source["url"],
+            "download": download,
+            "sample_metadata": contract["samples"],
+            "claim_limits": [contract["scope_note"], contract["copy_number_note"]],
+        },
+    )
+
+
+def depmap_preflight(args: argparse.Namespace) -> None:
+    contract = _load_json(args.contract)
+    receipt = depmap_download_preflight(
+        release=args.release,
+        model_path=args.models,
+        gene_effect_path=args.gene_effect,
+        release_readme_path=args.release_readme,
+        landing_url=contract["official_download_landing_page"],
+    )
+    write_json(args.receipt, receipt)
 
 
 def prepare_depmap(args: argparse.Namespace) -> None:
@@ -177,6 +207,16 @@ def parser() -> argparse.ArgumentParser:
     gse.add_argument("--receipt", type=Path, required=True)
     gse.set_defaults(func=audit_gse)
 
+    gse_fetch = commands.add_parser("fetch-gse208216")
+    gse_fetch.add_argument("--output-dir", type=Path, required=True)
+    gse_fetch.add_argument("--receipt", type=Path, required=True)
+    gse_fetch.add_argument(
+        "--contract",
+        type=Path,
+        default=Path("config/external_validation/gse208216.json"),
+    )
+    gse_fetch.set_defaults(func=fetch_gse)
+
     gse_prepare = commands.add_parser("prepare-gse208216")
     gse_prepare.add_argument("--counts", type=Path, required=True)
     gse_prepare.add_argument("--gene-map", type=Path, required=True)
@@ -202,6 +242,19 @@ def parser() -> argparse.ArgumentParser:
     )
     depmap.add_argument("--allow-unscreened-models", action="store_true")
     depmap.set_defaults(func=prepare_depmap)
+
+    depmap_gate = commands.add_parser("depmap-preflight")
+    depmap_gate.add_argument("--release")
+    depmap_gate.add_argument("--models", type=Path)
+    depmap_gate.add_argument("--gene-effect", type=Path)
+    depmap_gate.add_argument("--release-readme", type=Path)
+    depmap_gate.add_argument("--receipt", type=Path, required=True)
+    depmap_gate.add_argument(
+        "--contract",
+        type=Path,
+        default=Path("config/external_validation/depmap_download_contract.json"),
+    )
+    depmap_gate.set_defaults(func=depmap_preflight)
     return root
 
 

@@ -39,6 +39,15 @@ DepMap releases are mutable. Record the release label, source URLs, file sizes, 
 for `Model.csv` and `CRISPRGeneEffect.csv` in every receipt. Do not combine files from different
 releases.
 
+The executable preflight intentionally stores only DepMap's official download landing page. If an
+explicit quarterly release, `Model.csv`, `CRISPRGeneEffect.csv`, and that release's README are not
+all present, it emits `status=blocked` with `scientific_success=false`. It never guesses a portal
+asset URL or silently substitutes an older release.
+
+On Roihu, `hpc/roihu/external_gse208216_fetch_audit.sbatch` atomically downloads and checksum-gates
+the public GEO matrix. `hpc/roihu/external_depmap_preflight.sbatch` writes the explicit ready/blocked
+DepMap receipt from operator-supplied environment variables. Neither script submits successor jobs.
+
 ## Analysis contract
 
 1. Freeze a Taylor-derived `gene_symbol` candidate table before viewing external effects.

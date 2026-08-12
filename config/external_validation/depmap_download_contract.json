@@ -1,0 +1,9 @@
+{
+  "official_download_landing_page": "https://depmap.org/portal/data_page/?tab=currentRelease",
+  "required_files": [
+    "Model.csv",
+    "CRISPRGeneEffect.csv",
+    "release README"
+  ],
+  "scope_note": "DepMap release files change each quarter and portal download links can require an interactive session. No guessed direct URL is stored. The operator must record one explicit quarterly release and provide all files from that release."
+}

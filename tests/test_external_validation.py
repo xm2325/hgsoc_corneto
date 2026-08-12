@@ -6,6 +6,8 @@ import pytest
 
 from hgsoc_corneto.external_validation import (
     audit_gse_count_matrix,
+    depmap_download_preflight,
+    download_verified,
     extract_depmap_gene_effects,
     extract_gse_candidate_log_cpm,
     normalize_cell_line_name,
@@ -156,3 +158,48 @@ def test_extract_gse_candidate_expression_preserves_missing_gene(tmp_path):
     )
     assert rows == []
     assert missing == ["TPI1"]
+
+
+def test_verified_download_reuses_valid_file_without_network(tmp_path):
+    target = tmp_path / "payload.txt"
+    target.write_text("verified", encoding="utf-8")
+    checksum = hashlib.sha256(target.read_bytes()).hexdigest()
+    result = download_verified(
+        "https://invalid.example/no-network-should-be-used",
+        target,
+        expected_sha256=checksum,
+    )
+    assert result["downloaded"] is False
+    assert result["sha256"] == checksum
+
+
+def test_depmap_preflight_is_explicitly_blocked_without_release_files(tmp_path):
+    receipt = depmap_download_preflight(
+        release=None,
+        model_path=None,
+        gene_effect_path=None,
+        release_readme_path=None,
+        landing_url="https://depmap.org/portal/data_page/?tab=currentRelease",
+    )
+    assert receipt["scientific_success"] is False
+    assert receipt["status"] == "blocked"
+    assert len(receipt["blocking_reasons"]) == 4
+
+
+def test_depmap_preflight_ready_is_still_not_scientific_success(tmp_path):
+    model = tmp_path / "Model.csv"
+    effect = tmp_path / "CRISPRGeneEffect.csv"
+    readme = tmp_path / "README.txt"
+    model.write_text("ModelID\nACH-1\n", encoding="utf-8")
+    effect.write_text("ModelID,TPI1 (7167)\nACH-1,-1\n", encoding="utf-8")
+    readme.write_text("DepMap Public 26Q1", encoding="utf-8")
+    receipt = depmap_download_preflight(
+        release="26Q1",
+        model_path=model,
+        gene_effect_path=effect,
+        release_readme_path=readme,
+        landing_url="https://depmap.org/portal/data_page/?tab=currentRelease",
+    )
+    assert receipt["status"] == "ready_for_schema_validation"
+    assert receipt["scientific_success"] is False
+    assert not receipt["blocking_reasons"]

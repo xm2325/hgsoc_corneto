@@ -12,7 +12,10 @@ import gzip
 import hashlib
 import math
 import re
+import shutil
 import statistics
+import tempfile
+import urllib.request
 from collections.abc import Iterable, Iterator
 from pathlib import Path
 from typing import Any, TextIO
@@ -33,6 +36,99 @@ def file_sha256(path: str | Path, block_size: int = 1024 * 1024) -> str:
         while block := handle.read(block_size):
             digest.update(block)
     return digest.hexdigest()
+
+
+def download_verified(
+    url: str,
+    target: str | Path,
+    *,
+    expected_sha256: str,
+    timeout_seconds: int = 180,
+) -> dict[str, Any]:
+    """Atomically download one immutable public file and verify it before publish."""
+
+    destination = Path(target)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    if destination.is_file() and file_sha256(destination) == expected_sha256:
+        return {
+            "path": str(destination),
+            "sha256": expected_sha256,
+            "bytes": destination.stat().st_size,
+            "downloaded": False,
+        }
+    with tempfile.NamedTemporaryFile(dir=destination.parent, delete=False) as handle:
+        temporary = Path(handle.name)
+        request = urllib.request.Request(url, headers={"User-Agent": "hgsoc-corneto/0.1"})
+        try:
+            with urllib.request.urlopen(request, timeout=timeout_seconds) as response:
+                shutil.copyfileobj(response, handle)
+            observed = file_sha256(temporary)
+            if observed != expected_sha256:
+                raise ValueError(
+                    f"download checksum mismatch: expected {expected_sha256}, observed {observed}"
+                )
+            temporary.replace(destination)
+        except Exception:
+            temporary.unlink(missing_ok=True)
+            raise
+    return {
+        "path": str(destination),
+        "sha256": expected_sha256,
+        "bytes": destination.stat().st_size,
+        "downloaded": True,
+    }
+
+
+def depmap_download_preflight(
+    *,
+    release: str | None,
+    model_path: str | Path | None,
+    gene_effect_path: str | Path | None,
+    release_readme_path: str | Path | None,
+    landing_url: str,
+) -> dict[str, Any]:
+    """Return an auditable ready/blocked state without inventing download URLs."""
+
+    reasons: list[str] = []
+    release_pattern = re.compile(r"^\d{2}Q[1-4]$")
+    if release is None or not release_pattern.fullmatch(release):
+        reasons.append("an explicit quarterly DepMap release such as 26Q1 is required")
+
+    declared = {
+        "Model.csv": Path(model_path) if model_path is not None else None,
+        "CRISPRGeneEffect.csv": (
+            Path(gene_effect_path) if gene_effect_path is not None else None
+        ),
+        "release_README": (
+            Path(release_readme_path) if release_readme_path is not None else None
+        ),
+    }
+    files: dict[str, dict[str, Any]] = {}
+    for label, path in declared.items():
+        if path is None:
+            reasons.append(f"{label} was not supplied")
+        elif not path.is_file():
+            reasons.append(f"{label} does not exist at {path}")
+        else:
+            files[label] = {
+                "path": str(path),
+                "bytes": path.stat().st_size,
+                "sha256": file_sha256(path),
+            }
+
+    blocked = bool(reasons)
+    return {
+        "scientific_success": False,
+        "status": "blocked" if blocked else "ready_for_schema_validation",
+        "release": release,
+        "official_download_landing_page": landing_url,
+        "files": files,
+        "blocking_reasons": reasons,
+        "claim_limit": (
+            "This preflight is not a dependency result. No direct data URL is guessed, and files "
+            "from unspecified or mixed DepMap releases are not accepted."
+        ),
+    }
 
 
 def audit_gse_count_matrix(
