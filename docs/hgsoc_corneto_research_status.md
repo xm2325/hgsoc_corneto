@@ -106,6 +106,10 @@ profiles is internal consistency, not independent validation.
   Human-GEM contains 13,096 reactions and 3,628 genes; TPI1 maps to
   `ENSG00000111669` and reaction `HMR_4391`; no solver was called. Receipt:
   `data/processed/corneto/tpi1_model_gate.json`.
+- Obsolete pending job **591049** was cancelled before starting because it
+  would have overwritten that same receipt after the original baselines. Its
+  roles are now separated into 599873 (model only) and 599950 (strict
+  receipt-dependent preflight).
 
 ## Metabolic baseline: active, failed, and queued
 
