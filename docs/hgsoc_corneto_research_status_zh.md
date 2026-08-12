@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-12 14:21 BST（17:21 EEST）。本文件与
+最后运行更新：2026-08-12 20:42 BST（22:42 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -104,16 +104,17 @@ joint lambda 1.0，以及不允许 fallback 的 explicit Gurobi。
 
 | Study | Original job | 当前状态 | Conditional/new retry | Resources |
 |---|---:|---|---:|---|
-| E-MTAB-7223 | 588250 | 运行 22 h 45 min；24 h limit 约剩 1 h 15 min | **600005**，afterany:588250；若已有 receipt 验证有效则跳过 | 72 h、128G、8 CPU |
-| E-MTAB-10801 | 588251 | 失败：确认为 64G OOM | **600004**，运行 6 h 43 min，未见 startup error 或 receipt | 72 h、196G、8 CPU |
-| E-MTAB-11000 | 588252 | 运行 22 h 45 min；24 h limit 约剩 1 h 15 min | **600006**，afterany:588252；若已有 receipt 验证有效则跳过 | 72 h、128G、8 CPU |
-| E-MTAB-14568 | 588253 | 运行 22 h 45 min；72 h limit 约剩 49 h 15 min | **600007**，afterany:588253；若已有 receipt 验证有效则跳过 | 72 h、196G、8 CPU |
+| E-MTAB-7223 | 588250 | 在 24 h limit 达到 `TIMEOUT`；无有效 final receipt | **600005**，已运行约 4 h，未见 startup error 或 receipt | 72 h、128G、8 CPU |
+| E-MTAB-10801 | 588251 | 失败：确认为 64G OOM | **600004**，已运行约 12 h，未见 startup error 或 receipt | 72 h、196G、8 CPU |
+| E-MTAB-11000 | 588252 | 在 24 h limit 达到 `TIMEOUT`；无有效 final receipt | **600006**，已运行约 4 h，未见 startup error 或 receipt | 72 h、128G、8 CPU |
+| E-MTAB-14568 | 588253 | 已运行约 28 h / 72 h；尚无 final receipt | **600007**，等待 `afterany:588253`；若 original receipt 有效则跳过 | 72 h、196G、8 CPU |
 
-17:21 EEST 检查中，588250/588252/588253 active steps 最近记录的 peak RSS 约为
-22.9/24.8/27.6 GiB；196G 的 10801 retry 600004 约为 13.2 GiB，pooled
-smoke 600008 约为 5.2 GiB。所有 per-OCM biomass-optimum LP 已完成，但 runner
-没有记录静默进行的是 independent MILP 还是最终 cohort-joint MILP。尚无 final
-metabolic receipt。两个 24-hour jobs 仍健康但接近限时；只允许使用已有的 afterany retries 继续。
+22:42 EEST 检查中，solver-step peak RSS 约为：588253 28.8 GiB、600004
+17.3 GiB、600005 10.9 GiB、600006 10.0 GiB。CPU time 与 disk I/O 持续增长，
+active logs 仍显示预期的 Human-GEM LP setup/solve，未见新的 OOM、
+license-session-cap error 或 solver exception。external-compartment auto-detection
+warning 必须作为 model-boundary caveat 在完成后审计，但它本身不证明 solve 失败。
+当前仍无 final cohort/retry metabolic receipt，因此任何 running job 都还不是科学结果。
 
 已取代的 startup attempts **599836** 和 **599943** 在数秒内以 exit 127 失败，
 原因是 direct non-login sbatch scripts 中没有 `module`；它们没有调用 Gurobi，也没有
@@ -131,17 +132,22 @@ Immediate availability audit **599874** 已完成，状态为 `incomplete`，正
 
 ```mermaid
 flowchart LR
-    G["599942 pooled input gate: valid"] --> S["600008 four-condition, one-per-study joint smoke"]
-    S --> F["600009 pooled-60 joint sparse-FBA; 72 h, 384G"]
-    F --> C["600010 pooled-vs-cohort metabolic comparison"]
+    G["599942 pooled input gate: valid"] --> S["615508 four-condition, one-per-study joint smoke retry"]
+    S --> F["615515 pooled-60 joint sparse-FBA; 72 h, 384G"]
+    F --> C["615517 pooled-vs-cohort metabolic comparison"]
     Q["599876 strict four-cohort comparison"] --> C
 ```
 
 Smoke 使用每个 study 一个 primary OCM，candidate budget 25、growth fraction 0.9、
 joint lambda 1.0 和 Gurobi。只有 smoke 成功后 pooled-60 job 才会启动，但二者都不依赖
-cohort baselines。17:21 EEST checkpoint 时，smoke job **600008** 已运行 6 h 43 min，
-持续加载/求解预期的 Human-GEM LP，未见 scheduler、timeout、OOM、license-session-cap
-或 receipt error。Pooled full job **600009** 与 comparator **600010** 仍按设计等待 receipt-producing predecessors。
+cohort baselines。Original smoke **600008** 在完成四次预期 Human-GEM LP read 后达到
+12 h wall-time；peak RSS 仅约 7.1 GiB，日志无 OOM、license-session-cap 或 Python/solver
+exception，但没有生成 receipt，因此它是 operational timeout，不是科学结果。其
+`afterok` 失败使从未启动的 **600009** 与 **600010** 被 Slurm 自动取消。已仅提交一次
+科学参数完全相同的 smoke retry **615508**，将时限延长到 36 h、保持 128G；本次检查时
+它已正常运行。Replacement full job **615515** 等待 `afterok:615508`，replacement
+comparator **615517** 同时等待 `afterok:599876` 与 `afterok:615515`。没有提交重复的
+pooled solver job；在相应 receipt 验证通过前不得解释 pooled result。
 
 ## TPI1/FVA 与 Meeson dependency chain
 

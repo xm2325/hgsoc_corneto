@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-12 14:21 BST (17:21 EEST). This file is the project-level source of
+Last operational update: 2026-08-12 20:42 BST (22:42 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -119,19 +119,19 @@ independent lambda 0.1, joint lambda 1.0, and explicit Gurobi without fallback.
 
 | Study | Original job | State at update | Conditional/new retry | Resources |
 |---|---:|---|---:|---|
-| E-MTAB-7223 | 588250 | Running 22 h 45 min; about 1 h 15 min remain on the 24 h limit | **600005**, pending `afterany:588250`, skip if existing receipt validates | 72 h, 128G, 8 CPU |
-| E-MTAB-10801 | 588251 | Failed: genuine 64G OOM | **600004**, running 6 h 43 min with no startup error or receipt yet | 72 h, 196G, 8 CPU |
-| E-MTAB-11000 | 588252 | Running 22 h 45 min; about 1 h 15 min remain on the 24 h limit | **600006**, pending `afterany:588252`, skip if existing receipt validates | 72 h, 128G, 8 CPU |
-| E-MTAB-14568 | 588253 | Running 22 h 45 min; about 49 h 15 min remain on the 72 h limit | **600007**, pending `afterany:588253`, skip if existing receipt validates | 72 h, 196G, 8 CPU |
+| E-MTAB-7223 | 588250 | `TIMEOUT` at the 24 h limit; no valid final receipt | **600005**, running for about 4 h with no startup error or receipt yet | 72 h, 128G, 8 CPU |
+| E-MTAB-10801 | 588251 | Failed: genuine 64G OOM | **600004**, running for about 12 h with no startup error or receipt yet | 72 h, 196G, 8 CPU |
+| E-MTAB-11000 | 588252 | `TIMEOUT` at the 24 h limit; no valid final receipt | **600006**, running for about 4 h with no startup error or receipt yet | 72 h, 128G, 8 CPU |
+| E-MTAB-14568 | 588253 | Running for about 28 h of a 72 h limit; no final receipt yet | **600007**, pending `afterany:588253`, skip if the original receipt validates | 72 h, 196G, 8 CPU |
 
-At the 17:21 EEST inspection, active-step peak RSS was last recorded as about 22.9/24.8/27.6
-GiB for 588250/588252/588253, 13.2 GiB for 600004, and 5.2 GiB for 600008.
-The active logs again continued to show the expected Human-GEM LP setup/solve work;
-none showed a timeout, license-session-cap error, or new OOM. All per-OCM
-biomass-optimum LPs had completed in the original logs, but the runner does not
-log whether the silent CORNETO stage is in an independent MILP or the final
-cohort-joint MILP. No final cohort/retry metabolic receipt, pooled-smoke
-receipt, pooled-full receipt, or comparison receipt existed at this checkpoint.
+At the 22:42 EEST inspection, solver-step peak RSS was about 28.8 GiB for
+588253, 17.3 GiB for 600004, 10.9 GiB for 600005, and 10.0 GiB for 600006.
+CPU time and disk I/O continued to increase, and active logs showed the expected
+Human-GEM LP setup/solve work without a new OOM, license-session-cap error, or
+solver exception. The external-compartment auto-detection warning remains a
+model-boundary caveat to audit after completion, but is not by itself evidence
+of a failed solve. No final cohort/retry metabolic receipt existed at this
+checkpoint, so none of the running jobs is yet a scientific result.
 
 Superseded startup attempts **599836** and **599943** failed in seconds with
 exit 127 because `module` is unavailable in direct non-login sbatch scripts;
@@ -155,20 +155,26 @@ independent/cohort evidence, while repeating 60 independent MILPs inside one
 
 ```mermaid
 flowchart LR
-    G["599942 pooled input gate: valid"] --> S["600008 four-condition, one-per-study joint smoke"]
-    S --> F["600009 pooled-60 joint sparse-FBA; 72 h, 384G"]
-    F --> C["600010 pooled-vs-cohort metabolic comparison"]
+    G["599942 pooled input gate: valid"] --> S["615508 four-condition, one-per-study joint smoke retry"]
+    S --> F["615515 pooled-60 joint sparse-FBA; 72 h, 384G"]
+    F --> C["615517 pooled-vs-cohort metabolic comparison"]
     Q["599876 strict four-cohort comparison"] --> C
 ```
 
 The smoke uses one primary OCM from each study, candidate budget 25, growth
 fraction 0.9, joint lambda 1.0 and Gurobi. The pooled-60 job starts only if the
-smoke succeeds, but neither depends on the cohort baselines. At the 17:21 EEST
-checkpoint, smoke job **600008** had run for 6 h 43 min, was continuing the
-expected Human-GEM LP setup/solve work, and had no scheduler, timeout, OOM,
-license-session-cap, or receipt error in its log. No smoke receipt existed yet.
-Full pooled job **600009** remained pending on `afterok:600008`; comparator
-**600010** remained pending on `afterok:599876` and `afterok:600009`.
+smoke succeeds, but neither depends on the cohort baselines. Original smoke
+**600008** reached its 12 h wall-time after four expected Human-GEM LP reads.
+It used only about 7.1 GiB peak RSS and showed no OOM, license-session-cap, or
+Python/solver exception, but produced no receipt; it is therefore an
+operational timeout and not a scientific result. Slurm automatically cancelled
+never-started successors **600009** and **600010** when the `afterok`
+dependency failed. One scientifically identical smoke retry, **615508**, was
+submitted with the time limit extended to 36 h and the same 128G request; it
+was running normally at this checkpoint. Replacement full job **615515** waits
+on `afterok:615508`, and replacement comparator **615517** waits on both
+`afterok:599876` and `afterok:615515`. No duplicate pooled solver job was
+submitted and no pooled result may be interpreted before its receipt validates.
 
 ## TPI1/FVA and Meeson dependency chain
 
