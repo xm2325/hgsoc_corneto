@@ -1,0 +1,29 @@
+{
+  "accession": "GSE189955",
+  "pmcid": "PMC9627134",
+  "pmid": "35969151",
+  "geo_record_url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE189955",
+  "metadata": {
+    "filename": "GSE189955_RNA_meta_data.csv.gz",
+    "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE189nnn/GSE189955/suppl/GSE189955_RNA_meta_data.csv.gz",
+    "sha256": "dc74681915241668c20535ca6d20a3d22b74eede2c9e0fa31e9304e42fc7de3a"
+  },
+  "counts": {
+    "filename": "GSE189955_RNA_Count_matrix.csv.gz",
+    "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE189nnn/GSE189955/suppl/GSE189955_RNA_Count_matrix.csv.gz",
+    "sha256": "ff71d5589547cde643a250a8e03ddaea3783e4427d05f1489aa62aa64f5ec1e8"
+  },
+  "supplement": {
+    "filename": "PMC9627134_supplementaryFiles.zip",
+    "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9627134/supplementaryFiles",
+    "member": "can-21-3819_table_s1_suppst1.xlsx",
+    "member_sha256": "d6b16b56bae34a3558cc9260414dda31a70ee7e12d526f2232bb5323d1477f8f"
+  },
+  "expected": {
+    "cells": 5329,
+    "genes": 24153,
+    "patients": 22,
+    "hgsoc_patients": 12,
+    "fallopian_tube_reference_donors": 6
+  }
+}
