@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-12 20:52 BST (22:52 EEST). This file is the project-level source of
+Last operational update: 2026-08-12 23:50 BST (2026-08-13 01:50 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -144,13 +144,13 @@ independent lambda 0.1, joint lambda 1.0, and explicit Gurobi without fallback.
 
 | Study | Original job | State at update | Conditional/new retry | Resources |
 |---|---:|---|---:|---|
-| E-MTAB-7223 | 588250 | `TIMEOUT` at the 24 h limit; no valid final receipt | **600005**, running for about 4 h with no startup error or receipt yet | 72 h, 128G, 8 CPU |
-| E-MTAB-10801 | 588251 | Failed: genuine 64G OOM | **600004**, running for about 12 h with no startup error or receipt yet | 72 h, 196G, 8 CPU |
-| E-MTAB-11000 | 588252 | `TIMEOUT` at the 24 h limit; no valid final receipt | **600006**, running for about 4 h with no startup error or receipt yet | 72 h, 128G, 8 CPU |
-| E-MTAB-14568 | 588253 | Running for about 28 h of a 72 h limit; no final receipt yet | **600007**, pending `afterany:588253`, skip if the original receipt validates | 72 h, 196G, 8 CPU |
+| E-MTAB-7223 | 588250 | `TIMEOUT` at the 24 h limit; no valid final receipt | **600005**, healthy at the 2026-08-13 01:26 EEST audit (about 7 h); no receipt yet | 72 h, 128G, 8 CPU |
+| E-MTAB-10801 | 588251 | Failed: genuine 64G OOM | **600004**, healthy at that audit (about 15 h); no receipt yet | 72 h, 196G, 8 CPU |
+| E-MTAB-11000 | 588252 | `TIMEOUT` at the 24 h limit; no valid final receipt | **600006**, healthy at that audit (about 7 h); no receipt yet | 72 h, 128G, 8 CPU |
+| E-MTAB-14568 | 588253 | Healthy at that audit (about 31 h of 72 h); no final receipt yet | **600007**, pending `afterany:588253`, skip if the original receipt validates | 72 h, 196G, 8 CPU |
 
-At the 22:42 EEST inspection, solver-step peak RSS was about 28.8 GiB for
-588253, 17.3 GiB for 600004, 10.9 GiB for 600005, and 10.0 GiB for 600006.
+At the 2026-08-13 01:26-01:32 EEST inspection, solver-step peak RSS was about
+31.0 GiB for 588253, 19.3 GiB for 600004, 13.9 GiB for 600005, and 12.4 GiB for 600006.
 CPU time and disk I/O continued to increase, and active logs showed the expected
 Human-GEM LP setup/solve work without a new OOM, license-session-cap error, or
 solver exception. The external-compartment auto-detection warning remains a
@@ -200,6 +200,8 @@ was running normally at this checkpoint. Replacement full job **615515** waits
 on `afterok:615508`, and replacement comparator **615517** waits on both
 `afterok:599876` and `afterok:615515`. No duplicate pooled solver job was
 submitted and no pooled result may be interpreted before its receipt validates.
+At the same 01:26-01:32 EEST audit, 615508 had increasing CPU and I/O, about
+3.6 GiB peak RSS, and no OOM, session-cap or solver exception.
 
 ## TPI1/FVA and Meeson dependency chain
 
@@ -231,6 +233,31 @@ state alone.
 5. For every network contrast, replace simple set subtraction with prevalence
    difference, patient/study-aware uncertainty, alternative-optima frequency,
    lambda/PKN sensitivity and multiplicity control.
+
+## External HGSOC/reference validation programme
+
+External validation is staged as `source contract -> checksum and schema gate
+-> patient-level representation -> small CORNETO smoke -> frozen signature
+comparison`. Expression matrices from different studies are never pooled before
+normalization, and cells or technical aliquots are never counted as independent
+patients.
+
+| Dataset | Frozen analysis unit and question | Roihu intake job | Claim limit |
+|---|---|---:|---|
+| GSE277107 | 11 metadata-derived ovary/omentum pairs (22 bulk RNA samples): paired metastatic-site contrast | **617238** | Bulk tissue includes tumour and microenvironment; the pair key is not asserted to be a clinical patient identifier |
+| GSE189955 | patient x cell-type x site pseudobulk from 5,329 cells: HGSOC epithelial candidate, fibroblast proxy and normal-FT reference contrasts | **617237** | GEO has no per-cell malignant flag; epithelial groups remain candidates and fibroblasts are not a CAF subtype call |
+| GSE208216 | 11 public PDO RNA profiles versus three fallopian-tube organoids | **617239** | Descriptive organoid evidence, not a 14-patient clinical cohort; the paper's broader PDO collection is not identical to the public RNA matrix |
+| DepMap | release-scoped Chronos extraction for five predeclared HGSOC-like models plus ovarian comparators | **617240** | The gate intentionally reports `blocked` until an explicit quarterly release and matching files are supplied; no URL or release is guessed |
+| GSE180661 | patient x author-cell-type x anatomical-site pseudobulk; 41 patients and 929,690 processed cells in the frozen metadata contract | **617241** (metadata only) | The 32.6 GB HDF5 has no upstream digest; pseudobulk is forbidden until its locally observed SHA-256 is reviewed and frozen |
+
+These are non-Gurobi intake/QC jobs and do not consume the WLS solver sessions
+used by the active metabolic jobs. They were submitted only after remote
+`py_compile`/`bash -n` passed and output/active-job duplicate guards were
+checked. Scientific success still requires their receipts; the job IDs are not
+results. The external comparison contract additionally requires a pre-frozen
+Taylor feature signature, complete patient x feature evidence,
+source/normalization hashes and patient-level uncertainty. No external
+biological comparison is yet claimed at this checkpoint.
 
 ## Missing data and blocked claims
 

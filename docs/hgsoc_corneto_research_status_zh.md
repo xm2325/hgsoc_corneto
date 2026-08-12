@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-12 20:52 BST（22:52 EEST）。本文件与
+最后运行更新：2026-08-12 23:50 BST（2026-08-13 01:50 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -127,13 +127,13 @@ joint lambda 1.0，以及不允许 fallback 的 explicit Gurobi。
 
 | Study | Original job | 当前状态 | Conditional/new retry | Resources |
 |---|---:|---|---:|---|
-| E-MTAB-7223 | 588250 | 在 24 h limit 达到 `TIMEOUT`；无有效 final receipt | **600005**，已运行约 4 h，未见 startup error 或 receipt | 72 h、128G、8 CPU |
-| E-MTAB-10801 | 588251 | 失败：确认为 64G OOM | **600004**，已运行约 12 h，未见 startup error 或 receipt | 72 h、196G、8 CPU |
-| E-MTAB-11000 | 588252 | 在 24 h limit 达到 `TIMEOUT`；无有效 final receipt | **600006**，已运行约 4 h，未见 startup error 或 receipt | 72 h、128G、8 CPU |
-| E-MTAB-14568 | 588253 | 已运行约 28 h / 72 h；尚无 final receipt | **600007**，等待 `afterany:588253`；若 original receipt 有效则跳过 | 72 h、196G、8 CPU |
+| E-MTAB-7223 | 588250 | 在 24 h limit 达到 `TIMEOUT`；无有效 final receipt | **600005**，在 2026-08-13 01:26 EEST 审计时健康运行约 7 h；尚无 receipt | 72 h、128G、8 CPU |
+| E-MTAB-10801 | 588251 | 失败：确认为 64G OOM | **600004**，同次审计时健康运行约 15 h；尚无 receipt | 72 h、196G、8 CPU |
+| E-MTAB-11000 | 588252 | 在 24 h limit 达到 `TIMEOUT`；无有效 final receipt | **600006**，同次审计时健康运行约 7 h；尚无 receipt | 72 h、128G、8 CPU |
+| E-MTAB-14568 | 588253 | 同次审计时健康运行约 31 h / 72 h；尚无 final receipt | **600007**，等待 `afterany:588253`；若 original receipt 有效则跳过 | 72 h、196G、8 CPU |
 
-22:42 EEST 检查中，solver-step peak RSS 约为：588253 28.8 GiB、600004
-17.3 GiB、600005 10.9 GiB、600006 10.0 GiB。CPU time 与 disk I/O 持续增长，
+2026-08-13 01:26-01:32 EEST 检查中，solver-step peak RSS 约为：588253 31.0 GiB、600004
+19.3 GiB、600005 13.9 GiB、600006 12.4 GiB。CPU time 与 disk I/O 持续增长，
 active logs 仍显示预期的 Human-GEM LP setup/solve，未见新的 OOM、
 license-session-cap error 或 solver exception。external-compartment auto-detection
 warning 必须作为 model-boundary caveat 在完成后审计，但它本身不证明 solve 失败。
@@ -171,6 +171,8 @@ exception，但没有生成 receipt，因此它是 operational timeout，不是�
 它已正常运行。Replacement full job **615515** 等待 `afterok:615508`，replacement
 comparator **615517** 同时等待 `afterok:599876` 与 `afterok:615515`。没有提交重复的
 pooled solver job；在相应 receipt 验证通过前不得解释 pooled result。
+同次 01:26-01:32 EEST 审计中，615508 的 CPU 与 I/O 持续增加，peak RSS 约
+3.6 GiB，且未见 OOM、session-cap 或 solver exception。
 
 ## TPI1/FVA 与 Meeson dependency chain
 
@@ -199,6 +201,28 @@ task 必须改为依赖有效 retry receipt 后重新提交。不能仅依据 de
    与 metabolic retention；不要附加 drug-response labels。
 5. 所有 network contrast 都应以 prevalence difference、patient/study-aware uncertainty、
    alternative-optima frequency、lambda/PKN sensitivity 与 multiplicity control 代替简单 set subtraction。
+
+## External HGSOC/reference validation programme
+
+External validation 固定按 `source contract -> checksum/schema gate -> patient-level
+representation -> small CORNETO smoke -> frozen signature comparison` 分阶段执行。
+不同 study 的 expression matrix 不在 normalization 前混合；cells 或 technical aliquots
+绝不作为独立 patients 计数。
+
+| Dataset | 冻结的 analysis unit 与问题 | Roihu intake job | Claim limit |
+|---|---|---:|---|
+| GSE277107 | 11 个 metadata-derived ovary/omentum pairs（22 bulk RNA samples）：paired metastatic-site contrast | **617238** | Bulk tissue 同时包含 tumour 与 microenvironment；pair key 不冒充 clinical patient ID |
+| GSE189955 | 由 5,329 cells 构建 patient x cell-type x site pseudobulk：比较 HGSOC epithelial candidate、fibroblast proxy 与 normal-FT reference | **617237** | GEO 无 per-cell malignant flag；epithelial 保持 candidate，fibroblast 不是 CAF subtype call |
+| GSE208216 | 11 个 public PDO RNA profiles 与三个 fallopian-tube organoids | **617239** | 仅为 descriptive organoid evidence，不是 14-patient clinical cohort；论文中的更大 PDO collection 不等于公开 RNA matrix |
+| DepMap | 按 release 冻结的 Chronos 提取：五个预声明 HGSOC-like models 加 ovarian comparators | **617240** | 在给出明确 quarterly release 与同版文件前，gate 有意输出 `blocked`；不猜 URL 或 release |
+| GSE180661 | patient x author-cell-type x anatomical-site pseudobulk；冻结 metadata contract 含 41 patients、929,690 processed cells | **617241**（仅 metadata） | 32.6 GB HDF5 没有 upstream digest；在 locally observed SHA-256 经 review/freeze 前禁止 pseudobulk |
+
+这些作业均为 non-Gurobi intake/QC，不占用 active metabolic jobs 使用的 WLS
+solver sessions。提交前已在 Roihu 完成 `py_compile`/`bash -n`，并检查 output 与
+active-job duplicate guards。科学成功仍必须由 receipts 证明；job IDs 本身不是结果。
+External comparison contract 还要求预先冻结 Taylor feature signature、完整的 patient x
+feature evidence、source/normalization hashes 以及 patient-level uncertainty。本
+checkpoint 尚未声称任何 external biological comparison。
 
 ## 缺少的数据与 blocked claims
 
