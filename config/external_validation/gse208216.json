@@ -1,0 +1,29 @@
+{
+  "accession": "GSE208216",
+  "count_matrix": {
+    "bytes": 739552,
+    "gene_rows": 33610,
+    "sha256": "80a8740cb404bdc7adacd79d17f5acdf524ec3d3418f5af8a5861b01575efe37",
+    "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE208nnn/GSE208216/suppl/GSE208216_ViasMorrill_RNASeq_raw_counts.txt.gz"
+  },
+  "geo_record": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE208216",
+  "paper": "https://elifesciences.org/articles/83867",
+  "samples": [
+    {"geo_accession": "GSM6338879", "sample_id": "PDO1", "sample_class": "hgsoc_organoid"},
+    {"geo_accession": "GSM6338880", "sample_id": "PDO2", "sample_class": "hgsoc_organoid"},
+    {"geo_accession": "GSM6338881", "sample_id": "PDO3", "sample_class": "hgsoc_organoid"},
+    {"geo_accession": "GSM6338882", "sample_id": "PDO5", "sample_class": "hgsoc_organoid"},
+    {"geo_accession": "GSM6338883", "sample_id": "PDO6", "sample_class": "hgsoc_organoid"},
+    {"geo_accession": "GSM6338884", "sample_id": "PDO7", "sample_class": "hgsoc_organoid"},
+    {"geo_accession": "GSM6338885", "sample_id": "PDO8", "sample_class": "hgsoc_organoid"},
+    {"geo_accession": "GSM6338886", "sample_id": "PDO10", "sample_class": "hgsoc_organoid"},
+    {"geo_accession": "GSM6338887", "sample_id": "PDO11", "sample_class": "hgsoc_organoid"},
+    {"geo_accession": "GSM6338888", "sample_id": "PDO12", "sample_class": "hgsoc_organoid"},
+    {"geo_accession": "GSM6338889", "sample_id": "PDO15", "sample_class": "hgsoc_organoid"},
+    {"geo_accession": "GSM6338890", "sample_id": "FT1", "sample_class": "fallopian_tube_organoid"},
+    {"geo_accession": "GSM6338891", "sample_id": "FT8", "sample_class": "fallopian_tube_organoid"},
+    {"geo_accession": "GSM6338892", "sample_id": "FT9", "sample_class": "fallopian_tube_organoid"}
+  ],
+  "scope_note": "GEO exposes bulk RNA counts for 11 HGSOC PDO and 3 fallopian-tube organoid samples. The paper describes 15 continuous PDO models, so 15 is not the RNA-matrix sample count.",
+  "copy_number_note": "Numeric copy-number signature activities are not in the GEO expression deposit. sWGS/scDNA are under controlled-access EGA EGAS00001007189. Only paper-explicit qualitative annotations may be used without controlled data."
+}

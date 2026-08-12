@@ -1,0 +1,6 @@
+model_id	cell_line	evidence_tier	evidence_url	evidence_note
+ACH-000524	KURAMOCHI	high_confidence_hgsoc_like	https://doi.org/10.1038/ncomms3126	High-likelihood HGSOC model in the genomics-based comparison; identity must be revalidated against each DepMap Model.csv release.
+ACH-000409	OVSAHO	high_confidence_hgsoc_like	https://doi.org/10.1038/ncomms3126	High-likelihood HGSOC model in the genomics-based comparison; identity must be revalidated against each DepMap Model.csv release.
+ACH-000278	COV362	high_confidence_hgsoc_like	https://doi.org/10.1038/ncomms3126	High-likelihood HGSOC model in the genomics-based comparison; identity must be revalidated against each DepMap Model.csv release.
+ACH-000617	OVCAR4	high_confidence_hgsoc_like	https://doi.org/10.1038/ncomms3126	High-likelihood HGSOC model in the genomics-based comparison; identity must be revalidated against each DepMap Model.csv release.
+ACH-000635	SNU119	high_confidence_hgsoc_like	https://pmc.ncbi.nlm.nih.gov/articles/PMC8408985/	Included in a later high-likelihood HGSOC transcriptional model set; identity must be revalidated against each DepMap Model.csv release.
