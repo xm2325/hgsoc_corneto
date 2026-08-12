@@ -11,6 +11,7 @@ import csv
 import gzip
 import hashlib
 import math
+import os
 import re
 import shutil
 import statistics
@@ -62,6 +63,11 @@ def download_verified(
         try:
             with urllib.request.urlopen(request, timeout=timeout_seconds) as response:
                 shutil.copyfileobj(response, handle)
+            # NamedTemporaryFile remains open until this context exits.  Hashing
+            # its path before explicitly flushing can observe an empty or
+            # truncated file on some parallel filesystems (as seen on Roihu).
+            handle.flush()
+            os.fsync(handle.fileno())
             observed = file_sha256(temporary)
             if observed != expected_sha256:
                 raise ValueError(
