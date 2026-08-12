@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-12. This file is the project-level source of
+Last operational update: 2026-08-12 08:48 BST (10:48 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -119,10 +119,10 @@ independent lambda 0.1, joint lambda 1.0, and explicit Gurobi without fallback.
 
 | Study | Original job | State at update | Conditional/new retry | Resources |
 |---|---:|---|---:|---|
-| E-MTAB-7223 | 588250 | Running; 24 h limit | **600005**, afterany:588250, skip if existing receipt validates | 72 h, 128G, 8 CPU |
-| E-MTAB-10801 | 588251 | Failed: genuine 64G OOM | **600004**, running | 72 h, 196G, 8 CPU |
-| E-MTAB-11000 | 588252 | Running; 24 h limit | **600006**, afterany:588252, skip if existing receipt validates | 72 h, 128G, 8 CPU |
-| E-MTAB-14568 | 588253 | Running; 72 h limit | **600007**, afterany:588253, skip if existing receipt validates | 72 h, 196G, 8 CPU |
+| E-MTAB-7223 | 588250 | Running 16 h 10 min; about 7 h 49 min remain on the 24 h limit | **600005**, afterany:588250, skip if existing receipt validates | 72 h, 128G, 8 CPU |
+| E-MTAB-10801 | 588251 | Failed: genuine 64G OOM | **600004**, running 8 min with no startup error | 72 h, 196G, 8 CPU |
+| E-MTAB-11000 | 588252 | Running 16 h 10 min; about 7 h 49 min remain on the 24 h limit | **600006**, afterany:588252, skip if existing receipt validates | 72 h, 128G, 8 CPU |
+| E-MTAB-14568 | 588253 | Running 16 h 10 min; about 55 h 49 min remain on the 72 h limit | **600007**, afterany:588253, skip if existing receipt validates | 72 h, 196G, 8 CPU |
 
 At the last detailed inspection, 588250/588252/588253 were using roughly
 7.5 CPU cores continuously with peak RSS 23.5/18.1/28.7 GB. All per-OCM
@@ -157,7 +157,11 @@ flowchart LR
 
 The smoke uses one primary OCM from each study, candidate budget 25, growth
 fraction 0.9, joint lambda 1.0 and Gurobi. The pooled-60 job starts only if the
-smoke succeeds, but neither depends on the cohort baselines.
+smoke succeeds, but neither depends on the cohort baselines. At the 10:48 EEST
+checkpoint, smoke job **600008** had run for eight minutes, was loading/solving
+the expected Human-GEM LPs, and had no scheduler, license, or receipt error.
+Full pooled job **600009** and comparator **600010** remained correctly blocked
+by receipt-producing predecessors.
 
 ## TPI1/FVA and Meeson dependency chain
 
@@ -212,3 +216,26 @@ cumulative exposure.
    frozen before outcome analysis.
 5. Update this register whenever a job becomes terminal or a validated receipt
    changes the evidence state.
+
+## Recurring monitor
+
+The Codex heartbeat **HGSOC CORNETO Roihu pipeline monitor** is active in the
+current task and runs every 30 minutes. This cadence is deliberate:
+
+- Slurm dependencies already launch valid successors, so minute-scale polling
+  would not accelerate the pipeline.
+- Thirty minutes is short enough to catch smoke/startup, license-session,
+  timeout, and receipt failures while 588250/588252 approach their 24-hour
+  limits.
+- It is long enough to avoid repeatedly querying multi-hour Gurobi jobs whose
+  logs are sparse during branch-and-bound.
+
+Each run checks scheduler state, resource use, log tails, and receipt JSON. It
+may make only deterministic in-scope repairs: no duplicate submissions, no
+cancellation of healthy jobs, no scientific-parameter changes, and no result
+claim without a valid receipt. OOM/TIMEOUT retries preserve parameters and
+increase only justified resources; Gurobi session-cap failures wait until fewer
+than eight sessions are active. Meaningful state changes are written here and
+pushed to the delivery branch; unchanged checks produce only a compact
+checkpoint. After all cohort, pooled, comparison, and TPI1/FVA outputs are
+terminal and audited, the monitor reports completion and should be paused.
