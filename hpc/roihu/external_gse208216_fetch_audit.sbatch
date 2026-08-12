@@ -18,11 +18,11 @@ RECEIPT=${GSE208216_RECEIPT:-${OUT}/receipts/gse208216_fetch_audit.json}
 
 cd "${ROOT}"
 test -x "${PY}"
-mkdir -p "${OUT}/gse208216" "${OUT}/receipts" "${ROOT}/logs"
+mkdir -p "${OUT}/GSE208216" "${OUT}/receipts" "${ROOT}/logs"
 export PYTHONNOUSERSITE=1 PYTHONPATH="${ROOT}/src"
 
 srun "${PY}" scripts/prepare_organoid_depmap_validation.py fetch-gse208216 \
-    --output-dir "${OUT}/gse208216" \
+    --output-dir "${OUT}/GSE208216" \
     --receipt "${RECEIPT}"
 
 "${PY}" -c 'import json,sys; r=json.load(open(sys.argv[1])); assert r["scientific_success"] is True' \
