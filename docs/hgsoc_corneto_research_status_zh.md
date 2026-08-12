@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-12 08:48 BST（10:48 EEST）。本文件与
+最后运行更新：2026-08-12 12:22 BST（15:22 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -104,15 +104,16 @@ joint lambda 1.0，以及不允许 fallback 的 explicit Gurobi。
 
 | Study | Original job | 当前状态 | Conditional/new retry | Resources |
 |---|---:|---|---:|---|
-| E-MTAB-7223 | 588250 | 运行 16 h 10 min；24 h limit 约剩 7 h 49 min | **600005**，afterany:588250；若已有 receipt 验证有效则跳过 | 72 h、128G、8 CPU |
-| E-MTAB-10801 | 588251 | 失败：确认为 64G OOM | **600004**，运行 8 min，未见 startup error | 72 h、196G、8 CPU |
-| E-MTAB-11000 | 588252 | 运行 16 h 10 min；24 h limit 约剩 7 h 49 min | **600006**，afterany:588252；若已有 receipt 验证有效则跳过 | 72 h、128G、8 CPU |
-| E-MTAB-14568 | 588253 | 运行 16 h 10 min；72 h limit 约剩 55 h 49 min | **600007**，afterany:588253；若已有 receipt 验证有效则跳过 | 72 h、196G、8 CPU |
+| E-MTAB-7223 | 588250 | 运行 20 h 44 min；24 h limit 约剩 3 h 16 min | **600005**，afterany:588250；若已有 receipt 验证有效则跳过 | 72 h、128G、8 CPU |
+| E-MTAB-10801 | 588251 | 失败：确认为 64G OOM | **600004**，运行 4 h 42 min，未见 startup error 或 receipt | 72 h、196G、8 CPU |
+| E-MTAB-11000 | 588252 | 运行 20 h 44 min；24 h limit 约剩 3 h 16 min | **600006**，afterany:588252；若已有 receipt 验证有效则跳过 | 72 h、128G、8 CPU |
+| E-MTAB-14568 | 588253 | 运行 20 h 44 min；72 h limit 约剩 51 h 16 min | **600007**，afterany:588253；若已有 receipt 验证有效则跳过 | 72 h、196G、8 CPU |
 
-上次详细检查显示 588250/588252/588253 持续使用约 7.5 个 CPU cores，peak RSS
-分别约为 23.5/18.1/28.7 GB。所有 per-OCM biomass-optimum LP 已完成，但 runner
+15:22 EEST 检查显示，588250/588252/588253 active steps 的 peak RSS 约为
+22.6/24.4/27.5 GiB；196G 的 10801 retry 600004 约为 11.8 GiB，pooled
+smoke 600008 约为 4.0 GiB。所有 per-OCM biomass-optimum LP 已完成，但 runner
 没有记录静默进行的是 independent MILP 还是最终 cohort-joint MILP。尚无 final
-metabolic receipt。
+metabolic receipt。两个 24-hour jobs 仍健康但接近限时；只允许使用已有的 afterany retries 继续。
 
 已取代的 startup attempts **599836** 和 **599943** 在数秒内以 exit 127 失败，
 原因是 direct non-login sbatch scripts 中没有 `module`；它们没有调用 Gurobi，也没有
@@ -138,9 +139,9 @@ flowchart LR
 
 Smoke 使用每个 study 一个 primary OCM，candidate budget 25、growth fraction 0.9、
 joint lambda 1.0 和 Gurobi。只有 smoke 成功后 pooled-60 job 才会启动，但二者都不依赖
-cohort baselines。10:48 EEST checkpoint 时，smoke job **600008** 已运行 8 min，正在
-加载/求解预期的 Human-GEM LP，未见 scheduler、license 或 receipt error。Pooled full
-job **600009** 与 comparator **600010** 仍按设计等待 receipt-producing predecessors。
+cohort baselines。15:22 EEST checkpoint 时，smoke job **600008** 已运行 4 h 42 min，
+持续加载/求解预期的 Human-GEM LP，未见 scheduler、timeout、OOM、license-session-cap
+或 receipt error。Pooled full job **600009** 与 comparator **600010** 仍按设计等待 receipt-producing predecessors。
 
 ## TPI1/FVA 与 Meeson dependency chain
 
