@@ -1,0 +1,47 @@
+{
+  "schema_version": "hgsoc_external_sources.v1",
+  "study_accession": "GSE277107",
+  "observed_at_utc": "2026-08-12T00:00:00+00:00",
+  "official_record": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE277107",
+  "paper": {
+    "doi": "10.1038/s41698-025-00911-y",
+    "pmid": "40500315",
+    "pmcid": "PMC12159146"
+  },
+  "proteomics_reference": {
+    "repository": "ProteomeXchange/PRIDE",
+    "accession": "PXD042150",
+    "evidence": "paper Data availability statement",
+    "url": "https://www.ebi.ac.uk/pride/archive/projects/PXD042150"
+  },
+  "files": [
+    {
+      "role": "geo_family_soft",
+      "filename": "GSE277107_family.soft.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE277nnn/GSE277107/soft/GSE277107_family.soft.gz",
+      "bytes": 3638,
+      "sha256": "f31fcf3d6c880beff4d031f64f690a1f61c2c47899ebf60efb652b74a9a43f26",
+      "checksum_provenance": "locally observed from the official NCBI object on 2026-08-12; not an NCBI-published checksum"
+    },
+    {
+      "role": "processed_tpm",
+      "filename": "GSE277107_analysis_15_04_2020_1.HTSeq.all.tpm.txt.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE277nnn/GSE277107/suppl/GSE277107_analysis_15_04_2020_1.HTSeq.all.tpm.txt.gz",
+      "bytes": 7458353,
+      "sha256": "3c0b13111b1c6fc95cd2ba441d92f5e0090339bcbe4b855a1793083479c42e0e",
+      "checksum_provenance": "locally observed from the official NCBI object on 2026-08-12; not an NCBI-published checksum"
+    }
+  ],
+  "expected": {
+    "rna_samples": 22,
+    "matched_pairs": 11,
+    "source_gene_rows": 57773,
+    "unique_gene_symbols": 55773
+  },
+  "expected_count_provenance": {
+    "rna_samples": "22 GEO sample records in the frozen family SOFT and 22 TPM columns",
+    "matched_pairs": "Series_overall_design states 11 patients; submitted sample-description prefixes resolve into 11 complete OV/OM pairs",
+    "source_gene_rows": "derived from the frozen processed TPM object",
+    "unique_gene_symbols": "derived after parsing gene_name from the frozen GeneID field"
+  }
+}
