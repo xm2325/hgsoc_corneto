@@ -189,8 +189,9 @@ response-model accuracy。`chemo_naive_at_biopsy` 不能替代 exact cumulative 
 
 ## 定时监控（Recurring monitor）
 
-Codex project-scoped cron **HGSOC CORNETO Roihu pipeline monitor** 当前对本项目启用，
-每 30 分钟运行一次，并显式固定为 `gpt-5.6-luna` + `max` reasoning。这个时间间隔的理由是：
+Codex heartbeat **HGSOC CORNETO Roihu pipeline monitor** 已绑定到当前对话，
+每 30 分钟运行一次；它没有显式 model 或 reasoning override，因此遵循当前对话/默认设置，
+不会创建单独的 standalone monitoring conversation。这个时间间隔的理由是：
 
 - Slurm dependencies 会自动启动有效 successors，因此分钟级轮询不会加速 pipeline。
 - 30 分钟足以在 588250/588252 接近 24-hour limits 时发现 smoke/startup、license-session、
