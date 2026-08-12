@@ -6,6 +6,7 @@ import pytest
 
 from hgsoc_corneto.external.gse189955 import (
     aggregate_pseudobulk,
+    build_corneto_manifest,
     build_group_metadata,
     load_cell_metadata,
     parse_patient_table_rows,
@@ -85,6 +86,16 @@ def test_patient_metadata_roles_and_pseudobulk(tmp_path):
     groups = build_group_metadata(cells)
     assert len(groups) == 3
     assert sorted(group["n_cells"] for group in groups) == [1, 1, 2]
+    manifest = build_corneto_manifest(groups)
+    assert {row["study_accession"] for row in manifest} == {"GSE189955"}
+    assert {row["run_accession"] for row in manifest} == {
+        row["pseudobulk_group_id"] for row in groups
+    }
+    assert {row["definitive_malignant"] for row in manifest} == {"false"}
+    epithelial = next(
+        row for row in manifest if row["comparison_role"] == "hgsoc_epithelial_candidate"
+    )
+    assert epithelial["malignancy_status"] == "candidate"
 
     counts = tmp_path / "counts.csv.gz"
     output = tmp_path / "pseudobulk.csv.gz"

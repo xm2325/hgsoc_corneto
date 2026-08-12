@@ -338,6 +338,43 @@ def build_group_metadata(cells: list[dict[str, object]]) -> list[dict[str, objec
     return output
 
 
+def build_corneto_manifest(
+    groups: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    """Build the external-CORNETO sample contract without upgrading claims."""
+
+    output: list[dict[str, object]] = []
+    for group in groups:
+        malignancy_status = str(group["malignancy_status"])
+        if malignancy_status not in {"candidate", "reference", "not_assigned"}:
+            raise ValueError(
+                f"Unsupported malignancy_status in {group['pseudobulk_group_id']}: "
+                f"{malignancy_status}"
+            )
+        output.append(
+            {
+                "study_accession": "GSE189955",
+                "run_accession": group["pseudobulk_group_id"],
+                "patient_id": group["patient_id"],
+                "site_code": group["site_code"],
+                "site_label": group["site_label"],
+                "site_category": group["site_category"],
+                "cell_type": group["cell_type_reported"],
+                "comparison_role": group["comparison_role"],
+                "malignancy_status": malignancy_status,
+                "definitive_malignant": "false",
+                "n_cells": group["n_cells"],
+                "claim_limit": group["claim_limit"],
+            }
+        )
+    run_ids = [str(row["run_accession"]) for row in output]
+    if len(run_ids) != len(set(run_ids)):
+        raise ValueError("Duplicate run_accession in GSE189955 CORNETO manifest")
+    if any(row["definitive_malignant"] != "false" for row in output):
+        raise ValueError("GSE189955 adapter cannot emit definitive malignant labels")
+    return output
+
+
 def write_tsv(rows: list[dict[str, object]], path: Path) -> None:
     if not rows:
         raise ValueError(f"Refusing to write empty table: {path}")
@@ -454,10 +491,13 @@ def prepare(
     cells = load_cell_metadata(paths["metadata"], patients)
     audit_expected_counts(config, patients, cells)
     groups = build_group_metadata(cells)
+    corneto_manifest = build_corneto_manifest(groups)
     output_dir.mkdir(parents=True, exist_ok=True)
     write_tsv(patients, output_dir / "patient_metadata.tsv")
     write_tsv(cells, output_dir / "cell_metadata_audited.tsv")
     write_tsv(groups, output_dir / "pseudobulk_sample_metadata.tsv")
+    manifest_path = output_dir / "corneto_manifest.tsv"
+    write_tsv(corneto_manifest, manifest_path)
     aggregation = aggregate_pseudobulk(
         paths["counts"],
         cells,
@@ -471,7 +511,7 @@ def prepare(
         "generated_at_utc": datetime.now(UTC).isoformat(),
         "sources": {
             key: {
-                "path": str(path),
+                "filename": path.name,
                 "bytes": path.stat().st_size,
                 "sha256": sha256(path),
             }
@@ -490,6 +530,14 @@ def prepare(
         "cell_id_reconciliation": {
             status: sum(cell["cell_id_reconciliation"] == status for cell in cells)
             for status in sorted({str(cell["cell_id_reconciliation"]) for cell in cells})
+        },
+        "corneto_manifest": {
+            "filename": manifest_path.name,
+            "rows": len(corneto_manifest),
+            "sha256": sha256(manifest_path),
+            "definitive_malignant_rows": sum(
+                row["definitive_malignant"] != "false" for row in corneto_manifest
+            ),
         },
         "claim_limits": [
             "GEO RNA metadata do not provide a per-cell malignant flag.",
