@@ -1,0 +1,104 @@
+{
+  "schema_version": "hgsoc_external_sources.v1",
+  "study_accession": "GSE180661",
+  "snapshot_date": "2026-08-12",
+  "geo_record_url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE180661",
+  "publication": {
+    "doi": "10.1038/s41586-022-05496-1",
+    "pmcid": "PMC9771812",
+    "pmid": "36517593",
+    "supplementary_endpoint": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9771812/supplementaryFiles"
+  },
+  "upstream_code": {
+    "repository": "https://github.com/shahcompbio/spectrum-tme",
+    "branch": "master",
+    "commit": "befe54a43103155a4b43517fe44ccf1abb749b1c"
+  },
+  "files": [
+    {
+      "role": "cell_metadata",
+      "filename": "GSE180661_GEO_cells.tsv.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE180nnn/GSE180661/suppl/GSE180661_GEO_cells.tsv.gz",
+      "bytes": 42728783,
+      "sha256": "7dd66ff7c87c8308a4a08721a749692062e272751f7369f33fee59a3840fe741",
+      "access": "public",
+      "default_download": true
+    },
+    {
+      "role": "count_matrix",
+      "filename": "GSE180661_matrix.h5",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE180nnn/GSE180661/suppl/GSE180661_matrix.h5",
+      "bytes": 32555276423,
+      "sha256": null,
+      "access": "public",
+      "default_download": false,
+      "checksum_policy": "GEO publishes no digest for this 30.3-GiB object. The fetcher records a local SHA-256 receipt; freeze that digest before scientific execution. Byte size and HDF5 signature alone are not an immutable identity."
+    }
+  ],
+  "supplement": {
+    "archive_filename": "PMC9771812_supplementaryFiles.zip",
+    "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9771812/supplementaryFiles",
+    "access": "public",
+    "members": [
+      {
+        "role": "scrna_sample_inventory",
+        "filename": "41586_2022_5496_MOESM3_ESM.xlsx",
+        "sha256": "e13b67ef56229e4b1ec73f86bef69a8bb2c4295c245b3f20cd111209019eccbb"
+      },
+      {
+        "role": "patient_mutational_signatures",
+        "filename": "41586_2022_5496_MOESM4_ESM.xlsx",
+        "sha256": "b06099a81f53371b07411be8efc41f87493ab0f230c2b0669fd10b7ea2f8e1d3"
+      }
+    ]
+  },
+  "expected": {
+    "geo_sample_records": 283,
+    "scrna_inventory_aliquots": 283,
+    "scrna_inventory_site_specimens": 156,
+    "processed_cells": 929690,
+    "processed_aliquots": 276,
+    "processed_site_specimens": 156,
+    "scrna_patients": 41,
+    "mutational_signature_patients_all_modalities": 42,
+    "mutational_signatures_in_scrna": {
+      "HRD-Dup": 16,
+      "HRD-Del": 6,
+      "FBI": 14,
+      "Undetermined": 5
+    },
+    "cell_type_counts": {
+      "Ovarian.cancer.cell": 251837,
+      "T.cell": 250335,
+      "Myeloid.cell": 201217,
+      "Fibroblast": 162078,
+      "Plasma.cell": 20944,
+      "B.cell": 18673,
+      "Endothelial.cell": 18531,
+      "Dendritic.cell": 4814,
+      "Mast.cell": 1257,
+      "Other": 4
+    },
+    "tumor_supersite_counts": {
+      "Adnexa": 322651,
+      "Omentum": 208894,
+      "Ascites": 108287,
+      "Bowel": 105500,
+      "Peritoneum": 90852,
+      "UQ": 52094,
+      "Other": 41412
+    }
+  },
+  "access_boundary": {
+    "open_for_this_work_package": [
+      "processed single-cell count matrix",
+      "processed per-cell metadata",
+      "published scRNA sample inventory",
+      "published patient-level mutational-subtype assignments"
+    ],
+    "controlled_or_not_required": [
+      "raw tumour-normal whole-genome sequencing via dbGaP phs002857.v1.p1",
+      "other controlled-tier clinical/genomic data"
+    ]
+  }
+}
