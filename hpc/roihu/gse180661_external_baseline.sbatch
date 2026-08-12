@@ -15,12 +15,13 @@
 #     --export=ALL,STAGE=pseudobulk,MIN_CELLS=20,FROZEN_MANIFEST=/path/to/frozen.json \
 #     hpc/roihu/gse180661_external_baseline.sbatch
 #SBATCH --job-name=gse180661-ext
+#SBATCH --account=project_2012997
 #SBATCH --partition=small
 #SBATCH --time=24:00:00
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
-#SBATCH --output=logs/gse180661-external-%A.out
-#SBATCH --error=logs/gse180661-external-%A.err
+#SBATCH --output=/scratch/project_2012997/xiaomei/hgsoc_corneto/logs/gse180661-external-%A.out
+#SBATCH --error=/scratch/project_2012997/xiaomei/hgsoc_corneto/logs/gse180661-external-%A.err
 
 set -euo pipefail
 
