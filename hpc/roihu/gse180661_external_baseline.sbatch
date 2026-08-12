@@ -24,16 +24,20 @@
 
 set -euo pipefail
 
-: "${PROJECT_ROOT:?Set PROJECT_ROOT to the deployed hgsoc_corneto checkout}"
+: "${PROJECT_ROOT:=/scratch/project_2012997/xiaomei/hgsoc_corneto}"
 : "${STAGE:?Set STAGE to metadata, matrix_fetch, or pseudobulk}"
 
 cd "${PROJECT_ROOT}"
 mkdir -p logs
 
-PYTHON_BIN="${PYTHON_BIN:-${PROJECT_ROOT}/.venv/bin/python}"
-RAW_DIR="${RAW_DIR:-${PROJECT_ROOT}/data/raw/external/GSE180661}"
-OUTPUT_DIR="${OUTPUT_DIR:-${PROJECT_ROOT}/data/processed/external/GSE180661}"
+PYTHON_BIN="${PYTHON_BIN:-/scratch/project_2012997/xiaomei/hgsoc_corneto_env/bin/python}"
+EXTERNAL_ROOT="${EXTERNAL_ROOT:-/scratch/project_2012997/xiaomei/hgsoc_corneto_external}"
+RAW_DIR="${RAW_DIR:-${EXTERNAL_ROOT}/GSE180661/raw}"
+OUTPUT_DIR="${OUTPUT_DIR:-${EXTERNAL_ROOT}/GSE180661/processed}"
 SOURCE_MANIFEST="${SOURCE_MANIFEST:-${PROJECT_ROOT}/config/external/gse180661_sources.json}"
+
+export PYTHONNOUSERSITE=1 PYTHONPATH="${PROJECT_ROOT}/src"
+unset GRB_LICENSE_FILE GRB_LICENSE_SERVER GUROBI_HOME
 
 case "${STAGE}" in
   metadata)
