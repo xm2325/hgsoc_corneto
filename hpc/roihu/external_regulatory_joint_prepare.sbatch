@@ -42,7 +42,9 @@ args=(
     --min-targets 5 --max-inputs 3 --max-outputs 6 --max-depth 3 --max-edges 3000
 )
 if [[ -n "${INCLUDE_ROLES:-}" ]]; then
-    IFS=',' read -r -a roles <<< "${INCLUDE_ROLES}"
+    # '+' is used because Slurm's --export parser reserves commas as variable
+    # separators; role names in this project never contain '+'.
+    IFS='+' read -r -a roles <<< "${INCLUDE_ROLES}"
     for role in "${roles[@]}"; do
         args+=(--include-role "${role}")
     done
