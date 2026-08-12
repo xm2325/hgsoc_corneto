@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-12 20:42 BST (22:42 EEST). This file is the project-level source of
+Last operational update: 2026-08-12 20:52 BST (22:52 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -110,6 +110,31 @@ profiles is internal consistency, not independent validation.
   would have overwritten that same receipt after the original baselines. Its
   roles are now separated into 599873 (model only) and 599950 (strict
   receipt-dependent preflight).
+
+## Terminal-job audit and retry lineage
+
+This table records final evidence rather than counting every diagnostic Slurm
+attempt as an independent experiment.
+
+| Analysis family | Final evidence state | Failed/superseded attempts and disposition |
+|---|---|---|
+| RNA quantification and aggregation | Four aggregation receipts are `completed`: 36/36/12/33 runs, each with 60,609 genes and 227,462 transcripts | Earlier per-run download, OOM and aggregation failures were repaired; no RNA retry remains |
+| Primary and pooled NMF | 591326-591328 completed; patient-balanced NMF/compare 592020 and 592094 completed | 592083 comparison failed and was replaced by 592094 |
+| True multi-condition regulatory lambda grid | Final 591593 retry and 591595 summary completed; 45/45 receipts across pooled plus four cohorts and nine lambdas validate | Initial 591416 tasks hit Gurobi session limits; failed artifacts are preserved and were replaced only for affected labels |
+| Regulatory alternative optima | Final 591572 summary validates 27 E-MTAB-14568 samples: 26 nonempty completed and one blocked zero-edge sample | Six initial session-cap errors were rerun serially by 591569 |
+| Richer-PKN sensitivity | 592021/592023/grid jobs and comparison 592118 completed | No unresolved retry |
+| Patient-balanced regulatory sensitivity | 592143 and 592149 completed on 52 common patients | No unresolved retry |
+| Longitudinal regulatory summary | 592019 completed: 60 runs and eight response-blind within-family comparisons | Earlier prototype 588876 failed and was replaced by 588883/592019 lineage |
+| Regulatory x NMF integration | Final v4 job 592053 completed with full 9/13/11/27 coverage; 576 BH-adjusted edge-state tests yielded no q<0.05 findings | 592018, 592040 and 592046 failed during interface/path corrections and were superseded by 592053 |
+| Meeson public evidence | 591424 completed; toy joint/order/global-retention receipts validate algorithmic behavior | Cohort-specific order/ensemble jobs for 7223/10801/11000 were dependency-cancelled and have not yet been reattached to valid metabolic retries; 14568 tasks remain pending |
+| Metabolic growth-fraction sensitivity | No valid receipt from 588286-588289 | All four reached the original 4 h limit; no retry is queued before primary baselines validate |
+
+For the normalized regulatory grid, solver completion at high lambda is not a
+positive network finding: pooled networks become empty at nominal lambda 0.05
+and above, and most cohort networks also collapse at 0.05-0.1. This is evidence
+of over-regularisation under the current scaling, not evidence of biological
+absence. At lambda 0.001, pooled-vs-merged-cohort edge-union Jaccard is 0.746;
+at lambda 0.01 it falls to 0.286. These remain response-blind technical results.
 
 ## Metabolic baseline: active, failed, and queued
 
