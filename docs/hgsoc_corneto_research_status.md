@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-12 09:35 BST (11:35 EEST). This file is the project-level source of
+Last operational update: 2026-08-12 12:26 BST (14:26 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -119,19 +119,19 @@ independent lambda 0.1, joint lambda 1.0, and explicit Gurobi without fallback.
 
 | Study | Original job | State at update | Conditional/new retry | Resources |
 |---|---:|---|---:|---|
-| E-MTAB-7223 | 588250 | Running 16 h 55 min; about 7 h 04 min remain on the 24 h limit | **600005**, pending `afterany:588250`, skip if existing receipt validates | 72 h, 128G, 8 CPU |
-| E-MTAB-10801 | 588251 | Failed: genuine 64G OOM | **600004**, running 55 min with no startup error or receipt yet | 72 h, 196G, 8 CPU |
-| E-MTAB-11000 | 588252 | Running 16 h 55 min; about 7 h 04 min remain on the 24 h limit | **600006**, pending `afterany:588252`, skip if existing receipt validates | 72 h, 128G, 8 CPU |
-| E-MTAB-14568 | 588253 | Running 16 h 55 min; about 55 h 04 min remain on the 72 h limit | **600007**, pending `afterany:588253`, skip if existing receipt validates | 72 h, 196G, 8 CPU |
+| E-MTAB-7223 | 588250 | Running 19 h 49 min; about 4 h 11 min remain on the 24 h limit | **600005**, pending `afterany:588250`, skip if existing receipt validates | 72 h, 128G, 8 CPU |
+| E-MTAB-10801 | 588251 | Failed: genuine 64G OOM | **600004**, running 3 h 47 min with no startup error or receipt yet | 72 h, 196G, 8 CPU |
+| E-MTAB-11000 | 588252 | Running 19 h 49 min; about 4 h 11 min remain on the 24 h limit | **600006**, pending `afterany:588252`, skip if existing receipt validates | 72 h, 128G, 8 CPU |
+| E-MTAB-14568 | 588253 | Running 19 h 49 min; about 52 h 11 min remain on the 72 h limit | **600007**, pending `afterany:588253`, skip if existing receipt validates | 72 h, 196G, 8 CPU |
 
-At the 11:35 EEST inspection, active-step peak RSS was about 22.5/24.3/27.4
-GiB for 588250/588252/588253, 5.6 GiB for 600004, and 3.3 GiB for 600008.
+At the 14:26 EEST inspection, active-step peak RSS was about 22.6/24.3/27.4
+GiB for 588250/588252/588253, 10.9 GiB for 600004, and 3.9 GiB for 600008.
 The active logs continued to show the expected Human-GEM LP setup/solve work;
 none showed a timeout, license-session-cap error, or new OOM. All per-OCM
 biomass-optimum LPs had completed in the original logs, but the runner does not
 log whether the silent CORNETO stage is in an independent MILP or the final
-cohort-joint MILP. No final metabolic receipt existed for any cohort or retry
-at this checkpoint.
+cohort-joint MILP. No final cohort/retry metabolic receipt, pooled-smoke
+receipt, pooled-full receipt, or comparison receipt existed at this checkpoint.
 
 Superseded startup attempts **599836** and **599943** failed in seconds with
 exit 127 because `module` is unavailable in direct non-login sbatch scripts;
@@ -163,9 +163,9 @@ flowchart LR
 
 The smoke uses one primary OCM from each study, candidate budget 25, growth
 fraction 0.9, joint lambda 1.0 and Gurobi. The pooled-60 job starts only if the
-smoke succeeds, but neither depends on the cohort baselines. At the 11:35 EEST
-checkpoint, smoke job **600008** had run for 55 minutes, was loading/solving
-the expected four Human-GEM LPs, and had no scheduler, timeout, OOM,
+smoke succeeds, but neither depends on the cohort baselines. At the 14:26 EEST
+checkpoint, smoke job **600008** had run for 3 h 47 min, was continuing the
+expected Human-GEM LP setup/solve work, and had no scheduler, timeout, OOM,
 license-session-cap, or receipt error in its log. No smoke receipt existed yet.
 Full pooled job **600009** remained pending on `afterok:600008`; comparator
 **600010** remained pending on `afterok:599876` and `afterok:600009`.
