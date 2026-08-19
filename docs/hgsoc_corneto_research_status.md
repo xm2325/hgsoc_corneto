@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-12 20:52 BST (22:52 EEST). This file is the project-level source of
+Last operational update: 2026-08-19 09:25 BST (11:25 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -136,41 +136,48 @@ of over-regularisation under the current scaling, not evidence of biological
 absence. At lambda 0.001, pooled-vs-merged-cohort edge-union Jaccard is 0.746;
 at lambda 0.01 it falls to 0.286. These remain response-blind technical results.
 
-## Metabolic baseline: active, failed, and queued
+## Metabolic baseline: terminal failures and checkpointed recovery
 
-Primary settings are frozen: Human-GEM v1.4.1, raw TPM transformed with
-`log1p`, primary tumour only, candidate budget 25, growth fraction 0.9,
-independent lambda 0.1, joint lambda 1.0, and explicit Gurobi without fallback.
+Frozen scientific settings remain unchanged: Human-GEM v1.4.1, raw TPM transformed
+with log1p, primary tumour only, candidate budget 25, growth fraction 0.9,
+independent lambda 0.1, joint lambda 1.0, and explicit Gurobi with no fallback.
 
-| Study | Original job | State at update | Conditional/new retry | Resources |
-|---|---:|---|---:|---|
-| E-MTAB-7223 | 588250 | `TIMEOUT` at the 24 h limit; no valid final receipt | **600005**, running for about 4 h with no startup error or receipt yet | 72 h, 128G, 8 CPU |
-| E-MTAB-10801 | 588251 | Failed: genuine 64G OOM | **600004**, running for about 12 h with no startup error or receipt yet | 72 h, 196G, 8 CPU |
-| E-MTAB-11000 | 588252 | `TIMEOUT` at the 24 h limit; no valid final receipt | **600006**, running for about 4 h with no startup error or receipt yet | 72 h, 128G, 8 CPU |
-| E-MTAB-14568 | 588253 | Running for about 28 h of a 72 h limit; no final receipt yet | **600007**, pending `afterany:588253`, skip if the original receipt validates | 72 h, 196G, 8 CPU |
+The original monolithic design solved every independent condition serially, then the
+joint problem, and wrote the only receipt at process exit. Its terminal evidence is:
 
-At the 22:42 EEST inspection, solver-step peak RSS was about 28.8 GiB for
-588253, 17.3 GiB for 600004, 10.9 GiB for 600005, and 10.0 GiB for 600006.
-CPU time and disk I/O continued to increase, and active logs showed the expected
-Human-GEM LP setup/solve work without a new OOM, license-session-cap error, or
-solver exception. The external-compartment auto-detection warning remains a
-model-boundary caveat to audit after completion, but is not by itself evidence
-of a failed solve. No final cohort/retry metabolic receipt existed at this
-checkpoint, so none of the running jobs is yet a scientific result.
+| Study | Original / retry evidence | Final receipt at 2026-08-19 audit |
+|---|---|---|
+| E-MTAB-7223 | 588250 TIMEOUT at 24 h; 600005 TIMEOUT at 72 h (step MaxRSS 52.6 GB) | missing |
+| E-MTAB-10801 | 588251 OOM at 64G; 600004 TIMEOUT at 72 h/196G (step MaxRSS 60.5 GB) | missing |
+| E-MTAB-11000 | 588252 TIMEOUT at 24 h; 600006 OOM after 43 h 30 min/128G | missing; targeted 196G retry **727583** is running |
+| E-MTAB-14568 | 588253 OOM after 65 h 32 min/128G; 600007 TIMEOUT at 72 h/196G (step MaxRSS 57.4 GB) | missing |
 
-Superseded startup attempts **599836** and **599943** failed in seconds with
-exit 127 because `module` is unavailable in direct non-login sbatch scripts;
-they did not call Gurobi or create scientific output. Pending broken retries
-599837-599839 were cancelled before starting and replaced by 600005-600007.
+Each retry log contains exactly the expected number of independent LP reads
+(9/13/11/27) before termination. This supports an execution-stage diagnosis: completed
+independent work was discarded while the process entered or attempted the joint stage.
+It does not establish any biological result. Availability audit **599875** therefore
+correctly reports status=incomplete, 0/4 valid receipts and
+final_comparison_permitted=false; strict comparison **599876** failed closed on the
+missing E-MTAB-7223 receipt. Dependent TPI1 jobs 599950/599951 were automatically
+cancelled and produced no scientific output.
 
-Immediate availability audit **599874** completed with status `incomplete`
-and correctly recorded 0/4 final receipts; this is expected, not a scientific
-failure. Final availability audit **599875** and strict four-cohort comparison
-**599876** remain pending on `afterany:600004,600005,600006,600007`; their
-receipt-producing successors are therefore not yet eligible. The strict
-comparison will fail closed if any receipt is missing or violates the frozen
-contract. Job **599950** remains pending on `afterok:599876`, and **599951**
-remains pending on `afterok:599950`.
+A checkpointed recovery was implemented without changing scientific parameters. A
+frozen context records samples, candidate IDs, bounds, model/input SHA256 and solver;
+each independent OCM writes an atomic receipt; the joint solve receives a separate
+72-hour allocation; the canonical full_direct_b25.json is assembled only when all
+condition receipts and the joint receipt are optimal and share the same context hash.
+Targeted tests (checkpoint fail-closed assembly plus existing joint-FBA tests) pass 4/4.
+
+| Study | Prepare | Independent array | Joint | Assemble |
+|---|---:|---:|---:|---:|
+| E-MTAB-7223 | 727669 | 727670 (0-8, %2) | 727671 (196G/72h) | 727672 |
+| E-MTAB-10801 | 727673 | 727674 (0-12, %2) | 727675 (196G/72h) | 727676 |
+| E-MTAB-14568 | 727677 | 727678 (0-26, %2) | 727679 (384G/72h) | 727680 |
+
+The independent arrays are held until 727583 and pooled smoke 727584 terminate; their
+combined maximum is six Gurobi tasks, below the project safety ceiling of eight active
+solver workflows. Audit **727685** and strict comparison **727686** wait on the three
+assemblies plus 727583 and remain fail-closed.
 
 ## Pooled metabolic joint analysis
 
