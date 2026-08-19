@@ -30,9 +30,7 @@ def _read_json(path: Path) -> dict[str, Any]:
 def _atomic_write(path: Path, value: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(
-        json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
+    temporary.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     temporary.replace(path)
 
 
@@ -57,7 +55,9 @@ def _context(path: Path) -> tuple[dict[str, Any], str]:
     return value, _sha256(path)
 
 
-def _bounds(value: dict[str, Any], conditions: list[str]) -> dict[str, dict[str, tuple[float, float]]]:
+def _bounds(
+    value: dict[str, Any], conditions: list[str]
+) -> dict[str, dict[str, tuple[float, float]]]:
     result: dict[str, dict[str, tuple[float, float]]] = {}
     raw = value["reaction_bounds"]
     for condition in conditions:
@@ -77,7 +77,6 @@ def prepare(args: argparse.Namespace) -> int:
         return 0
 
     import cobra
-
     from run_corneto_14568_pilot import (
         _candidate_sets,
         _reaction_bounds,
@@ -89,9 +88,7 @@ def prepare(args: argparse.Namespace) -> int:
     rows = _read_manifest(args.manifest, study=args.study, primary_only=True)
     rows = rows[: args.expected_samples]
     if len(rows) != args.expected_samples:
-        raise ValueError(
-            f"expected {args.expected_samples} primary samples, found {len(rows)}"
-        )
+        raise ValueError(f"expected {args.expected_samples} primary samples, found {len(rows)}")
     run_ids = [row["run_accession"] for row in rows]
     expression = _read_expression(args.expression, run_ids, "log1p_tpm")
     model = cobra.io.read_sbml_model(str(args.human_gem))
@@ -179,6 +176,7 @@ def solve_independent(args: argparse.Namespace) -> int:
         return 0
 
     import cobra
+
     from hgsoc_corneto.metabolic.joint_fba import solve_independent_sparse_fba
 
     model = cobra.io.read_sbml_model(str(args.human_gem))
@@ -219,6 +217,7 @@ def solve_joint(args: argparse.Namespace) -> int:
         return 0
 
     import cobra
+
     from hgsoc_corneto.metabolic.joint_fba import solve_joint_sparse_fba
 
     model = cobra.io.read_sbml_model(str(args.human_gem))
@@ -243,7 +242,9 @@ def solve_joint(args: argparse.Namespace) -> int:
         "slurm_job_id": os.environ.get("SLURM_JOB_ID"),
     }
     _atomic_write(args.output, payload)
-    print(json.dumps({"status": "completed", "samples": len(conditions), "output": str(args.output)}))
+    print(
+        json.dumps({"status": "completed", "samples": len(conditions), "output": str(args.output)})
+    )
     return 0
 
 
@@ -285,7 +286,10 @@ def assemble(args: argparse.Namespace) -> int:
     joint = joint_result.get("joint")
     if not isinstance(joint, list) or len(joint) != len(conditions):
         raise ValueError("joint result has the wrong number of condition summaries")
-    if any(str(item.get("status", "")).casefold() not in {"optimal", "optimal_inaccurate"} for item in joint):
+    if any(
+        str(item.get("status", "")).casefold() not in {"optimal", "optimal_inaccurate"}
+        for item in joint
+    ):
         raise ValueError("at least one joint condition is not optimal")
 
     independent_union = sorted(
@@ -313,8 +317,12 @@ def assemble(args: argparse.Namespace) -> int:
         "primary_only": True,
         "sample_count": context["sample_count"],
         "samples": context["samples"],
-        "expression": {key: context["expression"][key] for key in ("path", "transform", "gene_count")},
-        "model": {key: context["model"][key] for key in ("path", "reactions", "genes", "biomass_id")},
+        "expression": {
+            key: context["expression"][key] for key in ("path", "transform", "gene_count")
+        },
+        "model": {
+            key: context["model"][key] for key in ("path", "reactions", "genes", "biomass_id")
+        },
         "solver": context["solver"],
         "candidate_selection": context["candidate_selection"],
         "objective": context["objective"],
@@ -330,7 +338,9 @@ def assemble(args: argparse.Namespace) -> int:
     if args.output.exists():
         raise FileExistsError(f"refusing to overwrite canonical receipt: {args.output}")
     _atomic_write(args.output, payload)
-    print(json.dumps({"status": "completed", "samples": len(conditions), "output": str(args.output)}))
+    print(
+        json.dumps({"status": "completed", "samples": len(conditions), "output": str(args.output)})
+    )
     return 0
 
 
