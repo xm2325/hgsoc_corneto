@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 
-SCRIPT = Path(__file__).with_name("run_corneto_metabolic_checkpoint.py")
+SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "run_corneto_metabolic_checkpoint.py"
 
 
 def _write(path: Path, value: dict) -> None:
