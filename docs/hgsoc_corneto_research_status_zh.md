@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-12 20:52 BST（22:52 EEST）。本文件与
+最后运行更新：2026-08-19 09:25 BST（11:25 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -119,71 +119,69 @@ finding：pooled network 在 nominal lambda 0.05 及以上变为空，大部分 
 absence 的证据。lambda 0.001 时 pooled-vs-merged-cohort edge-union Jaccard 为 0.746；
 lambda 0.01 时降至 0.286。这些仍是 response-blind technical results。
 
-## Metabolic baseline：运行中、失败与排队任务
+## Metabolic baseline：终态失败与 checkpointed recovery
 
-冻结的 primary settings：Human-GEM v1.4.1、raw TPM 经 `log1p` 转换、primary
-tumour only、candidate budget 25、growth fraction 0.9、independent lambda 0.1、
-joint lambda 1.0，以及不允许 fallback 的 explicit Gurobi。
+冻结的 scientific settings 保持不变：Human-GEM v1.4.1、raw TPM 经 log1p 转换、
+primary tumour only、candidate budget 25、growth fraction 0.9、independent lambda
+0.1、joint lambda 1.0，以及 explicit Gurobi 且不允许 fallback。
 
-| Study | Original job | 当前状态 | Conditional/new retry | Resources |
-|---|---:|---|---:|---|
-| E-MTAB-7223 | 588250 | 在 24 h limit 达到 `TIMEOUT`；无有效 final receipt | **600005**，已运行约 4 h，未见 startup error 或 receipt | 72 h、128G、8 CPU |
-| E-MTAB-10801 | 588251 | 失败：确认为 64G OOM | **600004**，已运行约 12 h，未见 startup error 或 receipt | 72 h、196G、8 CPU |
-| E-MTAB-11000 | 588252 | 在 24 h limit 达到 `TIMEOUT`；无有效 final receipt | **600006**，已运行约 4 h，未见 startup error 或 receipt | 72 h、128G、8 CPU |
-| E-MTAB-14568 | 588253 | 已运行约 28 h / 72 h；尚无 final receipt | **600007**，等待 `afterany:588253`；若 original receipt 有效则跳过 | 72 h、196G、8 CPU |
+旧 monolithic runner 依次求解全部 independent conditions，再求 joint problem，并且只在
+进程结束时写唯一 receipt。终态证据如下：
 
-22:42 EEST 检查中，solver-step peak RSS 约为：588253 28.8 GiB、600004
-17.3 GiB、600005 10.9 GiB、600006 10.0 GiB。CPU time 与 disk I/O 持续增长，
-active logs 仍显示预期的 Human-GEM LP setup/solve，未见新的 OOM、
-license-session-cap error 或 solver exception。external-compartment auto-detection
-warning 必须作为 model-boundary caveat 在完成后审计，但它本身不证明 solve 失败。
-当前仍无 final cohort/retry metabolic receipt，因此任何 running job 都还不是科学结果。
+| Study | Original / retry evidence | 2026-08-19 final receipt |
+|---|---|---|
+| E-MTAB-7223 | 588250 在 24 h TIMEOUT；600005 在 72 h TIMEOUT（step MaxRSS 52.6 GB） | missing |
+| E-MTAB-10801 | 588251 在 64G OOM；600004 在 72 h/196G TIMEOUT（step MaxRSS 60.5 GB） | missing |
+| E-MTAB-11000 | 588252 在 24 h TIMEOUT；600006 在 43 h 30 min/128G OOM | missing；targeted 196G retry **727583** 正在运行 |
+| E-MTAB-14568 | 588253 在 65 h 32 min/128G OOM；600007 在 72 h/196G TIMEOUT（step MaxRSS 57.4 GB） | missing |
 
-已取代的 startup attempts **599836** 和 **599943** 在数秒内以 exit 127 失败，
-原因是 direct non-login sbatch scripts 中没有 `module`；它们没有调用 Gurobi，也没有
-产生科学输出。坏的 pending retries 599837-599839 在启动前已取消，并由 600005-600007 替代。
+每个 retry log 在终止前都包含精确的 expected independent LP reads（9/13/11/27）。
+这支持 execution-stage diagnosis：independent work 已完成，但在进入或尝试 joint stage
+时没有被保存；它不构成 biological result。Availability audit **599875** 正确报告
+status=incomplete、0/4 valid receipts 与 final_comparison_permitted=false；strict
+comparison **599876** 因缺 E-MTAB-7223 receipt 而 fail closed。TPI1 jobs
+599950/599951 随后由 dependency 自动取消，没有产生 scientific output。
 
-Immediate availability audit **599874** 已完成，状态为 `incomplete`，正确记录
-0/4 final receipts；这是预期状态，不是 scientific failure。Final availability audit
-**599875** 与 strict four-cohort comparison **599876** 等待 600004-600007 终态。
-若任何 receipt 缺失或不符合 frozen contract，strict comparison 会 fail closed。
+现已实现不改变 scientific parameters 的 checkpointed recovery。Frozen context 记录
+samples、candidate IDs、bounds、model/input SHA256 与 solver；每个 independent OCM
+原子写 receipt；joint solve 单独获得完整 72 h；只有全部 condition receipts 与 joint
+receipt 均为 optimal 且 context hash 一致，才组装 canonical full_direct_b25.json。
+Checkpoint fail-closed assembly tests 与既有 joint-FBA tests 合计 4/4 通过。
+
+| Study | Prepare | Independent array | Joint | Assemble |
+|---|---:|---:|---:|---:|
+| E-MTAB-7223 | 727669 | 727670（0-8，%2） | 727671（196G/72h） | 727672 |
+| E-MTAB-10801 | 727673 | 727674（0-12，%2） | 727675（196G/72h） | 727676 |
+| E-MTAB-14568 | 727677 | 727678（0-26，%2） | 727679（384G/72h） | 727680 |
+
+Independent arrays 等待 727583 与 pooled smoke 727584 终态后释放；三组 array 合计
+最多 6 个 Gurobi tasks，低于项目规定的 8 个 active solver workflows 安全上限。
+Audit **727685** 与 strict comparison **727686** 等待三个 assemble jobs 与 727583，
+并保持 fail-closed。
 
 ## Pooled metabolic joint analysis
 
-该分析有意只做 joint-only：四个 cohort jobs 提供 independent/cohort evidence；
-不在一个 72 小时 pooled job 中重复 60 个 independent MILPs，以免重复计算并在超时后丢失进度。
+Pooled analysis 保持 joint-only，不重复 60 个 independent MILPs。之前两个
+four-condition one-per-study smoke 都没有 receipt：**600008** 在 12 h TIMEOUT，
+**615508** 在 36 h TIMEOUT。后者 MaxRSS 仅 11.5 GB，且无 OOM、license-session 或
+Python exception，因此只再提交一次 scientific settings 完全相同的 **727584**，
+使用最大 72 h wall time 与 128G，并以 canonical smoke receipt 不存在为 duplicate guard。
 
-```mermaid
-flowchart LR
-    G["599942 pooled input gate: valid"] --> S["615508 four-condition, one-per-study joint smoke retry"]
-    S --> F["615515 pooled-60 joint sparse-FBA; 72 h, 384G"]
-    F --> C["615517 pooled-vs-cohort metabolic comparison"]
-    Q["599876 strict four-cohort comparison"] --> C
-```
-
-Smoke 使用每个 study 一个 primary OCM，candidate budget 25、growth fraction 0.9、
-joint lambda 1.0 和 Gurobi。只有 smoke 成功后 pooled-60 job 才会启动，但二者都不依赖
-cohort baselines。Original smoke **600008** 在完成四次预期 Human-GEM LP read 后达到
-12 h wall-time；peak RSS 仅约 7.1 GiB，日志无 OOM、license-session-cap 或 Python/solver
-exception，但没有生成 receipt，因此它是 operational timeout，不是科学结果。其
-`afterok` 失败使从未启动的 **600009** 与 **600010** 被 Slurm 自动取消。已仅提交一次
-科学参数完全相同的 smoke retry **615508**，将时限延长到 36 h、保持 128G；本次检查时
-它已正常运行。Replacement full job **615515** 等待 `afterok:615508`，replacement
-comparator **615517** 同时等待 `afterok:599876` 与 `afterok:615515`。没有提交重复的
-pooled solver job；在相应 receipt 验证通过前不得解释 pooled result。
+只有 727584 成功，**727684** 才会启动 pooled-60 joint solve（384G/72h）。
+Pooled-vs-cohort comparison **727689** 同时依赖 727684 与 strict four-cohort
+comparison 727686。早期 600009/600010 和 615515/615517 因 afterok 失败被取消，
+从未运行；它们是 provenance，不是 negative scientific result。
 
 ## TPI1/FVA 与 Meeson dependency chain
 
-```mermaid
-flowchart LR
-    M["599873 model-only TPI1 gate: valid"]
-    B["599876 four strict metabolic receipts"] --> P["599950 receipt-dependent TPI1/FVA preflight"]
-    P --> V["599951 WT vs delta-TPI1 FBA/FVA"]
-```
+独立 model-only TPI1 gate 仍有效：Human-GEM 含 13,096 reactions 与 3,628 genes；
+TPI1 映射到 ENSG00000111669 和 reaction HMR_4391。它不依赖 cohort receipts，也不是
+OCM knockout result。
 
-现有 Meeson order-sensitivity 与 ensemble jobs 绑定在各个 original cohort jobs 上。
-如果 original job timeout 但 conditional retry 成功，对应的 cancelled downstream
-task 必须改为依赖有效 retry receipt 后重新提交。不能仅依据 dependency state 推断结果。
+新的 scientific chain 为 strict comparison **727686** -> receipt-dependent preflight
+**727687** -> WT versus delta-TPI1 FBA/FVA **727688**。任何 invalid cohort receipt
+都会取消该链。Cohort-specific Meeson order/ensemble analyses 同样必须等待相应
+canonical cohort receipt，不能仅凭 scheduler state 释放。
 
 ## 仍需实现/运行的 reference comparisons
 
@@ -199,6 +197,30 @@ task 必须改为依赖有效 retry receipt 后重新提交。不能仅依据 de
    与 metabolic retention；不要附加 drug-response labels。
 5. 所有 network contrast 都应以 prevalence difference、patient/study-aware uncertainty、
    alternative-optima frequency、lambda/PKN sensitivity 与 multiplicity control 代替简单 set subtraction。
+
+## External response-blind validation
+
+External 结果记录在
+/scratch/project_2012997/xiaomei/hgsoc_corneto_external/regulatory_external_comparison_v2.json
+（status=completed）。Taylor signature 在 external scoring 前按 nominal lambda 0.001
+冻结：edge 必须至少出现在 6/52 Taylor patients 与 2/4 cohorts。共有 5 条 signed
+edges 通过，signature SHA256 为
+e10fb081217ad15ece5119ed003dbc16f76cdf3699a1b78ee7bce41a6cf558e6。
+
+True multi-condition fits 的全部 conditions 均 optimal：GSE277107 ovary/omentum bulk
+22/22、GSE189955 patient pseudobulk 59/59、GSE208216 organoid models 14/14。在预先
+声明的 50% patient/model prevalence threshold 下，5 条 Taylor edges 中没有任何一条
+在任一 external group 成为 consensus feature：ovary n=11、omentum n=11、HGSOC
+epithelial-candidate n=12、fibroblast proxy n=12、normal-FT n=6、PDO n=11、FT
+organoid n=3。这是对 strict external-consensus claim 的 negative falsification
+evidence，并不证明 pathway 不存在。Point prevalences 与 bootstrap intervals 仍只能
+descriptive；不能作 drug-response 或 causal claim。
+
+GSE180661 source acquisition 已完成：32,555,276,423-byte HDF5 的 locally observed
+SHA256 为 edc5f5d7449478d7dfec1f575c89670bcd1bb041124ef2d53a4df0ecf7e29be6。
+因为 GEO 未提供 upstream digest，receipt 正确保留 matrix_identity_frozen=false；
+在 review 并冻结 observed hash 前，pseudobulk 仍 blocked。DepMap 同样保持 deliberate
+blocked，直到提供明确 quarterly release 及同版 Model、Chronos 与 README files。
 
 ## 缺少的数据与 blocked claims
 
@@ -220,7 +242,7 @@ response-model accuracy。`chemo_naive_at_biopsy` 不能替代 exact cumulative 
 ## 定时监控（Recurring monitor）
 
 Codex heartbeat **HGSOC CORNETO Roihu pipeline monitor** 已绑定到当前对话，
-每 30 分钟运行一次；它没有显式 model 或 reasoning override，因此遵循当前对话/默认设置，
+按约两小时的低频 cadence 运行；它没有显式 model 或 reasoning override，因此遵循当前对话/默认设置，
 不会创建单独的 standalone monitoring conversation。这个时间间隔的理由是：
 
 - Slurm dependencies 会自动启动有效 successors，因此分钟级轮询不会加速 pipeline。
