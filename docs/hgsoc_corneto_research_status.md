@@ -181,47 +181,29 @@ assemblies plus 727583 and remain fail-closed.
 
 ## Pooled metabolic joint analysis
 
-This analysis is intentionally joint-only: the four cohort jobs provide
-independent/cohort evidence, while repeating 60 independent MILPs inside one
-72-hour pooled job would waste completed work and erase progress on timeout.
+The pooled analysis remains joint-only; it never repeats 60 independent MILPs. Both
+previous four-condition one-per-study smoke attempts failed operationally without a
+receipt: **600008** TIMEOUT at 12 h and **615508** TIMEOUT at 36 h. The latter reached
+only 11.5 GB MaxRSS and showed no OOM, licence-session or Python exception, so one final
+scientifically identical smoke **727584** was submitted with the maximum 72-hour wall
+time and 128G. It is guarded by absence of the canonical smoke receipt.
 
-```mermaid
-flowchart LR
-    G["599942 pooled input gate: valid"] --> S["615508 four-condition, one-per-study joint smoke retry"]
-    S --> F["615515 pooled-60 joint sparse-FBA; 72 h, 384G"]
-    F --> C["615517 pooled-vs-cohort metabolic comparison"]
-    Q["599876 strict four-cohort comparison"] --> C
-```
-
-The smoke uses one primary OCM from each study, candidate budget 25, growth
-fraction 0.9, joint lambda 1.0 and Gurobi. The pooled-60 job starts only if the
-smoke succeeds, but neither depends on the cohort baselines. Original smoke
-**600008** reached its 12 h wall-time after four expected Human-GEM LP reads.
-It used only about 7.1 GiB peak RSS and showed no OOM, license-session-cap, or
-Python/solver exception, but produced no receipt; it is therefore an
-operational timeout and not a scientific result. Slurm automatically cancelled
-never-started successors **600009** and **600010** when the `afterok`
-dependency failed. One scientifically identical smoke retry, **615508**, was
-submitted with the time limit extended to 36 h and the same 128G request; it
-was running normally at this checkpoint. Replacement full job **615515** waits
-on `afterok:615508`, and replacement comparator **615517** waits on both
-`afterok:599876` and `afterok:615515`. No duplicate pooled solver job was
-submitted and no pooled result may be interpreted before its receipt validates.
+If and only if 727584 succeeds, **727684** starts the pooled-60 joint solve (384G/72h).
+Pooled-vs-cohort comparison **727689** requires both 727684 and strict four-cohort
+comparison 727686. The earlier 600009/600010 and 615515/615517 jobs were cancelled by
+failed afterok dependencies and never ran; they are provenance, not negative
+scientific results.
 
 ## TPI1/FVA and Meeson dependency chain
 
-```mermaid
-flowchart LR
-    M["599873 model-only TPI1 gate: valid"]
-    B["599876 four strict metabolic receipts"] --> P["599950 receipt-dependent TPI1/FVA preflight"]
-    P --> V["599951 WT vs delta-TPI1 FBA/FVA"]
-```
+The independent model-only TPI1 gate remains valid: Human-GEM contains 13,096
+reactions and 3,628 genes; TPI1 maps to ENSG00000111669 and reaction HMR_4391.
+It does not depend on cohort receipts and is not an OCM knockout result.
 
-Existing Meeson order-sensitivity and ensemble jobs are attached to individual
-original cohort jobs. If an original times out but its conditional retry
-succeeds, the corresponding cancelled downstream task must be resubmitted
-against the valid retry receipt. No result should be inferred from dependency
-state alone.
+The scientific chain is now strict comparison **727686** -> receipt-dependent preflight
+**727687** -> WT versus delta-TPI1 FBA/FVA **727688**. Any invalid cohort receipt cancels
+this chain. Cohort-specific Meeson order/ensemble analyses also require the corresponding
+canonical cohort receipt and will not be released from scheduler state alone.
 
 ## Reference comparisons still to implement/run
 
@@ -238,6 +220,32 @@ state alone.
 5. For every network contrast, replace simple set subtraction with prevalence
    difference, patient/study-aware uncertainty, alternative-optima frequency,
    lambda/PKN sensitivity and multiplicity control.
+
+## External response-blind validation
+
+External results are auditable in
+/scratch/project_2012997/xiaomei/hgsoc_corneto_external/regulatory_external_comparison_v2.json
+(status=completed). The Taylor signature was frozen before external scoring at nominal
+lambda 0.001: an edge required prevalence in at least 6/52 Taylor patients and 2/4
+cohorts. Five signed edges passed; signature SHA256 is
+e10fb081217ad15ece5119ed003dbc16f76cdf3699a1b78ee7bce41a6cf558e6.
+
+True multi-condition fits were optimal for all evaluated conditions: 22/22 GSE277107
+ovary/omentum bulk samples, 59/59 GSE189955 patient pseudobulk conditions, and 14/14
+GSE208216 organoid models. At the prespecified 50% patient/model prevalence threshold,
+none of the five Taylor edges was a consensus feature in any external group (ovary
+n=11, omentum n=11, HGSOC epithelial-candidate n=12, fibroblast proxy n=12, normal-FT
+n=6, PDO n=11, or FT organoid n=3). This is negative falsification evidence for the
+strict external-consensus claim, not proof that the pathways are absent. Point
+prevalences and bootstrap intervals remain descriptive; no drug-response or causal
+claim is permitted.
+
+GSE180661 source acquisition completed: the 32,555,276,423-byte HDF5 has locally
+observed SHA256 edc5f5d7449478d7dfec1f575c89670bcd1bb041124ef2d53a4df0ecf7e29be6.
+Because GEO supplied no upstream digest, the receipt correctly keeps
+matrix_identity_frozen=false; pseudobulk remains blocked until this observed hash is
+reviewed and frozen. DepMap likewise remains deliberately blocked until one explicit
+quarterly release and its matching Model, Chronos and README files are supplied.
 
 ## Missing data and blocked claims
 
@@ -265,7 +273,7 @@ cumulative exposure.
 ## Recurring monitor
 
 The Codex heartbeat **HGSOC CORNETO Roihu pipeline monitor** is attached to this
-conversation and runs every 30 minutes. It has no explicit model or reasoning
+conversation and runs at a low-frequency approximately two-hour cadence. It has no explicit model or reasoning
 override, so it follows the current conversation/default settings and does not
 create a separate standalone monitoring conversation. This cadence is deliberate:
 
