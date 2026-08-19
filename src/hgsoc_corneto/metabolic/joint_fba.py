@@ -128,9 +128,7 @@ def _summaries(
 
 
 def _active_union(solutions: Sequence[ConditionFluxSolution]) -> tuple[str, ...]:
-    active = {
-        reaction for solution in solutions for reaction in solution.active_by_flux
-    }
+    active = {reaction for solution in solutions for reaction in solution.active_by_flux}
     return tuple(sorted(active))
 
 
@@ -200,9 +198,7 @@ def solve_joint_sparse_fba(
     problem = MultiSampleFBA(lambda_reg=joint_lambda).build_many(
         graph,
         objectives={condition: dict(objectives[condition]) for condition in conditions},
-        reaction_bounds={
-            condition: dict(reaction_bounds[condition]) for condition in conditions
-        },
+        reaction_bounds={condition: dict(reaction_bounds[condition]) for condition in conditions},
     )
     solution = problem.solve(solver=solver)
     summaries = _summaries(
@@ -213,8 +209,7 @@ def solve_joint_sparse_fba(
         active_tolerance=active_tolerance,
     )
     if any(
-        summary.status.casefold() not in {"optimal", "optimal_inaccurate"}
-        for summary in summaries
+        summary.status.casefold() not in {"optimal", "optimal_inaccurate"} for summary in summaries
     ):
         raise RuntimeError(f"Joint conditions failed: {summaries[0].status}")
     return JointSparseFBAResult(
@@ -280,9 +275,7 @@ def compare_independent_and_joint_sparse_fba(
     joint_problem = MultiSampleFBA(lambda_reg=joint_lambda).build_many(
         graph,
         objectives={condition: dict(objectives[condition]) for condition in conditions},
-        reaction_bounds={
-            condition: dict(reaction_bounds[condition]) for condition in conditions
-        },
+        reaction_bounds={condition: dict(reaction_bounds[condition]) for condition in conditions},
     )
     joint_solution = joint_problem.solve(solver=solver)
     joint = _summaries(
@@ -292,10 +285,7 @@ def compare_independent_and_joint_sparse_fba(
         conditions,
         active_tolerance=active_tolerance,
     )
-    if any(
-        summary.status.casefold() not in {"optimal", "optimal_inaccurate"}
-        for summary in joint
-    ):
+    if any(summary.status.casefold() not in {"optimal", "optimal_inaccurate"} for summary in joint):
         raise RuntimeError(f"Joint conditions failed: {joint[0].status}")
 
     independent_tuple = tuple(independent)
