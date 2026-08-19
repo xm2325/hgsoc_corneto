@@ -134,6 +134,44 @@ def _active_union(solutions: Sequence[ConditionFluxSolution]) -> tuple[str, ...]
     return tuple(sorted(active))
 
 
+def solve_independent_sparse_fba(
+    model: Any,
+    *,
+    condition: str,
+    objective: Mapping[str, float],
+    reaction_bounds: Mapping[str, tuple[float | None, float | None]],
+    independent_lambda: float,
+    solver: str = "highs",
+    active_tolerance: float = 1e-7,
+) -> ConditionFluxSolution:
+    """Solve and summarize exactly one independent sparse-FBA condition."""
+
+    if not condition:
+        raise ValueError("condition must be non-empty")
+    if independent_lambda < 0:
+        raise ValueError("Regularization weight must be non-negative")
+    if active_tolerance <= 0:
+        raise ValueError("active_tolerance must be positive")
+
+    MultiSampleFBA, graph, reaction_ids = _corneto_components(model)
+    problem = MultiSampleFBA(lambda_reg=independent_lambda).build(
+        graph,
+        objectives=dict(objective),
+        reaction_bounds=dict(reaction_bounds),
+    )
+    solution = problem.solve(solver=solver)
+    summary = _summaries(
+        problem,
+        solution,
+        reaction_ids,
+        (condition,),
+        active_tolerance=active_tolerance,
+    )[0]
+    if summary.status.casefold() not in {"optimal", "optimal_inaccurate"}:
+        raise RuntimeError(f"Independent condition {condition!r} failed: {summary.status}")
+    return summary
+
+
 def solve_joint_sparse_fba(
     model: Any,
     *,
