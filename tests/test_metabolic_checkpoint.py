@@ -5,7 +5,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "run_corneto_metabolic_checkpoint.py"
 
 
@@ -26,7 +25,13 @@ def test_assemble_requires_complete_matching_checkpoints(tmp_path: Path) -> None
         "conditions": conditions,
         "expression": {"path": "matrix.tsv.gz", "transform": "log1p_tpm", "gene_count": 5},
         "model": {"path": "model.xml", "reactions": 4, "genes": 3, "biomass_id": "biomass_human"},
-        "solver": {"requested": "gurobi", "used": "gurobi", "available": ["GUROBI"], "fallback_reason": None, "solve_fallback": None},
+        "solver": {
+            "requested": "gurobi",
+            "used": "gurobi",
+            "available": ["GUROBI"],
+            "fallback_reason": None,
+            "solve_fallback": None,
+        },
         "candidate_selection": {"max_candidates": 25, "selected_count": 1},
         "objective": {"growth_fraction": 0.9, "independent_lambda": 0.1, "joint_lambda": 1.0},
         "repo_commit": "abc",
