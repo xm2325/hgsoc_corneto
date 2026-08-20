@@ -20,6 +20,8 @@ CHECKPOINT_ROOT="${REPO_ROOT}/data/processed/corneto/${STUDY_ACCESSION}/checkpoi
 cd "${REPO_ROOT}"
 export PYTHONNOUSERSITE=1
 export PYTHONPATH=src:scripts
+export GRB_LICENSE_FILE="${GRB_LICENSE_FILE:-${REPO_ROOT}/gurobi_xm.lic}"
+test -r "${GRB_LICENSE_FILE}"
 mkdir -p "${CHECKPOINT_ROOT}/independent"
 
 srun "${PYTHON}" scripts/run_corneto_metabolic_checkpoint.py independent \
