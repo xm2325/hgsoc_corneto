@@ -1,8 +1,24 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-19 09:25 BST（11:25 EEST）。本文件与
+最后运行更新：2026-08-20 12:20 BST（14:20 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
+
+## 运行纠正：2026-08-20
+
+首轮 checkpoint preparation jobs 727669、727673、727677 在写出 context
+receipt 前失败。原因是三个 solver 入口没有显式导出项目 WLS license file，
+Gurobi 因而选择 size-limited local license，并拒绝 8,400-row/26,192-column
+model。这是 execution-environment defect，不是 OOM、model infeasibility 或
+biological result。prepare、independent、joint 三个 sbatch 现均导出并检查与
+既有 solver jobs 相同的 `GRB_LICENSE_FILE`。
+
+修正后的 chains 为 749575--749578（E-MTAB-7223）、749579--749582
+（E-MTAB-10801）及 749583--749586（E-MTAB-14568）。startup gate 时，
+749575/749579/749583 正在运行，日志确认 WLS academic license 2849103。
+其 independent arrays 同时依赖 context preparation 成功及 active jobs
+727583/727584 终态，以保留 solver-session safety margin。当前仍无 scientific
+receipt，因此这些 jobs 尚不能支持 biological claim。
 
 ## 核心科学问题（Central scientific question）
 
