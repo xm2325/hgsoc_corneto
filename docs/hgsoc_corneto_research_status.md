@@ -18,9 +18,10 @@ same `GRB_LICENSE_FILE` used by the established solver jobs.
 
 Corrected chains are 749575--749578 (E-MTAB-7223), 749579--749582
 (E-MTAB-10801), and 749583--749586 (E-MTAB-14568). At the startup gate,
-749575/749579/749583 were running and logs confirmed WLS academic license
-2849103. Their independent arrays remain guarded behind both successful context
-preparation and the terminal state of active jobs 727583/727584, preserving the
+749575 and 749579 completed with exit 0 and wrote `prepared` context receipts
+for 9 and 13 samples; 749583 remained healthy and running. Logs confirmed WLS
+academic license 2849103. Their independent arrays remain guarded behind both
+successful context preparation and the terminal state of active jobs 727583/727584, preserving the
 solver-session safety margin. No scientific receipt exists yet, so none of
 these jobs supports a biological claim.
 
