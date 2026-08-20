@@ -1,10 +1,28 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-19 09:25 BST (11:25 EEST). This file is the project-level source of
+Last operational update: 2026-08-20 12:20 BST (14:20 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
+
+## Operational correction: 2026-08-20
+
+The first checkpoint preparation jobs 727669, 727673, and 727677 failed before
+writing context receipts because their three solver entry points did not export
+the project WLS license file. Gurobi therefore selected a size-limited local
+license and rejected the 8,400-row/26,192-column model. This was an execution
+environment defect, not an OOM, infeasible model, or biological result. The
+prepare, independent, and joint sbatches now export and readability-check the
+same `GRB_LICENSE_FILE` used by the established solver jobs.
+
+Corrected chains are 749575--749578 (E-MTAB-7223), 749579--749582
+(E-MTAB-10801), and 749583--749586 (E-MTAB-14568). At the startup gate,
+749575/749579/749583 were running and logs confirmed WLS academic license
+2849103. Their independent arrays remain guarded behind both successful context
+preparation and the terminal state of active jobs 727583/727584, preserving the
+solver-session safety margin. No scientific receipt exists yet, so none of
+these jobs supports a biological claim.
 
 ## Central scientific question
 
