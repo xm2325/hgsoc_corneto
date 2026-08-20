@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-20 12:20 BST（14:20 EEST）。本文件与
+最后运行更新：2026-08-20 14:20 BST（16:20 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -15,9 +15,8 @@ biological result。prepare、independent、joint 三个 sbatch 现均导出并�
 
 修正后的 chains 为 749575--749578（E-MTAB-7223）、749579--749582
 （E-MTAB-10801）及 749583--749586（E-MTAB-14568）。startup gate 时，
-749575 与 749579 已 exit 0，并分别为 9 与 13 个 samples 写出 `prepared`
-context receipts；749583 保持健康运行。日志确认 WLS academic license
-2849103。其 independent arrays 同时依赖 context preparation 成功及 active jobs
+749575、749579 与 749583 均已 exit 0，并分别为 9、13 与 27 个 samples
+写出 `prepared` context receipts。日志确认 WLS academic license 2849103。其 independent arrays 同时依赖 context preparation 成功及 active jobs
 727583/727584 终态，以保留 solver-session safety margin。当前仍无 scientific
 receipt，因此这些 jobs 尚不能支持 biological claim。
 
