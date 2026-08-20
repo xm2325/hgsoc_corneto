@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-20 12:20 BST (14:20 EEST). This file is the project-level source of
+Last operational update: 2026-08-20 14:20 BST (16:20 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -18,9 +18,9 @@ same `GRB_LICENSE_FILE` used by the established solver jobs.
 
 Corrected chains are 749575--749578 (E-MTAB-7223), 749579--749582
 (E-MTAB-10801), and 749583--749586 (E-MTAB-14568). At the startup gate,
-749575 and 749579 completed with exit 0 and wrote `prepared` context receipts
-for 9 and 13 samples; 749583 remained healthy and running. Logs confirmed WLS
-academic license 2849103. Their independent arrays remain guarded behind both
+749575, 749579, and 749583 completed with exit 0 and wrote `prepared` context
+receipts for 9, 13, and 27 samples. Logs confirmed WLS academic license
+2849103. Their independent arrays remain guarded behind both
 successful context preparation and the terminal state of active jobs 727583/727584, preserving the
 solver-session safety margin. No scientific receipt exists yet, so none of
 these jobs supports a biological claim.
