@@ -21,6 +21,8 @@ CHECKPOINT_ROOT="${REPO_ROOT}/data/processed/corneto/${STUDY_ACCESSION}/checkpoi
 cd "${REPO_ROOT}"
 export PYTHONNOUSERSITE=1
 export PYTHONPATH=src:scripts
+export GRB_LICENSE_FILE="${GRB_LICENSE_FILE:-${REPO_ROOT}/gurobi_xm.lic}"
+test -r "${GRB_LICENSE_FILE}"
 export HGSOC_CORNETO_REPO_COMMIT
 HGSOC_CORNETO_REPO_COMMIT=$(git rev-parse HEAD)
 mkdir -p "${CHECKPOINT_ROOT}"
