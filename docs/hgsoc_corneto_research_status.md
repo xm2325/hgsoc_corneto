@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-23 11:10 BST (13:10 EEST). This file is the project-level source of
+Last operational update: 2026-08-23 22:24 BST (2026-08-24 00:24 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -160,6 +160,18 @@ canonical, and assembles `full_direct_b25.json` last. At this update:
 | E-MTAB-10801 | 13 | 749580 tasks 2-3 | tasks 4-12 | **805861**, `0-12%2`, after-any 749580 |
 | E-MTAB-11000 | 11 | 805003 task 0 | tasks 1-10 | **805862**, `0-10%1`, after-any 805003 |
 | E-MTAB-14568 | 27 | 749584 tasks 2-3 | tasks 4-26 | **805863**, `0-26%2`, after-any 749584 |
+
+At the 00:24 EEST live check, the six 24-hour legacy tasks had run for
+13 h 13 min and the 72-hour 11000 task for 11 h 44 min. Solver-step CPU
+efficiency was approximately 94-96%, disk counters continued to increase, and
+peak RSS was 15.2-23.8 GiB against 64G requests. This supports active solving
+rather than OOM or an idle hang, but it does not establish feasibility,
+optimality or scientific correctness. These pre-instrumentation processes have
+no live Gurobi progress log and have written no canonical or partial receipt,
+`.sol` or `.mst`; their incumbent and gap are therefore unavailable. The six
+24-hour tasks have about 10 h 47 min remaining and may still reproduce the
+earlier timeout pattern. Only jobs 805860-805867 will provide live solver logs
+and guaranteed end-of-limit telemetry/partial receipts.
 
 The six healthy running tasks from 749576/749580/749584 and the healthy task
 805003_0 were not cancelled. Earlier tasks 0-1 in each of
