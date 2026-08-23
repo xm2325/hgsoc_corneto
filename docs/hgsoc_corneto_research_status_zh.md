@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-20 14:20 BST（16:20 EEST）。本文件与
+最后运行更新：2026-08-23 11:10 BST（13:10 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -19,6 +19,26 @@ biological result。prepare、independent、joint 三个 sbatch 现均导出并�
 写出 `prepared` context receipts。日志确认 WLS academic license 2849103。其 independent arrays 同时依赖 context preparation 成功及 active jobs
 727583/727584 终态，以保留 solver-session safety margin。当前仍无 scientific
 receipt，因此这些 jobs 尚不能支持 biological claim。
+
+## Timeout recovery 更新：2026-08-23
+
+Monolithic jobs 727583（E-MTAB-11000）与 727584（four-sample pooled smoke）
+均达到 72-hour limit，且没有写出 scientific receipts；pooled full successor
+因此被 dependency 取消。这证明当前 monolithic formulation 在给定资源下未完成，
+不证明 model infeasibility，也不是 biological result；没有继续提交 blind pooled retry。
+
+E-MTAB-7223、E-MTAB-10801 与 E-MTAB-14568 的 independent checkpoint tasks
+0 和 1 均达到原 24-hour limit，且没有 receipts；tasks 2 和 3 仍在运行。
+Slurm 不允许延长正在运行的 array time limits。因此提交 idempotent 72-hour
+recovery arrays 805006、805009、805012，并让其等待对应 original arrays 终态；
+它们覆盖全部 indices，但会立即跳过 original array 已生成的有效 receipt。
+新的 joint/assembly successors 分别为 805007--805008、805010--805011 与
+805013--805014。
+
+E-MTAB-11000 的 checkpoint chain 现为 805002--805005；independent
+concurrency 设为 1，以保留 WLS session margin。Fail-closed availability、
+four-cohort comparison 与 TPI1 successors 为 805015--805018。当前仍无
+canonical cohort receipt。
 
 ## 核心科学问题（Central scientific question）
 
