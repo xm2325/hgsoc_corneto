@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-20 14:20 BST (16:20 EEST). This file is the project-level source of
+Last operational update: 2026-08-23 11:10 BST (13:10 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -24,6 +24,29 @@ receipts for 9, 13, and 27 samples. Logs confirmed WLS academic license
 successful context preparation and the terminal state of active jobs 727583/727584, preserving the
 solver-session safety margin. No scientific receipt exists yet, so none of
 these jobs supports a biological claim.
+
+## Timeout recovery update: 2026-08-23
+
+Monolithic jobs 727583 (E-MTAB-11000) and 727584 (four-sample pooled smoke)
+reached the 72-hour limit without writing scientific receipts. The pooled full
+successor was therefore cancelled by dependency. This establishes operational
+non-completion under the current monolithic formulation, not model
+infeasibility and not a biological result; no further blind pooled retry was
+submitted.
+
+For each of E-MTAB-7223, E-MTAB-10801, and E-MTAB-14568, independent checkpoint
+tasks 0 and 1 reached their original 24-hour limit without receipts, while
+tasks 2 and 3 remained active. Slurm did not permit extending the running array
+time limits. Idempotent 72-hour recovery arrays 805006, 805009, and 805012 were
+therefore queued after the corresponding original arrays; they cover every
+index but immediately skip any receipt that the original array completes. New
+joint/assembly successors are 805007--805008, 805010--805011, and
+805013--805014.
+
+E-MTAB-11000 now has the missing checkpoint chain 805002--805005, with
+independent concurrency one to preserve the WLS session margin. Fail-closed
+availability, four-cohort comparison, and TPI1 successors are
+805015--805018. No canonical cohort receipt exists yet.
 
 ## Central scientific question
 
