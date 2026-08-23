@@ -6,48 +6,6 @@ attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
 
-## Operational correction: 2026-08-20
-
-The first checkpoint preparation jobs 727669, 727673, and 727677 failed before
-writing context receipts because their three solver entry points did not export
-the project WLS license file. Gurobi therefore selected a size-limited local
-license and rejected the 8,400-row/26,192-column model. This was an execution
-environment defect, not an OOM, infeasible model, or biological result. The
-prepare, independent, and joint sbatches now export and readability-check the
-same `GRB_LICENSE_FILE` used by the established solver jobs.
-
-Corrected chains are 749575--749578 (E-MTAB-7223), 749579--749582
-(E-MTAB-10801), and 749583--749586 (E-MTAB-14568). At the startup gate,
-749575, 749579, and 749583 completed with exit 0 and wrote `prepared` context
-receipts for 9, 13, and 27 samples. Logs confirmed WLS academic license
-2849103. Their independent arrays remain guarded behind both
-successful context preparation and the terminal state of active jobs 727583/727584, preserving the
-solver-session safety margin. No scientific receipt exists yet, so none of
-these jobs supports a biological claim.
-
-## Timeout recovery update: 2026-08-23
-
-Monolithic jobs 727583 (E-MTAB-11000) and 727584 (four-sample pooled smoke)
-reached the 72-hour limit without writing scientific receipts. The pooled full
-successor was therefore cancelled by dependency. This establishes operational
-non-completion under the current monolithic formulation, not model
-infeasibility and not a biological result; no further blind pooled retry was
-submitted.
-
-For each of E-MTAB-7223, E-MTAB-10801, and E-MTAB-14568, independent checkpoint
-tasks 0 and 1 reached their original 24-hour limit without receipts, while
-tasks 2 and 3 remained active. Slurm did not permit extending the running array
-time limits. Idempotent 72-hour recovery arrays 805006, 805009, and 805012 were
-therefore queued after the corresponding original arrays; they cover every
-index but immediately skip any receipt that the original array completes. New
-joint/assembly successors are 805007--805008, 805010--805011, and
-805013--805014.
-
-E-MTAB-11000 now has the missing checkpoint chain 805002--805005, with
-independent concurrency one to preserve the WLS session margin. Fail-closed
-availability, four-cohort comparison, and TPI1 successors are
-805015--805018. No canonical cohort receipt exists yet.
-
 ## Central scientific question
 
 > Do HGSOC OCMs contain metabolic and regulatory states that reproduce across
@@ -178,74 +136,98 @@ of over-regularisation under the current scaling, not evidence of biological
 absence. At lambda 0.001, pooled-vs-merged-cohort edge-union Jaccard is 0.746;
 at lambda 0.01 it falls to 0.286. These remain response-blind technical results.
 
-## Metabolic baseline: terminal failures and checkpointed recovery
+## Metabolic baseline: active, failed, and queued
 
-Frozen scientific settings remain unchanged: Human-GEM v1.4.1, raw TPM transformed
-with log1p, primary tumour only, candidate budget 25, growth fraction 0.9,
-independent lambda 0.1, joint lambda 1.0, and explicit Gurobi with no fallback.
+Primary settings are frozen: Human-GEM v1.4.1, raw TPM transformed with
+`log1p`, primary tumour only, candidate budget 25, growth fraction 0.9,
+independent lambda 0.1, joint lambda 1.0, and explicit Gurobi without fallback.
 
-The original monolithic design solved every independent condition serially, then the
-joint problem, and wrote the only receipt at process exit. Its terminal evidence is:
+All monolithic cohort attempts are terminal without a valid final receipt.
+Jobs 588250/588252 and 600004/600005/600007 reached their wall-time limits;
+588251 failed after a genuine 64G OOM; 588253 and 600006 failed without a
+canonical scientific receipt. The later 11000 retry 727583 also reached 72 h.
+These attempts established that a final-only JSON write is not an adequate
+checkpointing strategy for this MILP.
 
-| Study | Original / retry evidence | Final receipt at 2026-08-19 audit |
-|---|---|---|
-| E-MTAB-7223 | 588250 TIMEOUT at 24 h; 600005 TIMEOUT at 72 h (step MaxRSS 52.6 GB) | missing |
-| E-MTAB-10801 | 588251 OOM at 64G; 600004 TIMEOUT at 72 h/196G (step MaxRSS 60.5 GB) | missing |
-| E-MTAB-11000 | 588252 TIMEOUT at 24 h; 600006 OOM after 43 h 30 min/128G | missing; targeted 196G retry **727583** is running |
-| E-MTAB-14568 | 588253 OOM after 65 h 32 min/128G; 600007 TIMEOUT at 72 h/196G (step MaxRSS 57.4 GB) | missing |
+The replacement design freezes each cohort's expression-derived bounds and
+objectives in `checkpoint_b25/context.json`, solves one independent OCM per
+array task, solves the joint cohort only after every independent receipt is
+canonical, and assembles `full_direct_b25.json` last. At this update:
 
-Each retry log contains exactly the expected number of independent LP reads
-(9/13/11/27) before termination. This supports an execution-stage diagnosis: completed
-independent work was discarded while the process entered or attempted the joint stage.
-It does not establish any biological result. Availability audit **599875** therefore
-correctly reports status=incomplete, 0/4 valid receipts and
-final_comparison_permitted=false; strict comparison **599876** failed closed on the
-missing E-MTAB-7223 receipt. Dependent TPI1 jobs 599950/599951 were automatically
-cancelled and produced no scientific output.
+| Study | Required OCM receipts | Running legacy checkpoint tasks retained | Blind pending tasks cancelled | Instrumented recovery array |
+|---|---:|---|---|---:|
+| E-MTAB-7223 | 9 | 749576 tasks 2-3 | tasks 4-8 | **805860**, `0-8%2`, after-any 749576 |
+| E-MTAB-10801 | 13 | 749580 tasks 2-3 | tasks 4-12 | **805861**, `0-12%2`, after-any 749580 |
+| E-MTAB-11000 | 11 | 805003 task 0 | tasks 1-10 | **805862**, `0-10%1`, after-any 805003 |
+| E-MTAB-14568 | 27 | 749584 tasks 2-3 | tasks 4-26 | **805863**, `0-26%2`, after-any 749584 |
 
-A checkpointed recovery was implemented without changing scientific parameters. A
-frozen context records samples, candidate IDs, bounds, model/input SHA256 and solver;
-each independent OCM writes an atomic receipt; the joint solve receives a separate
-72-hour allocation; the canonical full_direct_b25.json is assembled only when all
-condition receipts and the joint receipt are optimal and share the same context hash.
-Targeted tests (checkpoint fail-closed assembly plus existing joint-FBA tests) pass 4/4.
+The six healthy running tasks from 749576/749580/749584 and the healthy task
+805003_0 were not cancelled. Earlier tasks 0-1 in each of
+749576/749580/749584 had already timed out at 24 h without independent
+receipts. Each instrumented recovery task first validates and skips any
+matching canonical receipt, so completed legacy work is not recomputed.
 
-| Study | Prepare | Independent array | Joint | Assemble |
-|---|---:|---:|---:|---:|
-| E-MTAB-7223 | 727669 | 727670 (0-8, %2) | 727671 (196G/72h) | 727672 |
-| E-MTAB-10801 | 727673 | 727674 (0-12, %2) | 727675 (196G/72h) | 727676 |
-| E-MTAB-14568 | 727677 | 727678 (0-26, %2) | 727679 (384G/72h) | 727680 |
+Instrumented independent tasks request 64G, eight CPUs and a 72 h Slurm limit,
+but pass an internal Gurobi `TimeLimit=252000` seconds (70 h), `MIPGap=1e-4`,
+eight threads and seed 0. This leaves time to atomically write an attempt
+receipt before Slurm termination. On an incumbent it records objective, best
+bound, absolute/relative gap, status, solution count, node/work/iteration
+counts and model dimensions, and writes `.sol`, `.mst` and a solver log. A
+time-limited incumbent is `partial_incumbent`, exits non-zero to block
+`afterok`, and is explicitly **not** a biological result or a canonical cohort
+receipt.
 
-The independent arrays are held until 727583 and pooled smoke 727584 terminate; their
-combined maximum is six Gurobi tasks, below the project safety ceiling of eight active
-solver workflows. Audit **727685** and strict comparison **727686** wait on the three
-assemblies plus 727583 and remain fail-closed.
+Smoke job **805824** validated the mechanism on E-MTAB-7223 OCM ERR2808250.
+After exactly 600.0 s it had 10 feasible solutions, incumbent objective
+-134.7536165, best bound -142.6087313 and relative gap 5.8292% after 14,986
+nodes. It atomically wrote a `partial_incumbent` receipt plus `.sol` and `.mst`
+artifacts, then intentionally exited 2. This is successful observability and
+fail-closed control, not scientific completion. As of this update the four
+cohorts still have 0/9, 0/13, 0/11 and 0/27 canonical independent receipts.
+
+The instrumented joint jobs are **805864-805867**; assembly jobs are
+**805868-805871**. Joint memory is 196G for 7223/10801/11000 and 384G for
+14568, with the same 70 h internal solver limit. Audit **805872** and strict
+comparison **805873** wait on all four assembly jobs with `afterany` and will
+fail closed on missing or partial receipts. TPI1 preflight **805874** and full
+WT-versus-delta-TPI1 FBA/FVA **805875** require `afterok` from the strict
+comparison chain. Superseded pending blind chains and their downstream jobs
+were cancelled only after this replacement chain had been accepted by Slurm.
 
 ## Pooled metabolic joint analysis
 
-The pooled analysis remains joint-only; it never repeats 60 independent MILPs. Both
-previous four-condition one-per-study smoke attempts failed operationally without a
-receipt: **600008** TIMEOUT at 12 h and **615508** TIMEOUT at 36 h. The latter reached
-only 11.5 GB MaxRSS and showed no OOM, licence-session or Python exception, so one final
-scientifically identical smoke **727584** was submitted with the maximum 72-hour wall
-time and 128G. It is guarded by absence of the canonical smoke receipt.
+This analysis is intentionally joint-only: the four cohort jobs provide
+independent/cohort evidence, while repeating 60 independent MILPs inside one
+72-hour pooled job would waste completed work and erase progress on timeout.
 
-If and only if 727584 succeeds, **727684** starts the pooled-60 joint solve (384G/72h).
-Pooled-vs-cohort comparison **727689** requires both 727684 and strict four-cohort
-comparison 727686. The earlier 600009/600010 and 615515/615517 jobs were cancelled by
-failed afterok dependencies and never ran; they are provenance, not negative
-scientific results.
+The pooled input gate **599942** remains valid, but all three final-only pooled
+smokes failed operationally: 600008 timed out at 12 h, 615508 at 36 h and
+727584 at 72 h. None wrote a scientific receipt; their full-60 and comparison
+successors were cancelled without running. Repeating the same opaque pooled
+job is therefore stopped.
+
+The next pooled attempt must first build a frozen pooled checkpoint context and
+use the same instrumented joint runner: a bounded two-to-four-condition smoke
+must expose incumbent/bound/gap and write a partial receipt before a 60-condition
+job is eligible. No new pooled solver job was submitted in this update because
+the cohort checkpoint contexts cannot be silently substituted for a pooled
+context. Pooled-vs-cohort biological interpretation remains blocked until both
+the four canonical cohort receipts and an instrumented pooled receipt validate.
 
 ## TPI1/FVA and Meeson dependency chain
 
-The independent model-only TPI1 gate remains valid: Human-GEM contains 13,096
-reactions and 3,628 genes; TPI1 maps to ENSG00000111669 and reaction HMR_4391.
-It does not depend on cohort receipts and is not an OCM knockout result.
+```mermaid
+flowchart LR
+    M["599873 model-only TPI1 gate: valid"]
+    B["805873 four strict metabolic receipts"] --> P["805874 receipt-dependent TPI1/FVA preflight"]
+    P --> V["805875 WT vs delta-TPI1 FBA/FVA"]
+```
 
-The scientific chain is now strict comparison **727686** -> receipt-dependent preflight
-**727687** -> WT versus delta-TPI1 FBA/FVA **727688**. Any invalid cohort receipt cancels
-this chain. Cohort-specific Meeson order/ensemble analyses also require the corresponding
-canonical cohort receipt and will not be released from scheduler state alone.
+Existing Meeson order-sensitivity and ensemble jobs are attached to individual
+original cohort jobs. If an original times out but its conditional retry
+succeeds, the corresponding cancelled downstream task must be resubmitted
+against the valid retry receipt. No result should be inferred from dependency
+state alone.
 
 ## Reference comparisons still to implement/run
 
@@ -262,32 +244,6 @@ canonical cohort receipt and will not be released from scheduler state alone.
 5. For every network contrast, replace simple set subtraction with prevalence
    difference, patient/study-aware uncertainty, alternative-optima frequency,
    lambda/PKN sensitivity and multiplicity control.
-
-## External response-blind validation
-
-External results are auditable in
-/scratch/project_2012997/xiaomei/hgsoc_corneto_external/regulatory_external_comparison_v2.json
-(status=completed). The Taylor signature was frozen before external scoring at nominal
-lambda 0.001: an edge required prevalence in at least 6/52 Taylor patients and 2/4
-cohorts. Five signed edges passed; signature SHA256 is
-e10fb081217ad15ece5119ed003dbc16f76cdf3699a1b78ee7bce41a6cf558e6.
-
-True multi-condition fits were optimal for all evaluated conditions: 22/22 GSE277107
-ovary/omentum bulk samples, 59/59 GSE189955 patient pseudobulk conditions, and 14/14
-GSE208216 organoid models. At the prespecified 50% patient/model prevalence threshold,
-none of the five Taylor edges was a consensus feature in any external group (ovary
-n=11, omentum n=11, HGSOC epithelial-candidate n=12, fibroblast proxy n=12, normal-FT
-n=6, PDO n=11, or FT organoid n=3). This is negative falsification evidence for the
-strict external-consensus claim, not proof that the pathways are absent. Point
-prevalences and bootstrap intervals remain descriptive; no drug-response or causal
-claim is permitted.
-
-GSE180661 source acquisition completed: the 32,555,276,423-byte HDF5 has locally
-observed SHA256 edc5f5d7449478d7dfec1f575c89670bcd1bb041124ef2d53a4df0ecf7e29be6.
-Because GEO supplied no upstream digest, the receipt correctly keeps
-matrix_identity_frozen=false; pseudobulk remains blocked until this observed hash is
-reviewed and frozen. DepMap likewise remains deliberately blocked until one explicit
-quarterly release and its matching Model, Chronos and README files are supplied.
 
 ## Missing data and blocked claims
 
@@ -311,19 +267,22 @@ cumulative exposure.
    frozen before outcome analysis.
 5. Update this register whenever a job becomes terminal or a validated receipt
    changes the evidence state.
+6. Every long MILP must set an internal solver time limit shorter than Slurm,
+   persist incumbent/bound/gap and solver artifacts, and distinguish
+   `partial_incumbent` from canonical `completed` output. Partial receipts may
+   guide recovery but may not release scientific downstream jobs.
 
 ## Recurring monitor
 
 The Codex heartbeat **HGSOC CORNETO Roihu pipeline monitor** is attached to this
-conversation and runs at a low-frequency approximately two-hour cadence. It has no explicit model or reasoning
+conversation and runs every 30 minutes. It has no explicit model or reasoning
 override, so it follows the current conversation/default settings and does not
 create a separate standalone monitoring conversation. This cadence is deliberate:
 
 - Slurm dependencies already launch valid successors, so minute-scale polling
   would not accelerate the pipeline.
 - Thirty minutes is short enough to catch smoke/startup, license-session,
-  timeout, and receipt failures while 588250/588252 approach their 24-hour
-  limits.
+  timeout, and receipt failures during the instrumented checkpoint chain.
 - It is long enough to avoid repeatedly querying multi-hour Gurobi jobs whose
   logs are sparse during branch-and-bound.
 
