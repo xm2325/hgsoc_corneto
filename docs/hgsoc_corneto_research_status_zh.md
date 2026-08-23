@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-23 11:10 BST（13:10 EEST）。本文件与
+最后运行更新：2026-08-23 22:24 BST（2026-08-24 00:24 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -141,6 +141,16 @@ independent canonical receipts 成功后才求 joint cohort，最后组装
 | E-MTAB-10801 | 13 | 749580 tasks 2-3 | tasks 4-12 | **805861**，`0-12%2`，after-any 749580 |
 | E-MTAB-11000 | 11 | 805003 task 0 | tasks 1-10 | **805862**，`0-10%1`，after-any 805003 |
 | E-MTAB-14568 | 27 | 749584 tasks 2-3 | tasks 4-26 | **805863**，`0-26%2`，after-any 749584 |
+
+00:24 EEST live check 时，六个24-hour legacy tasks 已运行13 h 13 min，72-hour
+11000 task 已运行11 h 44 min。Solver-step CPU efficiency 约94-96%，disk counters
+继续增加，peak RSS 为15.2-23.8 GiB，相对于64G request 没有 memory pressure。这支持
+“仍在 active solving”，而不是 OOM 或 idle hang；但不能证明 feasibility、optimality 或
+scientific correctness。这些 pre-instrumentation processes 没有 live Gurobi progress log，
+也没有写 canonical/partial receipt、`.sol` 或 `.mst`，因此当前无法取得它们的 incumbent
+与 gap。六个24-hour tasks 尚余约10 h 47 min，仍可能重复此前 timeout pattern。只有
+805860-805867 会提供 live solver logs，以及在 internal limit/终态保证写出的 telemetry
+和 partial receipt。
 
 749576/749580/749584 的六个健康 RUNNING tasks 与健康的 805003_0 均未取消。
 749576/749580/749584 的 tasks 0-1 此前已在 24 h timeout，且没有 independent
