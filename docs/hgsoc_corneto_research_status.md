@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-23 22:24 BST (2026-08-24 00:24 EEST). This file is the project-level source of
+Last operational update: 2026-08-24 09:24 BST (11:24 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -178,6 +178,19 @@ The six healthy running tasks from 749576/749580/749584 and the healthy task
 749576/749580/749584 had already timed out at 24 h without independent
 receipts. Each instrumented recovery task first validates and skips any
 matching canonical receipt, so completed legacy work is not recomputed.
+
+After the instrumented arrays started, tasks 805860_0, 805860_2 and 805863_1
+were killed by the Slurm memory cgroup after approximately 4-5 minutes with
+`OUT_OF_MEMORY` at the original 64G request. They produced no canonical or
+partial scientific receipt. Array throttles for 805860/805861/805863 are now
+three. The independent-job default has been raised to 128G for the recovery
+generation; completed canonical receipts will be skipped and only missing/OOM
+indices recomputed. Because any failed array element makes the existing
+`afterok` joint chain ineligible, replacement joint/assembly dependencies are
+required after the high-memory recovery arrays. This recovery submission was
+not yet made at this checkpoint because both Roihu aliases rejected the final
+SSH certificate signature from the monitor environment, although the renewed
+certificate file itself was within its validity interval.
 
 Instrumented independent tasks request 64G, eight CPUs and a 72 h Slurm limit,
 but pass an internal Gurobi `TimeLimit=252000` seconds (70 h), `MIPGap=1e-4`,
