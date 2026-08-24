@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-24 09:24 BST（11:24 EEST）。本文件与
+最后运行更新：2026-08-24 10:09 BST（12:09 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -135,12 +135,12 @@ retry 727583 也达到 72 h。这证明只在最后写一次 JSON 的策略不�
 independent canonical receipts 成功后才求 joint cohort，最后组装
 `full_direct_b25.json`。本次更新状态如下：
 
-| Study | 必需 OCM receipts | 保留的运行中 legacy checkpoint tasks | 已取消的 blind pending tasks | Instrumented recovery array |
+| Study | 必需 OCM receipts | 保留的健康 r4/legacy work | 已取消的排队中 64G tasks | 128G recovery array |
 |---|---:|---|---|---:|
-| E-MTAB-7223 | 9 | 749576 tasks 2-3 | tasks 4-8 | **805860**，`0-8%2`，after-any 749576 |
-| E-MTAB-10801 | 13 | 749580 tasks 2-3 | tasks 4-12 | **805861**，`0-12%2`，after-any 749580 |
-| E-MTAB-11000 | 11 | 805003 task 0 | tasks 1-10 | **805862**，`0-10%1`，after-any 805003 |
-| E-MTAB-14568 | 27 | 749584 tasks 2-3 | tasks 4-26 | **805863**，`0-26%2`，after-any 749584 |
+| E-MTAB-7223 | 9 | 805860 task 5 | 没有剩余 pending task | **834320**，`0-8%3`，等待805860全部 tasks |
+| E-MTAB-10801 | 13 | 805861 tasks 0、1、5 | 805861 tasks 6-12 | **834321**，`0-12%3`，等待805861全部 tasks |
+| E-MTAB-11000 | 11 | legacy 805003 task 0 | 805862 tasks 0-10 | **834323**，`0-10%3`，等待其它三个 r5 arrays 与805003 |
+| E-MTAB-14568 | 27 | 805863 tasks 0、10、11 | 805863 task 8 与 tasks 12-26 | **834322**，`0-26%3`，等待805863全部 tasks |
 
 00:24 EEST live check 时，六个24-hour legacy tasks 已运行13 h 13 min，72-hour
 11000 task 已运行11 h 44 min。Solver-step CPU efficiency 约94-96%，disk counters
@@ -149,24 +149,29 @@ independent canonical receipts 成功后才求 joint cohort，最后组装
 scientific correctness。这些 pre-instrumentation processes 没有 live Gurobi progress log，
 也没有写 canonical/partial receipt、`.sol` 或 `.mst`，因此当前无法取得它们的 incumbent
 与 gap。六个24-hour tasks 尚余约10 h 47 min，仍可能重复此前 timeout pattern。只有
-805860-805867 会提供 live solver logs，以及在 internal limit/终态保证写出的 telemetry
-和 partial receipt。
+instrumented r4/r5 jobs 会提供 live solver logs，以及在 internal limit/终态保证写出的
+telemetry 和 partial receipt。
 
 749576/749580/749584 的六个健康 RUNNING tasks 与健康的 805003_0 均未取消。
 749576/749580/749584 的 tasks 0-1 此前已在 24 h timeout，且没有 independent
 receipt。instrumented recovery 在运行前验证并跳过 context hash 一致的 canonical
 receipt，因此 legacy task 若成功，其结果不会被重复计算。
 
-Instrumented arrays 启动后，805860_0、805860_2 与805863_1 在原64G request 下运行约
-4-5分钟后被 Slurm memory cgroup 以 `OUT_OF_MEMORY` 终止；它们没有产生 canonical 或
-partial scientific receipt。805860/805861/805863 的 array throttle 现为3。下一代
-independent recovery 的默认内存已提高到128G；有效 canonical receipts 会自动跳过，只有
-missing/OOM indices 重算。任何 array element 失败都会使现有 `afterok` joint chain 无法
-启动，因此 high-memory recovery arrays 完成后必须建立新的 joint/assembly dependencies。
-本次 checkpoint 尚未提交该 recovery，因为 monitor 环境的两个 Roihu aliases 都在接受证书
-后拒绝最终 SSH signature，尽管新证书文件仍处于有效期内。
+Instrumented arrays 启动后，7223、10801 与14568 的多批 r4 elements 在原64G request
+下通常运行1-9分钟即被 Slurm memory cgroup 终止。Python steps 被强制杀死前没有机会写
+canonical 或 partial scientific receipt。12:09 EEST 时仍有7个健康的64G tasks 在运行；
+这些任务被明确保留。所有仍在 pending 的64G tasks 已取消，包括尚未启动的整个805862
+array。independent-job 默认内存已提高到128G，throttle 为3的 recovery arrays
+**834320-834323** 已被 Slurm 接受。它们会验证并跳过 context/provenance 匹配的 canonical
+receipts，因此只重算 missing/OOM indices。
 
-Instrumented independent tasks 请求 64G、8 CPU、72 h Slurm limit，同时向 Gurobi
+r5 dependencies 使用显式 Slurm array wildcard（`jobid_*`），而不是只依赖 array master
+ID，因此只要仍有一个保留的 r4 task 在运行，recovery 就不会启动。11000 array 还额外等待
+其它三个 recovery arrays 与 legacy job 805003，从而把计划中的 solver load 控制在10个
+Gurobi licence sessions 以内。这只是 operational recovery；目前没有新增、已验证的 biological
+result。
+
+r5 instrumented independent tasks 请求128G、8 CPU、72 h Slurm limit，同时向 Gurobi
 显式传入 `TimeLimit=252000` 秒（70 h）、`MIPGap=1e-4`、8 threads、seed 0，留出
 原子写 receipt 的时间。存在 incumbent 时，receipt 记录 objective、best bound、
 absolute/relative gap、status、solution count、nodes/work/iterations 与模型维度，并保存
@@ -181,13 +186,13 @@ Smoke job **805824** 已在 E-MTAB-7223 OCM ERR2808250 验证该机制。600.0 �
 与 fail-closed control 有效，但不等于 scientific completion。本次更新时四队列的
 canonical independent receipts 仍为 0/9、0/13、0/11、0/27。
 
-Instrumented joint jobs 为 **805864-805867**，assembly jobs 为
-**805868-805871**。7223/10801/11000 的 joint memory 为196G，14568 为384G，均用
-70 h internal solver limit。Audit **805872** 与 strict comparison **805873** 通过
-`afterany` 等待四个 assembly，并对 missing/partial receipts fail closed。TPI1 preflight
-**805874** 与 full WT-versus-delta-TPI1 FBA/FVA **805875** 必须通过 strict comparison
-的 `afterok`。只有在 Slurm 接受新链后，旧的 pending blind chains 与 downstream jobs
-才被取消。
+替代 instrumented joint jobs 为 **834324-834327**，assembly jobs 为
+**834328-834331**。7223/10801/11000 的 joint memory 为196G，14568 为384G，均用
+70 h internal solver limit。旧 audit **805872** 与 strict comparison **805873** 已被替代
+并取消。新 audit **834332** 与 strict comparison **834333** 通过 `afterany` 等待四个 r5
+assembly，并对 missing/partial receipts fail closed。TPI1 preflight **834334** 与 full
+WT-versus-delta-TPI1 FBA/FVA **834335** 必须通过 strict comparison 的 `afterok`。只有在
+Slurm 接受完整 r5 replacement chain 后，旧的 r4 downstream jobs 805864-805875 才被取消。
 
 ## Pooled metabolic joint analysis
 

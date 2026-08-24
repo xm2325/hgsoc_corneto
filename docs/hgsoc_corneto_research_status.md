@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-24 09:24 BST (11:24 EEST). This file is the project-level source of
+Last operational update: 2026-08-24 10:09 BST (12:09 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -154,12 +154,12 @@ objectives in `checkpoint_b25/context.json`, solves one independent OCM per
 array task, solves the joint cohort only after every independent receipt is
 canonical, and assembles `full_direct_b25.json` last. At this update:
 
-| Study | Required OCM receipts | Running legacy checkpoint tasks retained | Blind pending tasks cancelled | Instrumented recovery array |
+| Study | Required OCM receipts | Healthy r4/legacy work retained | Cancelled queued 64G tasks | 128G recovery array |
 |---|---:|---|---|---:|
-| E-MTAB-7223 | 9 | 749576 tasks 2-3 | tasks 4-8 | **805860**, `0-8%2`, after-any 749576 |
-| E-MTAB-10801 | 13 | 749580 tasks 2-3 | tasks 4-12 | **805861**, `0-12%2`, after-any 749580 |
-| E-MTAB-11000 | 11 | 805003 task 0 | tasks 1-10 | **805862**, `0-10%1`, after-any 805003 |
-| E-MTAB-14568 | 27 | 749584 tasks 2-3 | tasks 4-26 | **805863**, `0-26%2`, after-any 749584 |
+| E-MTAB-7223 | 9 | 805860 task 5 | none remained pending | **834320**, `0-8%3`, after-any all 805860 tasks |
+| E-MTAB-10801 | 13 | 805861 tasks 0, 1 and 5 | 805861 tasks 6-12 | **834321**, `0-12%3`, after-any all 805861 tasks |
+| E-MTAB-11000 | 11 | legacy 805003 task 0 | 805862 tasks 0-10 | **834323**, `0-10%3`, after all three other r5 arrays and 805003 |
+| E-MTAB-14568 | 27 | 805863 tasks 0, 10 and 11 | 805863 task 8 and tasks 12-26 | **834322**, `0-26%3`, after-any all 805863 tasks |
 
 At the 00:24 EEST live check, the six 24-hour legacy tasks had run for
 13 h 13 min and the 72-hour 11000 task for 11 h 44 min. Solver-step CPU
@@ -170,8 +170,8 @@ optimality or scientific correctness. These pre-instrumentation processes have
 no live Gurobi progress log and have written no canonical or partial receipt,
 `.sol` or `.mst`; their incumbent and gap are therefore unavailable. The six
 24-hour tasks have about 10 h 47 min remaining and may still reproduce the
-earlier timeout pattern. Only jobs 805860-805867 will provide live solver logs
-and guaranteed end-of-limit telemetry/partial receipts.
+earlier timeout pattern. Instrumented r4/r5 jobs provide live solver logs and
+guaranteed end-of-limit telemetry/partial receipts.
 
 The six healthy running tasks from 749576/749580/749584 and the healthy task
 805003_0 were not cancelled. Earlier tasks 0-1 in each of
@@ -179,20 +179,24 @@ The six healthy running tasks from 749576/749580/749584 and the healthy task
 receipts. Each instrumented recovery task first validates and skips any
 matching canonical receipt, so completed legacy work is not recomputed.
 
-After the instrumented arrays started, tasks 805860_0, 805860_2 and 805863_1
-were killed by the Slurm memory cgroup after approximately 4-5 minutes with
-`OUT_OF_MEMORY` at the original 64G request. They produced no canonical or
-partial scientific receipt. Array throttles for 805860/805861/805863 are now
-three. The independent-job default has been raised to 128G for the recovery
-generation; completed canonical receipts will be skipped and only missing/OOM
-indices recomputed. Because any failed array element makes the existing
-`afterok` joint chain ineligible, replacement joint/assembly dependencies are
-required after the high-memory recovery arrays. This recovery submission was
-not yet made at this checkpoint because both Roihu aliases rejected the final
-SSH certificate signature from the monitor environment, although the renewed
-certificate file itself was within its validity interval.
+After the instrumented arrays started, repeated r4 elements across 7223, 10801
+and 14568 were killed by the Slurm memory cgroup, commonly within 1-9 minutes,
+at the original 64G request. The failed Python steps did not get an opportunity
+to write canonical or partial scientific receipts. At 12:09 EEST, seven
+healthy 64G tasks remained running and were deliberately retained. Every still
+pending 64G task was cancelled, including the entire not-yet-started 805862
+array. The independent-job default was raised to 128G and recovery arrays
+**834320-834323** were accepted with throttle three. They validate and skip
+matching canonical receipts, so only missing/OOM indices are recomputed.
 
-Instrumented independent tasks request 64G, eight CPUs and a 72 h Slurm limit,
+The r5 dependencies use the explicit Slurm array wildcard (`jobid_*`), rather
+than only the array master ID, so the recovery arrays cannot start while a
+retained r4 task is still running. The 11000 array additionally waits for the
+three other recovery arrays and legacy job 805003, keeping the planned solver
+load within the ten-session Gurobi licence ceiling. This is an operational
+recovery only: there is still no newly validated biological result.
+
+The r5 instrumented independent tasks request 128G, eight CPUs and a 72 h Slurm limit,
 but pass an internal Gurobi `TimeLimit=252000` seconds (70 h), `MIPGap=1e-4`,
 eight threads and seed 0. This leaves time to atomically write an attempt
 receipt before Slurm termination. On an incumbent it records objective, best
@@ -210,14 +214,16 @@ artifacts, then intentionally exited 2. This is successful observability and
 fail-closed control, not scientific completion. As of this update the four
 cohorts still have 0/9, 0/13, 0/11 and 0/27 canonical independent receipts.
 
-The instrumented joint jobs are **805864-805867**; assembly jobs are
-**805868-805871**. Joint memory is 196G for 7223/10801/11000 and 384G for
+The replacement instrumented joint jobs are **834324-834327**; assembly jobs
+are **834328-834331**. Joint memory is 196G for 7223/10801/11000 and 384G for
 14568, with the same 70 h internal solver limit. Audit **805872** and strict
-comparison **805873** wait on all four assembly jobs with `afterany` and will
-fail closed on missing or partial receipts. TPI1 preflight **805874** and full
-WT-versus-delta-TPI1 FBA/FVA **805875** require `afterok` from the strict
-comparison chain. Superseded pending blind chains and their downstream jobs
-were cancelled only after this replacement chain had been accepted by Slurm.
+comparison **805873** were superseded and cancelled. New audit **834332** and
+strict comparison **834333** wait on all four r5 assembly jobs with `afterany`
+and will fail closed on missing or partial receipts. TPI1 preflight **834334**
+and full WT-versus-delta-TPI1 FBA/FVA **834335** require `afterok` from the
+strict comparison chain. The superseded r4 downstream jobs 805864-805875 were
+cancelled only after this complete replacement chain had been accepted by
+Slurm.
 
 ## Pooled metabolic joint analysis
 
