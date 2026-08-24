@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-23 22:24 BST（2026-08-24 00:24 EEST）。本文件与
+最后运行更新：2026-08-24 09:24 BST（11:24 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -156,6 +156,15 @@ scientific correctness。这些 pre-instrumentation processes 没有 live Gurobi
 749576/749580/749584 的 tasks 0-1 此前已在 24 h timeout，且没有 independent
 receipt。instrumented recovery 在运行前验证并跳过 context hash 一致的 canonical
 receipt，因此 legacy task 若成功，其结果不会被重复计算。
+
+Instrumented arrays 启动后，805860_0、805860_2 与805863_1 在原64G request 下运行约
+4-5分钟后被 Slurm memory cgroup 以 `OUT_OF_MEMORY` 终止；它们没有产生 canonical 或
+partial scientific receipt。805860/805861/805863 的 array throttle 现为3。下一代
+independent recovery 的默认内存已提高到128G；有效 canonical receipts 会自动跳过，只有
+missing/OOM indices 重算。任何 array element 失败都会使现有 `afterok` joint chain 无法
+启动，因此 high-memory recovery arrays 完成后必须建立新的 joint/assembly dependencies。
+本次 checkpoint 尚未提交该 recovery，因为 monitor 环境的两个 Roihu aliases 都在接受证书
+后拒绝最终 SSH signature，尽管新证书文件仍处于有效期内。
 
 Instrumented independent tasks 请求 64G、8 CPU、72 h Slurm limit，同时向 Gurobi
 显式传入 `TimeLimit=252000` 秒（70 h）、`MIPGap=1e-4`、8 threads、seed 0，留出
