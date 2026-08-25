@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-25 01:42 BST (03:42 EEST). This file is the project-level source of
+Last operational update: 2026-08-25 15:11 BST (17:11 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -157,9 +157,9 @@ canonical, and assembles `full_direct_b25.json` last. At this update:
 | Study | Required OCM receipts | Healthy r4/legacy work retained | Cancelled queued 64G tasks | 128G recovery array |
 |---|---:|---|---|---:|
 | E-MTAB-7223 | 9 | 805860 task 5 | none remained pending | **834320**, `0-8%3`, after-any all 805860 tasks |
-| E-MTAB-10801 | 13 | 805861 tasks 0, 1 and 5 | 805861 tasks 6-12 | **834321**, `0-12%3`, after-any all 805861 tasks |
+| E-MTAB-10801 | 13 | 805861 tasks 1 and 5 | 805861 tasks 6-12 | **834321**, `0-12%3`, after-any all 805861 tasks |
 | E-MTAB-11000 | 11 | legacy 805003 task 0 | 805862 tasks 0-10 | **834323**, `0-10%3`, after all three other r5 arrays and 805003 |
-| E-MTAB-14568 | 27 | 805863 task 0 | 805863 task 8 and tasks 12-26 | **834322**, `0-26%3`, after-any all 805863 tasks |
+| E-MTAB-14568 | 27 | none | 805863 task 8 and tasks 12-26 | **834322**, `0-26%3`; task 0 running |
 
 At the 00:24 EEST live check, the six 24-hour legacy tasks had run for
 13 h 13 min and the 72-hour 11000 task for 11 h 44 min. Solver-step CPU
@@ -205,6 +205,17 @@ Legacy 805003_0 remained active at 43 h 30 min but has no live telemetry.
 No cohort had a canonical independent receipt or joint receipt, so these
 incumbents remain optimization diagnostics only. All r5 arrays correctly
 remained blocked on their explicit dependencies.
+
+At the 17:11 EEST check, 805861_0 and 805863_0 had subsequently ended in
+`OUT_OF_MEMORY` after approximately 27 h and 30 h, respectively. Their existing
+128G recovery arrays cover both indices; no duplicate retry was added. With
+the last 14568 r4 task terminal, 834322_0 started normally and produced an
+initial feasible incumbent with a 17.7% relative gap after about 12 seconds;
+the remaining 14568 tasks were pending for scheduler priority, not dependency
+or licence failure. The still-running r4 tasks 805860_5, 805861_1 and 805861_5
+had live gaps of 3.26-3.87%. Legacy 805003_0 remained active at 52 h 32 min.
+Canonical independent and joint receipt counts remained zero in every cohort,
+so no biological interpretation was released.
 
 The r5 instrumented independent tasks request 128G, eight CPUs and a 72 h Slurm limit,
 but pass an internal Gurobi `TimeLimit=252000` seconds (70 h), `MIPGap=1e-4`,

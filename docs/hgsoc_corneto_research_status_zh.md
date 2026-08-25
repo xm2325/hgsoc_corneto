@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-25 01:42 BST（03:42 EEST）。本文件与
+最后运行更新：2026-08-25 15:11 BST（17:11 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -138,9 +138,9 @@ independent canonical receipts 成功后才求 joint cohort，最后组装
 | Study | 必需 OCM receipts | 保留的健康 r4/legacy work | 已取消的排队中 64G tasks | 128G recovery array |
 |---|---:|---|---|---:|
 | E-MTAB-7223 | 9 | 805860 task 5 | 没有剩余 pending task | **834320**，`0-8%3`，等待805860全部 tasks |
-| E-MTAB-10801 | 13 | 805861 tasks 0、1、5 | 805861 tasks 6-12 | **834321**，`0-12%3`，等待805861全部 tasks |
+| E-MTAB-10801 | 13 | 805861 tasks 1、5 | 805861 tasks 6-12 | **834321**，`0-12%3`，等待805861全部 tasks |
 | E-MTAB-11000 | 11 | legacy 805003 task 0 | 805862 tasks 0-10 | **834323**，`0-10%3`，等待其它三个 r5 arrays 与805003 |
-| E-MTAB-14568 | 27 | 805863 task 0 | 805863 task 8 与 tasks 12-26 | **834322**，`0-26%3`，等待805863全部 tasks |
+| E-MTAB-14568 | 27 | 无 | 805863 task 8 与 tasks 12-26 | **834322**，`0-26%3`；task 0 正在运行 |
 
 00:24 EEST live check 时，六个24-hour legacy tasks 已运行13 h 13 min，72-hour
 11000 task 已运行11 h 44 min。Solver-step CPU efficiency 约94-96%，disk counters
@@ -178,6 +178,15 @@ retry。五个 instrumented r4 tasks 仍健康且持续求解：805860_5、80586
 43 h 30 min，但仍没有 live telemetry。四个 cohort 均没有 canonical independent receipt
 或 joint receipt，因此这些 incumbents 仍只能作为 optimization diagnostics。全部 r5 arrays
 均正确处于 dependency 阻塞状态。
+
+17:11 EEST 检查时，805861_0 与805863_0 随后分别在约27 h 与30 h 后以
+`OUT_OF_MEMORY` 结束。现有128G recovery arrays 已覆盖这两个 indices，因此没有增加
+重复 retry。最后一个14568 r4 task 终止后，834322_0 正常启动，并在约12秒时得到首个
+feasible incumbent，relative gap 为17.7%；其余14568 tasks 因 scheduler priority 排队，
+并非 dependency 或 licence failure。仍在运行的 r4 tasks 805860_5、805861_1 与805861_5
+的 live gaps 为3.26-3.87%。legacy 805003_0 已运行52 h 32 min。四个 cohort 的
+canonical independent 与 joint receipt 计数仍为零，因此没有释放任何 biological
+interpretation。
 
 r5 instrumented independent tasks 请求128G、8 CPU、72 h Slurm limit，同时向 Gurobi
 显式传入 `TimeLimit=252000` 秒（70 h）、`MIPGap=1e-4`、8 threads、seed 0，留出
