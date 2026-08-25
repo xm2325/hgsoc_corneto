@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-24 10:09 BST（12:09 EEST）。本文件与
+最后运行更新：2026-08-25 01:42 BST（03:42 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -140,7 +140,7 @@ independent canonical receipts 成功后才求 joint cohort，最后组装
 | E-MTAB-7223 | 9 | 805860 task 5 | 没有剩余 pending task | **834320**，`0-8%3`，等待805860全部 tasks |
 | E-MTAB-10801 | 13 | 805861 tasks 0、1、5 | 805861 tasks 6-12 | **834321**，`0-12%3`，等待805861全部 tasks |
 | E-MTAB-11000 | 11 | legacy 805003 task 0 | 805862 tasks 0-10 | **834323**，`0-10%3`，等待其它三个 r5 arrays 与805003 |
-| E-MTAB-14568 | 27 | 805863 tasks 0、10、11 | 805863 task 8 与 tasks 12-26 | **834322**，`0-26%3`，等待805863全部 tasks |
+| E-MTAB-14568 | 27 | 805863 task 0 | 805863 task 8 与 tasks 12-26 | **834322**，`0-26%3`，等待805863全部 tasks |
 
 00:24 EEST live check 时，六个24-hour legacy tasks 已运行13 h 13 min，72-hour
 11000 task 已运行11 h 44 min。Solver-step CPU efficiency 约94-96%，disk counters
@@ -170,6 +170,14 @@ ID，因此只要仍有一个保留的 r4 task 在运行，recovery 就不会启
 其它三个 recovery arrays 与 legacy job 805003，从而把计划中的 solver load 控制在10个
 Gurobi licence sessions 以内。这只是 operational recovery；目前没有新增、已验证的 biological
 result。
+
+03:42 EEST 检查时，r4 tasks 805863_10 与805863_11 也在运行约8 h 6 min 后以
+`OUT_OF_MEMORY` 结束；现有834322 recovery 已覆盖这两个 indices，因此没有提交额外
+retry。五个 instrumented r4 tasks 仍健康且持续求解：805860_5、805861_0、805861_1、
+805861_5 与805863_0；其 live relative gap 为3.30-3.91%。legacy 805003_0 运行至
+43 h 30 min，但仍没有 live telemetry。四个 cohort 均没有 canonical independent receipt
+或 joint receipt，因此这些 incumbents 仍只能作为 optimization diagnostics。全部 r5 arrays
+均正确处于 dependency 阻塞状态。
 
 r5 instrumented independent tasks 请求128G、8 CPU、72 h Slurm limit，同时向 Gurobi
 显式传入 `TimeLimit=252000` 秒（70 h）、`MIPGap=1e-4`、8 threads、seed 0，留出
