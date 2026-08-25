@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "genomic-data-engineering"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+  "pandas>=2.2,<3.0",
+  "pyarrow>=17,<22",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<9"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
