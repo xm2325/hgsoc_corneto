@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-25 15:11 BST (17:11 EEST). This file is the project-level source of
+Last operational update: 2026-08-25 15:35 BST (17:35 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -159,7 +159,7 @@ canonical, and assembles `full_direct_b25.json` last. At this update:
 | E-MTAB-7223 | 9 | 805860 task 5 | none remained pending | **834320**, `0-8%3`, after-any all 805860 tasks |
 | E-MTAB-10801 | 13 | 805861 tasks 1 and 5 | 805861 tasks 6-12 | **834321**, `0-12%3`, after-any all 805861 tasks |
 | E-MTAB-11000 | 11 | legacy 805003 task 0 | 805862 tasks 0-10 | **834323**, `0-10%3`, after all three other r5 arrays and 805003 |
-| E-MTAB-14568 | 27 | none | 805863 task 8 and tasks 12-26 | **834322**, `0-26%3`; task 0 running |
+| E-MTAB-14568 | 27 | none | 805863 task 8 and tasks 12-26 | r5 **834322**, then 256G repair **863034**, both `0-26%3` |
 
 At the 00:24 EEST live check, the six 24-hour legacy tasks had run for
 13 h 13 min and the 72-hour 11000 task for 11 h 44 min. Solver-step CPU
@@ -217,6 +217,17 @@ had live gaps of 3.26-3.87%. Legacy 805003_0 remained active at 52 h 32 min.
 Canonical independent and joint receipt counts remained zero in every cohort,
 so no biological interpretation was released.
 
+Task 834322_0 then failed with a second cgroup `OUT_OF_MEMORY` event after
+5 min 42 s despite its 128G request. It had reached an incumbent of
+-134.95360, bound -143.05700 and 6.00% relative gap immediately before the
+kill, but wrote no canonical or partial receipt; those values are diagnostic
+only. Repair array **863034** was therefore submitted for all 27 indices with
+256G, throttle three, the same frozen context and unchanged solver parameters.
+It waits for all 834322 tasks, validates and skips matching canonical receipts,
+and recomputes only missing/noncanonical indices. The 14568 joint job 834326
+now depends on `afterok:863034_*`; this removes the permanently unsatisfiable
+dependency on the failed r5 array while preserving fail-closed progression.
+
 The r5 instrumented independent tasks request 128G, eight CPUs and a 72 h Slurm limit,
 but pass an internal Gurobi `TimeLimit=252000` seconds (70 h), `MIPGap=1e-4`,
 eight threads and seed 0. This leaves time to atomically write an attempt
@@ -237,7 +248,8 @@ cohorts still have 0/9, 0/13, 0/11 and 0/27 canonical independent receipts.
 
 The replacement instrumented joint jobs are **834324-834327**; assembly jobs
 are **834328-834331**. Joint memory is 196G for 7223/10801/11000 and 384G for
-14568, with the same 70 h internal solver limit. Audit **805872** and strict
+14568, with the same 70 h internal solver limit. Job 834326 is explicitly
+gated by the 256G repair array 863034. Audit **805872** and strict
 comparison **805873** were superseded and cancelled. New audit **834332** and
 strict comparison **834333** wait on all four r5 assembly jobs with `afterany`
 and will fail closed on missing or partial receipts. TPI1 preflight **834334**

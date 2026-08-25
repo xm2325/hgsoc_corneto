@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-25 15:11 BST（17:11 EEST）。本文件与
+最后运行更新：2026-08-25 15:35 BST（17:35 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -140,7 +140,7 @@ independent canonical receipts 成功后才求 joint cohort，最后组装
 | E-MTAB-7223 | 9 | 805860 task 5 | 没有剩余 pending task | **834320**，`0-8%3`，等待805860全部 tasks |
 | E-MTAB-10801 | 13 | 805861 tasks 1、5 | 805861 tasks 6-12 | **834321**，`0-12%3`，等待805861全部 tasks |
 | E-MTAB-11000 | 11 | legacy 805003 task 0 | 805862 tasks 0-10 | **834323**，`0-10%3`，等待其它三个 r5 arrays 与805003 |
-| E-MTAB-14568 | 27 | 无 | 805863 task 8 与 tasks 12-26 | **834322**，`0-26%3`；task 0 正在运行 |
+| E-MTAB-14568 | 27 | 无 | 805863 task 8 与 tasks 12-26 | r5 **834322**，随后256G repair **863034**，均为 `0-26%3` |
 
 00:24 EEST live check 时，六个24-hour legacy tasks 已运行13 h 13 min，72-hour
 11000 task 已运行11 h 44 min。Solver-step CPU efficiency 约94-96%，disk counters
@@ -188,6 +188,15 @@ feasible incumbent，relative gap 为17.7%；其余14568 tasks 因 scheduler pri
 canonical independent 与 joint receipt 计数仍为零，因此没有释放任何 biological
 interpretation。
 
+随后834322_0 尽管请求128G，仍在5 min 42 s 后发生第二次 cgroup
+`OUT_OF_MEMORY`。被杀前 incumbent 为-134.95360、bound 为-143.05700、relative gap
+为6.00%，但没有写 canonical 或 partial receipt；这些数值只能用于诊断。因此提交了覆盖
+全部27个 indices 的256G repair array **863034**，throttle 为3，frozen context 与 solver
+参数均不变。它等待834322全部 tasks 终态，验证并跳过匹配的 canonical receipts，只重算
+missing/noncanonical indices。14568 joint job 834326 现依赖
+`afterok:863034_*`；这移除了因 r5 task 失败而永远无法满足的旧 dependency，同时保持
+fail-closed progression。
+
 r5 instrumented independent tasks 请求128G、8 CPU、72 h Slurm limit，同时向 Gurobi
 显式传入 `TimeLimit=252000` 秒（70 h）、`MIPGap=1e-4`、8 threads、seed 0，留出
 原子写 receipt 的时间。存在 incumbent 时，receipt 记录 objective、best bound、
@@ -205,7 +214,8 @@ canonical independent receipts 仍为 0/9、0/13、0/11、0/27。
 
 替代 instrumented joint jobs 为 **834324-834327**，assembly jobs 为
 **834328-834331**。7223/10801/11000 的 joint memory 为196G，14568 为384G，均用
-70 h internal solver limit。旧 audit **805872** 与 strict comparison **805873** 已被替代
+70 h internal solver limit。834326 由256G repair array 863034 显式 gate。旧 audit
+**805872** 与 strict comparison **805873** 已被替代
 并取消。新 audit **834332** 与 strict comparison **834333** 通过 `afterany` 等待四个 r5
 assembly，并对 missing/partial receipts fail closed。TPI1 preflight **834334** 与 full
 WT-versus-delta-TPI1 FBA/FVA **834335** 必须通过 strict comparison 的 `afterok`。只有在
