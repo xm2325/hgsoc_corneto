@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import io
 import json
 from pathlib import Path
 
@@ -8,8 +9,24 @@ import pandas as pd
 
 
 def read_table(path: Path) -> pd.DataFrame:
-    df = pd.read_csv(path, sep=r"\s+", dtype=str, comment=None)
-    df.columns = [c.lstrip("#") for c in df.columns]
+    """Read a PLINK text table while preserving its real header.
+
+    PLINK .pvar files may contain VCF-style ``##`` metadata records before the
+    tabular ``#CHROM`` header. Other PLINK reports normally begin directly
+    with a single-hash header such as ``#FID``. We therefore locate the first
+    single-hash header explicitly instead of letting pandas infer a header from
+    the first physical line.
+    """
+    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+    header_idx = next(
+        (idx for idx, line in enumerate(lines) if line.startswith("#") and not line.startswith("##")),
+        None,
+    )
+    if header_idx is None:
+        raise ValueError(f"no PLINK table header found in {path}")
+
+    df = pd.read_csv(io.StringIO("".join(lines[header_idx:])), sep=r"\s+", dtype=str)
+    df.columns = [column.lstrip("#") for column in df.columns]
     return df
 
 

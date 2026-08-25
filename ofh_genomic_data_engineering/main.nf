@@ -1,11 +1,5 @@
 nextflow.enable.dsl=2
 
-params.source_url = params.source_url ?: 'https://raw.githubusercontent.com/RTIInternational/GAWMerge/ce6ad1c1af42bfa501b5e122b747f54c6644e2e9/test_data/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.N100.vcf.gz'
-params.geno = params.geno ?: 0.02
-params.maf  = params.maf  ?: 0.01
-params.hwe  = params.hwe  ?: '1e-6'
-params.outdir = params.outdir ?: 'results'
-
 process DOWNLOAD_INPUT {
     tag '1000G chr22 N100'
     publishDir "${params.outdir}/00_source", mode: 'copy', overwrite: true
