@@ -55,16 +55,24 @@ jobs:
           test -s results/06_parquet/summary.json
           test -s results/07_provenance/provenance.json
           test "$(find results/06_parquet/parquet -name '*.parquet' -size +0c | wc -l)" -eq 7
-          python - <<'PY'
+          EXPECTED_SAMPLES="$(bcftools query -l results/01_normalised/normalised.vcf.gz | wc -l | tr -d ' ')"
+          python - "$EXPECTED_SAMPLES" <<'PY'
           import json
+          import sys
           from pathlib import Path
-          s=json.loads(Path('results/06_parquet/summary.json').read_text())
-          assert s['sample_count'] == 100, s
+          expected_samples = int(sys.argv[1])
+          s = json.loads(Path('results/06_parquet/summary.json').read_text())
+          assert expected_samples > 0, expected_samples
+          assert s['sample_count'] == expected_samples, (expected_samples, s)
           assert s['variant_count'] > 0, s
-          p=json.loads(Path('results/07_provenance/provenance.json').read_text())
+          p = json.loads(Path('results/07_provenance/provenance.json').read_text())
           assert p['products']['analysis_ready.bgen']['bytes'] > 0
           assert len(p['source']['sha256']) == 64
-          print(json.dumps({'samples': s['sample_count'], 'variants_after_qc': s['variant_count']}, indent=2))
+          print(json.dumps({
+              'input_samples': expected_samples,
+              'output_samples': s['sample_count'],
+              'variants_after_qc': s['variant_count'],
+          }, indent=2))
           PY
       - name: Build Docker image
         run: docker build -t genomic-data-engineering:test .

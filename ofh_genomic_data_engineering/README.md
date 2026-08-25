@@ -12,9 +12,11 @@ It is intentionally a data-engineering project, not a GWAS claim. No association
 
 ## Real public input
 
-CI uses a 100-sample subset of the 1000 Genomes Project Phase 3 chr22 genotype VCF retained by RTI International's GAWMerge test data. The URL is pinned to commit `ce6ad1c1af42bfa501b5e122b747f54c6644e2e9` so the bytes cannot change without an explicit source update.
+CI uses a public 1000 Genomes Project Phase 3 chr22 genotype subset retained in RTI International's GAWMerge test data. Its filename contains `N100`, but machine validation of the pinned VCF finds **90 sample IDs**. The pipeline therefore derives the expected sample count from the input itself and asserts that all input samples are retained downstream instead of trusting the filename. The URL is pinned to commit `ce6ad1c1af42bfa501b5e122b747f54c6644e2e9` so the bytes cannot change without an explicit source update.
 
 Upstream call set: 1000 Genomes Phase 3, GRCh37, chromosome 22.
+
+The first complete CI execution retained all 90 samples and produced **127,171 variants after the configured QC gates**.
 
 ## QC contract
 
@@ -57,7 +59,7 @@ python -m pip install -e '.[test]'
 pytest
 ```
 
-GitHub Actions additionally executes the full Nextflow pipeline on the pinned public genotype VCF and checks that BGEN, Parquet, QC and provenance products are non-empty.
+GitHub Actions executes the full Nextflow pipeline on the pinned public genotype VCF, compares input and output sample counts, validates BGEN/Parquet/provenance products, builds the Docker image, and uploads the generated data products as a workflow artifact.
 
 ## Scope and interpretation
 
