@@ -27,7 +27,13 @@ def version(command: list[str]) -> str:
 def main(args: argparse.Namespace) -> None:
     source_sha = Path(args.source_sha_file).read_text().split()[0]
     summary = json.loads(Path(args.summary).read_text())
-    product_paths = [Path(args.bgen), Path(args.sample), Path(args.bcftools_stats)]
+    product_paths = [
+        Path(args.bgen),
+        Path(args.sample),
+        Path(args.bcftools_stats),
+        Path(args.schema_manifest),
+        Path(args.query_validation),
+    ]
     product_paths.extend(sorted(Path(args.parquet_dir).glob("*.parquet")))
 
     payload = {
@@ -37,6 +43,7 @@ def main(args: argparse.Namespace) -> None:
             "bcftools": version(["bcftools", "--version"]),
             "plink2": version(["plink2", "--version"]),
             "python": version(["python", "--version"]),
+            "duckdb": version(["python", "-c", "import duckdb; print(duckdb.__version__)"]),
         },
         "summary": summary,
         "products": {p.name: {"bytes": p.stat().st_size, "sha256": sha256(p)} for p in product_paths},
@@ -53,6 +60,8 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--sample", required=True)
     p.add_argument("--parquet-dir", required=True)
     p.add_argument("--bcftools-stats", required=True)
+    p.add_argument("--schema-manifest", required=True)
+    p.add_argument("--query-validation", required=True)
     p.add_argument("--geno", required=True)
     p.add_argument("--maf", required=True)
     p.add_argument("--hwe", required=True)

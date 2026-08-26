@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 - 2026-08-26
+
+- Convert PLINK text outputs into typed Parquet instead of all-string tables.
+- Store genomic positions and counts as `int64`; QC fractions, probabilities and PCA scores as floating point.
+- Use ZSTD compression and emit a machine-readable Arrow schema manifest.
+- Add DuckDB region-query validation cross-checked against pandas.
+- Make the release stage depend on a successful query-layer contract and include schema/query evidence in provenance.
+
 ## 0.2.0 - 2026-08-26
 
 - Add a source inventory derived from the VCF instead of provider naming.

@@ -48,9 +48,7 @@ process SOURCE_INVENTORY {
     script:
     """
     set -euo pipefail
-    python ${projectDir}/scripts/source_inventory.py \
-      --vcf ${vcf} \
-      --output source_inventory.json
+    python ${projectDir}/scripts/source_inventory.py --vcf ${vcf} --output source_inventory.json
     """
 }
 
@@ -80,11 +78,7 @@ process QC_FILTER {
     script:
     """
     set -euo pipefail
-    plink2 --pfile raw \
-      --geno ${params.geno} \
-      --maf ${params.maf} \
-      --hwe ${params.hwe} midp \
-      --make-pgen --out qc
+    plink2 --pfile raw --geno ${params.geno} --maf ${params.maf} --hwe ${params.hwe} midp --make-pgen --out qc
     test -s qc.pgen && test -s qc.pvar && test -s qc.psam
     """
 }
@@ -106,11 +100,8 @@ process QC_REPORTS {
     """
     set -euo pipefail
     plink2 --pfile qc --freq --missing --hardy --pca 10 approx --out qc_metrics
-    test -s qc_metrics.afreq
-    test -s qc_metrics.vmiss
-    test -s qc_metrics.smiss
-    test -s qc_metrics.hardy
-    test -s qc_metrics.eigenvec
+    test -s qc_metrics.afreq && test -s qc_metrics.vmiss && test -s qc_metrics.smiss
+    test -s qc_metrics.hardy && test -s qc_metrics.eigenvec
     """
 }
 
@@ -127,13 +118,12 @@ process EXPORT_BGEN {
     """
     set -euo pipefail
     plink2 --pfile qc --export bgen-1.2 --out analysis_ready
-    test -s analysis_ready.bgen
-    test -s analysis_ready.sample
+    test -s analysis_ready.bgen && test -s analysis_ready.sample
     """
 }
 
 process EXPORT_PARQUET {
-    tag 'Parquet export'
+    tag 'typed Parquet export'
     publishDir "${params.outdir}/06_parquet", mode: 'copy', overwrite: true
     input:
     tuple path(qc_pgen), path(qc_pvar), path(qc_psam)
@@ -145,6 +135,7 @@ process EXPORT_PARQUET {
     output:
     path 'parquet', emit: parquet_dir
     path 'summary.json', emit: summary
+    path 'schema_manifest.json', emit: schema_manifest
     script:
     """
     set -euo pipefail
@@ -152,7 +143,25 @@ process EXPORT_PARQUET {
       --pvar qc.pvar --psam qc.psam \
       --afreq ${afreq} --vmiss ${vmiss} --smiss ${smiss} \
       --hardy ${hardy} --eigenvec ${eigenvec} \
-      --outdir parquet --summary summary.json
+      --outdir parquet --summary summary.json --schema-manifest schema_manifest.json
+    """
+}
+
+process QUERY_CONTRACT {
+    tag 'DuckDB region query'
+    publishDir "${params.outdir}/06_parquet", mode: 'copy', overwrite: true
+    input:
+    path parquet_dir
+    path schema_manifest
+    output:
+    path 'query_validation.json', emit: validation
+    script:
+    """
+    set -euo pipefail
+    python ${projectDir}/scripts/query_contract.py \
+      --variants ${parquet_dir}/variants.parquet \
+      --schema-manifest ${schema_manifest} \
+      --output query_validation.json
     """
 }
 
@@ -166,17 +175,18 @@ process PROVENANCE {
     path sample
     path parquet_dir
     path stats
+    path schema_manifest
+    path query_validation
     output:
     path 'provenance.json', emit: provenance
     script:
     """
     set -euo pipefail
     python ${projectDir}/scripts/build_provenance.py \
-      --source-url '${params.source_url}' \
-      --source-sha-file ${source_sha} \
-      --summary ${summary} \
-      --bgen ${bgen} --sample ${sample} \
+      --source-url '${params.source_url}' --source-sha-file ${source_sha} \
+      --summary ${summary} --bgen ${bgen} --sample ${sample} \
       --parquet-dir ${parquet_dir} --bcftools-stats ${stats} \
+      --schema-manifest ${schema_manifest} --query-validation ${query_validation} \
       --geno '${params.geno}' --maf '${params.maf}' --hwe '${params.hwe}' \
       --output provenance.json
     """
@@ -192,18 +202,16 @@ process RELEASE_GATE {
     path bgen
     path sample
     path parquet_dir
+    path query_validation
     output:
     path 'release_validation.json', emit: validation
     script:
     """
     set -euo pipefail
+    python -c "import json; assert json.load(open('${query_validation}'))['status'] == 'PASS'"
     python ${projectDir}/scripts/validate_release.py \
-      --source-inventory ${source_inventory} \
-      --summary ${summary} \
-      --provenance ${provenance} \
-      --parquet-dir ${parquet_dir} \
-      --bgen ${bgen} \
-      --sample ${sample} \
+      --source-inventory ${source_inventory} --summary ${summary} --provenance ${provenance} \
+      --parquet-dir ${parquet_dir} --bgen ${bgen} --sample ${sample} \
       --output release_validation.json
     """
 }
@@ -224,13 +232,16 @@ workflow {
         QC_REPORTS.out.hardy,
         QC_REPORTS.out.eigenvec
     )
+    QUERY_CONTRACT(EXPORT_PARQUET.out.parquet_dir, EXPORT_PARQUET.out.schema_manifest)
     PROVENANCE(
         DOWNLOAD_INPUT.out.source_sha,
         EXPORT_PARQUET.out.summary,
         EXPORT_BGEN.out.bgen,
         EXPORT_BGEN.out.sample,
         EXPORT_PARQUET.out.parquet_dir,
-        NORMALISE_VCF.out.stats
+        NORMALISE_VCF.out.stats,
+        EXPORT_PARQUET.out.schema_manifest,
+        QUERY_CONTRACT.out.validation
     )
     RELEASE_GATE(
         SOURCE_INVENTORY.out.inventory,
@@ -238,6 +249,7 @@ workflow {
         PROVENANCE.out.provenance,
         EXPORT_BGEN.out.bgen,
         EXPORT_BGEN.out.sample,
-        EXPORT_PARQUET.out.parquet_dir
+        EXPORT_PARQUET.out.parquet_dir,
+        QUERY_CONTRACT.out.validation
     )
 }

@@ -1,17 +1,18 @@
 # Validation
 
-A change is application-ready only when the same GitHub Actions job passes all of the following gates on the branch head:
+A change is application-ready only when the same GitHub Actions job passes all branch-head gates:
 
 1. Python unit and negative-path tests.
-2. Installation of pinned PLINK2 and Nextflow plus the runner bcftools package.
+2. Installation of pinned PLINK2 and Nextflow plus runner bcftools.
 3. End-to-end execution on the pinned public 1000 Genomes VCF.
-4. Source inventory generation from the VCF itself.
-5. VCF normalisation, PLINK2 import, QC/PCA, BGEN export and seven Parquet products.
-6. Provenance generation with source and product SHA-256 values.
-7. Release-contract PASS, including source-to-release sample preservation, schema checks, row counts, key uniqueness, bounded QC fields and product-hash verification.
-8. Docker image build.
-9. Workflow artifact upload.
+4. Source inventory from the VCF and tabix index.
+5. VCF normalisation, PLINK2 import, QC/PCA and BGEN export.
+6. Seven typed ZSTD Parquet products plus Arrow schema manifest.
+7. DuckDB genomic region query contract cross-checked against pandas.
+8. Provenance with source/product SHA-256 values.
+9. Fail-closed release contract.
+10. Docker image build and workflow artifact upload.
 
-The release gate is fail-closed: a contract failure exits non-zero and prevents a green workflow. Negative tests deliberately verify rejection of duplicate sample IDs and a tampered BGEN hash.
+Negative tests verify rejection of duplicate sample IDs, a tampered BGEN hash and an invalid string-typed genomic position schema.
 
 No CV or README numerical claim should be updated from a branch run until the corresponding branch-head workflow is green.

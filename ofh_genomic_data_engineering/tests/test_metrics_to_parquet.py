@@ -41,11 +41,11 @@ def test_read_table_rejects_missing_header(tmp_path: Path) -> None:
         read_table(p)
 
 
-def test_build_outputs_writes_all_tables(tmp_path: Path) -> None:
+def test_build_outputs_writes_typed_tables_and_schema(tmp_path: Path) -> None:
     pytest.importorskip("pyarrow")
     files = {}
     contents = {
-        "pvar": "##fileformat=VCFv4.2\n#CHROM\tPOS\tID\tREF\tALT\n22\t1\trs1\tA\tG\n22\t2\trs2\tC\tT\n",
+        "pvar": "##fileformat=VCFv4.2\n#CHROM\tPOS\tID\tREF\tALT\n22\t2\trs2\tC\tT\n22\t1\trs1\tA\tG\n",
         "psam": "#FID\tIID\nS1\tS1\nS2\tS2\n",
         "afreq": "#CHROM\tID\tREF\tALT\tALT_FREQS\tOBS_CT\n22\trs1\tA\tG\t0.25\t4\n",
         "vmiss": "#CHROM\tID\tMISSING_CT\tOBS_CT\tF_MISS\n22\trs1\t0\t2\t0\n",
@@ -58,10 +58,28 @@ def test_build_outputs_writes_all_tables(tmp_path: Path) -> None:
         write(p, text)
         files[key] = str(p)
 
-    args = Namespace(**files, outdir=str(tmp_path / "pq"), summary=str(tmp_path / "summary.json"))
+    schema_manifest = tmp_path / "schema_manifest.json"
+    args = Namespace(
+        **files,
+        outdir=str(tmp_path / "pq"),
+        summary=str(tmp_path / "summary.json"),
+        schema_manifest=str(schema_manifest),
+    )
     summary = build_outputs(args)
     assert summary["sample_count"] == 2
     assert summary["variant_count"] == 2
+    assert summary["storage"] == {"format": "parquet", "compression": "zstd"}
     assert len(list((tmp_path / "pq").glob("*.parquet"))) == 7
+
     variants = pd.read_parquet(tmp_path / "pq" / "variants.parquet")
     assert variants["ID"].tolist() == ["rs1", "rs2"]
+    assert str(variants["POS"].dtype) == "int64"
+    afreq = pd.read_parquet(tmp_path / "pq" / "allele_frequencies.parquet")
+    assert str(afreq["ALT_FREQS"].dtype) == "float64"
+    assert str(afreq["OBS_CT"].dtype) == "int64"
+
+    import json
+
+    manifest = json.loads(schema_manifest.read_text())
+    variant_types = {c["name"]: c["type"] for c in manifest["tables"]["variants"]["columns"]}
+    assert variant_types["POS"] == "int64"
