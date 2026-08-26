@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0 - 2026-08-26
+
+- Add a provider delivery manifest and a fail-closed delivery gate before genomic processing.
+- Validate expected source SHA-256, declared reference genome, VCF sample count and deterministic sample-roster hash.
+- Add deterministic delivery fingerprints and bind them into provenance and release parameters.
+- Add idempotency semantics: an exact registered duplicate is `NOOP`; the same delivery ID with changed content is `REJECT`.
+- Add six delivery-validator tests covering acceptance, checksum mismatch, wrong genome build, sample-roster mismatch, exact duplicate and delivery-ID collision.
+- Expand deterministic resume validation to the 12-process graph and include delivery validation in tracked release-facing hashes.
+- Synchronise Python and Nextflow manifest versions to 0.4.0.
+
 ## 0.3.1 - 2026-08-26
 
 - Add an explicit deterministic rerun contract to GitHub Actions.

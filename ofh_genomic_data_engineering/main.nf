@@ -15,6 +15,34 @@ process DOWNLOAD_INPUT {
     """
 }
 
+process DELIVERY_GATE {
+    tag 'provider delivery contract'
+    publishDir "${params.outdir}/00_source", mode: 'copy', overwrite: true, pattern: 'delivery_validation.json'
+    input:
+    path vcf
+    path manifest
+    output:
+    path 'validated_input.vcf.gz', emit: vcf
+    path 'delivery_validation.json', emit: validation
+    script:
+    """
+    set -euo pipefail
+    python ${projectDir}/scripts/validate_delivery.py \
+      --manifest ${manifest} --source ${vcf} \
+      --required-reference-genome '${params.required_reference_genome}' \
+      --expected-source-uri '${params.source_url}' \
+      --output delivery_validation.json
+    python - <<'PY'
+import json
+payload = json.load(open('delivery_validation.json'))
+assert payload['status'] == 'PASS', payload
+assert payload['action'] == 'PROCESS', payload
+assert payload['should_process'] is True, payload
+PY
+    cp ${vcf} validated_input.vcf.gz
+    """
+}
+
 process NORMALISE_VCF {
     tag 'bcftools normalise'
     publishDir "${params.outdir}/01_normalised", mode: 'copy', overwrite: true
@@ -170,6 +198,7 @@ process PROVENANCE {
     publishDir "${params.outdir}/07_provenance", mode: 'copy', overwrite: true
     input:
     path source_sha
+    path delivery_validation
     path summary
     path bgen
     path sample
@@ -184,6 +213,7 @@ process PROVENANCE {
     set -euo pipefail
     python ${projectDir}/scripts/build_provenance.py \
       --source-url '${params.source_url}' --source-sha-file ${source_sha} \
+      --delivery-validation ${delivery_validation} \
       --summary ${summary} --bgen ${bgen} --sample ${sample} \
       --parquet-dir ${parquet_dir} --bcftools-stats ${stats} \
       --schema-manifest ${schema_manifest} --query-validation ${query_validation} \
@@ -197,6 +227,7 @@ process RELEASE_GATE {
     publishDir "${params.outdir}/08_release", mode: 'copy', overwrite: true
     input:
     path source_inventory
+    path delivery_validation
     path summary
     path provenance
     path bgen
@@ -208,7 +239,19 @@ process RELEASE_GATE {
     script:
     """
     set -euo pipefail
-    python -c "import json; assert json.load(open('${query_validation}'))['status'] == 'PASS'"
+    python - <<'PY'
+import json
+delivery = json.load(open('${delivery_validation}'))
+provenance = json.load(open('${provenance}'))
+query = json.load(open('${query_validation}'))
+assert query['status'] == 'PASS', query
+assert delivery['status'] == 'PASS' and delivery['action'] == 'PROCESS', delivery
+assert delivery['should_process'] is True, delivery
+assert provenance['source']['sha256'] == delivery['source_observed']['sha256']
+assert provenance['delivery']['delivery_fingerprint'] == delivery['delivery']['delivery_fingerprint']
+assert provenance['parameters']['delivery_fingerprint'] == delivery['delivery']['delivery_fingerprint']
+assert provenance['delivery']['reference_genome'] == '${params.required_reference_genome}'
+PY
     python ${projectDir}/scripts/validate_release.py \
       --source-inventory ${source_inventory} --summary ${summary} --provenance ${provenance} \
       --parquet-dir ${parquet_dir} --bgen ${bgen} --sample ${sample} \
@@ -217,8 +260,10 @@ process RELEASE_GATE {
 }
 
 workflow {
+    delivery_manifest = Channel.fromPath(params.delivery_manifest, checkIfExists: true)
     DOWNLOAD_INPUT()
-    NORMALISE_VCF(DOWNLOAD_INPUT.out.vcf)
+    DELIVERY_GATE(DOWNLOAD_INPUT.out.vcf, delivery_manifest)
+    NORMALISE_VCF(DELIVERY_GATE.out.vcf)
     SOURCE_INVENTORY(NORMALISE_VCF.out.vcf, NORMALISE_VCF.out.index)
     IMPORT_PLINK2(NORMALISE_VCF.out.vcf)
     QC_FILTER(IMPORT_PLINK2.out.pfile)
@@ -235,6 +280,7 @@ workflow {
     QUERY_CONTRACT(EXPORT_PARQUET.out.parquet_dir, EXPORT_PARQUET.out.schema_manifest)
     PROVENANCE(
         DOWNLOAD_INPUT.out.source_sha,
+        DELIVERY_GATE.out.validation,
         EXPORT_PARQUET.out.summary,
         EXPORT_BGEN.out.bgen,
         EXPORT_BGEN.out.sample,
@@ -245,6 +291,7 @@ workflow {
     )
     RELEASE_GATE(
         SOURCE_INVENTORY.out.inventory,
+        DELIVERY_GATE.out.validation,
         EXPORT_PARQUET.out.summary,
         PROVENANCE.out.provenance,
         EXPORT_BGEN.out.bgen,

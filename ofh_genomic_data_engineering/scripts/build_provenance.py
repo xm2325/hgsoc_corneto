@@ -27,18 +27,44 @@ def version(command: list[str]) -> str:
 def main(args: argparse.Namespace) -> None:
     source_sha = Path(args.source_sha_file).read_text().split()[0]
     summary = json.loads(Path(args.summary).read_text())
+    delivery_validation = json.loads(Path(args.delivery_validation).read_text())
+    delivery = delivery_validation.get("delivery", {})
+    observed = delivery_validation.get("source_observed", {})
+
+    if delivery_validation.get("status") != "PASS":
+        raise ValueError("provenance cannot be built from a failed delivery validation")
+    if delivery_validation.get("action") != "PROCESS":
+        raise ValueError("provenance requires a PROCESS delivery decision")
+    if observed.get("sha256") != source_sha:
+        raise ValueError("delivery source SHA does not match downloaded source SHA")
+
     product_paths = [
         Path(args.bgen),
         Path(args.sample),
         Path(args.bcftools_stats),
         Path(args.schema_manifest),
         Path(args.query_validation),
+        Path(args.delivery_validation),
     ]
     product_paths.extend(sorted(Path(args.parquet_dir).glob("*.parquet")))
 
     payload = {
         "source": {"url": args.source_url, "sha256": source_sha},
-        "parameters": {"geno": args.geno, "maf": args.maf, "hwe": args.hwe},
+        "delivery": {
+            "delivery_id": delivery.get("delivery_id"),
+            "provider": delivery.get("provider"),
+            "reference_genome": delivery.get("reference_genome"),
+            "delivery_fingerprint": delivery.get("delivery_fingerprint"),
+            "sample_count": observed.get("sample_count"),
+            "sample_ids_sha256": observed.get("sample_ids_sha256"),
+        },
+        "parameters": {
+            "geno": args.geno,
+            "maf": args.maf,
+            "hwe": args.hwe,
+            "delivery_fingerprint": delivery.get("delivery_fingerprint"),
+            "reference_genome": delivery.get("reference_genome"),
+        },
         "tool_versions": {
             "bcftools": version(["bcftools", "--version"]),
             "plink2": version(["plink2", "--version"]),
@@ -55,6 +81,7 @@ def parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser()
     p.add_argument("--source-url", required=True)
     p.add_argument("--source-sha-file", required=True)
+    p.add_argument("--delivery-validation", required=True)
     p.add_argument("--summary", required=True)
     p.add_argument("--bgen", required=True)
     p.add_argument("--sample", required=True)
