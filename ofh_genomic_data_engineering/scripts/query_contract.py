@@ -13,6 +13,25 @@ def _column_types(schema_manifest: dict[str, object], table: str) -> dict[str, s
     return {column["name"]: column["type"] for column in table_schema["columns"]}
 
 
+def _write_payload(
+    *,
+    checks: list[dict[str, object]],
+    output_path: Path,
+    total_variants: int | None,
+    region_query: dict[str, int] | None,
+) -> dict[str, object]:
+    passed = all(check["status"] == "PASS" for check in checks)
+    payload = {
+        "status": "PASS" if passed else "FAIL",
+        "engine": {"name": "duckdb", "version": duckdb.__version__},
+        "total_variants": total_variants,
+        "region_query": region_query,
+        "checks": checks,
+    }
+    output_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+    return payload
+
+
 def validate_query_layer(
     *, variants_path: Path, schema_manifest_path: Path, output_path: Path
 ) -> dict[str, object]:
@@ -23,8 +42,21 @@ def validate_query_layer(
         checks.append({"name": name, "status": "PASS" if passed else "FAIL", "detail": detail})
 
     types = _column_types(schema, "variants")
-    record("variants.POS_int64", types.get("POS") == "int64", types.get("POS"))
-    record("variants.CHROM_string", types.get("CHROM") == "string", types.get("CHROM"))
+    pos_ok = types.get("POS") == "int64"
+    chrom_ok = types.get("CHROM") == "string"
+    record("variants.POS_int64", pos_ok, types.get("POS"))
+    record("variants.CHROM_string", chrom_ok, types.get("CHROM"))
+
+    # Schema validation is a hard precondition for the SQL contract. Returning
+    # a structured FAIL here avoids replacing a data-contract result with a
+    # lower-level DuckDB binder exception when POS is incorrectly stored as text.
+    if not (pos_ok and chrom_ok):
+        return _write_payload(
+            checks=checks,
+            output_path=output_path,
+            total_variants=None,
+            region_query=None,
+        )
 
     con = duckdb.connect(database=":memory:")
     stats = con.execute(
@@ -64,20 +96,16 @@ def validate_query_layer(
     ]
     record("query.ordered_positions", positions == sorted(positions), {"rows_checked": len(positions)})
 
-    passed = all(check["status"] == "PASS" for check in checks)
-    payload = {
-        "status": "PASS" if passed else "FAIL",
-        "engine": {"name": "duckdb", "version": duckdb.__version__},
-        "total_variants": total,
-        "region_query": {
+    return _write_payload(
+        checks=checks,
+        output_path=output_path,
+        total_variants=total,
+        region_query={
             "start": region_start,
             "end": region_end,
             "matched_variants": duck_count,
         },
-        "checks": checks,
-    }
-    output_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
-    return payload
+    )
 
 
 def parser() -> argparse.ArgumentParser:
