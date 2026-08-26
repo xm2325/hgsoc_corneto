@@ -27,6 +27,23 @@ def _bgen_semantics(payload: dict[str, object]) -> dict[str, object]:
     return {key: payload.get(key) for key in keys}
 
 
+def _metadata_semantics(payload: dict[str, object]) -> dict[str, object]:
+    source = payload.get("source", {})
+    join = payload.get("join", {})
+    return {
+        "status": payload.get("status"),
+        "contract": payload.get("contract"),
+        "source_git_blob_sha1": source.get("git_blob_sha1"),
+        "source_sha256": source.get("sha256"),
+        "source_row_count": source.get("row_count"),
+        "plink_sample_count": join.get("plink_sample_count"),
+        "matched_sample_count": join.get("matched_sample_count"),
+        "coverage": join.get("coverage"),
+        "canonical_sample_ids_sha256": join.get("canonical_sample_ids_sha256"),
+        "output_semantic_sha256": join.get("output_semantic_sha256"),
+    }
+
+
 def _pca_parameters(release: dict[str, object]) -> dict[str, object]:
     parameters = release.get("release_identity", {}).get("basis", {}).get("parameters", {})
     return {
@@ -47,6 +64,8 @@ def validate_runtime_equivalence(
     candidate_delivery = _load(candidate_results, "00_source/delivery_validation.json")
     host_bgen = _load(host_results, "05_bgen/bgen_validation.json")
     candidate_bgen = _load(candidate_results, "05_bgen/bgen_validation.json")
+    host_metadata = _load(host_results, "05_metadata/metadata_validation.json")
+    candidate_metadata = _load(candidate_results, "05_metadata/metadata_validation.json")
     host_summary = _load(host_results, "06_parquet/summary.json")
     candidate_summary = _load(candidate_results, "06_parquet/summary.json")
     host_query = _load(host_results, "06_parquet/query_validation.json")
@@ -101,7 +120,8 @@ def validate_runtime_equivalence(
     semantic_mismatches = []
     if isinstance(host_semantic, dict) and isinstance(candidate_semantic, dict):
         semantic_mismatches = sorted(
-            name for name in set(host_semantic) | set(candidate_semantic)
+            name
+            for name in set(host_semantic) | set(candidate_semantic)
             if host_semantic.get(name) != candidate_semantic.get(name)
         )
     record(
@@ -137,6 +157,17 @@ def validate_runtime_equivalence(
         },
     )
 
+    host_metadata_semantics = _metadata_semantics(host_metadata)
+    candidate_metadata_semantics = _metadata_semantics(candidate_metadata)
+    record(
+        "sample_metadata_semantics",
+        host_metadata_semantics == candidate_metadata_semantics
+        and host_metadata.get("status") == candidate_metadata.get("status") == "PASS"
+        and host_metadata.get("join", {}).get("coverage") == 1.0
+        and candidate_metadata.get("join", {}).get("coverage") == 1.0,
+        {"host": host_metadata_semantics, "candidate": candidate_metadata_semantics},
+    )
+
     record(
         "query_status",
         host_query.get("status") == candidate_query.get("status") == "PASS",
@@ -158,7 +189,7 @@ def validate_runtime_equivalence(
     candidate_identity_version = candidate_release.get("release_identity", {}).get("version")
     record(
         "release_identity_version",
-        host_identity_version == candidate_identity_version == 3,
+        host_identity_version == candidate_identity_version == 4,
         {"host": host_identity_version, "candidate": candidate_identity_version},
     )
     host_pca_parameters = _pca_parameters(host_release)
@@ -195,8 +226,15 @@ def validate_runtime_equivalence(
         "variant_count": host_variants if host_variants == candidate_variants else None,
         "semantic_hashes": host_semantic if host_semantic == candidate_semantic else None,
         "semantic_hash_mismatches": semantic_mismatches,
-        "pca_execution_parameters": host_pca_parameters if host_pca_parameters == candidate_pca_parameters else None,
-        "bgen_roundtrip": host_bgen_semantics if host_bgen_semantics == candidate_bgen_semantics else None,
+        "pca_execution_parameters": host_pca_parameters
+        if host_pca_parameters == candidate_pca_parameters
+        else None,
+        "bgen_roundtrip": host_bgen_semantics
+        if host_bgen_semantics == candidate_bgen_semantics
+        else None,
+        "sample_metadata_join": host_metadata_semantics
+        if host_metadata_semantics == candidate_metadata_semantics
+        else None,
         "checks": checks,
     }
     output_path.parent.mkdir(parents=True, exist_ok=True)
