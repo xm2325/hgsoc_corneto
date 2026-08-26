@@ -94,6 +94,82 @@ jobs:
               'release_checks': len(release['checks']),
           }, indent=2))
           PY
+      - name: Snapshot deterministic release outputs
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          paths = [
+              Path('results/05_bgen/analysis_ready.bgen'),
+              Path('results/05_bgen/analysis_ready.sample'),
+              Path('results/06_parquet/summary.json'),
+              Path('results/06_parquet/schema_manifest.json'),
+              Path('results/06_parquet/query_validation.json'),
+              Path('results/07_provenance/provenance.json'),
+              Path('results/08_release/release_validation.json'),
+              *sorted(Path('results/06_parquet/parquet').glob('*.parquet')),
+          ]
+
+          def sha256(path):
+              h = hashlib.sha256()
+              with path.open('rb') as fh:
+                  for chunk in iter(lambda: fh.read(1024 * 1024), b''):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          snapshot = {str(path): sha256(path) for path in paths}
+          Path('/tmp/genomic-release-before.json').write_text(
+              json.dumps(snapshot, indent=2, sort_keys=True) + '\n'
+          )
+          PY
+      - name: Verify deterministic Nextflow resume
+        run: |
+          nextflow run main.nf -profile ci -resume -with-trace resume-trace.tsv
+          python - <<'PY'
+          import csv
+          import hashlib
+          import json
+          from pathlib import Path
+
+          before = json.loads(Path('/tmp/genomic-release-before.json').read_text())
+
+          def sha256(path):
+              h = hashlib.sha256()
+              with path.open('rb') as fh:
+                  for chunk in iter(lambda: fh.read(1024 * 1024), b''):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          after = {name: sha256(Path(name)) for name in before}
+          changed = sorted(name for name in before if before[name] != after[name])
+          assert not changed, {'changed_outputs': changed}
+
+          with Path('resume-trace.tsv').open(newline='') as fh:
+              rows = list(csv.DictReader(fh, delimiter='\t'))
+          assert len(rows) == 11, {'trace_rows': len(rows), 'rows': rows}
+          statuses = {row['status'] for row in rows}
+          assert statuses == {'CACHED'}, {'statuses': sorted(statuses)}
+
+          release = json.loads(Path('results/08_release/release_validation.json').read_text())
+          evidence = {
+              'status': 'PASS',
+              'cached_processes': len(rows),
+              'release_id': release['release_id'],
+              'tracked_output_count': len(after),
+              'changed_outputs': changed,
+              'tracked_sha256': after,
+          }
+          Path('results/08_release/reproducibility_validation.json').write_text(
+              json.dumps(evidence, indent=2, sort_keys=True) + '\n'
+          )
+          print(json.dumps({
+              'cached_processes': len(rows),
+              'tracked_output_count': len(after),
+              'release_id': release['release_id'],
+          }, indent=2))
+          PY
       - name: Build Docker image
         run: docker build -t genomic-data-engineering:test .
       - uses: actions/upload-artifact@v4

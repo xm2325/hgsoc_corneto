@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1 - 2026-08-26
+
+- Add an explicit deterministic rerun contract to GitHub Actions.
+- Snapshot release-facing output SHA-256 values, rerun the same workflow with Nextflow `-resume`, and require every one of the 11 processes to be served from cache.
+- Fail validation if any tracked BGEN, Parquet, schema, query, provenance or release output changes after the resumed run.
+- Emit `reproducibility_validation.json` as workflow evidence and document the scope of the reproducibility claim.
+
 ## 0.3.0 - 2026-08-26
 
 - Convert PLINK text outputs into typed Parquet instead of all-string tables.
