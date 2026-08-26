@@ -1,10 +1,21 @@
 # Changelog
 
+## 0.4.2 - 2026-08-26
+
+- Correct the release-identity model after fresh host/container executions showed that byte-derived product hashes can change even when the logical genomic release is unchanged.
+- Add canonical typed-table semantic SHA-256 values for all seven Parquet products and verify them again from the stored Parquet data at release time.
+- Define release identity v2 from the pinned source, delivery fingerprint, reference genome, QC parameters, sample/variant counts and semantic table hashes; retain file SHA-256 values separately for integrity and tamper detection.
+- Add negative tests for declared semantic-hash mismatch and semantic content drift, plus a regression test proving the release ID is unchanged when identical table content is serialised with different Parquet compression.
+- Add a cross-runtime semantic-equivalence validator and CI evidence comparing host and Docker results independently of binary serialisation details.
+- Keep the existing `-resume` gate as a separate exact-byte cache-reproducibility contract.
+- Synchronise Python and Nextflow manifest versions to 0.4.2.
+
 ## 0.4.1 - 2026-08-26
 
 - Copy the provider delivery configuration into the Docker image; v0.4.0 could build the image but did not include `config/delivery_manifest.json` required at runtime.
 - Upgrade CI from Docker build-only evidence to a full containerised execution of the same pinned real-data workflow.
-- Require the containerised delivery decision, delivery fingerprint, sample/variant counts and release ID to match the host workflow before CI can pass.
+- Require the containerised delivery decision, delivery fingerprint, sample/variant counts and release identity to match the host workflow before CI can pass.
+- Add the `python` -> `python3` runtime alias required by Nextflow processes inside the Ubuntu image.
 - Synchronise Python and Nextflow manifest versions to 0.4.1.
 
 ## 0.4.0 - 2026-08-26
@@ -36,7 +47,7 @@
 
 - Add a source inventory derived from the VCF instead of provider naming.
 - Add a release contract that checks schemas, row counts, sample preservation, variant-key uniqueness, QC value ranges and product hashes.
-- Add deterministic release IDs and a Nextflow release gate that exits non-zero on failed data contracts.
+- Add release identifiers and a Nextflow release gate that exits non-zero on failed data contracts.
 - Add negative tests for duplicate sample IDs and tampered product hashes.
 - Document the boundary between FAIR-compatible release metadata and GA4GH API implementation.
 

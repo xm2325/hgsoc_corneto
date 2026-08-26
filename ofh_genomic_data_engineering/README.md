@@ -8,56 +8,49 @@ A reproducible genotype data workflow built around public 1000 Genomes Phase 3 c
 
 This is a data-engineering project, not a GWAS analysis. It does not produce an association result or clinical conclusion.
 
-## Latest verified real-data evidence (v0.4.0)
+## Latest fully green real-data evidence
 
-GitHub Actions run `32939354889` completed successfully on the v0.4.0 code head using the pinned public 1000 Genomes VCF. It validated:
+The latest fully green published evidence remains the v0.4.0 branch-head run `32939354889` while v0.4.2 is being validated. That run established the real-data baseline:
 
 - **16/16 unit and negative/idempotency tests passed**;
 - **12/12 real-data Nextflow processes passed**, including the provider delivery gate;
 - the real delivery returned `PASS / PROCESS` for delivery `1000g-phase3-chr22-gawmerge-n90-v1`;
-- source SHA-256, declared `GRCh37` policy, **90-sample** roster count and deterministic sample-roster hash all matched the manifest;
-- delivery fingerprint `252db21a858d21a0aa0d015376d247978a355503a4d62d37421eec9061357d15` was bound into provenance and the release context;
-- **90/90 samples preserved**;
+- source SHA-256, declared `GRCh37` policy, **90-sample** roster count and sample-roster hash matched the manifest;
+- delivery fingerprint `252db21a858d21a0aa0d015376d247978a355503a4d62d37421eec9061357d15` was bound into provenance;
+- **90/90 samples were preserved**;
 - **1,059,913 normalised source variants -> 127,171 variants after configured QC**;
-- seven typed, ZSTD-compressed Parquet tables plus an Arrow schema manifest;
-- DuckDB 1.5.5 genomic region query over positions **16,051,249–17,051,249** returned **1,955 variants**, with the count independently matched by pandas;
-- **48/48 release-contract checks passed**, with delivery/provenance consistency asserted before the release validator;
-- deterministic release ID `632f30e8076cf8bd405afe6208b63bbdab7921af983924600a911f70ad6fa672`;
+- seven typed, ZSTD-compressed Parquet tables plus an Arrow schema manifest were produced;
+- DuckDB 1.5.5 queried positions **16,051,249-17,051,249** and returned **1,955 variants**, matching pandas;
+- **48 release-contract checks passed**;
 - an immediate identical `-resume` rerun returned all **12/12 processes from cache** and left all **15 tracked release-facing SHA-256 values unchanged**;
-- BGEN 1.2, provenance, Docker image build and upload of a **37-file workflow artifact** all passed.
+- BGEN 1.2, provenance, Docker image build and workflow artifact upload passed.
 
-Numerical results are only promoted here after the corresponding branch-head GitHub Actions run is green. No latency or large-scale throughput claim is inferred from this compact public fixture.
+The byte-derived release ID from that older run is intentionally not promoted as a stable cross-execution identifier. Fresh executions later showed that binary encoding can change without changing the logical release. v0.4.2 corrects that identity model.
+
+Numerical results are only promoted here after the corresponding branch-head GitHub Actions run is green. No latency or production-scale throughput claim is inferred from this compact public fixture.
 
 ## Provider delivery contract
 
-v0.4 adds a fail-closed ingestion boundary before genomic processing. `config/delivery_manifest.json` declares:
+The fail-closed ingestion boundary in `config/delivery_manifest.json` declares a stable delivery ID, provider/source identity, expected source SHA-256, declared reference genome, expected VCF sample count and a deterministic sample-roster hash. The validator recomputes the source hash and sample roster directly from the delivered VCF. A valid new delivery returns `PROCESS`; an exact registered duplicate returns `NOOP`; a delivery-ID collision with changed content returns `REJECT`.
 
-- a stable `delivery_id`;
-- provider/source identity;
-- expected source SHA-256;
-- declared reference genome;
-- expected VCF sample count;
-- a deterministic hash of the sorted sample roster.
-
-The validator recomputes the source hash and sample roster directly from the delivered VCF. A valid new delivery returns `PROCESS`; an exact registered duplicate returns `NOOP`; a delivery-ID collision with changed content returns `REJECT`. Checksum, reference-genome policy and sample-roster mismatches are also rejected.
-
-The validated delivery fingerprint is written into provenance and the release parameters, so it contributes to the deterministic release ID. See [`docs/DELIVERY_INGESTION.md`](docs/DELIVERY_INGESTION.md).
-
-## QC contract
-
-Default configurable filters are variant missingness `--geno 0.02`, minor allele frequency `--maf 0.01`, Hardy-Weinberg exact-test threshold `--hwe 1e-6 midp`, and biallelic SNPs after multiallelic decomposition. These are example engineering gates, not a universal scientific protocol.
-
-## Query-ready Parquet
+## Query-ready Parquet and semantic hashes
 
 The analysis layer uses stable physical types rather than storing every PLINK field as text. Genomic positions and counts are `int64`; QC fractions, probabilities and PCA scores are floating point; identifiers remain strings. Files use ZSTD compression and `schema_manifest.json` records the Arrow schema for all seven tables.
 
-A DuckDB process executes a genomic range predicate against `variants.parquet` and cross-checks the count against pandas. Schema validation is fail-closed: an invalid genomic position type returns a structured contract failure before SQL execution. Any type or query-contract failure stops the pipeline before a release can pass. See [`docs/QUERY_READY_DATA.md`](docs/QUERY_READY_DATA.md).
+v0.4.2 adds a canonical semantic SHA-256 for every typed table. The semantic hash covers ordered columns, logical types, row order and canonical scalar values, but not Parquet compression bytes, row-group layout or file metadata. Release validation recomputes every semantic hash from the stored Parquet files before accepting the candidate release.
 
-## Data release contract
+## Data release identity and integrity
 
-A candidate release is accepted only when the release gate passes checks for source sample preservation, variant-count non-inflation, required tables/columns, row-count consistency, key uniqueness, bounded QC metrics, cross-table sample consistency and SHA-256 integrity. The release stage also asserts that the validated delivery source hash and delivery fingerprint match provenance.
+The release contract deliberately separates **file integrity** from **logical release identity**. File SHA-256 values for BGEN, sample and Parquet products detect tampering or unexpected byte changes. Release identity v2 instead hashes the pinned source, delivery fingerprint, reference genome, QC parameters, sample/variant counts and seven semantic table hashes.
 
-It receives a deterministic 64-character `release_id` only after those checks pass. Negative-path tests explicitly verify rejection of duplicate sample IDs, a tampered BGEN hash and an invalid string-typed genomic position schema. See [`docs/DATA_RELEASE_CONTRACT.md`](docs/DATA_RELEASE_CONTRACT.md).
+Changing logical table content changes the release ID, while re-serialising identical logical table content with different Parquet compression does not. File hashes still change in the latter case and remain visible in provenance.
+
+## Two reproducibility contracts
+
+- **Exact cache-resume reproducibility:** an immediate Nextflow `-resume` must return all 12 processes as `CACHED` and leave tracked release-facing file SHA-256 values unchanged.
+- **Cross-runtime semantic equivalence:** a fresh Docker execution must reproduce the delivery fingerprint, sample/variant counts, query result, seven semantic hashes and semantic release ID from the host run.
+
+This prevents binary serialisation details from being mistaken for data drift while retaining exact checksums for integrity.
 
 ## Outputs
 
@@ -67,7 +60,9 @@ It receives a deterministic 64-character `release_id` only after those checks pa
 - Oxford BGEN 1.2 + sample file;
 - seven typed ZSTD Parquet tables;
 - `schema_manifest.json` and `query_validation.json`;
-- `summary.json`, `provenance.json`, `release_validation.json` and `reproducibility_validation.json`.
+- `summary.json`, `provenance.json`, `release_validation.json`;
+- `reproducibility_validation.json` for exact cache-resume evidence;
+- `runtime_equivalence_validation.json` for host/Docker semantic equivalence.
 
 ## Run
 
@@ -89,10 +84,8 @@ python -m pip install -e '.[test]'
 pytest
 ```
 
-GitHub Actions executes unit and negative-path tests, the full real-data Nextflow workflow, delivery/query/release contracts, deterministic resume validation, Docker build and artifact upload.
+GitHub Actions executes unit and negative-path tests, the full real-data Nextflow workflow, delivery/query/release contracts, exact cache-resume validation, Docker build, a fresh containerised real-data workflow and cross-runtime semantic-equivalence validation.
 
 ## Standards and scope
 
 The workflow uses common genomic and analytical formats (`VCF`, `PGEN`, `BGEN`, `Parquet`) with machine-readable provenance, schemas and checksums. The design supports FAIR-style metadata and reproducibility. It does **not** claim a GA4GH API implementation, genotype calling, phasing, imputation, ancestry inference or clinical validity.
-
-The delivery manifest's `reference_genome` is a provider declaration checked against pipeline policy. This project does not infer the assembly cryptographically from the VCF. The optional duplicate-delivery registry is a validator interface; it is not a persistent production registry service.

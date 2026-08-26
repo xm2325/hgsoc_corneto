@@ -48,7 +48,7 @@ jobs:
           nextflow -version
       - name: Run real 1000 Genomes pipeline
         run: nextflow run main.nf -profile ci
-      - name: Validate delivery, query layer and release contract
+      - name: Validate delivery, semantic identity, query layer and release contract
         run: |
           test -s results/00_source/delivery_validation.json
           test -s results/05_bgen/analysis_ready.bgen
@@ -61,7 +61,6 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-
           delivery = json.loads(Path('results/00_source/delivery_validation.json').read_text())
           source = json.loads(Path('results/01_normalised/source_inventory.json').read_text())
           summary = json.loads(Path('results/06_parquet/summary.json').read_text())
@@ -69,131 +68,63 @@ jobs:
           query = json.loads(Path('results/06_parquet/query_validation.json').read_text())
           provenance = json.loads(Path('results/07_provenance/provenance.json').read_text())
           release = json.loads(Path('results/08_release/release_validation.json').read_text())
-
-          assert delivery['status'] == 'PASS', delivery
-          assert delivery['action'] == 'PROCESS', delivery
-          assert delivery['should_process'] is True
+          assert delivery['status'] == 'PASS' and delivery['action'] == 'PROCESS' and delivery['should_process'] is True
           assert delivery['delivery']['reference_genome'] == 'GRCh37'
           assert delivery['source_observed']['sha256'] == 'a02964f209a2bd7e90ed7b70765326d0f548d7d92aa2a46e17db7ba5c7ad8a4d'
           assert delivery['source_observed']['sample_count'] == 90
           assert delivery['source_observed']['sample_ids_sha256'] == '445e93d98883cc9ec183c882566321bc92e037f56f02a4dbdbb526eb1776e34b'
-          assert len(delivery['delivery']['delivery_fingerprint']) == 64
-
-          assert summary['sample_count'] == source['sample_count']
+          assert summary['sample_count'] == source['sample_count'] == 90
+          assert summary['variant_count'] == 127171
           assert 0 < summary['variant_count'] <= source['variant_count']
           assert summary['storage'] == {'format': 'parquet', 'compression': 'zstd'}
+          assert len(summary['semantic_hashes']) == 7 and all(len(value) == 64 for value in summary['semantic_hashes'].values())
           variant_types = {c['name']: c['type'] for c in schema['tables']['variants']['columns']}
           afreq_types = {c['name']: c['type'] for c in schema['tables']['allele_frequencies']['columns']}
-          assert variant_types['POS'] == 'int64', variant_types
-          assert afreq_types['ALT_FREQS'] == 'double', afreq_types
-          assert query['status'] == 'PASS', query
-          assert query['total_variants'] == summary['variant_count']
-          assert query['region_query']['matched_variants'] > 0
-
+          assert variant_types['POS'] == 'int64' and afreq_types['ALT_FREQS'] == 'double'
+          assert query['status'] == 'PASS' and query['total_variants'] == summary['variant_count'] and query['region_query']['matched_variants'] > 0
           fingerprint = delivery['delivery']['delivery_fingerprint']
           assert provenance['delivery']['delivery_fingerprint'] == fingerprint
           assert provenance['delivery']['delivery_id'] == delivery['delivery']['delivery_id']
           assert provenance['delivery']['reference_genome'] == 'GRCh37'
-          assert provenance['parameters']['delivery_fingerprint'] == fingerprint
-          assert provenance['products']['delivery_validation.json']['bytes'] > 0
-          assert provenance['products']['schema_manifest.json']['bytes'] > 0
-          assert provenance['products']['query_validation.json']['bytes'] > 0
-
-          assert release['status'] == 'PASS', release
+          assert release['status'] == 'PASS' and release['release_identity']['version'] == 2
+          assert release['release_identity']['basis']['semantic_hashes'] == summary['semantic_hashes']
           assert all(check['status'] == 'PASS' for check in release['checks'])
-
-          print(json.dumps({
-              'delivery_id': delivery['delivery']['delivery_id'],
-              'delivery_fingerprint': fingerprint,
-              'input_samples': source['sample_count'],
-              'output_samples': summary['sample_count'],
-              'variants_before_qc': source['variant_count'],
-              'variants_after_qc': summary['variant_count'],
-              'duckdb_version': query['engine']['version'],
-              'query_region': query['region_query'],
-              'release_id': release['release_id'],
-              'release_checks': len(release['checks']),
-          }, indent=2))
+          print(json.dumps({'delivery_fingerprint': fingerprint, 'input_samples': source['sample_count'], 'output_samples': summary['sample_count'], 'variants_before_qc': source['variant_count'], 'variants_after_qc': summary['variant_count'], 'semantic_hash_count': len(summary['semantic_hashes']), 'release_identity_version': release['release_identity']['version'], 'release_id': release['release_id'], 'release_checks': len(release['checks'])}, indent=2))
           PY
-      - name: Snapshot deterministic release outputs
+      - name: Snapshot exact release bytes before cache resume
         run: |
           python - <<'PY'
-          import hashlib
-          import json
+          import hashlib, json
           from pathlib import Path
-
-          paths = [
-              Path('results/00_source/delivery_validation.json'),
-              Path('results/05_bgen/analysis_ready.bgen'),
-              Path('results/05_bgen/analysis_ready.sample'),
-              Path('results/06_parquet/summary.json'),
-              Path('results/06_parquet/schema_manifest.json'),
-              Path('results/06_parquet/query_validation.json'),
-              Path('results/07_provenance/provenance.json'),
-              Path('results/08_release/release_validation.json'),
-              *sorted(Path('results/06_parquet/parquet').glob('*.parquet')),
-          ]
-
+          paths = [Path('results/00_source/delivery_validation.json'), Path('results/05_bgen/analysis_ready.bgen'), Path('results/05_bgen/analysis_ready.sample'), Path('results/06_parquet/summary.json'), Path('results/06_parquet/schema_manifest.json'), Path('results/06_parquet/query_validation.json'), Path('results/07_provenance/provenance.json'), Path('results/08_release/release_validation.json'), *sorted(Path('results/06_parquet/parquet').glob('*.parquet'))]
           def sha256(path):
               h = hashlib.sha256()
               with path.open('rb') as fh:
-                  for chunk in iter(lambda: fh.read(1024 * 1024), b''):
-                      h.update(chunk)
+                  for chunk in iter(lambda: fh.read(1024 * 1024), b''): h.update(chunk)
               return h.hexdigest()
-
-          snapshot = {str(path): sha256(path) for path in paths}
-          Path('/tmp/genomic-release-before.json').write_text(
-              json.dumps(snapshot, indent=2, sort_keys=True) + '\n'
-          )
+          Path('/tmp/genomic-release-before.json').write_text(json.dumps({str(path): sha256(path) for path in paths}, indent=2, sort_keys=True) + '\n')
           PY
-      - name: Verify deterministic Nextflow resume
+      - name: Verify exact Nextflow cache-resume reproducibility
         run: |
           nextflow run main.nf -profile ci -resume -with-trace resume-trace.tsv
           python - <<'PY'
-          import csv
-          import hashlib
-          import json
+          import csv, hashlib, json
           from pathlib import Path
-
           before = json.loads(Path('/tmp/genomic-release-before.json').read_text())
-
           def sha256(path):
               h = hashlib.sha256()
               with path.open('rb') as fh:
-                  for chunk in iter(lambda: fh.read(1024 * 1024), b''):
-                      h.update(chunk)
+                  for chunk in iter(lambda: fh.read(1024 * 1024), b''): h.update(chunk)
               return h.hexdigest()
-
           after = {name: sha256(Path(name)) for name in before}
           changed = sorted(name for name in before if before[name] != after[name])
           assert not changed, {'changed_outputs': changed}
-
-          with Path('resume-trace.tsv').open(newline='') as fh:
-              rows = list(csv.DictReader(fh, delimiter='\t'))
-          assert len(rows) == 12, {'trace_rows': len(rows), 'rows': rows}
-          statuses = {row['status'] for row in rows}
-          assert statuses == {'CACHED'}, {'statuses': sorted(statuses)}
-
+          with Path('resume-trace.tsv').open(newline='') as fh: rows = list(csv.DictReader(fh, delimiter='\t'))
+          assert len(rows) == 12 and {row['status'] for row in rows} == {'CACHED'}
           release = json.loads(Path('results/08_release/release_validation.json').read_text())
           delivery = json.loads(Path('results/00_source/delivery_validation.json').read_text())
-          evidence = {
-              'status': 'PASS',
-              'cached_processes': len(rows),
-              'release_id': release['release_id'],
-              'delivery_fingerprint': delivery['delivery']['delivery_fingerprint'],
-              'tracked_output_count': len(after),
-              'changed_outputs': changed,
-              'tracked_sha256': after,
-          }
-          Path('results/08_release/reproducibility_validation.json').write_text(
-              json.dumps(evidence, indent=2, sort_keys=True) + '\n'
-          )
-          print(json.dumps({
-              'cached_processes': len(rows),
-              'tracked_output_count': len(after),
-              'delivery_fingerprint': delivery['delivery']['delivery_fingerprint'],
-              'release_id': release['release_id'],
-          }, indent=2))
+          evidence = {'status': 'PASS', 'contract': 'exact-cache-resume-bytes', 'cached_processes': len(rows), 'release_id': release['release_id'], 'release_identity_version': release['release_identity']['version'], 'delivery_fingerprint': delivery['delivery']['delivery_fingerprint'], 'tracked_output_count': len(after), 'changed_outputs': changed, 'tracked_sha256': after}
+          Path('results/08_release/reproducibility_validation.json').write_text(json.dumps(evidence, indent=2, sort_keys=True) + '\n')
           PY
       - name: Build Docker image
         run: docker build -t genomic-data-engineering:test .
@@ -202,32 +133,8 @@ jobs:
           rm -rf container-results
           mkdir -p container-results
           docker run --rm -v "$PWD/container-results:/work/results" genomic-data-engineering:test
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          host_delivery = json.loads(Path('results/00_source/delivery_validation.json').read_text())
-          host_summary = json.loads(Path('results/06_parquet/summary.json').read_text())
-          host_release = json.loads(Path('results/08_release/release_validation.json').read_text())
-          container_delivery = json.loads(Path('container-results/00_source/delivery_validation.json').read_text())
-          container_summary = json.loads(Path('container-results/06_parquet/summary.json').read_text())
-          container_release = json.loads(Path('container-results/08_release/release_validation.json').read_text())
-
-          assert container_delivery['status'] == 'PASS', container_delivery
-          assert container_delivery['action'] == 'PROCESS', container_delivery
-          assert container_release['status'] == 'PASS', container_release
-          assert container_delivery['delivery']['delivery_fingerprint'] == host_delivery['delivery']['delivery_fingerprint']
-          assert container_summary['sample_count'] == host_summary['sample_count'] == 90
-          assert container_summary['variant_count'] == host_summary['variant_count'] == 127171
-          assert container_release['release_id'] == host_release['release_id']
-          print(json.dumps({
-              'container_status': container_release['status'],
-              'sample_count': container_summary['sample_count'],
-              'variant_count': container_summary['variant_count'],
-              'delivery_fingerprint': container_delivery['delivery']['delivery_fingerprint'],
-              'release_id': container_release['release_id'],
-          }, indent=2))
-          PY
+          python scripts/validate_runtime_equivalence.py --host-results results --candidate-results container-results --expected-samples 90 --expected-variants 127171 --output results/08_release/runtime_equivalence_validation.json
+          cat results/08_release/runtime_equivalence_validation.json
       - uses: actions/upload-artifact@v4
         with:
           name: genomic-data-engineering-results

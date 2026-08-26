@@ -1,12 +1,16 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import io
 import json
+import math
+import numbers
 from pathlib import Path
 
 import pandas as pd
 import pyarrow.parquet as pq
+from pandas.api.types import is_bool_dtype, is_float_dtype, is_integer_dtype
 
 
 INTEGER_COLUMNS = {
@@ -56,6 +60,57 @@ def coerce_types(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
     return typed
 
 
+def _semantic_type(series: pd.Series) -> str:
+    if is_bool_dtype(series.dtype):
+        return "boolean"
+    if is_integer_dtype(series.dtype):
+        return "integer"
+    if is_float_dtype(series.dtype):
+        return "float"
+    return "string"
+
+
+def _canonical_scalar(value: object) -> list[object]:
+    if value is None or pd.isna(value):
+        return ["null", None]
+    if isinstance(value, bool):
+        return ["boolean", bool(value)]
+    if isinstance(value, numbers.Integral):
+        return ["integer", str(int(value))]
+    if isinstance(value, numbers.Real):
+        number = float(value)
+        if not math.isfinite(number):
+            raise ValueError("semantic hashing rejects non-finite floating-point values")
+        if number == 0.0:
+            number = 0.0
+        return ["float", number.hex()]
+    return ["string", str(value)]
+
+
+def semantic_table_sha256(df: pd.DataFrame) -> str:
+    """Hash logical typed table content independently of Parquet encoding bytes.
+
+    Row and column order are part of the contract. This is intentional: sample order
+    and the pipeline's deterministic table ordering are release semantics, while
+    compression, row groups and file metadata are not.
+    """
+    columns = [
+        {"name": str(column), "semantic_type": _semantic_type(df[column])}
+        for column in df.columns
+    ]
+    digest = hashlib.sha256()
+    digest.update(
+        json.dumps({"columns": columns}, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    )
+    for row in df.itertuples(index=False, name=None):
+        canonical_row = [_canonical_scalar(value) for value in row]
+        digest.update(b"\n")
+        digest.update(
+            json.dumps(canonical_row, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+        )
+    return digest.hexdigest()
+
+
 def write_parquet(df: pd.DataFrame, path: Path) -> None:
     if df.empty:
         raise ValueError(f"refusing to write empty table: {path.name}")
@@ -91,6 +146,7 @@ def build_outputs(args: argparse.Namespace) -> dict[str, object]:
     counts: dict[str, int] = {}
     files: dict[str, str] = {}
     schemas: dict[str, object] = {}
+    semantic_hashes: dict[str, str] = {}
     for name, source in sources.items():
         frame = coerce_types(name, read_table(source))
         target = outdir / f"{name}.parquet"
@@ -98,6 +154,7 @@ def build_outputs(args: argparse.Namespace) -> dict[str, object]:
         counts[name] = int(len(frame))
         files[name] = target.name
         schemas[name] = parquet_schema(target)
+        semantic_hashes[name] = semantic_table_sha256(frame)
 
     if counts["variants"] <= 0 or counts["samples"] <= 0:
         raise ValueError("QC output must contain at least one variant and one sample")
@@ -107,6 +164,7 @@ def build_outputs(args: argparse.Namespace) -> dict[str, object]:
         "variant_count": counts["variants"],
         "row_counts": counts,
         "parquet_files": files,
+        "semantic_hashes": semantic_hashes,
         "storage": {"format": "parquet", "compression": "zstd"},
     }
     Path(args.summary).write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")

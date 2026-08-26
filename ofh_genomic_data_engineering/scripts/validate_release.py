@@ -7,6 +7,11 @@ from pathlib import Path
 
 import pandas as pd
 
+try:
+    from scripts.metrics_to_parquet import semantic_table_sha256
+except ModuleNotFoundError:
+    from metrics_to_parquet import semantic_table_sha256
+
 
 REQUIRED_COLUMNS = {
     "variants": {"CHROM", "POS", "ID", "REF", "ALT"},
@@ -20,6 +25,7 @@ REQUIRED_COLUMNS = {
 
 VARIANT_TABLES = {"allele_frequencies", "variant_missingness", "hardy_weinberg"}
 SAMPLE_TABLES = {"sample_missingness", "pca_scores"}
+SEMANTIC_IDENTITY_VERSION = 2
 
 
 def sha256(path: Path) -> str:
@@ -33,6 +39,16 @@ def sha256(path: Path) -> str:
 def _canonical_sha256(payload: object) -> str:
     raw = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(raw).hexdigest()
+
+
+def _is_sha256(value: object) -> bool:
+    if not isinstance(value, str) or len(value) != 64:
+        return False
+    try:
+        int(value, 16)
+    except ValueError:
+        return False
+    return True
 
 
 def _bounded_numeric(series: pd.Series, lower: float, upper: float) -> bool:
@@ -67,6 +83,23 @@ def validate_release(
         {"expected": sorted(expected_tables), "observed": sorted(parquet_files)},
     )
 
+    declared_semantic_hashes = summary.get("semantic_hashes", {})
+    semantic_inventory_valid = (
+        isinstance(declared_semantic_hashes, dict)
+        and set(declared_semantic_hashes) == expected_tables
+        and all(_is_sha256(value) for value in declared_semantic_hashes.values())
+    )
+    record(
+        "semantic_hash_inventory",
+        semantic_inventory_valid,
+        {
+            "expected": sorted(expected_tables),
+            "observed": sorted(declared_semantic_hashes)
+            if isinstance(declared_semantic_hashes, dict)
+            else type(declared_semantic_hashes).__name__,
+        },
+    )
+
     tables: dict[str, pd.DataFrame] = {}
     for name in sorted(expected_tables):
         filename = parquet_files.get(name)
@@ -84,6 +117,18 @@ def validate_release(
             f"{name}.row_count",
             expected_rows == len(frame),
             {"expected": expected_rows, "observed": len(frame)},
+        )
+        observed_semantic_hash = semantic_table_sha256(frame)
+        declared_semantic_hash = (
+            declared_semantic_hashes.get(name)
+            if isinstance(declared_semantic_hashes, dict)
+            else None
+        )
+        record(
+            f"{name}.semantic_hash",
+            _is_sha256(declared_semantic_hash)
+            and observed_semantic_hash == declared_semantic_hash,
+            {"declared": declared_semantic_hash, "observed": observed_semantic_hash},
         )
 
     sample_count = summary.get("sample_count")
@@ -114,7 +159,11 @@ def validate_release(
 
     if "samples" in tables and "IID" in tables["samples"]:
         sample_ids = tables["samples"]["IID"].astype(str)
-        record("sample_ids_unique", sample_ids.is_unique, {"rows": len(sample_ids), "unique": sample_ids.nunique()})
+        record(
+            "sample_ids_unique",
+            sample_ids.is_unique,
+            {"rows": len(sample_ids), "unique": sample_ids.nunique()},
+        )
         record(
             "samples_match_summary",
             len(sample_ids) == sample_count,
@@ -180,18 +229,40 @@ def validate_release(
         observed = sha256(path) if path.is_file() else None
         record(
             f"hash.{path.name}",
-            isinstance(expected, str) and len(expected) == 64 and observed == expected,
+            _is_sha256(expected) and observed == expected,
             {"expected": expected, "observed": observed},
         )
 
+    source_sha = provenance.get("source", {}).get("sha256")
+    delivery_fingerprint = provenance.get("delivery", {}).get("delivery_fingerprint")
+    reference_genome = provenance.get("delivery", {}).get("reference_genome")
+    record("semantic_identity.source_sha256", _is_sha256(source_sha), source_sha)
+    record(
+        "semantic_identity.delivery_fingerprint",
+        _is_sha256(delivery_fingerprint),
+        delivery_fingerprint,
+    )
+    record(
+        "semantic_identity.reference_genome",
+        isinstance(reference_genome, str) and bool(reference_genome.strip()),
+        reference_genome,
+    )
+
+    parameters = provenance.get("parameters", {})
+    identity_parameters = {key: parameters.get(key) for key in ("geno", "maf", "hwe")}
     release_basis = {
-        "source": provenance.get("source"),
-        "normalised_vcf_sha256": inventory.get("normalised_vcf_sha256"),
-        "parameters": provenance.get("parameters"),
-        "summary": summary,
-        "products": {
-            path.name: provenance_products.get(path.name, {}).get("sha256")
-            for path in product_paths
+        "identity_version": SEMANTIC_IDENTITY_VERSION,
+        "source_sha256": source_sha,
+        "delivery_fingerprint": delivery_fingerprint,
+        "reference_genome": reference_genome,
+        "parameters": identity_parameters,
+        "sample_count": sample_count,
+        "variant_count": variant_count,
+        "semantic_hashes": {
+            name: declared_semantic_hashes.get(name)
+            if isinstance(declared_semantic_hashes, dict)
+            else None
+            for name in sorted(expected_tables)
         },
     }
     release_id = _canonical_sha256(release_basis)
@@ -199,6 +270,10 @@ def validate_release(
     payload = {
         "status": "PASS" if passed else "FAIL",
         "release_id": release_id,
+        "release_identity": {
+            "version": SEMANTIC_IDENTITY_VERSION,
+            "basis": release_basis,
+        },
         "source_inventory": inventory,
         "summary": summary,
         "checks": checks,
