@@ -12,6 +12,21 @@ def _load(results: Path, relative: str) -> dict[str, object]:
     return json.loads(path.read_text())
 
 
+def _bgen_semantics(payload: dict[str, object]) -> dict[str, object]:
+    keys = (
+        "status",
+        "contract",
+        "allele_convention",
+        "probability_bits",
+        "frequency_tolerance",
+        "sample_count",
+        "variant_count",
+        "sample_ids_sha256",
+        "variant_identity_sha256",
+    )
+    return {key: payload.get(key) for key in keys}
+
+
 def validate_runtime_equivalence(
     *,
     host_results: Path,
@@ -22,6 +37,8 @@ def validate_runtime_equivalence(
 ) -> dict[str, object]:
     host_delivery = _load(host_results, "00_source/delivery_validation.json")
     candidate_delivery = _load(candidate_results, "00_source/delivery_validation.json")
+    host_bgen = _load(host_results, "05_bgen/bgen_validation.json")
+    candidate_bgen = _load(candidate_results, "05_bgen/bgen_validation.json")
     host_summary = _load(host_results, "06_parquet/summary.json")
     candidate_summary = _load(candidate_results, "06_parquet/summary.json")
     host_query = _load(host_results, "06_parquet/query_validation.json")
@@ -81,6 +98,27 @@ def validate_runtime_equivalence(
         {"host": host_semantic, "candidate": candidate_semantic},
     )
 
+    host_bgen_semantics = _bgen_semantics(host_bgen)
+    candidate_bgen_semantics = _bgen_semantics(candidate_bgen)
+    record(
+        "bgen_roundtrip_semantics",
+        host_bgen_semantics == candidate_bgen_semantics
+        and host_bgen.get("status") == candidate_bgen.get("status") == "PASS",
+        {"host": host_bgen_semantics, "candidate": candidate_bgen_semantics},
+    )
+    record(
+        "bgen_roundtrip_frequency_bound",
+        isinstance(host_bgen.get("max_abs_alt_frequency_diff"), (int, float))
+        and isinstance(candidate_bgen.get("max_abs_alt_frequency_diff"), (int, float))
+        and host_bgen.get("max_abs_alt_frequency_diff") <= host_bgen.get("frequency_tolerance")
+        and candidate_bgen.get("max_abs_alt_frequency_diff") <= candidate_bgen.get("frequency_tolerance"),
+        {
+            "host_max_abs_diff": host_bgen.get("max_abs_alt_frequency_diff"),
+            "candidate_max_abs_diff": candidate_bgen.get("max_abs_alt_frequency_diff"),
+            "tolerance": host_bgen.get("frequency_tolerance"),
+        },
+    )
+
     record(
         "query_status",
         host_query.get("status") == candidate_query.get("status") == "PASS",
@@ -102,7 +140,7 @@ def validate_runtime_equivalence(
     candidate_identity_version = candidate_release.get("release_identity", {}).get("version")
     record(
         "release_identity_version",
-        host_identity_version == candidate_identity_version == 2,
+        host_identity_version == candidate_identity_version == 3,
         {"host": host_identity_version, "candidate": candidate_identity_version},
     )
     record(
@@ -130,6 +168,7 @@ def validate_runtime_equivalence(
         "sample_count": host_samples if host_samples == candidate_samples else None,
         "variant_count": host_variants if host_variants == candidate_variants else None,
         "semantic_hashes": host_semantic if host_semantic == candidate_semantic else None,
+        "bgen_roundtrip": host_bgen_semantics if host_bgen_semantics == candidate_bgen_semantics else None,
         "checks": checks,
     }
     output_path.parent.mkdir(parents=True, exist_ok=True)
