@@ -94,11 +94,17 @@ jobs:
           assert provenance['delivery']['delivery_id'] == delivery['delivery']['delivery_id']
           assert provenance['delivery']['reference_genome'] == 'GRCh37'
           assert provenance['bgen_roundtrip'] == bgen
+          assert provenance['parameters']['plink_seed'] == 20260826
+          assert provenance['parameters']['plink_threads'] == 2
+          assert provenance['parameters']['plink_memory_mb'] == 3000
           assert release['status'] == 'PASS' and release['release_identity']['version'] == 3
           assert release['release_identity']['basis']['semantic_hashes'] == summary['semantic_hashes']
           assert release['release_identity']['basis']['bgen_contract']['allele_convention'] == 'ref-first'
+          assert release['release_identity']['basis']['parameters']['plink_seed'] == 20260826
+          assert release['release_identity']['basis']['parameters']['plink_threads'] == 2
+          assert release['release_identity']['basis']['parameters']['plink_memory_mb'] == 3000
           assert all(check['status'] == 'PASS' for check in release['checks'])
-          print(json.dumps({'delivery_fingerprint': fingerprint, 'input_samples': source['sample_count'], 'output_samples': summary['sample_count'], 'variants_before_qc': source['variant_count'], 'variants_after_qc': summary['variant_count'], 'bgen_max_abs_alt_frequency_diff': bgen['max_abs_alt_frequency_diff'], 'semantic_hash_count': len(summary['semantic_hashes']), 'release_identity_version': release['release_identity']['version'], 'release_id': release['release_id'], 'release_checks': len(release['checks'])}, indent=2))
+          print(json.dumps({'delivery_fingerprint': fingerprint, 'input_samples': source['sample_count'], 'output_samples': summary['sample_count'], 'variants_before_qc': source['variant_count'], 'variants_after_qc': summary['variant_count'], 'bgen_max_abs_alt_frequency_diff': bgen['max_abs_alt_frequency_diff'], 'semantic_hash_count': len(summary['semantic_hashes']), 'plink_seed': provenance['parameters']['plink_seed'], 'plink_threads': provenance['parameters']['plink_threads'], 'plink_memory_mb': provenance['parameters']['plink_memory_mb'], 'release_identity_version': release['release_identity']['version'], 'release_id': release['release_id'], 'release_checks': len(release['checks'])}, indent=2))
           PY
       - name: Snapshot exact release bytes before cache resume
         run: |
