@@ -27,6 +27,14 @@ def _bgen_semantics(payload: dict[str, object]) -> dict[str, object]:
     return {key: payload.get(key) for key in keys}
 
 
+def _pca_parameters(release: dict[str, object]) -> dict[str, object]:
+    parameters = release.get("release_identity", {}).get("basis", {}).get("parameters", {})
+    return {
+        key: parameters.get(key)
+        for key in ("plink_seed", "plink_threads", "plink_memory_mb")
+    }
+
+
 def validate_runtime_equivalence(
     *,
     host_results: Path,
@@ -90,12 +98,22 @@ def validate_runtime_equivalence(
 
     host_semantic = host_summary.get("semantic_hashes")
     candidate_semantic = candidate_summary.get("semantic_hashes")
+    semantic_mismatches = []
+    if isinstance(host_semantic, dict) and isinstance(candidate_semantic, dict):
+        semantic_mismatches = sorted(
+            name for name in set(host_semantic) | set(candidate_semantic)
+            if host_semantic.get(name) != candidate_semantic.get(name)
+        )
     record(
         "semantic_hashes",
         isinstance(host_semantic, dict)
         and len(host_semantic) == 7
         and host_semantic == candidate_semantic,
-        {"host": host_semantic, "candidate": candidate_semantic},
+        {
+            "mismatched_tables": semantic_mismatches,
+            "host": host_semantic,
+            "candidate": candidate_semantic,
+        },
     )
 
     host_bgen_semantics = _bgen_semantics(host_bgen)
@@ -143,6 +161,14 @@ def validate_runtime_equivalence(
         host_identity_version == candidate_identity_version == 3,
         {"host": host_identity_version, "candidate": candidate_identity_version},
     )
+    host_pca_parameters = _pca_parameters(host_release)
+    candidate_pca_parameters = _pca_parameters(candidate_release)
+    record(
+        "pca_execution_parameters",
+        host_pca_parameters == candidate_pca_parameters
+        and all(value is not None for value in host_pca_parameters.values()),
+        {"host": host_pca_parameters, "candidate": candidate_pca_parameters},
+    )
     record(
         "release_status",
         host_release.get("status") == candidate_release.get("status") == "PASS",
@@ -168,6 +194,8 @@ def validate_runtime_equivalence(
         "sample_count": host_samples if host_samples == candidate_samples else None,
         "variant_count": host_variants if host_variants == candidate_variants else None,
         "semantic_hashes": host_semantic if host_semantic == candidate_semantic else None,
+        "semantic_hash_mismatches": semantic_mismatches,
+        "pca_execution_parameters": host_pca_parameters if host_pca_parameters == candidate_pca_parameters else None,
         "bgen_roundtrip": host_bgen_semantics if host_bgen_semantics == candidate_bgen_semantics else None,
         "checks": checks,
     }
@@ -198,6 +226,7 @@ def main() -> int:
     if payload["status"] != "PASS":
         failed = [check["name"] for check in payload["checks"] if check["status"] == "FAIL"]
         print("runtime equivalence failed: " + ", ".join(failed))
+        print(json.dumps(payload, indent=2, sort_keys=True))
         return 2
     print(f"runtime equivalence passed: {payload['release_id']}")
     return 0
