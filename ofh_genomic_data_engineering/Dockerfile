@@ -5,7 +5,7 @@ ARG PLINK2_VERSION=2.0.0-a.6.9
 ARG NXF_VER=26.04.6
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    bcftools ca-certificates curl gzip openjdk-21-jre-headless python3 python3-pip unzip \
+    bcftools ca-certificates curl gzip openjdk-21-jre-headless python3 python-is-python3 python3-pip unzip \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL -o /tmp/plink2.zip \
