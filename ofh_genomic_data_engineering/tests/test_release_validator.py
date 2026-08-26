@@ -68,7 +68,16 @@ def _write_release(tmp_path: Path) -> dict[str, Path]:
     provenance = {
         "source": {"url": "https://example.org/input.vcf.gz", "sha256": "c" * 64},
         "delivery": {"delivery_fingerprint": "d" * 64, "reference_genome": "GRCh37"},
-        "parameters": {"geno": "0.02", "maf": "0.01", "hwe": "1e-6", "delivery_fingerprint": "d" * 64, "reference_genome": "GRCh37"},
+        "parameters": {
+            "geno": "0.02",
+            "maf": "0.01",
+            "hwe": "1e-6",
+            "plink_seed": 20260826,
+            "plink_threads": 2,
+            "plink_memory_mb": 3000,
+            "delivery_fingerprint": "d" * 64,
+            "reference_genome": "GRCh37",
+        },
         "bgen_roundtrip": bgen_validation,
         "products": {path.name: {"bytes": path.stat().st_size, "sha256": sha256(path)} for path in product_paths},
     }
@@ -100,6 +109,7 @@ def test_release_contract_passes_for_consistent_products(tmp_path: Path) -> None
     assert len(payload["release_id"]) == 64
     assert payload["release_identity"]["version"] == 3
     assert payload["release_identity"]["basis"]["bgen_contract"]["allele_convention"] == "ref-first"
+    assert payload["release_identity"]["basis"]["parameters"]["plink_seed"] == 20260826
     assert all(check["status"] == "PASS" for check in payload["checks"])
 
 
@@ -154,6 +164,17 @@ def test_release_contract_rejects_failed_bgen_roundtrip(tmp_path: Path) -> None:
     assert "bgen_roundtrip.provenance_binding" in failed
 
 
+def test_release_contract_rejects_invalid_pca_reproducibility_parameters(tmp_path: Path) -> None:
+    paths = _write_release(tmp_path)
+    provenance = json.loads(paths["provenance_path"].read_text())
+    provenance["parameters"]["plink_threads"] = 0
+    paths["provenance_path"].write_text(json.dumps(provenance))
+    payload = validate_release(**paths)
+    assert payload["status"] == "FAIL"
+    failed = {check["name"] for check in payload["checks"] if check["status"] == "FAIL"}
+    assert "semantic_identity.pca_reproducibility" in failed
+
+
 def test_release_id_is_independent_of_parquet_serialisation(tmp_path: Path) -> None:
     paths = _write_release(tmp_path)
     first = validate_release(**paths)
@@ -196,6 +217,18 @@ def test_release_id_changes_when_bgen_contract_changes(tmp_path: Path) -> None:
     _refresh_product_hash(paths, paths["bgen_validation_path"])
     provenance = json.loads(paths["provenance_path"].read_text())
     provenance["bgen_roundtrip"] = bgen
+    paths["provenance_path"].write_text(json.dumps(provenance))
+    second = validate_release(**paths)
+    assert second["status"] == "PASS"
+    assert second["release_id"] != first["release_id"]
+
+
+def test_release_id_changes_when_plink_seed_changes(tmp_path: Path) -> None:
+    paths = _write_release(tmp_path)
+    first = validate_release(**paths)
+    assert first["status"] == "PASS"
+    provenance = json.loads(paths["provenance_path"].read_text())
+    provenance["parameters"]["plink_seed"] = 20260827
     paths["provenance_path"].write_text(json.dumps(provenance))
     second = validate_release(**paths)
     assert second["status"] == "PASS"
