@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-25 15:35 BST（17:35 EEST）。本文件与
+最后运行更新：2026-08-26 07:50 BST（09:50 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -138,7 +138,7 @@ independent canonical receipts 成功后才求 joint cohort，最后组装
 | Study | 必需 OCM receipts | 保留的健康 r4/legacy work | 已取消的排队中 64G tasks | 128G recovery array |
 |---|---:|---|---|---:|
 | E-MTAB-7223 | 9 | 805860 task 5 | 没有剩余 pending task | **834320**，`0-8%3`，等待805860全部 tasks |
-| E-MTAB-10801 | 13 | 805861 tasks 1、5 | 805861 tasks 6-12 | **834321**，`0-12%3`，等待805861全部 tasks |
+| E-MTAB-10801 | 13 | 805861 task 1 | 805861 tasks 6-12 | **834321**，`0-12%3`，等待805861全部 tasks |
 | E-MTAB-11000 | 11 | legacy 805003 task 0 | 805862 tasks 0-10 | **834323**，`0-10%3`，等待其它三个 r5 arrays 与805003 |
 | E-MTAB-14568 | 27 | 无 | 805863 task 8 与 tasks 12-26 | r5 **834322**，随后256G repair **863034**，均为 `0-26%3` |
 
@@ -196,6 +196,13 @@ interpretation。
 missing/noncanonical indices。14568 joint job 834326 现依赖
 `afterok:863034_*`；这移除了因 r5 task 失败而永远无法满足的旧 dependency，同时保持
 fail-closed progression。
+
+09:50 EEST 检查时，805861_5 也在31 h 5 min 后以 `OUT_OF_MEMORY` 结束，834322_2
+则在4 h 后以 `OUT_OF_MEMORY` 结束。现有 recovery arrays 834321 与863034 已分别覆盖
+相应 indices，因此不需要新增 successor。active solver tasks 805860_5、805861_1、
+834322_1、834322_3 与834322_4 保持健康，live gaps 为3.39-3.83%；legacy 805003_0
+已运行69 h 11 min，但没有 live telemetry。其余 r5 14568 tasks 受 array throttle 限制，
+r6 正确等待 r5 终态。四个 cohort 的 canonical independent 与 joint receipt 计数仍为零。
 
 r5 instrumented independent tasks 请求128G、8 CPU、72 h Slurm limit，同时向 Gurobi
 显式传入 `TimeLimit=252000` 秒（70 h）、`MIPGap=1e-4`、8 threads、seed 0，留出
