@@ -2,60 +2,56 @@
 
 ## Purpose
 
-The pipeline treats a genomic delivery, a format/interface transformation and a research data release as separate contracts. Process completion alone is not enough to publish a release.
+The pipeline treats genotype delivery, independent sample metadata, format/interface transformation and the final research-data release as separate contracts. Process completion alone is not enough to publish a release.
 
-## 1. Source contract
+## 1. Genotype source contract
 
-After VCF normalisation, `source_inventory.py` records sample count, an ordered sample-ID SHA-256, indexed variant count and a SHA-256 of the normalised VCF. Duplicate or zero sample IDs and zero indexed variants are rejected before release validation.
+The provider genotype manifest declares stable delivery identity, source SHA-256, declared genome build and expected sample roster. The delivery validator recomputes source identity before processing. After normalisation, `source_inventory.py` records sample count, ordered sample-ID SHA-256, indexed variant count and normalised-VCF SHA-256.
 
-The normalised-VCF file hash is provenance/integrity evidence. It is not used as the logical release identifier because compression headers and other encoding details can differ between fresh executions.
+## 2. Sample metadata source and join contract
 
-## 2. BGEN round-trip contract
+The second feed is pinned to an immutable Git commit and expected Git blob SHA-1. `validate_sample_metadata.py` verifies the blob and file SHA-256, required fields (`sample`, `pop`, `super_pop`, `gender`), non-empty unique metadata IDs and the genotype sample IDs supplied by PLINK2.
 
-The pipeline exports Oxford BGEN 1.2 from the QC PGEN dataset with an explicit `ref-first` allele convention and 16-bit probability precision. It then re-imports the BGEN with PLINK2 and validates the round-trip representation against the source data.
+Because genotype import uses `--double-id`, the only accepted mapping is an IID of exact form `<sample>_<same-sample>` to canonical `<sample>`. The validator rejects malformed IDs, duplicate metadata IDs and any missing genotype sample. Release requires 100% coverage and preserved genotype order.
 
-`validate_bgen_roundtrip.py` checks:
+A passing join emits `sample_metadata.parquet` and `metadata_validation.json`. The latter records the immutable source identity, 2,504-row source count for the pinned fixture, 90/90 coverage, canonical ordered sample-ID SHA-256 and a canonical semantic SHA-256 of the joined output.
 
-- exact ordered sample IDs and their SHA-256;
-- exact variant count;
-- exact ordered `CHROM/POS/ID/REF/ALT` identity;
-- aligned frequency-table row count and variant order;
-- exact `OBS_CT`;
-- ALT-frequency differences within the configured tolerance (`0.0001`).
+## 3. BGEN round-trip contract
 
-A failed BGEN contract blocks the release. The passing evidence is written to `results/05_bgen/bgen_validation.json` and copied into provenance.
+The pipeline exports Oxford BGEN 1.2 from the QC PGEN dataset with explicit `ref-first` allele convention and 16-bit probability precision, re-imports it with PLINK2, and checks exact ordered sample and `CHROM/POS/ID/REF/ALT` identity, aligned frequency rows, `OBS_CT`, and ALT-frequency tolerance.
 
-## 3. Curated release contract
+A failed BGEN contract blocks release.
 
-`validate_release.py` checks the BGEN, BGEN-validation, Parquet, summary and provenance products as one release. The gate validates file presence, required columns, row-count consistency, unique sample IDs, unique normalised variant keys, source-to-release sample preservation, variant-count non-inflation, bounded QC metrics, cross-table sample consistency, BGEN contract status and SHA-256 integrity.
+## 4. Curated release contract
 
-Each of the seven Parquet tables also has a canonical semantic SHA-256. The hash is computed from ordered columns, normalised logical types and canonical scalar values in row order. It is independent of Parquet compression, row-group layout and file metadata. Release validation recomputes those hashes from the stored tables and fails if declared and observed semantic content differ.
+`validate_release.py` checks BGEN, metadata, Parquet, summary and provenance products as one release. The gate validates file presence, required columns, row counts, unique sample IDs and variant keys, source-to-release sample preservation, variant-count non-inflation, bounded QC metrics, cross-table sample consistency, metadata 100% coverage and ordered sample identity, BGEN contract status, semantic hashes, provenance bindings and byte-level product integrity.
 
-## 4. Release identity v3
+## 5. Semantic release identity v4
 
 A passing release receives a 64-character release ID computed from:
 
-- pinned original source SHA-256;
-- validated delivery fingerprint;
+- pinned original genotype source SHA-256;
+- validated genotype delivery fingerprint;
 - declared reference genome;
 - QC parameters (`geno`, `maf`, `hwe`);
+- pinned PLINK2 approximate-PCA execution conditions: seed, thread count and memory budget;
 - release sample/variant counts;
-- all seven semantic table hashes;
+- all seven genomic semantic table hashes;
 - BGEN contract identity: format, allele convention, probability bits, frequency tolerance, ordered sample hash and ordered variant/allele hash;
-- pinned PLINK2 execution parameters used by approximate PCA: seed, thread count and memory budget.
+- metadata contract identity: contract version, immutable source Git blob SHA-1, metadata source SHA-256, source row count, matched-sample count, canonical ordered sample hash and joined-output semantic hash.
 
-BGEN, sample and Parquet byte-level SHA-256 values remain in provenance and are checked for integrity, but they do not define logical identity.
+BGEN, sample, metadata and Parquet byte-level SHA-256 values remain in provenance and are checked for integrity, but they do not define logical identity where serialisation can vary without changing data meaning.
 
-The execution parameters are part of identity because fresh host/Docker validation exposed PCA drift when approximate PCA was allowed to inherit runtime-dependent conditions. The current CI fixture pins `seed=20260826`, `threads=2` and `memory=3000 MB`.
+For v0.6.0 real-data run `32946752358`, all **85 release checks passed** and release identity v4 was `5d61489ae14365c4476795946c869578f667c96b2de9c30ff9cec7b1f424f33e`.
 
-## 5. Rejection path
+## 6. Rejection path
 
-The command exits non-zero when any check fails, so the Nextflow `RELEASE_GATE` fails. Negative tests cover duplicate sample IDs, tampered product hashes, declared semantic-hash mismatch, semantic content drift, invalid PCA execution parameters and BGEN round-trip drift.
+The command exits non-zero when any check fails, so the Nextflow `RELEASE_GATE` fails. Negative tests cover genotype-delivery drift, malformed or incomplete metadata joins, metadata semantic drift, BGEN drift, duplicate sample IDs, tampered products, declared genomic semantic-hash mismatch, genomic semantic content drift and invalid PCA execution parameters.
 
-## 6. Reproducibility scope
+## 7. Reproducibility scope
 
-Two contracts are kept separate: `reproducibility_validation.json` proves exact file identity for an immediate Nextflow cache-resume execution; `runtime_equivalence_validation.json` proves logical equivalence between independent host and Docker executions by comparing delivery identity, counts, query results, BGEN semantics, PCA execution parameters, semantic hashes and release ID.
+Two contracts stay separate. `reproducibility_validation.json` proves exact file identity for an immediate Nextflow cache-resume execution; v0.6.0 requires 15 cached processes and 18 unchanged tracked outputs. `runtime_equivalence_validation.json` proves logical equivalence between independent host and Docker executions by comparing genotype delivery identity, metadata source/join semantics, counts, query results, BGEN semantics, PCA execution parameters, genomic semantic hashes and release ID. v0.6.0 passed all 15 cross-runtime checks.
 
-## 7. FAIR and GA4GH scope
+## 8. FAIR and GA4GH scope
 
 This project uses open genomic formats and machine-readable provenance in ways that support FAIR data-management principles. It does not claim implementation of GA4GH APIs or services, genotype calling, phasing, imputation, ancestry inference or clinical validity.

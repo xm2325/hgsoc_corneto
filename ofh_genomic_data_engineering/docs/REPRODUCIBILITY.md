@@ -2,41 +2,32 @@
 
 ## Goal
 
-A successful first execution is not enough evidence for a reusable data pipeline. For a fixed source, fixed parameters and fixed code revision, an immediate rerun should not silently create a different research data release. A fresh execution in a different runtime should also preserve the logical release even when binary serialisation details are allowed to differ.
+A successful first execution is not enough evidence for a reusable multi-feed data pipeline. For fixed genotype and metadata sources, fixed parameters and fixed code, an immediate rerun should not silently create a different release. A fresh execution in a different runtime should also preserve logical release semantics even when binary serialisation details can differ.
 
 ## Exact cache-resume contract
 
-After the first real-data run passes the BGEN, query and release contracts, GitHub Actions records SHA-256 values for 16 release-facing outputs: delivery validation, BGEN and sample file, BGEN validation, seven Parquet tables, schema manifest, query validation, summary, provenance and release validation.
+After the first real-data run passes metadata, BGEN, query and release contracts, GitHub Actions records SHA-256 values for 18 release-facing outputs: delivery validation, sample-metadata Parquet and validation, BGEN and sample file, BGEN validation, seven genomic Parquet tables, summary, schema manifest, query validation, provenance and release validation.
 
-The workflow then executes the identical Nextflow graph with `-resume` and writes a trace file. Validation fails unless:
-
-- the trace contains exactly the 13 expected pipeline processes;
-- every process status is `CACHED`;
-- every tracked output has the same SHA-256 value before and after resume;
-- the semantic release ID remains unchanged.
-
-A passing check writes `results/08_release/reproducibility_validation.json`.
+The workflow reruns the identical graph with `-resume`. Validation fails unless the trace contains exactly 15 processes, every process is `CACHED`, every tracked output has the same SHA-256, and semantic release ID remains unchanged.
 
 ## Fresh host/Docker semantic-equivalence contract
 
-GitHub Actions also builds the project image and executes the complete real-data workflow again inside a fresh container. `validate_runtime_equivalence.py` compares the independent host and container results.
+GitHub Actions builds the project image and executes the complete two-feed workflow again inside a fresh container. `validate_runtime_equivalence.py` requires the same genotype delivery fingerprint, sample/variant counts, seven genomic Parquet semantic hashes, BGEN round-trip contract, metadata immutable source and join semantics, pinned PCA execution parameters, DuckDB query result, release-identity version and release ID.
 
-The check requires the same delivery fingerprint, sample and variant counts, seven Parquet semantic hashes, BGEN round-trip contract, pinned PCA execution parameters, DuckDB query result, release-identity version and semantic release ID.
+Binary file hashes are intentionally not the cross-runtime equality criterion because independent serialisation can differ without logical data drift.
 
-Binary file hashes are intentionally not the cross-runtime equality criterion because independent Parquet/BGEN serialisation can differ without changing logical content.
+## v0.6.0 verified result
 
-## v0.5.0 verified result
+GitHub Actions run `32946752358` on commit `9af6e1da6f99262a4058491f357bdc57599e317d` passed both contracts:
 
-GitHub Actions run `32944457150` passed both contracts:
-
-- `13/13` processes were `CACHED` on immediate resume;
-- all `16` tracked release-facing outputs were unchanged;
-- fresh host/Docker validation passed `14/14` semantic-equivalence checks;
-- all seven Parquet semantic hashes matched;
-- BGEN sample and variant identity matched;
-- BGEN maximum absolute ALT-frequency difference was `0.0`;
-- release identity v3 matched with release ID `556f4fb052ff3bda213d86e384e8679f3385afd8cf0ea0703d043269dd5ebd98`.
+- **15/15 processes were `CACHED`** on immediate resume;
+- all **18 tracked release-facing outputs were unchanged**;
+- fresh host/Docker validation passed **15/15 semantic-equivalence checks**;
+- the second feed matched **90/90 samples**, and metadata semantic SHA-256 `07190a7bf645849f2eafcfe8368eb47511387e4e2c004851ecdd9727c17d6364` matched across runtimes;
+- all seven genomic Parquet semantic hashes matched;
+- BGEN sample and variant identity matched, with maximum absolute ALT-frequency difference `0.0`;
+- release identity v4 matched with release ID `5d61489ae14365c4476795946c869578f667c96b2de9c30ff9cec7b1f424f33e`.
 
 ## Interpretation
 
-These checks cover the pinned public CI dataset and recorded tool/parameter context. They are not a claim that arbitrary historical pipelines remain reproducible after tool, reference-build, parameter or source changes. Those changes must create a new validated release context.
+These checks cover the pinned public CI fixture and recorded tool/parameter context. They are not a claim that arbitrary historical pipelines remain reproducible after source, tool, reference-build or parameter changes; those changes must create a new validated release context.

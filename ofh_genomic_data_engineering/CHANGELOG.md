@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.6.0 - 2026-08-26
+
+- Add a second independently pinned 1000 Genomes Phase 3 sample-metadata feed to the genotype workflow.
+- Pin the panel to Illumina/akt commit `f1e47dd3dbbd966415b04e3b346e20fa23c29a93` and verify Git blob SHA-1 `bc447774e6bacc2f4ca3619d14bf96a1846aa4e4` plus file SHA-256 before release.
+- Add `sample-metadata-join-v1`, requiring metadata schema, non-empty unique IDs, strict PLINK `<sample>_<sample>` canonical identity, preserved genotype order and 100% genotype-to-metadata coverage.
+- Emit a release-critical typed ZSTD `sample_metadata.parquet` plus `metadata_validation.json` with source identity, canonical sample hash, coverage and output semantic hash.
+- Bind the metadata source/join contract into provenance and semantic release identity v4 so metadata drift changes release identity even when genotype products do not change.
+- Add metadata negative tests for missing samples, duplicate IDs, malformed PLINK IDs and wrong pinned source blob, plus release/runtime tests for metadata contract failure and semantic drift.
+- Expand the real-data Nextflow graph from 13 to **15 processes**, exact resume tracking from 16 to **18 release-facing outputs**, and cross-runtime semantic equivalence from 14 to **15 checks**.
+- Verify v0.6.0 in GitHub Actions run `32946752358` on commit `9af6e1da6f99262a4058491f357bdc57599e317d`: **43 tests**, 2,504 metadata-source rows, **90/90 metadata matches**, 1,059,913 normalised variants, 127,171 post-QC variants, zero BGEN ALT-frequency drift, **85/85 release checks**, **15/15 cached processes**, zero changes across 18 tracked outputs, and **15/15 fresh host/Docker semantic-equivalence checks**.
+- Verified metadata semantic SHA-256 `07190a7bf645849f2eafcfe8368eb47511387e4e2c004851ecdd9727c17d6364` and release identity v4 `5d61489ae14365c4476795946c869578f667c96b2de9c30ff9cec7b1f424f33e`.
+- Upload a 43-file / 52,844,971-byte evidence artifact with ZIP digest `sha256:ef2e14abd4873a7d31182aa4af833b6ff9a9aa13dd4fe7c00ad0dd64eec68595`.
+
 ## 0.5.0 - 2026-08-26
 
 - Promote BGEN from a file-presence output to a validated interface contract.
