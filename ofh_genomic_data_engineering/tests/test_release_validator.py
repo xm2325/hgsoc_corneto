@@ -46,18 +46,45 @@ def _write_release(tmp_path: Path) -> dict[str, Path]:
     bgen_path.write_bytes(b"BGEN fixture")
     sample_path = tmp_path / "analysis_ready.sample"
     sample_path.write_text("ID_1 ID_2\n0 0\nS1 S1\nS2 S2\n")
+    bgen_validation = {
+        "status": "PASS",
+        "contract": "bgen-1.2-roundtrip",
+        "allele_convention": "ref-first",
+        "probability_bits": 16,
+        "frequency_tolerance": 0.0001,
+        "sample_count": 2,
+        "variant_count": 2,
+        "sample_ids_sha256": "e" * 64,
+        "variant_identity_sha256": "f" * 64,
+        "max_abs_alt_frequency_diff": 0.0,
+        "mean_abs_alt_frequency_diff": 0.0,
+        "obs_ct_mismatch_count": 0,
+        "checks": [{"name": "fixture", "status": "PASS", "detail": {}}],
+    }
+    bgen_validation_path = tmp_path / "bgen_validation.json"
+    bgen_validation_path.write_text(json.dumps(bgen_validation))
 
-    product_paths = [bgen_path, sample_path, *sorted(parquet_dir.glob("*.parquet"))]
+    product_paths = [bgen_path, sample_path, bgen_validation_path, *sorted(parquet_dir.glob("*.parquet"))]
     provenance = {
         "source": {"url": "https://example.org/input.vcf.gz", "sha256": "c" * 64},
         "delivery": {"delivery_fingerprint": "d" * 64, "reference_genome": "GRCh37"},
         "parameters": {"geno": "0.02", "maf": "0.01", "hwe": "1e-6", "delivery_fingerprint": "d" * 64, "reference_genome": "GRCh37"},
+        "bgen_roundtrip": bgen_validation,
         "products": {path.name: {"bytes": path.stat().st_size, "sha256": sha256(path)} for path in product_paths},
     }
     provenance_path = tmp_path / "provenance.json"
     provenance_path.write_text(json.dumps(provenance))
 
-    return {"source_inventory_path": inventory_path, "summary_path": summary_path, "provenance_path": provenance_path, "parquet_dir": parquet_dir, "bgen_path": bgen_path, "sample_path": sample_path, "output_path": tmp_path / "release_validation.json"}
+    return {
+        "source_inventory_path": inventory_path,
+        "summary_path": summary_path,
+        "provenance_path": provenance_path,
+        "parquet_dir": parquet_dir,
+        "bgen_path": bgen_path,
+        "sample_path": sample_path,
+        "bgen_validation_path": bgen_validation_path,
+        "output_path": tmp_path / "release_validation.json",
+    }
 
 
 def _refresh_product_hash(paths: dict[str, Path], changed: Path) -> None:
@@ -71,7 +98,8 @@ def test_release_contract_passes_for_consistent_products(tmp_path: Path) -> None
     payload = validate_release(**paths)
     assert payload["status"] == "PASS"
     assert len(payload["release_id"]) == 64
-    assert payload["release_identity"]["version"] == 2
+    assert payload["release_identity"]["version"] == 3
+    assert payload["release_identity"]["basis"]["bgen_contract"]["allele_convention"] == "ref-first"
     assert all(check["status"] == "PASS" for check in payload["checks"])
 
 
@@ -111,6 +139,21 @@ def test_release_contract_rejects_declared_semantic_hash_mismatch(tmp_path: Path
     assert "variants.semantic_hash" in failed
 
 
+def test_release_contract_rejects_failed_bgen_roundtrip(tmp_path: Path) -> None:
+    paths = _write_release(tmp_path)
+    bgen = json.loads(paths["bgen_validation_path"].read_text())
+    bgen["status"] = "FAIL"
+    bgen["max_abs_alt_frequency_diff"] = 0.01
+    paths["bgen_validation_path"].write_text(json.dumps(bgen))
+    _refresh_product_hash(paths, paths["bgen_validation_path"])
+    payload = validate_release(**paths)
+    assert payload["status"] == "FAIL"
+    failed = {check["name"] for check in payload["checks"] if check["status"] == "FAIL"}
+    assert "bgen_roundtrip.status" in failed
+    assert "bgen_roundtrip.frequency_tolerance" in failed
+    assert "bgen_roundtrip.provenance_binding" in failed
+
+
 def test_release_id_is_independent_of_parquet_serialisation(tmp_path: Path) -> None:
     paths = _write_release(tmp_path)
     first = validate_release(**paths)
@@ -138,6 +181,22 @@ def test_release_id_changes_when_semantic_content_changes(tmp_path: Path) -> Non
     summary = json.loads(paths["summary_path"].read_text())
     summary["semantic_hashes"]["pca_scores"] = semantic_table_sha256(pd.read_parquet(changed))
     paths["summary_path"].write_text(json.dumps(summary))
+    second = validate_release(**paths)
+    assert second["status"] == "PASS"
+    assert second["release_id"] != first["release_id"]
+
+
+def test_release_id_changes_when_bgen_contract_changes(tmp_path: Path) -> None:
+    paths = _write_release(tmp_path)
+    first = validate_release(**paths)
+    assert first["status"] == "PASS"
+    bgen = json.loads(paths["bgen_validation_path"].read_text())
+    bgen["frequency_tolerance"] = 0.0002
+    paths["bgen_validation_path"].write_text(json.dumps(bgen))
+    _refresh_product_hash(paths, paths["bgen_validation_path"])
+    provenance = json.loads(paths["provenance_path"].read_text())
+    provenance["bgen_roundtrip"] = bgen
+    paths["provenance_path"].write_text(json.dumps(provenance))
     second = validate_release(**paths)
     assert second["status"] == "PASS"
     assert second["release_id"] != first["release_id"]
