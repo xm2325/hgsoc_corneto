@@ -15,6 +15,21 @@ process DOWNLOAD_INPUT {
     """
 }
 
+process DOWNLOAD_SAMPLE_METADATA {
+    tag '1000G sample metadata feed'
+    publishDir "${params.outdir}/00_source", mode: 'copy', overwrite: true, pattern: 'sample_metadata.*'
+    output:
+    path 'sample_metadata.panel', emit: metadata
+    path 'sample_metadata.sha256', emit: source_sha
+    script:
+    """
+    set -euo pipefail
+    curl --fail --location --retry 3 --output sample_metadata.panel '${params.sample_metadata_url}'
+    test -s sample_metadata.panel
+    sha256sum sample_metadata.panel > sample_metadata.sha256
+    """
+}
+
 process DELIVERY_GATE {
     tag 'provider delivery contract'
     publishDir "${params.outdir}/00_source", mode: 'copy', overwrite: true, pattern: 'delivery_validation.json'
@@ -135,6 +150,28 @@ process QC_REPORTS {
     """
 }
 
+process SAMPLE_METADATA_CONTRACT {
+    tag 'sample metadata join contract'
+    publishDir "${params.outdir}/05_metadata", mode: 'copy', overwrite: true
+    input:
+    tuple path(qc_pgen), path(qc_pvar), path(qc_psam)
+    path metadata
+    output:
+    path 'sample_metadata.parquet', emit: parquet
+    path 'metadata_validation.json', emit: validation
+    script:
+    """
+    set -euo pipefail
+    python ${projectDir}/scripts/validate_sample_metadata.py \
+      --psam ${qc_psam} --metadata ${metadata} \
+      --expected-git-blob-sha1 '${params.sample_metadata_git_blob_sha1}' \
+      --source-url '${params.sample_metadata_url}' \
+      --output-parquet sample_metadata.parquet \
+      --output-json metadata_validation.json
+    test -s sample_metadata.parquet && test -s metadata_validation.json
+    """
+}
+
 process EXPORT_BGEN {
     tag 'BGEN export'
     publishDir "${params.outdir}/05_bgen", mode: 'copy', overwrite: true
@@ -229,6 +266,8 @@ process PROVENANCE {
     path bgen
     path sample
     path bgen_validation
+    path sample_metadata
+    path metadata_validation
     path parquet_dir
     path stats
     path schema_manifest
@@ -243,6 +282,7 @@ process PROVENANCE {
       --delivery-validation ${delivery_validation} \
       --summary ${summary} --bgen ${bgen} --sample ${sample} \
       --bgen-validation ${bgen_validation} \
+      --sample-metadata ${sample_metadata} --metadata-validation ${metadata_validation} \
       --parquet-dir ${parquet_dir} --bcftools-stats ${stats} \
       --schema-manifest ${schema_manifest} --query-validation ${query_validation} \
       --geno '${params.geno}' --maf '${params.maf}' --hwe '${params.hwe}' \
@@ -262,6 +302,8 @@ process RELEASE_GATE {
     path bgen
     path sample
     path bgen_validation
+    path sample_metadata
+    path metadata_validation
     path parquet_dir
     path query_validation
     output:
@@ -275,31 +317,38 @@ delivery = json.load(open('${delivery_validation}'))
 provenance = json.load(open('${provenance}'))
 query = json.load(open('${query_validation}'))
 bgen_validation = json.load(open('${bgen_validation}'))
+metadata_validation = json.load(open('${metadata_validation}'))
 assert query['status'] == 'PASS', query
 assert bgen_validation['status'] == 'PASS', bgen_validation
+assert metadata_validation['status'] == 'PASS', metadata_validation
 assert delivery['status'] == 'PASS' and delivery['action'] == 'PROCESS', delivery
 assert delivery['should_process'] is True, delivery
 assert provenance['source']['sha256'] == delivery['source_observed']['sha256']
 assert provenance['delivery']['delivery_fingerprint'] == delivery['delivery']['delivery_fingerprint']
 assert provenance['parameters']['delivery_fingerprint'] == delivery['delivery']['delivery_fingerprint']
 assert provenance['delivery']['reference_genome'] == '${params.required_reference_genome}'
+assert provenance['sample_metadata_join'] == metadata_validation
 PY
     python ${projectDir}/scripts/validate_release.py \
       --source-inventory ${source_inventory} --summary ${summary} --provenance ${provenance} \
       --parquet-dir ${parquet_dir} --bgen ${bgen} --sample ${sample} \
-      --bgen-validation ${bgen_validation} --output release_validation.json
+      --bgen-validation ${bgen_validation} \
+      --sample-metadata ${sample_metadata} --metadata-validation ${metadata_validation} \
+      --output release_validation.json
     """
 }
 
 workflow {
     delivery_manifest = Channel.fromPath(params.delivery_manifest, checkIfExists: true)
     DOWNLOAD_INPUT()
+    DOWNLOAD_SAMPLE_METADATA()
     DELIVERY_GATE(DOWNLOAD_INPUT.out.vcf, delivery_manifest)
     NORMALISE_VCF(DELIVERY_GATE.out.vcf)
     SOURCE_INVENTORY(NORMALISE_VCF.out.vcf, NORMALISE_VCF.out.index)
     IMPORT_PLINK2(NORMALISE_VCF.out.vcf)
     QC_FILTER(IMPORT_PLINK2.out.pfile)
     QC_REPORTS(QC_FILTER.out.pfile)
+    SAMPLE_METADATA_CONTRACT(QC_FILTER.out.pfile, DOWNLOAD_SAMPLE_METADATA.out.metadata)
     EXPORT_BGEN(QC_FILTER.out.pfile)
     BGEN_ROUNDTRIP(
         QC_FILTER.out.pfile,
@@ -323,6 +372,8 @@ workflow {
         EXPORT_BGEN.out.bgen,
         EXPORT_BGEN.out.sample,
         BGEN_ROUNDTRIP.out.validation,
+        SAMPLE_METADATA_CONTRACT.out.parquet,
+        SAMPLE_METADATA_CONTRACT.out.validation,
         EXPORT_PARQUET.out.parquet_dir,
         NORMALISE_VCF.out.stats,
         EXPORT_PARQUET.out.schema_manifest,
@@ -336,6 +387,8 @@ workflow {
         EXPORT_BGEN.out.bgen,
         EXPORT_BGEN.out.sample,
         BGEN_ROUNDTRIP.out.validation,
+        SAMPLE_METADATA_CONTRACT.out.parquet,
+        SAMPLE_METADATA_CONTRACT.out.validation,
         EXPORT_PARQUET.out.parquet_dir,
         QUERY_CONTRACT.out.validation
     )
