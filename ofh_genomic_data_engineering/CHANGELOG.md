@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.1 - 2026-08-26
+
+- Copy the provider delivery configuration into the Docker image; v0.4.0 could build the image but did not include `config/delivery_manifest.json` required at runtime.
+- Upgrade CI from Docker build-only evidence to a full containerised execution of the same pinned real-data workflow.
+- Require the containerised delivery decision, delivery fingerprint, sample/variant counts and release ID to match the host workflow before CI can pass.
+- Synchronise Python and Nextflow manifest versions to 0.4.1.
+
 ## 0.4.0 - 2026-08-26
 
 - Add a provider delivery manifest and a fail-closed delivery gate before genomic processing.

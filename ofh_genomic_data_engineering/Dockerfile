@@ -22,5 +22,6 @@ COPY pyproject.toml ./
 COPY scripts ./scripts
 RUN python3 -m pip install --break-system-packages --no-cache-dir .
 COPY main.nf nextflow.config README.md ./
+COPY config ./config
 
 ENTRYPOINT ["nextflow", "run", "main.nf", "-profile", "local", "--outdir", "/work/results"]

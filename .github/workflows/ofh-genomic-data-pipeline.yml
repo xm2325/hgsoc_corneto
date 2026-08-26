@@ -197,6 +197,37 @@ jobs:
           PY
       - name: Build Docker image
         run: docker build -t genomic-data-engineering:test .
+      - name: Run containerised real-data pipeline
+        run: |
+          rm -rf container-results
+          mkdir -p container-results
+          docker run --rm -v "$PWD/container-results:/work/results" genomic-data-engineering:test
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          host_delivery = json.loads(Path('results/00_source/delivery_validation.json').read_text())
+          host_summary = json.loads(Path('results/06_parquet/summary.json').read_text())
+          host_release = json.loads(Path('results/08_release/release_validation.json').read_text())
+          container_delivery = json.loads(Path('container-results/00_source/delivery_validation.json').read_text())
+          container_summary = json.loads(Path('container-results/06_parquet/summary.json').read_text())
+          container_release = json.loads(Path('container-results/08_release/release_validation.json').read_text())
+
+          assert container_delivery['status'] == 'PASS', container_delivery
+          assert container_delivery['action'] == 'PROCESS', container_delivery
+          assert container_release['status'] == 'PASS', container_release
+          assert container_delivery['delivery']['delivery_fingerprint'] == host_delivery['delivery']['delivery_fingerprint']
+          assert container_summary['sample_count'] == host_summary['sample_count'] == 90
+          assert container_summary['variant_count'] == host_summary['variant_count'] == 127171
+          assert container_release['release_id'] == host_release['release_id']
+          print(json.dumps({
+              'container_status': container_release['status'],
+              'sample_count': container_summary['sample_count'],
+              'variant_count': container_summary['variant_count'],
+              'delivery_fingerprint': container_delivery['delivery']['delivery_fingerprint'],
+              'release_id': container_release['release_id'],
+          }, indent=2))
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: genomic-data-engineering-results

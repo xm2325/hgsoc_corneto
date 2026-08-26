@@ -13,7 +13,8 @@ A change is application-ready only when the same GitHub Actions job passes all b
 9. Provenance with source/product SHA-256 values and validated delivery fingerprint.
 10. Fail-closed release contract with delivery/provenance consistency assertions.
 11. A second identical Nextflow run with `-resume`, where all 12 processes must be `CACHED` and all tracked release-facing SHA-256 values must remain unchanged.
-12. Docker image build and workflow artifact upload.
+12. Docker image build followed by a full containerised run of the same real-data workflow; the container delivery fingerprint, sample/variant counts and release ID must match the host run.
+13. Workflow artifact upload.
 
 Delivery negative tests verify rejection of checksum mismatch, wrong declared genome build, sample-roster mismatch and delivery-ID collision. They also verify that an exact registered duplicate returns `NOOP` with `should_process=false`.
 
