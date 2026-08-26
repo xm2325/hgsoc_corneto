@@ -25,7 +25,7 @@ REQUIRED_COLUMNS = {
 
 VARIANT_TABLES = {"allele_frequencies", "variant_missingness", "hardy_weinberg"}
 SAMPLE_TABLES = {"sample_missingness", "pca_scores"}
-SEMANTIC_IDENTITY_VERSION = 2
+SEMANTIC_IDENTITY_VERSION = 3
 
 
 def sha256(path: Path) -> str:
@@ -64,11 +64,13 @@ def validate_release(
     parquet_dir: Path,
     bgen_path: Path,
     sample_path: Path,
+    bgen_validation_path: Path,
     output_path: Path,
 ) -> dict[str, object]:
     inventory = json.loads(source_inventory_path.read_text())
     summary = json.loads(summary_path.read_text())
     provenance = json.loads(provenance_path.read_text())
+    bgen_validation = json.loads(bgen_validation_path.read_text())
 
     checks: list[dict[str, object]] = []
 
@@ -133,16 +135,8 @@ def validate_release(
 
     sample_count = summary.get("sample_count")
     variant_count = summary.get("variant_count")
-    record(
-        "sample_count_positive",
-        isinstance(sample_count, int) and sample_count > 0,
-        sample_count,
-    )
-    record(
-        "variant_count_positive",
-        isinstance(variant_count, int) and variant_count > 0,
-        variant_count,
-    )
+    record("sample_count_positive", isinstance(sample_count, int) and sample_count > 0, sample_count)
+    record("variant_count_positive", isinstance(variant_count, int) and variant_count > 0, variant_count)
     record(
         "source_sample_preservation",
         sample_count == inventory.get("sample_count"),
@@ -217,7 +211,45 @@ def validate_release(
                 {"rows": len(tables[table_name])},
             )
 
-    product_paths = [bgen_path, sample_path]
+    bgen_status = bgen_validation.get("status")
+    bgen_contract = bgen_validation.get("contract")
+    allele_convention = bgen_validation.get("allele_convention")
+    probability_bits = bgen_validation.get("probability_bits")
+    frequency_tolerance = bgen_validation.get("frequency_tolerance")
+    max_frequency_diff = bgen_validation.get("max_abs_alt_frequency_diff")
+    bgen_sample_hash = bgen_validation.get("sample_ids_sha256")
+    bgen_variant_hash = bgen_validation.get("variant_identity_sha256")
+
+    record("bgen_roundtrip.status", bgen_status == "PASS", bgen_status)
+    record("bgen_roundtrip.contract", bgen_contract == "bgen-1.2-roundtrip", bgen_contract)
+    record("bgen_roundtrip.allele_convention", allele_convention == "ref-first", allele_convention)
+    record("bgen_roundtrip.probability_bits", probability_bits == 16, probability_bits)
+    record(
+        "bgen_roundtrip.sample_count",
+        bgen_validation.get("sample_count") == sample_count,
+        {"bgen": bgen_validation.get("sample_count"), "summary": sample_count},
+    )
+    record(
+        "bgen_roundtrip.variant_count",
+        bgen_validation.get("variant_count") == variant_count,
+        {"bgen": bgen_validation.get("variant_count"), "summary": variant_count},
+    )
+    record("bgen_roundtrip.sample_hash", _is_sha256(bgen_sample_hash), bgen_sample_hash)
+    record("bgen_roundtrip.variant_hash", _is_sha256(bgen_variant_hash), bgen_variant_hash)
+    tolerance_valid = isinstance(frequency_tolerance, (int, float)) and frequency_tolerance >= 0
+    max_diff_valid = isinstance(max_frequency_diff, (int, float)) and max_frequency_diff >= 0
+    record(
+        "bgen_roundtrip.frequency_tolerance",
+        tolerance_valid and max_diff_valid and max_frequency_diff <= frequency_tolerance,
+        {"tolerance": frequency_tolerance, "max_abs_diff": max_frequency_diff},
+    )
+    record(
+        "bgen_roundtrip.provenance_binding",
+        provenance.get("bgen_roundtrip") == bgen_validation,
+        {"bound": provenance.get("bgen_roundtrip") == bgen_validation},
+    )
+
+    product_paths = [bgen_path, sample_path, bgen_validation_path]
     product_paths.extend(
         parquet_dir / parquet_files[name]
         for name in sorted(expected_tables)
@@ -264,16 +296,21 @@ def validate_release(
             else None
             for name in sorted(expected_tables)
         },
+        "bgen_contract": {
+            "format": bgen_contract,
+            "allele_convention": allele_convention,
+            "probability_bits": probability_bits,
+            "frequency_tolerance": frequency_tolerance,
+            "sample_ids_sha256": bgen_sample_hash,
+            "variant_identity_sha256": bgen_variant_hash,
+        },
     }
     release_id = _canonical_sha256(release_basis)
     passed = all(check["status"] == "PASS" for check in checks)
     payload = {
         "status": "PASS" if passed else "FAIL",
         "release_id": release_id,
-        "release_identity": {
-            "version": SEMANTIC_IDENTITY_VERSION,
-            "basis": release_basis,
-        },
+        "release_identity": {"version": SEMANTIC_IDENTITY_VERSION, "basis": release_basis},
         "source_inventory": inventory,
         "summary": summary,
         "checks": checks,
@@ -290,6 +327,7 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--parquet-dir", required=True)
     p.add_argument("--bgen", required=True)
     p.add_argument("--sample", required=True)
+    p.add_argument("--bgen-validation", required=True)
     p.add_argument("--output", required=True)
     return p
 
@@ -303,6 +341,7 @@ def main() -> int:
         parquet_dir=Path(args.parquet_dir),
         bgen_path=Path(args.bgen),
         sample_path=Path(args.sample),
+        bgen_validation_path=Path(args.bgen_validation),
         output_path=Path(args.output),
     )
     if payload["status"] != "PASS":
