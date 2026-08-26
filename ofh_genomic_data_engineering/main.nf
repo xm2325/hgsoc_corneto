@@ -127,7 +127,9 @@ process QC_REPORTS {
     script:
     """
     set -euo pipefail
-    plink2 --pfile qc --freq --missing --hardy --pca 10 approx --out qc_metrics
+    plink2 --pfile qc --freq --missing --hardy --pca 10 approx \
+      --seed ${params.plink_seed} --threads ${params.plink_threads} \
+      --memory ${params.plink_memory_mb} require --out qc_metrics
     test -s qc_metrics.afreq && test -s qc_metrics.vmiss && test -s qc_metrics.smiss
     test -s qc_metrics.hardy && test -s qc_metrics.eigenvec
     """
@@ -244,7 +246,8 @@ process PROVENANCE {
       --parquet-dir ${parquet_dir} --bcftools-stats ${stats} \
       --schema-manifest ${schema_manifest} --query-validation ${query_validation} \
       --geno '${params.geno}' --maf '${params.maf}' --hwe '${params.hwe}' \
-      --output provenance.json
+      --plink-seed '${params.plink_seed}' --plink-threads '${params.plink_threads}' \
+      --plink-memory-mb '${params.plink_memory_mb}' --output provenance.json
     """
 }
 
