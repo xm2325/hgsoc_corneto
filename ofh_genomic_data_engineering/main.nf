@@ -37,6 +37,22 @@ process NORMALISE_VCF {
     """
 }
 
+process SOURCE_INVENTORY {
+    tag 'source contract'
+    publishDir "${params.outdir}/01_normalised", mode: 'copy', overwrite: true
+    input:
+    path vcf
+    output:
+    path 'source_inventory.json', emit: inventory
+    script:
+    """
+    set -euo pipefail
+    python ${projectDir}/scripts/source_inventory.py \
+      --vcf ${vcf} \
+      --output source_inventory.json
+    """
+}
+
 process IMPORT_PLINK2 {
     tag 'VCF to PGEN'
     publishDir "${params.outdir}/02_pgen_raw", mode: 'copy', overwrite: true
@@ -150,7 +166,7 @@ process PROVENANCE {
     path parquet_dir
     path stats
     output:
-    path 'provenance.json'
+    path 'provenance.json', emit: provenance
     script:
     """
     set -euo pipefail
@@ -165,9 +181,36 @@ process PROVENANCE {
     """
 }
 
+process RELEASE_GATE {
+    tag 'release contract'
+    publishDir "${params.outdir}/08_release", mode: 'copy', overwrite: true
+    input:
+    path source_inventory
+    path summary
+    path provenance
+    path bgen
+    path sample
+    path parquet_dir
+    output:
+    path 'release_validation.json', emit: validation
+    script:
+    """
+    set -euo pipefail
+    python ${projectDir}/scripts/validate_release.py \
+      --source-inventory ${source_inventory} \
+      --summary ${summary} \
+      --provenance ${provenance} \
+      --parquet-dir ${parquet_dir} \
+      --bgen ${bgen} \
+      --sample ${sample} \
+      --output release_validation.json
+    """
+}
+
 workflow {
     DOWNLOAD_INPUT()
     NORMALISE_VCF(DOWNLOAD_INPUT.out.vcf)
+    SOURCE_INVENTORY(NORMALISE_VCF.out.vcf)
     IMPORT_PLINK2(NORMALISE_VCF.out.vcf)
     QC_FILTER(IMPORT_PLINK2.out.pfile)
     QC_REPORTS(QC_FILTER.out.pfile)
@@ -187,5 +230,13 @@ workflow {
         EXPORT_BGEN.out.sample,
         EXPORT_PARQUET.out.parquet_dir,
         NORMALISE_VCF.out.stats
+    )
+    RELEASE_GATE(
+        SOURCE_INVENTORY.out.inventory,
+        EXPORT_PARQUET.out.summary,
+        PROVENANCE.out.provenance,
+        EXPORT_BGEN.out.bgen,
+        EXPORT_BGEN.out.sample,
+        EXPORT_PARQUET.out.parquet_dir
     )
 }

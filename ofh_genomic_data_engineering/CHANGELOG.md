@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 - 2026-08-26
+
+- Add a source inventory derived from the VCF instead of provider naming.
+- Add a release contract that checks schemas, row counts, sample preservation, variant-key uniqueness, QC value ranges and product hashes.
+- Add deterministic release IDs and a Nextflow release gate that exits non-zero on failed data contracts.
+- Add negative tests for duplicate sample IDs and tampered product hashes.
+- Document the boundary between FAIR-compatible release metadata and GA4GH API implementation.
+
 ## 0.1.1 - 2026-08-25
 
 - Handle PLINK2 `.pvar` VCF-style metadata before the tabular header when producing Parquet data products.
