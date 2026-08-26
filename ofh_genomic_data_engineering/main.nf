@@ -145,8 +145,32 @@ process EXPORT_BGEN {
     script:
     """
     set -euo pipefail
-    plink2 --pfile qc --export bgen-1.2 --out analysis_ready
+    plink2 --pfile qc --export bgen-1.2 ref-first bits=16 --out analysis_ready
     test -s analysis_ready.bgen && test -s analysis_ready.sample
+    """
+}
+
+process BGEN_ROUNDTRIP {
+    tag 'BGEN re-import contract'
+    publishDir "${params.outdir}/05_bgen", mode: 'copy', overwrite: true, pattern: 'bgen_validation.json'
+    input:
+    tuple path(qc_pgen), path(qc_pvar), path(qc_psam)
+    path source_afreq
+    path bgen
+    path sample
+    output:
+    path 'bgen_validation.json', emit: validation
+    script:
+    """
+    set -euo pipefail
+    plink2 --bgen ${bgen} ref-first --sample ${sample} --make-pgen --out bgen_roundtrip
+    plink2 --pfile bgen_roundtrip --freq --out bgen_roundtrip_freq
+    python ${projectDir}/scripts/validate_bgen_roundtrip.py \
+      --source-pvar ${qc_pvar} --source-psam ${qc_psam} --source-afreq ${source_afreq} \
+      --roundtrip-pvar bgen_roundtrip.pvar --roundtrip-psam bgen_roundtrip.psam \
+      --roundtrip-afreq bgen_roundtrip_freq.afreq --frequency-tolerance 0.0001 \
+      --probability-bits 16 --output bgen_validation.json
+    test -s bgen_validation.json
     """
 }
 
@@ -202,6 +226,7 @@ process PROVENANCE {
     path summary
     path bgen
     path sample
+    path bgen_validation
     path parquet_dir
     path stats
     path schema_manifest
@@ -215,6 +240,7 @@ process PROVENANCE {
       --source-url '${params.source_url}' --source-sha-file ${source_sha} \
       --delivery-validation ${delivery_validation} \
       --summary ${summary} --bgen ${bgen} --sample ${sample} \
+      --bgen-validation ${bgen_validation} \
       --parquet-dir ${parquet_dir} --bcftools-stats ${stats} \
       --schema-manifest ${schema_manifest} --query-validation ${query_validation} \
       --geno '${params.geno}' --maf '${params.maf}' --hwe '${params.hwe}' \
@@ -232,6 +258,7 @@ process RELEASE_GATE {
     path provenance
     path bgen
     path sample
+    path bgen_validation
     path parquet_dir
     path query_validation
     output:
@@ -244,7 +271,9 @@ import json
 delivery = json.load(open('${delivery_validation}'))
 provenance = json.load(open('${provenance}'))
 query = json.load(open('${query_validation}'))
+bgen_validation = json.load(open('${bgen_validation}'))
 assert query['status'] == 'PASS', query
+assert bgen_validation['status'] == 'PASS', bgen_validation
 assert delivery['status'] == 'PASS' and delivery['action'] == 'PROCESS', delivery
 assert delivery['should_process'] is True, delivery
 assert provenance['source']['sha256'] == delivery['source_observed']['sha256']
@@ -255,7 +284,7 @@ PY
     python ${projectDir}/scripts/validate_release.py \
       --source-inventory ${source_inventory} --summary ${summary} --provenance ${provenance} \
       --parquet-dir ${parquet_dir} --bgen ${bgen} --sample ${sample} \
-      --output release_validation.json
+      --bgen-validation ${bgen_validation} --output release_validation.json
     """
 }
 
@@ -269,6 +298,12 @@ workflow {
     QC_FILTER(IMPORT_PLINK2.out.pfile)
     QC_REPORTS(QC_FILTER.out.pfile)
     EXPORT_BGEN(QC_FILTER.out.pfile)
+    BGEN_ROUNDTRIP(
+        QC_FILTER.out.pfile,
+        QC_REPORTS.out.afreq,
+        EXPORT_BGEN.out.bgen,
+        EXPORT_BGEN.out.sample
+    )
     EXPORT_PARQUET(
         QC_FILTER.out.pfile,
         QC_REPORTS.out.afreq,
@@ -284,6 +319,7 @@ workflow {
         EXPORT_PARQUET.out.summary,
         EXPORT_BGEN.out.bgen,
         EXPORT_BGEN.out.sample,
+        BGEN_ROUNDTRIP.out.validation,
         EXPORT_PARQUET.out.parquet_dir,
         NORMALISE_VCF.out.stats,
         EXPORT_PARQUET.out.schema_manifest,
@@ -296,6 +332,7 @@ workflow {
         PROVENANCE.out.provenance,
         EXPORT_BGEN.out.bgen,
         EXPORT_BGEN.out.sample,
+        BGEN_ROUNDTRIP.out.validation,
         EXPORT_PARQUET.out.parquet_dir,
         QUERY_CONTRACT.out.validation
     )
