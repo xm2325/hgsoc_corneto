@@ -25,7 +25,8 @@ REQUIRED_COLUMNS = {
 
 VARIANT_TABLES = {"allele_frequencies", "variant_missingness", "hardy_weinberg"}
 SAMPLE_TABLES = {"sample_missingness", "pca_scores"}
-SEMANTIC_IDENTITY_VERSION = 3
+METADATA_REQUIRED_COLUMNS = {"IID", "sample", "pop", "super_pop", "gender"}
+SEMANTIC_IDENTITY_VERSION = 4
 
 
 def sha256(path: Path) -> str:
@@ -41,14 +42,22 @@ def _canonical_sha256(payload: object) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
-def _is_sha256(value: object) -> bool:
-    if not isinstance(value, str) or len(value) != 64:
+def _is_hex_digest(value: object, length: int) -> bool:
+    if not isinstance(value, str) or len(value) != length:
         return False
     try:
         int(value, 16)
     except ValueError:
         return False
     return True
+
+
+def _is_sha256(value: object) -> bool:
+    return _is_hex_digest(value, 64)
+
+
+def _is_sha1(value: object) -> bool:
+    return _is_hex_digest(value, 40)
 
 
 def _bounded_numeric(series: pd.Series, lower: float, upper: float) -> bool:
@@ -65,12 +74,15 @@ def validate_release(
     bgen_path: Path,
     sample_path: Path,
     bgen_validation_path: Path,
+    sample_metadata_path: Path,
+    metadata_validation_path: Path,
     output_path: Path,
 ) -> dict[str, object]:
     inventory = json.loads(source_inventory_path.read_text())
     summary = json.loads(summary_path.read_text())
     provenance = json.loads(provenance_path.read_text())
     bgen_validation = json.loads(bgen_validation_path.read_text())
+    metadata_validation = json.loads(metadata_validation_path.read_text())
 
     checks: list[dict[str, object]] = []
 
@@ -151,6 +163,7 @@ def validate_release(
         {"source": source_variant_count, "release": variant_count},
     )
 
+    sample_ids: pd.Series | None = None
     if "samples" in tables and "IID" in tables["samples"]:
         sample_ids = tables["samples"]["IID"].astype(str)
         record(
@@ -249,7 +262,70 @@ def validate_release(
         {"bound": provenance.get("bgen_roundtrip") == bgen_validation},
     )
 
-    product_paths = [bgen_path, sample_path, bgen_validation_path]
+    metadata_status = metadata_validation.get("status")
+    metadata_contract = metadata_validation.get("contract")
+    metadata_source = metadata_validation.get("source", {})
+    metadata_join = metadata_validation.get("join", {})
+    metadata_blob_sha1 = metadata_source.get("git_blob_sha1")
+    metadata_source_sha256 = metadata_source.get("sha256")
+    metadata_canonical_hash = metadata_join.get("canonical_sample_ids_sha256")
+    metadata_semantic_hash = metadata_join.get("output_semantic_sha256")
+    record("sample_metadata.status", metadata_status == "PASS", metadata_status)
+    record("sample_metadata.contract", metadata_contract == "sample-metadata-join-v1", metadata_contract)
+    record("sample_metadata.source_git_blob", _is_sha1(metadata_blob_sha1), metadata_blob_sha1)
+    record("sample_metadata.source_sha256", _is_sha256(metadata_source_sha256), metadata_source_sha256)
+    record(
+        "sample_metadata.full_coverage",
+        metadata_join.get("plink_sample_count") == sample_count
+        and metadata_join.get("matched_sample_count") == sample_count
+        and metadata_join.get("coverage") == 1.0,
+        {
+            "release_samples": sample_count,
+            "plink_samples": metadata_join.get("plink_sample_count"),
+            "matched": metadata_join.get("matched_sample_count"),
+            "coverage": metadata_join.get("coverage"),
+        },
+    )
+    record("sample_metadata.canonical_sample_hash", _is_sha256(metadata_canonical_hash), metadata_canonical_hash)
+    metadata_exists = sample_metadata_path.is_file() and sample_metadata_path.stat().st_size > 0
+    record("sample_metadata.file_nonempty", metadata_exists, str(sample_metadata_path))
+    metadata_frame = pd.read_parquet(sample_metadata_path) if metadata_exists else None
+    if metadata_frame is not None:
+        missing_metadata_columns = sorted(METADATA_REQUIRED_COLUMNS - set(metadata_frame.columns))
+        record("sample_metadata.required_columns", not missing_metadata_columns, {"missing": missing_metadata_columns})
+        record(
+            "sample_metadata.row_count",
+            len(metadata_frame) == sample_count,
+            {"rows": len(metadata_frame), "summary": sample_count},
+        )
+        metadata_iids = metadata_frame["IID"].astype(str) if "IID" in metadata_frame else pd.Series(dtype="string")
+        record(
+            "sample_metadata.sample_ids_match",
+            sample_ids is not None
+            and metadata_iids.is_unique
+            and metadata_iids.tolist() == sample_ids.tolist(),
+            {"rows": len(metadata_iids), "unique": metadata_iids.nunique()},
+        )
+        observed_metadata_semantic_hash = semantic_table_sha256(metadata_frame)
+        record(
+            "sample_metadata.semantic_hash",
+            _is_sha256(metadata_semantic_hash)
+            and observed_metadata_semantic_hash == metadata_semantic_hash,
+            {"declared": metadata_semantic_hash, "observed": observed_metadata_semantic_hash},
+        )
+    record(
+        "sample_metadata.provenance_binding",
+        provenance.get("sample_metadata_join") == metadata_validation,
+        {"bound": provenance.get("sample_metadata_join") == metadata_validation},
+    )
+
+    product_paths = [
+        bgen_path,
+        sample_path,
+        bgen_validation_path,
+        sample_metadata_path,
+        metadata_validation_path,
+    ]
     product_paths.extend(
         parquet_dir / parquet_files[name]
         for name in sorted(expected_tables)
@@ -322,6 +398,15 @@ def validate_release(
             "sample_ids_sha256": bgen_sample_hash,
             "variant_identity_sha256": bgen_variant_hash,
         },
+        "sample_metadata_contract": {
+            "contract": metadata_contract,
+            "source_git_blob_sha1": metadata_blob_sha1,
+            "source_sha256": metadata_source_sha256,
+            "source_row_count": metadata_source.get("row_count"),
+            "matched_sample_count": metadata_join.get("matched_sample_count"),
+            "canonical_sample_ids_sha256": metadata_canonical_hash,
+            "output_semantic_sha256": metadata_semantic_hash,
+        },
     }
     release_id = _canonical_sha256(release_basis)
     passed = all(check["status"] == "PASS" for check in checks)
@@ -331,6 +416,7 @@ def validate_release(
         "release_identity": {"version": SEMANTIC_IDENTITY_VERSION, "basis": release_basis},
         "source_inventory": inventory,
         "summary": summary,
+        "sample_metadata_join": metadata_validation,
         "checks": checks,
     }
     output_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
@@ -346,6 +432,8 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--bgen", required=True)
     p.add_argument("--sample", required=True)
     p.add_argument("--bgen-validation", required=True)
+    p.add_argument("--sample-metadata", required=True)
+    p.add_argument("--metadata-validation", required=True)
     p.add_argument("--output", required=True)
     return p
 
@@ -360,6 +448,8 @@ def main() -> int:
         bgen_path=Path(args.bgen),
         sample_path=Path(args.sample),
         bgen_validation_path=Path(args.bgen_validation),
+        sample_metadata_path=Path(args.sample_metadata),
+        metadata_validation_path=Path(args.metadata_validation),
         output_path=Path(args.output),
     )
     if payload["status"] != "PASS":
