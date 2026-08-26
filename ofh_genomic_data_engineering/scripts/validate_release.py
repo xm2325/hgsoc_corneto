@@ -281,7 +281,25 @@ def validate_release(
     )
 
     parameters = provenance.get("parameters", {})
-    identity_parameters = {key: parameters.get(key) for key in ("geno", "maf", "hwe")}
+    pca_reproducibility = {
+        "plink_seed": parameters.get("plink_seed"),
+        "plink_threads": parameters.get("plink_threads"),
+        "plink_memory_mb": parameters.get("plink_memory_mb"),
+    }
+    record(
+        "semantic_identity.pca_reproducibility",
+        isinstance(pca_reproducibility["plink_seed"], int)
+        and 0 <= pca_reproducibility["plink_seed"] <= 4294967295
+        and isinstance(pca_reproducibility["plink_threads"], int)
+        and pca_reproducibility["plink_threads"] > 0
+        and isinstance(pca_reproducibility["plink_memory_mb"], int)
+        and pca_reproducibility["plink_memory_mb"] > 0,
+        pca_reproducibility,
+    )
+    identity_parameters = {
+        key: parameters.get(key)
+        for key in ("geno", "maf", "hwe", "plink_seed", "plink_threads", "plink_memory_mb")
+    }
     release_basis = {
         "identity_version": SEMANTIC_IDENTITY_VERSION,
         "source_sha256": source_sha,
