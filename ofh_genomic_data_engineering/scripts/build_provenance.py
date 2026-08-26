@@ -29,6 +29,7 @@ def main(args: argparse.Namespace) -> None:
     summary = json.loads(Path(args.summary).read_text())
     delivery_validation = json.loads(Path(args.delivery_validation).read_text())
     bgen_validation = json.loads(Path(args.bgen_validation).read_text())
+    metadata_validation = json.loads(Path(args.metadata_validation).read_text())
     delivery = delivery_validation.get("delivery", {})
     observed = delivery_validation.get("source_observed", {})
 
@@ -40,11 +41,15 @@ def main(args: argparse.Namespace) -> None:
         raise ValueError("delivery source SHA does not match downloaded source SHA")
     if bgen_validation.get("status") != "PASS":
         raise ValueError("provenance cannot be built from a failed BGEN round-trip validation")
+    if metadata_validation.get("status") != "PASS":
+        raise ValueError("provenance cannot be built from a failed sample metadata validation")
 
     product_paths = [
         Path(args.bgen),
         Path(args.sample),
         Path(args.bgen_validation),
+        Path(args.sample_metadata),
+        Path(args.metadata_validation),
         Path(args.bcftools_stats),
         Path(args.schema_manifest),
         Path(args.query_validation),
@@ -73,6 +78,7 @@ def main(args: argparse.Namespace) -> None:
             "reference_genome": delivery.get("reference_genome"),
         },
         "bgen_roundtrip": bgen_validation,
+        "sample_metadata_join": metadata_validation,
         "tool_versions": {
             "bcftools": version(["bcftools", "--version"]),
             "plink2": version(["plink2", "--version"]),
@@ -94,6 +100,8 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--bgen", required=True)
     p.add_argument("--sample", required=True)
     p.add_argument("--bgen-validation", required=True)
+    p.add_argument("--sample-metadata", required=True)
+    p.add_argument("--metadata-validation", required=True)
     p.add_argument("--parquet-dir", required=True)
     p.add_argument("--bcftools-stats", required=True)
     p.add_argument("--schema-manifest", required=True)
