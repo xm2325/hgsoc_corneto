@@ -42,6 +42,7 @@ process SOURCE_INVENTORY {
     publishDir "${params.outdir}/01_normalised", mode: 'copy', overwrite: true
     input:
     path vcf
+    path index
     output:
     path 'source_inventory.json', emit: inventory
     script:
@@ -210,7 +211,7 @@ process RELEASE_GATE {
 workflow {
     DOWNLOAD_INPUT()
     NORMALISE_VCF(DOWNLOAD_INPUT.out.vcf)
-    SOURCE_INVENTORY(NORMALISE_VCF.out.vcf)
+    SOURCE_INVENTORY(NORMALISE_VCF.out.vcf, NORMALISE_VCF.out.index)
     IMPORT_PLINK2(NORMALISE_VCF.out.vcf)
     QC_FILTER(IMPORT_PLINK2.out.pfile)
     QC_REPORTS(QC_FILTER.out.pfile)
