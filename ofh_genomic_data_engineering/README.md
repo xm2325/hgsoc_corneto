@@ -8,19 +8,23 @@ A reproducible genotype data workflow built around public 1000 Genomes Phase 3 c
 
 This is a data-engineering project, not a GWAS analysis. It does not produce an association result or clinical conclusion.
 
-## Latest verified real-data evidence
+## Latest verified real-data evidence (v0.4.0)
 
-The most recent fully verified branch-head baseline before the v0.4 delivery-ingestion change is v0.3.1. On the pinned public VCF it showed:
+GitHub Actions run `32939354889` completed successfully on the v0.4.0 code head using the pinned public 1000 Genomes VCF. It validated:
 
-- **10/10 unit and negative-path tests passed**;
-- **11/11 real-data Nextflow processes passed**;
+- **16/16 unit and negative/idempotency tests passed**;
+- **12/12 real-data Nextflow processes passed**, including the provider delivery gate;
+- the real delivery returned `PASS / PROCESS` for delivery `1000g-phase3-chr22-gawmerge-n90-v1`;
+- source SHA-256, declared `GRCh37` policy, **90-sample** roster count and deterministic sample-roster hash all matched the manifest;
+- delivery fingerprint `252db21a858d21a0aa0d015376d247978a355503a4d62d37421eec9061357d15` was bound into provenance and the release context;
 - **90/90 samples preserved**;
 - **1,059,913 normalised source variants -> 127,171 variants after configured QC**;
 - seven typed, ZSTD-compressed Parquet tables plus an Arrow schema manifest;
 - DuckDB 1.5.5 genomic region query over positions **16,051,249–17,051,249** returned **1,955 variants**, with the count independently matched by pandas;
-- **48/48 release-contract checks passed**;
-- an immediate identical `-resume` rerun returned all **11/11 processes from cache** and left all **14 tracked release-facing SHA-256 values unchanged**;
-- BGEN 1.2, provenance, Docker image build and workflow artifact upload all passed.
+- **48/48 release-contract checks passed**, with delivery/provenance consistency asserted before the release validator;
+- deterministic release ID `632f30e8076cf8bd405afe6208b63bbdab7921af983924600a911f70ad6fa672`;
+- an immediate identical `-resume` rerun returned all **12/12 processes from cache** and left all **15 tracked release-facing SHA-256 values unchanged**;
+- BGEN 1.2, provenance, Docker image build and upload of a **37-file workflow artifact** all passed.
 
 Numerical results are only promoted here after the corresponding branch-head GitHub Actions run is green. No latency or large-scale throughput claim is inferred from this compact public fixture.
 
