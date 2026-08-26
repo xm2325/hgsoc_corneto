@@ -34,11 +34,22 @@ def _write_release(tmp_path: Path) -> dict[str, Path]:
         row_counts[name] = len(stored)
         semantic_hashes[name] = semantic_table_sha256(stored)
 
-    summary = {"sample_count": 2, "variant_count": 2, "row_counts": row_counts, "parquet_files": parquet_files, "semantic_hashes": semantic_hashes}
+    summary = {
+        "sample_count": 2,
+        "variant_count": 2,
+        "row_counts": row_counts,
+        "parquet_files": parquet_files,
+        "semantic_hashes": semantic_hashes,
+    }
     summary_path = tmp_path / "summary.json"
     summary_path.write_text(json.dumps(summary))
 
-    inventory = {"sample_count": 2, "sample_ids_sha256": "a" * 64, "variant_count": 3, "normalised_vcf_sha256": "b" * 64}
+    inventory = {
+        "sample_count": 2,
+        "sample_ids_sha256": "a" * 64,
+        "variant_count": 3,
+        "normalised_vcf_sha256": "b" * 64,
+    }
     inventory_path = tmp_path / "source_inventory.json"
     inventory_path.write_text(json.dumps(inventory))
 
@@ -64,7 +75,50 @@ def _write_release(tmp_path: Path) -> dict[str, Path]:
     bgen_validation_path = tmp_path / "bgen_validation.json"
     bgen_validation_path.write_text(json.dumps(bgen_validation))
 
-    product_paths = [bgen_path, sample_path, bgen_validation_path, *sorted(parquet_dir.glob("*.parquet"))]
+    sample_metadata_path = tmp_path / "sample_metadata.parquet"
+    metadata_frame = pd.DataFrame(
+        {
+            "IID": ["S1", "S2"],
+            "sample": ["S1", "S2"],
+            "pop": ["GBR", "FIN"],
+            "super_pop": ["EUR", "EUR"],
+            "gender": ["male", "female"],
+        }
+    )
+    metadata_frame.to_parquet(sample_metadata_path, index=False)
+    stored_metadata = pd.read_parquet(sample_metadata_path)
+    metadata_validation = {
+        "status": "PASS",
+        "contract": "sample-metadata-join-v1",
+        "source": {
+            "url": "https://example.org/panel.tsv",
+            "git_blob_sha1": "1" * 40,
+            "sha256": "2" * 64,
+            "row_count": 3,
+        },
+        "join": {
+            "plink_sample_count": 2,
+            "matched_sample_count": 2,
+            "coverage": 1.0,
+            "canonical_sample_ids_sha256": "3" * 64,
+            "output_semantic_sha256": semantic_table_sha256(stored_metadata),
+            "population_counts": {"FIN": 1, "GBR": 1},
+            "super_population_counts": {"EUR": 2},
+            "gender_counts": {"female": 1, "male": 1},
+        },
+        "checks": [{"name": "fixture", "status": "PASS", "detail": {}}],
+    }
+    metadata_validation_path = tmp_path / "metadata_validation.json"
+    metadata_validation_path.write_text(json.dumps(metadata_validation))
+
+    product_paths = [
+        bgen_path,
+        sample_path,
+        bgen_validation_path,
+        sample_metadata_path,
+        metadata_validation_path,
+        *sorted(parquet_dir.glob("*.parquet")),
+    ]
     provenance = {
         "source": {"url": "https://example.org/input.vcf.gz", "sha256": "c" * 64},
         "delivery": {"delivery_fingerprint": "d" * 64, "reference_genome": "GRCh37"},
@@ -79,7 +133,11 @@ def _write_release(tmp_path: Path) -> dict[str, Path]:
             "reference_genome": "GRCh37",
         },
         "bgen_roundtrip": bgen_validation,
-        "products": {path.name: {"bytes": path.stat().st_size, "sha256": sha256(path)} for path in product_paths},
+        "sample_metadata_join": metadata_validation,
+        "products": {
+            path.name: {"bytes": path.stat().st_size, "sha256": sha256(path)}
+            for path in product_paths
+        },
     }
     provenance_path = tmp_path / "provenance.json"
     provenance_path.write_text(json.dumps(provenance))
@@ -92,13 +150,18 @@ def _write_release(tmp_path: Path) -> dict[str, Path]:
         "bgen_path": bgen_path,
         "sample_path": sample_path,
         "bgen_validation_path": bgen_validation_path,
+        "sample_metadata_path": sample_metadata_path,
+        "metadata_validation_path": metadata_validation_path,
         "output_path": tmp_path / "release_validation.json",
     }
 
 
 def _refresh_product_hash(paths: dict[str, Path], changed: Path) -> None:
     provenance = json.loads(paths["provenance_path"].read_text())
-    provenance["products"][changed.name] = {"bytes": changed.stat().st_size, "sha256": sha256(changed)}
+    provenance["products"][changed.name] = {
+        "bytes": changed.stat().st_size,
+        "sha256": sha256(changed),
+    }
     paths["provenance_path"].write_text(json.dumps(provenance))
 
 
@@ -107,9 +170,10 @@ def test_release_contract_passes_for_consistent_products(tmp_path: Path) -> None
     payload = validate_release(**paths)
     assert payload["status"] == "PASS"
     assert len(payload["release_id"]) == 64
-    assert payload["release_identity"]["version"] == 3
+    assert payload["release_identity"]["version"] == 4
     assert payload["release_identity"]["basis"]["bgen_contract"]["allele_convention"] == "ref-first"
     assert payload["release_identity"]["basis"]["parameters"]["plink_seed"] == 20260826
+    assert payload["release_identity"]["basis"]["sample_metadata_contract"]["contract"] == "sample-metadata-join-v1"
     assert all(check["status"] == "PASS" for check in payload["checks"])
 
 
@@ -164,6 +228,22 @@ def test_release_contract_rejects_failed_bgen_roundtrip(tmp_path: Path) -> None:
     assert "bgen_roundtrip.provenance_binding" in failed
 
 
+def test_release_contract_rejects_failed_metadata_join(tmp_path: Path) -> None:
+    paths = _write_release(tmp_path)
+    metadata = json.loads(paths["metadata_validation_path"].read_text())
+    metadata["status"] = "FAIL"
+    metadata["join"]["matched_sample_count"] = 1
+    metadata["join"]["coverage"] = 0.5
+    paths["metadata_validation_path"].write_text(json.dumps(metadata))
+    _refresh_product_hash(paths, paths["metadata_validation_path"])
+    payload = validate_release(**paths)
+    assert payload["status"] == "FAIL"
+    failed = {check["name"] for check in payload["checks"] if check["status"] == "FAIL"}
+    assert "sample_metadata.status" in failed
+    assert "sample_metadata.full_coverage" in failed
+    assert "sample_metadata.provenance_binding" in failed
+
+
 def test_release_contract_rejects_invalid_pca_reproducibility_parameters(tmp_path: Path) -> None:
     paths = _write_release(tmp_path)
     provenance = json.loads(paths["provenance_path"].read_text())
@@ -202,6 +282,28 @@ def test_release_id_changes_when_semantic_content_changes(tmp_path: Path) -> Non
     summary = json.loads(paths["summary_path"].read_text())
     summary["semantic_hashes"]["pca_scores"] = semantic_table_sha256(pd.read_parquet(changed))
     paths["summary_path"].write_text(json.dumps(summary))
+    second = validate_release(**paths)
+    assert second["status"] == "PASS"
+    assert second["release_id"] != first["release_id"]
+
+
+def test_release_id_changes_when_metadata_semantic_content_changes(tmp_path: Path) -> None:
+    paths = _write_release(tmp_path)
+    first = validate_release(**paths)
+    assert first["status"] == "PASS"
+    metadata_frame = pd.read_parquet(paths["sample_metadata_path"])
+    metadata_frame.loc[0, "pop"] = "FIN"
+    metadata_frame.to_parquet(paths["sample_metadata_path"], index=False)
+    _refresh_product_hash(paths, paths["sample_metadata_path"])
+    metadata_validation = json.loads(paths["metadata_validation_path"].read_text())
+    metadata_validation["join"]["output_semantic_sha256"] = semantic_table_sha256(
+        pd.read_parquet(paths["sample_metadata_path"])
+    )
+    paths["metadata_validation_path"].write_text(json.dumps(metadata_validation))
+    _refresh_product_hash(paths, paths["metadata_validation_path"])
+    provenance = json.loads(paths["provenance_path"].read_text())
+    provenance["sample_metadata_join"] = metadata_validation
+    paths["provenance_path"].write_text(json.dumps(provenance))
     second = validate_release(**paths)
     assert second["status"] == "PASS"
     assert second["release_id"] != first["release_id"]
