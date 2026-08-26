@@ -66,6 +66,9 @@ def main(args: argparse.Namespace) -> None:
             "geno": args.geno,
             "maf": args.maf,
             "hwe": args.hwe,
+            "plink_seed": int(args.plink_seed),
+            "plink_threads": int(args.plink_threads),
+            "plink_memory_mb": int(args.plink_memory_mb),
             "delivery_fingerprint": delivery.get("delivery_fingerprint"),
             "reference_genome": delivery.get("reference_genome"),
         },
@@ -98,6 +101,9 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--geno", required=True)
     p.add_argument("--maf", required=True)
     p.add_argument("--hwe", required=True)
+    p.add_argument("--plink-seed", required=True)
+    p.add_argument("--plink-threads", required=True)
+    p.add_argument("--plink-memory-mb", required=True)
     p.add_argument("--output", required=True)
     return p
 
