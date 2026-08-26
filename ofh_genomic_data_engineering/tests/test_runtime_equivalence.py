@@ -4,7 +4,13 @@ from pathlib import Path
 from scripts.validate_runtime_equivalence import validate_runtime_equivalence
 
 
-def _write_runtime(results: Path, *, semantic_suffix: str = "a", bgen_suffix: str = "c") -> None:
+def _write_runtime(
+    results: Path,
+    *,
+    semantic_suffix: str = "a",
+    bgen_suffix: str = "c",
+    plink_seed: int = 20260826,
+) -> None:
     (results / "00_source").mkdir(parents=True)
     (results / "05_bgen").mkdir(parents=True)
     (results / "06_parquet").mkdir(parents=True)
@@ -47,9 +53,28 @@ def _write_runtime(results: Path, *, semantic_suffix: str = "a", bgen_suffix: st
     (results / "06_parquet/query_validation.json").write_text(
         json.dumps({"status": "PASS", "total_variants": 127171, "region_query": {"start": 1, "end": 2, "matched_variants": 10}})
     )
-    release_id = "e" * 64 if semantic_suffix == "a" and bgen_suffix == "c" else "d" * 64
+    release_id = (
+        "e" * 64
+        if semantic_suffix == "a" and bgen_suffix == "c" and plink_seed == 20260826
+        else "d" * 64
+    )
     (results / "08_release/release_validation.json").write_text(
-        json.dumps({"status": "PASS", "release_id": release_id, "release_identity": {"version": 3}})
+        json.dumps(
+            {
+                "status": "PASS",
+                "release_id": release_id,
+                "release_identity": {
+                    "version": 3,
+                    "basis": {
+                        "parameters": {
+                            "plink_seed": plink_seed,
+                            "plink_threads": 2,
+                            "plink_memory_mb": 3000,
+                        }
+                    },
+                },
+            }
+        )
     )
 
 
@@ -69,6 +94,11 @@ def test_runtime_equivalence_passes_for_matching_semantics(tmp_path: Path) -> No
     assert payload["release_id"] == "e" * 64
     assert payload["release_identity_version"] == 3
     assert payload["bgen_roundtrip"]["allele_convention"] == "ref-first"
+    assert payload["pca_execution_parameters"] == {
+        "plink_seed": 20260826,
+        "plink_threads": 2,
+        "plink_memory_mb": 3000,
+    }
     assert all(check["status"] == "PASS" for check in payload["checks"])
 
 
@@ -101,4 +131,20 @@ def test_runtime_equivalence_rejects_bgen_semantic_drift(tmp_path: Path) -> None
     assert payload["status"] == "FAIL"
     failed = {check["name"] for check in payload["checks"] if check["status"] == "FAIL"}
     assert "bgen_roundtrip_semantics" in failed
+    assert "semantic_release_id" in failed
+
+
+def test_runtime_equivalence_rejects_pca_execution_parameter_drift(tmp_path: Path) -> None:
+    host = tmp_path / "host"
+    candidate = tmp_path / "candidate"
+    _write_runtime(host)
+    _write_runtime(candidate, plink_seed=20260827)
+    payload = validate_runtime_equivalence(
+        host_results=host,
+        candidate_results=candidate,
+        output_path=tmp_path / "evidence.json",
+    )
+    assert payload["status"] == "FAIL"
+    failed = {check["name"] for check in payload["checks"] if check["status"] == "FAIL"}
+    assert "pca_execution_parameters" in failed
     assert "semantic_release_id" in failed
