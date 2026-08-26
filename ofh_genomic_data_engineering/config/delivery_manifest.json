@@ -1,0 +1,13 @@
+{
+  "delivery_id": "1000g-phase3-chr22-gawmerge-n90-v1",
+  "provider": "RTIInternational/GAWMerge mirror of 1000 Genomes Phase 3",
+  "reference_genome": "GRCh37",
+  "sample_roster": {
+    "count": 90,
+    "ids_sha256": "445e93d98883cc9ec183c882566321bc92e037f56f02a4dbdbb526eb1776e34b"
+  },
+  "schema_version": 1,
+  "sha256": "a02964f209a2bd7e90ed7b70765326d0f548d7d92aa2a46e17db7ba5c7ad8a4d",
+  "source_format": "vcf.gz",
+  "source_uri": "https://raw.githubusercontent.com/RTIInternational/GAWMerge/ce6ad1c1af42bfa501b5e122b747f54c6644e2e9/test_data/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.N100.vcf.gz"
+}
