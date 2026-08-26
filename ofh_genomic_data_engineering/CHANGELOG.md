@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.5.0 - 2026-08-26
+
+- Promote BGEN from a file-presence output to a validated interface contract.
+- Export Oxford BGEN 1.2 with explicit `ref-first` allele convention and 16-bit probability precision, then re-import it with PLINK2.
+- Add a BGEN round-trip validator covering exact ordered sample identity, exact ordered `CHROM/POS/ID/REF/ALT` identity, aligned frequency rows, `OBS_CT` and ALT-frequency tolerance.
+- Add BGEN negative tests for sample-order drift, variant/allele identity drift and frequency drift.
+- Include the BGEN interface contract in provenance and release identity v3.
+- Pin approximate-PCA execution conditions (`PLINK2 --seed 20260826 --threads 2 --memory 3000 require`) after a fresh Docker run exposed runtime-dependent PCA semantic drift.
+- Include those PCA execution parameters in provenance, release identity and host/Docker semantic-equivalence validation.
+- Add regression tests proving invalid execution parameters block release, a changed seed changes release identity, and host/candidate PCA-parameter drift fails runtime equivalence.
+- Expand the real-data graph to 13 processes and exact resume evidence to 13/13 cached processes with 16 tracked release-facing outputs.
+- Expand the release gate to 71 checks and host/Docker semantic equivalence to 14 checks.
+- Verify v0.5.0 on real 1000 Genomes chr22 data in GitHub Actions run `32944457150`: 90 samples, 1,059,913 normalised variants, 127,171 post-QC variants, zero BGEN `OBS_CT` mismatch, zero ALT-frequency drift, seven semantic Parquet hashes matched across host and Docker, and release ID `556f4fb052ff3bda213d86e384e8679f3385afd8cf0ea0703d043269dd5ebd98`.
+- Synchronise Python and Nextflow manifest versions to 0.5.0.
+
 ## 0.4.2 - 2026-08-26
 
 - Correct the release-identity model after fresh host/container executions showed that byte-derived product hashes can change even when the logical genomic release is unchanged.
