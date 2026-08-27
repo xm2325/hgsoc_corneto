@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-26 07:50 BST (09:50 EEST). This file is the project-level source of
+Last operational update: 2026-08-27 10:50 BST (12:50 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -154,12 +154,12 @@ objectives in `checkpoint_b25/context.json`, solves one independent OCM per
 array task, solves the joint cohort only after every independent receipt is
 canonical, and assembles `full_direct_b25.json` last. At this update:
 
-| Study | Required OCM receipts | Healthy r4/legacy work retained | Cancelled queued 64G tasks | 128G recovery array |
+| Study | Required OCM receipts | Previous r4/legacy outcome | Cancelled queued 64G tasks | Current recovery array |
 |---|---:|---|---|---:|
-| E-MTAB-7223 | 9 | 805860 task 5 | none remained pending | **834320**, `0-8%3`, after-any all 805860 tasks |
-| E-MTAB-10801 | 13 | 805861 task 1 | 805861 tasks 6-12 | **834321**, `0-12%3`, after-any all 805861 tasks |
-| E-MTAB-11000 | 11 | legacy 805003 task 0 | 805862 tasks 0-10 | **834323**, `0-10%3`, after all three other r5 arrays and 805003 |
-| E-MTAB-14568 | 27 | none | 805863 task 8 and tasks 12-26 | r5 **834322**, then 256G repair **863034**, both `0-26%3` |
+| E-MTAB-7223 | 9 | 805860_5: partial incumbent at 70 h; others OOM | none remained pending | **834320**, 128G, tasks 0-2 running; 3-8 queued |
+| E-MTAB-10801 | 13 | 805861_1: partial incumbent at 70 h; other started tasks OOM | 805861 tasks 6-12 | **834321**, 128G, tasks 0-2 running; 3-12 queued |
+| E-MTAB-11000 | 11 | 805003_0: Slurm TIMEOUT at 72 h, no receipt | 805862 tasks 0-10 | **834323**, 128G, `0-10%3`, waiting for the other three r5 arrays |
+| E-MTAB-14568 | 27 | r4 started tasks OOM | 805863 task 8 and tasks 12-26 | **834322**, 128G, tasks 1/3/4 running; **863034**, 256G, pending repair |
 
 At the 00:24 EEST live check, the six 24-hour legacy tasks had run for
 13 h 13 min and the 72-hour 11000 task for 11 h 44 min. Solver-step CPU
@@ -170,8 +170,9 @@ optimality or scientific correctness. These pre-instrumentation processes have
 no live Gurobi progress log and have written no canonical or partial receipt,
 `.sol` or `.mst`; their incumbent and gap are therefore unavailable. The six
 24-hour tasks have about 10 h 47 min remaining and may still reproduce the
-earlier timeout pattern. Instrumented r4/r5 jobs provide live solver logs and
-guaranteed end-of-limit telemetry/partial receipts.
+earlier timeout pattern. Instrumented jobs provide live solver logs and write
+end-of-limit telemetry/partial receipts when the solver returns normally;
+an OS kill or failed filesystem write can still prevent persistence.
 
 The six healthy running tasks from 749576/749580/749584 and the healthy task
 805003_0 were not cancelled. Earlier tasks 0-1 in each of
@@ -238,6 +239,38 @@ telemetry. The remaining r5 14568 tasks were limited by the array throttle,
 and r6 remained correctly blocked until r5 terminates. Canonical independent
 and joint receipt counts remained zero across all four cohorts.
 
+### 2026-08-27: audited full-duration partial outputs
+
+Two instrumented r4 tasks returned at their 252000-second solver limit and
+persisted their results before Slurm termination. Both receipts explicitly
+report `partial_incumbent`, `scientific_success=false`, Gurobi `TIME_LIMIT`
+and matching frozen-context SHA256 values. Their Slurm `FAILED 2:0` is the
+intentional fail-closed exit for partial output, not a new OOM.
+
+| Array task / RNA run | Incumbent objective | Best bound | Relative gap | Receipt suffix under the cohort's `checkpoint_b25/instrumented_attempts/` |
+|---|---:|---:|---:|---|
+| 805860_5 / ERR2808261 | -136.0536082251 | -141.1906456601 | 3.775745% | `005_ERR2808261_job833065_task5.json` |
+| 805861_1 / ERR6389069 | -136.2536081782 | -141.1262291334 | 3.576141% | `001_ERR6389069_job832834_task1.json` |
+
+Each receipt's referenced `.sol`, `.mst` and `.gurobi.log` exists and is
+nonempty; `summary_error` is null. This validates result persistence, not
+optimality or biological conclusions. Both gaps remain above the unchanged
+`MIPGap=0.0001` (0.01%) threshold. The deployed runner and reviewed code hashes
+match: the runner writes `.mst` files but does not reload them for a retry.
+Thus recovery currently reuses canonical completed samples, not the partial
+incumbent or a saved branch-and-bound tree. No warm-start reuse is claimed.
+
+Existing 834320/834321 arrays started automatically and already cover both
+partial tasks; no additional retry was submitted. Legacy 805003_0 reached
+72 h without a receipt and is covered by 834323. At this snapshot nine 128G
+solver tasks were active: three each in 834320, 834321 and 834322, with live
+gaps 3.19-4.65%. Actual-step `sstat` reported approximately 5.2-29.6 GiB RSS
+and nonzero CPU/I/O counters; these container accounting samples are not a
+guarantee against OOM. All four cohorts still have zero canonical independent
+and joint receipts. The audit, comparison and TPI1/FVA gates stay closed.
+The same-conversation monitor now targets the r5/r6 chain explicitly, retaining
+its existing schedule and no model override.
+
 The r5 instrumented independent tasks request 128G, eight CPUs and a 72 h Slurm limit,
 but pass an internal Gurobi `TimeLimit=252000` seconds (70 h), `MIPGap=1e-4`,
 eight threads and seed 0. This leaves time to atomically write an attempt
@@ -293,8 +326,8 @@ the four canonical cohort receipts and an instrumented pooled receipt validate.
 ```mermaid
 flowchart LR
     M["599873 model-only TPI1 gate: valid"]
-    B["805873 four strict metabolic receipts"] --> P["805874 receipt-dependent TPI1/FVA preflight"]
-    P --> V["805875 WT vs delta-TPI1 FBA/FVA"]
+    B["834333 four strict metabolic receipts"] --> P["834334 receipt-dependent TPI1/FVA preflight"]
+    P --> V["834335 WT vs delta-TPI1 FBA/FVA"]
 ```
 
 Existing Meeson order-sensitivity and ensemble jobs are attached to individual

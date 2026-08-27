@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-26 07:50 BST（09:50 EEST）。本文件与
+最后运行更新：2026-08-27 10:50 BST（12:50 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -135,12 +135,12 @@ retry 727583 也达到 72 h。这证明只在最后写一次 JSON 的策略不�
 independent canonical receipts 成功后才求 joint cohort，最后组装
 `full_direct_b25.json`。本次更新状态如下：
 
-| Study | 必需 OCM receipts | 保留的健康 r4/legacy work | 已取消的排队中 64G tasks | 128G recovery array |
+| Study | 必需 OCM receipts | 此前 r4/legacy 终态 | 已取消的排队中 64G tasks | 当前 recovery array |
 |---|---:|---|---|---:|
-| E-MTAB-7223 | 9 | 805860 task 5 | 没有剩余 pending task | **834320**，`0-8%3`，等待805860全部 tasks |
-| E-MTAB-10801 | 13 | 805861 task 1 | 805861 tasks 6-12 | **834321**，`0-12%3`，等待805861全部 tasks |
-| E-MTAB-11000 | 11 | legacy 805003 task 0 | 805862 tasks 0-10 | **834323**，`0-10%3`，等待其它三个 r5 arrays 与805003 |
-| E-MTAB-14568 | 27 | 无 | 805863 task 8 与 tasks 12-26 | r5 **834322**，随后256G repair **863034**，均为 `0-26%3` |
+| E-MTAB-7223 | 9 | 805860_5：70 h partial incumbent；其余 OOM | 没有剩余 pending task | **834320**，128G，tasks 0-2 运行；3-8 排队 |
+| E-MTAB-10801 | 13 | 805861_1：70 h partial incumbent；其它已启动 tasks OOM | 805861 tasks 6-12 | **834321**，128G，tasks 0-2 运行；3-12 排队 |
+| E-MTAB-11000 | 11 | 805003_0：72 h Slurm TIMEOUT，无 receipt | 805862 tasks 0-10 | **834323**，128G，`0-10%3`，等待其它三个 r5 arrays |
+| E-MTAB-14568 | 27 | r4 已启动 tasks 均 OOM | 805863 task 8 与 tasks 12-26 | **834322**，128G，tasks 1/3/4 运行；**863034**，256G，等待 repair |
 
 00:24 EEST live check 时，六个24-hour legacy tasks 已运行13 h 13 min，72-hour
 11000 task 已运行11 h 44 min。Solver-step CPU efficiency 约94-96%，disk counters
@@ -149,8 +149,8 @@ independent canonical receipts 成功后才求 joint cohort，最后组装
 scientific correctness。这些 pre-instrumentation processes 没有 live Gurobi progress log，
 也没有写 canonical/partial receipt、`.sol` 或 `.mst`，因此当前无法取得它们的 incumbent
 与 gap。六个24-hour tasks 尚余约10 h 47 min，仍可能重复此前 timeout pattern。只有
-instrumented r4/r5 jobs 会提供 live solver logs，以及在 internal limit/终态保证写出的
-telemetry 和 partial receipt。
+instrumented jobs 提供 live solver logs，并在 solver 正常返回时写出 internal-limit
+telemetry 与 partial receipt；OS 强制终止或 filesystem 写入失败仍可能阻止保存。
 
 749576/749580/749584 的六个健康 RUNNING tasks 与健康的 805003_0 均未取消。
 749576/749580/749584 的 tasks 0-1 此前已在 24 h timeout，且没有 independent
@@ -204,6 +204,33 @@ fail-closed progression。
 已运行69 h 11 min，但没有 live telemetry。其余 r5 14568 tasks 受 array throttle 限制，
 r6 正确等待 r5 终态。四个 cohort 的 canonical independent 与 joint receipt 计数仍为零。
 
+### 2026-08-27：完成审计的 full-duration partial outputs
+
+两个 instrumented r4 tasks 达到252000秒 solver limit 后正常返回，并在 Slurm 强制终止前
+保存了结果。两份 receipts 均明确记录 `partial_incumbent`、`scientific_success=false`、
+Gurobi `TIME_LIMIT`，且 frozen-context SHA256 匹配。Slurm `FAILED 2:0` 是 partial
+output 按设计触发的 fail-closed exit，不是新的 OOM。
+
+| Array task / RNA run | Incumbent objective | Best bound | Relative gap | cohort 的 `checkpoint_b25/instrumented_attempts/` 下的 receipt 文件 |
+|---|---:|---:|---:|---|
+| 805860_5 / ERR2808261 | -136.0536082251 | -141.1906456601 | 3.775745% | `005_ERR2808261_job833065_task5.json` |
+| 805861_1 / ERR6389069 | -136.2536081782 | -141.1262291334 | 3.576141% | `001_ERR6389069_job832834_task1.json` |
+
+两份 receipts 引用的 `.sol`、`.mst` 与 `.gurobi.log` 均存在且非空，`summary_error` 均为
+null。这验证了 result persistence，而非 optimality 或 biological conclusions。gap 仍高于
+未改变的 `MIPGap=0.0001`（0.01%）标准。已部署 runner 与所审代码的 hash 一致：
+runner 会写 `.mst`，但 retry 不会重新加载它。因此目前 recovery 复用的是 canonical
+completed samples，而非 partial incumbent 或保存的 branch-and-bound tree；不能声称
+已实现 warm-start reuse。
+
+现有834320/834321 arrays 已自动启动，并覆盖这两个 partial tasks，本轮未追加 retry。
+legacy 805003_0 在72 h timeout 后仍无 receipt，由834323 覆盖。当前9个128G solver
+tasks 正在运行：834320、834321、834322 各3个，live gaps 为3.19-4.65%。使用实际
+step JobId 查询的 `sstat` RSS 约5.2-29.6 GiB，CPU/I/O counters 非零；这些 container
+accounting 采样不能保证后续不会 OOM。四个 cohort 仍没有 canonical independent 或
+joint receipts，audit、comparison 与 TPI1/FVA gates 均保持关闭。会话内 monitor 已明确
+转向 r5/r6 chain，保留原 schedule，且没有 model override。
+
 r5 instrumented independent tasks 请求128G、8 CPU、72 h Slurm limit，同时向 Gurobi
 显式传入 `TimeLimit=252000` 秒（70 h）、`MIPGap=1e-4`、8 threads、seed 0，留出
 原子写 receipt 的时间。存在 incumbent 时，receipt 记录 objective、best bound、
@@ -250,8 +277,8 @@ pooled-vs-cohort biological interpretation 保持 blocked。
 ```mermaid
 flowchart LR
     M["599873 model-only TPI1 gate: valid"]
-    B["805873 four strict metabolic receipts"] --> P["805874 receipt-dependent TPI1/FVA preflight"]
-    P --> V["805875 WT vs delta-TPI1 FBA/FVA"]
+    B["834333 four strict metabolic receipts"] --> P["834334 receipt-dependent TPI1/FVA preflight"]
+    P --> V["834335 WT vs delta-TPI1 FBA/FVA"]
 ```
 
 现有 Meeson order-sensitivity 与 ensemble jobs 绑定在各个 original cohort jobs 上。
