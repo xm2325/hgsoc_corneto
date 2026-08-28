@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-27 10:50 BST (12:50 EEST). This file is the project-level source of
+Last operational update: 2026-08-28 11:17 BST (13:17 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -49,6 +49,46 @@ inference.
 All expression-derived fluxes are model-predicted feasible flux states, not
 measured flux. Regulatory/NMF/metabolic agreement derived from the same RNA
 profiles is internal consistency, not independent validation.
+
+**Interpretation hold, documented 2026-08-28:** the saved b25 partial solutions
+expose sparse sample-specific expression constraints, uncalibrated exchange
+bounds and flux/indicator numerical disagreement. Eventual solver convergence
+alone will not resolve these issues. The frozen b25 runs remain optimization
+benchmarks; patient-specific metabolic claims require a separate input and
+numerical-quality audit. No scientific parameter was changed by this monitor.
+
+### Within-patient coverage, verified 2026-08-27
+
+Filtering `evidence/study_ocm_registry.tsv` on `primary_cohort_eligible=true`
+and grouping by `patient_id` gives seven repeated patients with 15 primary
+OCMs: six two-OCM families and one three-OCM family. Together with 45 singleton
+patients this reproduces 60 OCMs and 52 patients. One baseline-to-each-other
+contrast gives eight comparisons, not eight independent patients.
+
+| Patient | Primary OCM IDs | Already-submitted independent array tasks |
+|---|---|---|
+| OCM66 | OCM66-1; OCM66-5 | 834320_5; 834320_4 |
+| OCM74 | OCM74-1; OCM74-3; OCM74-5 | 834320_7; 834320_6; 834322_26 |
+| OCM110 | OCM110-1; OCM110-9 | 834321_2; 834321_1 |
+| OCM288 | OCM288-4; OCM288-7 | 834322_4; 834322_5 |
+| OCM296 | OCM296-3; OCM296-5 | 834322_8; 834322_9 |
+| OCM327 | OCM327-1; OCM327-3 | 834322_15; 834322_16 |
+| OCM333 | OCM333-1; OCM333-3 | 834322_18; 834322_19 |
+
+The 14568 indices also have the existing 863034 repair coverage. These are
+independent sample solves, not a newly submitted patient-level joint model.
+Jobs 834324-834327 remain cohort-level joint models. Regulatory job 592019's
+`regulatory_longitudinal_joint_l0p001.json` was re-read: it records eight
+response-blind comparisons in these seven families, not treatment causality.
+Its baseline labels do not independently establish collection chronology.
+
+Patient-level joint sensitivity was discussed but not launched. A test of
+within-patient similarity needs independent solutions and matched
+between-patient comparisons; joint union regularization already favours
+reaction reuse and cannot itself establish a patient effect. OCM74 spans
+7223 and 14568, so cohort-specific candidate selection is an additional
+confound. Chronology, treatment and same-biopsy/spatial relationships must be
+verified from source metadata rather than inferred from suffix ordering.
 
 ## Completed and auditable results
 
@@ -159,7 +199,7 @@ canonical, and assembles `full_direct_b25.json` last. At this update:
 | E-MTAB-7223 | 9 | 805860_5: partial incumbent at 70 h; others OOM | none remained pending | **834320**, 128G, tasks 0-2 running; 3-8 queued |
 | E-MTAB-10801 | 13 | 805861_1: partial incumbent at 70 h; other started tasks OOM | 805861 tasks 6-12 | **834321**, 128G, tasks 0-2 running; 3-12 queued |
 | E-MTAB-11000 | 11 | 805003_0: Slurm TIMEOUT at 72 h, no receipt | 805862 tasks 0-10 | **834323**, 128G, `0-10%3`, waiting for the other three r5 arrays |
-| E-MTAB-14568 | 27 | r4 started tasks OOM | 805863 task 8 and tasks 12-26 | **834322**, 128G, tasks 1/3/4 running; **863034**, 256G, pending repair |
+| E-MTAB-14568 | 27 | r4 started tasks OOM | 805863 task 8 and tasks 12-26 | **834322**, 128G, tasks 1/3/5 running, 6-26 queued; r5 tasks 0/2 failed OOM and 4 failed SIGBUS; **863034**, 256G, pending repair |
 
 At the 00:24 EEST live check, the six 24-hour legacy tasks had run for
 13 h 13 min and the 72-hour 11000 task for 11 h 44 min. Solver-step CPU
@@ -270,6 +310,114 @@ guarantee against OOM. All four cohorts still have zero canonical independent
 and joint receipts. The audit, comparison and TPI1/FVA gates stay closed.
 The same-conversation monitor now targets the r5/r6 chain explicitly, retaining
 its existing schedule and no model override.
+
+### 2026-08-27 partial-solution scientific audit, registered 2026-08-28
+
+This read-only audit used the two named 70-hour attempt receipts above, their
+`.sol` and `.mst` files, frozen `context.json` inputs, the deployed objective
+and indicator code, and Human-GEM v1.4.1. The model SHA256 remains
+`57d1b137f0c90d83a3e4f9a8225d74d37523594e6ee99f622b160a014d9f7050`.
+Context SHA256 values are
+`7ea9d2268ec7647bfa0f47f8215913442cafc2b6f76faefa13a40c402b7fcb1b`
+(7223) and
+`1475eee9397af6644fcfaa6500594fbe1441b7d4d4acfbf714a66bac91f0792c`
+(10801). These are model diagnostics, not validated biological findings.
+
+| Saved-solution quantity | OCM66-1 / ERR2808261 | OCM110-9 / ERR6389069 |
+|---|---:|---:|
+| Expression-derived reaction bounds actually applied, excluding biomass | 15 | 1 |
+| Selected indicators, threshold >=0.5 | 513 | 511 |
+| Nonzero fluxes, absolute value >1e-7 | 544 | 542 |
+| Biomass flux | 187.3536299766 | 187.3536299766 |
+| Nonzero fluxes with indicator below 0.5 | 31 | 32 |
+
+- The cohort candidate budget is 25, not 25 effective expression bounds in
+  every OCM. `_candidate_sets` in `scripts/run_corneto_14568_pilot.py` retains
+  only candidates with `proposed_upper > 0`; `_reaction_bounds` skips missing
+  candidates. Zero-expression candidates therefore do not automatically close
+  reactions. Missing and zero expression require distinct treatment before a
+  revised biological analysis; neither justifies an unreviewed zero bound.
+- All expression-capped reactions are zero at the saved flux reporting
+  threshold. Each saved flux vector also satisfies the other OCM's expression
+  and biomass bounds at tolerance 1e-7. The vectors pass the SBML mass-balance
+  check with maximum absolute residual below 3.34e-9 and have no model-bound
+  violation above 1e-6. This establishes reciprocal flux feasibility, not
+  equality of the complete feasible sets or uniquely patient-assigned networks.
+- Both solutions import ATP, phosphoenolpyruvate and phosphocreatine through
+  `EX_atp[e]`, `EX_pep[e]` and `EX_pcreat[e]`, each at -1000. The unchanged
+  model allows these exchanges; the supplied context does not calibrate them
+  to measured uptake or actual culture medium. Biomass and energy-pathway
+  conclusions cannot be interpreted as measured OCM physiology.
+- The 31/32 flux-indicator discrepancies have flux magnitude approximately
+  0.00386-0.00906 and binary values approximately 3.86e-6-9.06e-6 in `.mst`.
+  With the deployed `lb*y <= v <= ub*y` constraints and bounds up to 1000,
+  these are consistent with integer-tolerance-amplified trickle flow. Passing
+  the flux mass balance does not validate a network after rounding indicators.
+  Tightened justified bounds and a fixed-indicator feasibility audit are
+  needed before classifying active reactions. See the
+  [Gurobi IntegralityFocus explanation](https://docs.gurobi.com/projects/optimizer/en/current/reference/parameters.html#integralityfocus).
+- The deployed single-sample objective is `-biomass + 0.1*sum(indicators)`.
+  Recomputing it from `.sol` matches the reported incumbent objectives; the
+  approximate 0.2 difference is explained by sparsity, not different biomass.
+  The indicator sets share 402 reactions out of a 622-reaction union
+  (Jaccard 0.6463), but this is not an HGSOC-specific core. PPP reactions
+  `G6PDH2c`/`PGLc` and TPI1 reaction `HMR_4391` are used in these solutions;
+  their presence is not evidence of essentiality, enrichment or drug response.
+
+Input/media revision, expression-null controls, integrality checks,
+alternative-solution/FVA analysis and patient-balanced contrasts remain
+unperformed follow-up gates for these interpretations. Lowering the MIP gap
+alone cannot substitute for them. No media, expression policy, lambda,
+integrality tolerance or running job was changed during this audit.
+
+### 2026-08-28 11:15-11:17 BST: live recovery and covered SIGBUS failure
+
+Targeted `squeue`/`sacct`, current solver-log tails and `sstat` on the actual
+numeric solver-step IDs establish the following snapshot. Gaps below are
+rounded live-log values, not final receipts or estimates of completion time.
+
+| Array task | Actual numeric JobId | Elapsed at inspection | Live gap |
+|---|---:|---|---:|
+| 834320_0 | 890339 | 27 h 54 min | 3.06% |
+| 834320_1 | 890340 | 27 h 54 min | 3.72% |
+| 834320_2 | 890341 | 27 h 54 min | 3.37% |
+| 834321_0 | 890279 | 28 h 3 min | 3.47% |
+| 834321_1 | 890280 | 28 h 3 min | 3.65% |
+| 834321_2 | 890281 | 28 h 3 min | 4.19% |
+| 834322_1 | 862558 | 68 h 1 min | 3.15% |
+| 834322_3 | 864522 | 66 h 35 min | 3.42% |
+| 834322_5 | 900491 | 21 h 19 min | 3.27% |
+
+All nine logs were recently updated. Actual-step RSS samples were about
+18.0-45.6 GiB with nonzero CPU/I/O counters; as before, container accounting
+does not prove that a 128G allocation cannot OOM. The two oldest 14568 solves
+are approaching their internal 70 h limits, not guaranteed convergence.
+
+Newly audited failure **834322_4**, actual JobId **866509**, run
+**ERR13907041 / OCM288-4**, ended on 2026-08-27 15:57:28 EEST after
+42 h 38 min 29 s. Accounting reports `FAILED 7:0`; the terminal output
+`logs/met-inst-ind-14568-r5-834322_4.out` explicitly reports a Singularity
+wrapper **Bus error** and srun exit 135. This confirms SIGBUS; neither OOM nor
+a Gurobi session-cap error is established. The underlying cause remains
+unresolved. The last solver-log values were incumbent -136.25361, bound
+-141.20775 and gap 3.64%. No canonical/attempt JSON, `.sol` or `.mst` was
+written for that attempt, so only progress-log evidence survives. The existing
+write-on-return instrumentation does not protect against abrupt process loss.
+
+Array **863034**, already requesting 256G and throttle three, covers this
+missing/noncanonical index as well as the earlier OOM indices. Its dependency
+is still `afterany:834322_*`, and joint **834326** still requires
+`afterok:863034_*`. The larger allocation is not a demonstrated fix for
+SIGBUS. No duplicate or additional retry was submitted and no healthy job was
+cancelled. All other joint, assembly, comparison and TPI1/FVA gates retain
+their existing dependencies. The 11000 array **834323** remains pending on
+the three r5 independent arrays using explicit wildcards.
+
+Canonical independent receipts remain **0/9, 0/13, 0/11 and 0/27**; all four
+joint and `full_direct_b25.json` files are absent. The two earlier 70-hour
+partial receipts still match their contexts and retain their artifacts; there
+is no new partial receipt from the r5 arrays at this snapshot. No biological
+interpretation or new patient-level/pooled research job was released.
 
 The r5 instrumented independent tasks request 128G, eight CPUs and a 72 h Slurm limit,
 but pass an internal Gurobi `TimeLimit=252000` seconds (70 h), `MIPGap=1e-4`,

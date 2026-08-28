@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-27 10:50 BST（12:50 EEST）。本文件与
+最后运行更新：2026-08-28 11:17 BST（13:17 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -43,6 +43,41 @@ QC；later-passage 与 non-Tighe samples 用于 stability 或 response-blind rep
 所有 expression-derived flux 都是模型预测的 feasible flux states，不是 measured
 flux。由同一 RNA profiles 得到的 regulatory/NMF/metabolic agreement 是 internal
 consistency，不是 independent validation。
+
+**解释限制（Interpretation hold，2026-08-28 登记）：** 已保存的 b25 partial solutions
+暴露出 sample-specific expression constraints 过少、exchange bounds 未校准，以及
+flux/indicator 数值不一致。即使以后 solver 收敛，也不能自动解决这些问题。冻结的 b25
+runs 仍属于 optimization benchmarks；patient-specific metabolic claims 需要单独的
+input 与 numerical-quality audit。本次 monitor 没有修改任何 scientific parameter。
+
+### 同患者覆盖范围（Within-patient coverage，2026-08-27 核实）
+
+对 `evidence/study_ocm_registry.tsv` 筛选 `primary_cohort_eligible=true`，再按
+`patient_id` 分组，得到七位 repeated patients、15 个 primary OCM：六组各两个 OCM，
+一组有三个 OCM。加上45位 singleton patients，恰好对应60个 OCM、52位患者。
+每组取一个 baseline 与其余 OCM 比较，共八个 contrasts，不是八位独立患者。
+
+| Patient | Primary OCM IDs | 已提交的 independent array tasks |
+|---|---|---|
+| OCM66 | OCM66-1; OCM66-5 | 834320_5; 834320_4 |
+| OCM74 | OCM74-1; OCM74-3; OCM74-5 | 834320_7; 834320_6; 834322_26 |
+| OCM110 | OCM110-1; OCM110-9 | 834321_2; 834321_1 |
+| OCM288 | OCM288-4; OCM288-7 | 834322_4; 834322_5 |
+| OCM296 | OCM296-3; OCM296-5 | 834322_8; 834322_9 |
+| OCM327 | OCM327-1; OCM327-3 | 834322_15; 834322_16 |
+| OCM333 | OCM333-1; OCM333-3 | 834322_18; 834322_19 |
+
+14568 的相应 indices 也由现有863034 repair 覆盖。这些是 independent sample solves，
+不是本次新提交的 patient-level joint model。834324-834327 仍是 cohort-level joint。
+已重新读取 regulatory job 592019 的 `regulatory_longitudinal_joint_l0p001.json`：
+它记录这七个 families 的八个 response-blind comparisons，不是 treatment causality。
+其中的 baseline labels 本身不能独立证明 collection chronology。
+
+Patient-level joint sensitivity 已讨论，但尚未启动。检验 within-patient similarity 需要
+independent solutions 与匹配的 between-patient comparisons；joint union regularization
+本身就偏好 reaction reuse，不能单独证明 patient effect。OCM74 跨7223与14568，
+cohort-specific candidate selection 是额外 confound。时间顺序、治疗以及
+same-biopsy/spatial relationships 必须依据 source metadata，不能只按编号后缀推断。
 
 ## 已完成且可审计的结果（Completed and auditable results）
 
@@ -140,7 +175,7 @@ independent canonical receipts 成功后才求 joint cohort，最后组装
 | E-MTAB-7223 | 9 | 805860_5：70 h partial incumbent；其余 OOM | 没有剩余 pending task | **834320**，128G，tasks 0-2 运行；3-8 排队 |
 | E-MTAB-10801 | 13 | 805861_1：70 h partial incumbent；其它已启动 tasks OOM | 805861 tasks 6-12 | **834321**，128G，tasks 0-2 运行；3-12 排队 |
 | E-MTAB-11000 | 11 | 805003_0：72 h Slurm TIMEOUT，无 receipt | 805862 tasks 0-10 | **834323**，128G，`0-10%3`，等待其它三个 r5 arrays |
-| E-MTAB-14568 | 27 | r4 已启动 tasks 均 OOM | 805863 task 8 与 tasks 12-26 | **834322**，128G，tasks 1/3/4 运行；**863034**，256G，等待 repair |
+| E-MTAB-14568 | 27 | r4 已启动 tasks 均 OOM | 805863 task 8 与 tasks 12-26 | **834322**，128G，tasks 1/3/5 运行、6-26 排队；r5 tasks 0/2 为 OOM、4 为 SIGBUS；**863034**，256G，等待 repair |
 
 00:24 EEST live check 时，六个24-hour legacy tasks 已运行13 h 13 min，72-hour
 11000 task 已运行11 h 44 min。Solver-step CPU efficiency 约94-96%，disk counters
@@ -230,6 +265,100 @@ step JobId 查询的 `sstat` RSS 约5.2-29.6 GiB，CPU/I/O counters 非零；这
 accounting 采样不能保证后续不会 OOM。四个 cohort 仍没有 canonical independent 或
 joint receipts，audit、comparison 与 TPI1/FVA gates 均保持关闭。会话内 monitor 已明确
 转向 r5/r6 chain，保留原 schedule，且没有 model override。
+
+### 2026-08-27 partial-solution scientific audit（2026-08-28 登记）
+
+本次 read-only audit 使用上表两份70-hour attempt receipts、对应 `.sol` 和 `.mst`、
+冻结的 `context.json`、已部署的 objective/indicator code，以及 Human-GEM v1.4.1。
+Model SHA256 仍为
+`57d1b137f0c90d83a3e4f9a8225d74d37523594e6ee99f622b160a014d9f7050`。
+Context SHA256 分别为
+`7ea9d2268ec7647bfa0f47f8215913442cafc2b6f76faefa13a40c402b7fcb1b`
+（7223）和
+`1475eee9397af6644fcfaa6500594fbe1441b7d4d4acfbf714a66bac91f0792c`
+（10801）。以下内容是 model diagnostics，不是已验证的 biological findings。
+
+| Saved-solution quantity | OCM66-1 / ERR2808261 | OCM110-9 / ERR6389069 |
+|---|---:|---:|
+| 实际施加的 expression-derived reaction bounds，不含 biomass | 15 | 1 |
+| Selected indicators，阈值 >=0.5 | 513 | 511 |
+| Nonzero fluxes，绝对值 >1e-7 | 544 | 542 |
+| Biomass flux | 187.3536299766 | 187.3536299766 |
+| 有 nonzero flux 但 indicator <0.5 的反应数 | 31 | 32 |
+
+- Cohort candidate budget 为25，不代表每个 OCM 都有25条有效 expression bounds。
+  `scripts/run_corneto_14568_pilot.py` 的 `_candidate_sets` 仅保留
+  `proposed_upper > 0` 的 candidates，`_reaction_bounds` 会跳过 missing candidates。
+  因此 zero-expression candidates 不会自动关闭反应。修订 biological analysis 前需要
+  区分 missing 与 zero expression；两者均不能成为未经审查就设置零边界的理由。
+- 所有 expression-capped reactions 在保存的 flux reporting threshold 下均为零。
+  两份 flux vectors 交换到对方的 expression 与 biomass bounds 下，在1e-7 tolerance
+  下也均无违规。SBML mass-balance 最大 absolute residual 小于3.34e-9，且没有超过
+  1e-6 的 model-bound violation。这验证了 reciprocal flux feasibility，不能证明完整
+  feasible sets 相同，也不能证明网络只能对应某一位患者。
+- 两份解均通过 `EX_atp[e]`、`EX_pep[e]`、`EX_pcreat[e]` 摄取 ATP、
+  phosphoenolpyruvate 与 phosphocreatine，三个 flux 均为-1000。未修改的模型允许这些
+  exchanges；当前 context 未根据 measured uptake 或实际 culture medium 校准。
+  因此 biomass 与 energy-pathway 结果不能解释为已测量的 OCM physiology。
+- 31/32条 flux-indicator discrepancies 的 flux magnitude 约0.00386-0.00906，
+  `.mst` 中 binary values 约3.86e-6-9.06e-6。已部署约束为
+  `lb*y <= v <= ub*y`，边界可达1000；这些现象符合 integer tolerance 被放大造成的
+  trickle flow。Flux mass balance 通过，不等于 indicators 取整后的网络通过验证。
+  活跃反应分类前需要有依据的 tightened bounds 与 fixed-indicator feasibility audit。
+  参见 [Gurobi IntegralityFocus 说明](https://docs.gurobi.com/projects/optimizer/en/current/reference/parameters.html#integralityfocus)。
+- 已部署的 single-sample objective 为 `-biomass + 0.1*sum(indicators)`。
+  用 `.sol` 重算与 incumbent objective 一致；约0.2的差异来自 sparsity，而非 biomass
+  不同。两份 indicator sets 的 intersection 为402、union 为622（Jaccard 0.6463），
+  但这不是 HGSOC-specific core。解使用了 PPP reactions `G6PDH2c`/`PGLc` 和
+  TPI1 reaction `HMR_4391`；使用某反应不等于 essentiality、enrichment 或 drug response。
+
+Input/media revision、expression-null controls、integrality checks、alternative-solution/FVA
+analysis 与 patient-balanced contrasts，仍是这些解释尚未完成的 follow-up gates。
+只降低 MIP gap 不能替代这些检查。本次 audit 没有修改 media、expression policy、lambda、
+integrality tolerance 或任何 running job。
+
+### 2026-08-28 11:15-11:17 BST：live recovery 与已覆盖的 SIGBUS failure
+
+以下 snapshot 来自 targeted `squeue`/`sacct`、当前 solver-log tails，以及使用实际
+numeric solver-step IDs 的 `sstat`。Gap 为 live log 中的舍入值，不是 final receipt，
+也不是完成时间预测。
+
+| Array task | Actual numeric JobId | 检查时 elapsed | Live gap |
+|---|---:|---|---:|
+| 834320_0 | 890339 | 27 h 54 min | 3.06% |
+| 834320_1 | 890340 | 27 h 54 min | 3.72% |
+| 834320_2 | 890341 | 27 h 54 min | 3.37% |
+| 834321_0 | 890279 | 28 h 3 min | 3.47% |
+| 834321_1 | 890280 | 28 h 3 min | 3.65% |
+| 834321_2 | 890281 | 28 h 3 min | 4.19% |
+| 834322_1 | 862558 | 68 h 1 min | 3.15% |
+| 834322_3 | 864522 | 66 h 35 min | 3.42% |
+| 834322_5 | 900491 | 21 h 19 min | 3.27% |
+
+九份 logs 均有近期更新。Actual-step RSS 采样约18.0-45.6 GiB，CPU/I/O counters 非零；
+与此前一样，container accounting 不能证明128G allocation 不会 OOM。14568 两个
+最久的 solves 正接近 internal 70 h limit，不代表即将保证收敛。
+
+本次新增审计失败 **834322_4**，actual JobId **866509**，对应
+**ERR13907041 / OCM288-4**，于2026-08-27 15:57:28 EEST 结束，运行
+42 h 38 min 29 s。Accounting 为 `FAILED 7:0`；最终输出
+`logs/met-inst-ind-14568-r5-834322_4.out` 明确记录 Singularity wrapper 的
+**Bus error** 与 srun exit 135。这确认了 SIGBUS，不是已确认的 OOM 或
+Gurobi session-cap failure；底层 runtime/node/filesystem 原因仍未确定。
+Solver log 最后记录 incumbent -136.25361、bound -141.20775、gap 3.64%。
+该 attempt 没有生成 canonical/attempt JSON、`.sol` 或 `.mst`，仅保留 progress-log
+证据。现有 write-on-return instrumentation 仍不能保护进程突然退出时的解文件。
+
+已提交的 **863034** 请求256G、throttle 为3，既覆盖此前 OOM indices，也覆盖本次
+missing/noncanonical index。其 dependency 仍为 `afterany:834322_*`，joint **834326**
+仍等待 `afterok:863034_*`。增加内存不是已验证的 SIGBUS 修复。本次没有追加或重复 retry，
+没有取消任何健康任务。其它 joint、assembly、comparison 与 TPI1/FVA gates 的依赖保持
+不变。11000 array **834323** 仍用 explicit wildcards 等待三个 r5 independent arrays。
+
+Canonical independent receipts 仍为 **0/9、0/13、0/11、0/27**；四个 joint 与
+`full_direct_b25.json` 均不存在。此前两份70-hour partial receipts 的 context 仍匹配，
+artifacts 仍保留；此 snapshot 没有新的 r5 partial receipt。没有释放 biological
+interpretation，也没有提交新的 patient-level 或 pooled research job。
 
 r5 instrumented independent tasks 请求128G、8 CPU、72 h Slurm limit，同时向 Gurobi
 显式传入 `TimeLimit=252000` 秒（70 h）、`MIPGap=1e-4`、8 threads、seed 0，留出
