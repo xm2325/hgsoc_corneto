@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-28 11:17 BST (13:17 EEST). This file is the project-level source of
+Last operational update: 2026-08-29 10:08 BST (12:08 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -418,6 +418,44 @@ joint and `full_direct_b25.json` files are absent. The two earlier 70-hour
 partial receipts still match their contexts and retain their artifacts; there
 is no new partial receipt from the r5 arrays at this snapshot. No biological
 interpretation or new patient-level/pooled research job was released.
+
+### 2026-08-29 12:05-12:08 EEST: node-local failures and covered 10801 repair
+
+The targeted audit found nine active solvers and still no canonical independent
+receipt (**0/9, 0/13, 0/11 and 0/27**). The active 7223 tasks 834320_0-2 had
+run for about 50 h 43 min with live gaps 3.00%, 3.59% and 3.28%. Active 10801
+tasks 834321_7/10/11 had run for about 4-6 h with gaps 3.86%, 4.00% and 4.24%.
+Active 14568 tasks 834322_5/6/7 had run for about 19-44 h with gaps 3.21%,
+3.82% and 4.38%. All nine logs were current, and actual solver-step RSS samples
+were approximately 5.7-40.1 GiB with nonzero CPU and I/O counters.
+
+Three long 10801 tasks (834321_0-2; actual JobIds 890279-890281) failed on
+node `rc5140` with Singularity-wrapper SIGBUS after about 44-47 h. Their last
+logged gaps were 3.43%, 3.61% and 4.14%; none wrote an attempt or canonical
+receipt. Six immediately following tasks (834321_3-6 and 834321_8-9) also
+landed on `rc5140` and failed in 7-10 seconds because `srun` could not execute
+`/scratch/project_2012997/xiaomei/hgsoc_corneto_env/bin/python`, reporting
+`No such file or directory`. This common-node pattern is operational evidence
+for node/filesystem/runtime failure, not OOM, solver infeasibility or a Gurobi
+session-cap error.
+
+One fail-closed 10801 repair array, **937737** (`0-12%3`, 128G), was therefore
+submitted with unchanged frozen context and solver parameters. It waits on
+`afterany:834321_*`, excludes `rc5140`, validates and skips any future
+canonical receipt, and recomputes only noncanonical indices. Joint job 834325
+was rewired to `afterok:937737_*`. `rc5140` was also excluded from the still
+pending elements and downstream solver jobs in the documented recovery chain;
+already-running healthy tasks were not changed or cancelled.
+
+For 14568, 834322_1 and 834322_3 both reached the 252000-second solver limit
+and then ended with wrapper SIGBUS. Task 834322_1 wrote no attempt receipt.
+Task 834322_3 atomically wrote and was audited as `partial_incumbent`,
+`scientific_success=false`, matching context SHA256, Gurobi `TIME_LIMIT`,
+objective -136.6536067185, best bound -141.3243116334 and relative gap
+3.417916%; its referenced `.sol`, `.mst` and Gurobi log exist and are nonempty.
+This is optimization evidence only. Existing 256G repair array 863034 covers
+both noncanonical indices, so no duplicate 14568 retry was submitted. All
+joint, assembly, comparison and TPI1/FVA scientific gates remain closed.
 
 The r5 instrumented independent tasks request 128G, eight CPUs and a 72 h Slurm limit,
 but pass an internal Gurobi `TimeLimit=252000` seconds (70 h), `MIPGap=1e-4`,

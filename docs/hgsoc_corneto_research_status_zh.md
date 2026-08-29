@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-28 11:17 BST（13:17 EEST）。本文件与
+最后运行更新：2026-08-29 10:08 BST（12:08 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -359,6 +359,40 @@ Canonical independent receipts 仍为 **0/9、0/13、0/11、0/27**；四个 join
 `full_direct_b25.json` 均不存在。此前两份70-hour partial receipts 的 context 仍匹配，
 artifacts 仍保留；此 snapshot 没有新的 r5 partial receipt。没有释放 biological
 interpretation，也没有提交新的 patient-level 或 pooled research job。
+
+### 2026-08-29 12:05-12:08 EEST：node-local failures 与已覆盖的10801 repair
+
+Targeted audit 显示九个 active solvers，canonical independent receipts 仍为
+**0/9、0/13、0/11、0/27**。7223 的 active tasks 834320_0-2 已运行约
+50 h 43 min，live gaps 为3.00%、3.59%、3.28%；10801 的834321_7/10/11
+已运行约4-6 h，gaps 为3.86%、4.00%、4.24%；14568 的834322_5/6/7
+已运行约19-44 h，gaps 为3.21%、3.82%、4.38%。九份 logs 均持续更新，
+actual solver-step RSS 约5.7-40.1 GiB，CPU 与I/O counters 非零。
+
+10801 的三个长任务834321_0-2（actual JobIds 890279-890281）均在 node
+`rc5140` 运行约44-47 h 后发生 Singularity-wrapper SIGBUS；最后 live gaps
+分别为3.43%、3.61%、4.14%，均未写 attempt 或 canonical receipt。随后六个
+tasks（834321_3-6、834321_8-9）也落在 `rc5140`，并在7-10秒内失败：
+`srun` 无法执行 `/scratch/project_2012997/xiaomei/hgsoc_corneto_env/bin/python`，
+报告 `No such file or directory`。这一 common-node pattern 是 node/filesystem/runtime
+failure 的 operational evidence，不是 OOM、solver infeasibility 或 Gurobi
+session-cap error。
+
+因此提交了一个 fail-closed 10801 repair array **937737**（`0-12%3`、128G），
+frozen context 与 solver parameters 不变。它等待 `afterany:834321_*`，排除
+`rc5140`，验证并跳过以后可能生成的 canonical receipts，只重算 noncanonical
+indices。Joint job 834325 已改为依赖 `afterok:937737_*`。文档所列 recovery chain
+中仍 pending 的 elements 与 downstream solver jobs 也排除了 `rc5140`；没有修改或
+取消已经运行的健康任务。
+
+14568 的834322_1 与834322_3 都达到252000-second solver limit，随后发生 wrapper
+SIGBUS。834322_1 没有写出 attempt receipt；834322_3 在 SIGBUS 前完成原子写入，
+经审计为 `partial_incumbent`、`scientific_success=false`、context SHA256 匹配、
+Gurobi `TIME_LIMIT`，objective -136.6536067185、best bound -141.3243116334、
+relative gap 3.417916%；其 `.sol`、`.mst` 与 Gurobi log 均存在且非空。这只能作为
+optimization evidence。现有256G repair array 863034 已覆盖两个 noncanonical
+indices，因此没有重复提交14568 retry。全部 joint、assembly、comparison 与
+TPI1/FVA scientific gates 继续关闭。
 
 r5 instrumented independent tasks 请求128G、8 CPU、72 h Slurm limit，同时向 Gurobi
 显式传入 `TimeLimit=252000` 秒（70 h）、`MIPGap=1e-4`、8 threads、seed 0，留出
