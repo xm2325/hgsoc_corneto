@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-29 10:08 BST (12:08 EEST). This file is the project-level source of
+Last operational update: 2026-08-30 10:03 BST (12:03 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -456,6 +456,42 @@ objective -136.6536067185, best bound -141.3243116334 and relative gap
 This is optimization evidence only. Existing 256G repair array 863034 covers
 both noncanonical indices, so no duplicate 14568 retry was submitted. All
 joint, assembly, comparison and TPI1/FVA scientific gates remain closed.
+
+### 2026-08-30 12:00-12:03 EEST: 7223 partial receipts and repair serialization
+
+The first three 7223 r5 tasks reached the unchanged 252000-second Gurobi limit.
+Tasks 834320_0 and 834320_1 atomically wrote audited `partial_incumbent`
+receipts before their Singularity wrappers ended with SIGBUS. Both receipts
+have `scientific_success=false`, the matching 7223 context SHA256, Gurobi
+`TIME_LIMIT`, requested `MIPGap=0.0001`, and nonempty `.sol`, `.mst` and solver
+log artifacts. Their objective/bound/gap values are respectively
+-137.0536041377/-141.1212280161/2.967907% and
+-136.2536156425/-141.1159266378/3.568574%. Task 834320_2 also reached the
+solver limit, with last logged objective -136.85361, bound -141.29013 and gap
+3.24%, but SIGBUS occurred before an attempt receipt was written. None is a
+canonical scientific result.
+
+Because 834320 had no existing successor for its noncanonical indices, one
+fail-closed 7223 repair array, **948765** (`0-8%3`, 128G), was submitted with
+the same context and scientific/solver parameters. It waits on
+`afterany:834320_*`, excludes the known-bad node `rc5140`, validates and skips
+canonical receipts, and recomputes only noncanonical indices. Joint job 834324
+now requires `afterok:948765_*`.
+
+The 11000 independent array 834323 was serialized behind all three repair
+arrays (`948765_*`, `937737_*` and `863034_*`). Thus at most three throttle-3
+repair arrays, rather than those arrays plus 11000, can request Gurobi sessions
+at once. This preserves the operational ceiling without changing scientific
+parameters. Separately, 10801 task 834321_10 was killed by its 128G Slurm
+memory cgroup after 16 h 55 min; the already-submitted 937737 repair covers it,
+so no additional retry was added.
+
+Nine solver tasks were active at this check. Live gaps were 4.25/4.18/4.24%
+for 7223 tasks 3-5, 3.59/3.59/3.72% for 10801 tasks 7/11/12, and
+3.18/3.58/4.28% for 14568 tasks 5-7. All logs were current; actual-step RSS
+samples were approximately 6.0-53.9 GiB with nonzero CPU/I/O. Canonical counts
+remain **0/9, 0/13, 0/11 and 0/27**. No joint, assembly, comparison or
+TPI1/FVA scientific gate was released.
 
 The r5 instrumented independent tasks request 128G, eight CPUs and a 72 h Slurm limit,
 but pass an internal Gurobi `TimeLimit=252000` seconds (70 h), `MIPGap=1e-4`,

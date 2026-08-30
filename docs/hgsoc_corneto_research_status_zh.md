@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-29 10:08 BST（12:08 EEST）。本文件与
+最后运行更新：2026-08-30 10:03 BST（12:03 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -393,6 +393,36 @@ relative gap 3.417916%；其 `.sol`、`.mst` 与 Gurobi log 均存在且非空�
 optimization evidence。现有256G repair array 863034 已覆盖两个 noncanonical
 indices，因此没有重复提交14568 retry。全部 joint、assembly、comparison 与
 TPI1/FVA scientific gates 继续关闭。
+
+### 2026-08-30 12:00-12:03 EEST：7223 partial receipts 与 repair serialization
+
+7223 r5 的前三个 tasks 都达到未改变的252000-second Gurobi limit。834320_0 与
+834320_1 在 Singularity wrapper 发生 SIGBUS 前原子写出了经审计的
+`partial_incumbent` receipts。两份 receipts 均为 `scientific_success=false`，
+7223 context SHA256 匹配，Gurobi `TIME_LIMIT`，requested `MIPGap=0.0001`，
+且 `.sol`、`.mst` 和 solver log 均存在且非空。两者的
+objective/bound/gap 分别为 -137.0536041377/-141.1212280161/2.967907% 和
+-136.2536156425/-141.1159266378/3.568574%。834320_2 也达到 solver limit，
+最后 log 为 objective -136.85361、bound -141.29013、gap 3.24%，但 SIGBUS
+发生在 attempt receipt 写入前。三者都不是 canonical scientific result。
+
+由于834320 的 noncanonical indices 没有既有 successor，因此提交了一个 fail-closed
+7223 repair array **948765**（`0-8%3`、128G），context 与 scientific/solver
+parameters 不变。它等待 `afterany:834320_*`，排除已知故障 node `rc5140`，
+验证并跳过 canonical receipts，只重算 noncanonical indices。Joint job 834324
+现依赖 `afterok:948765_*`。
+
+11000 independent array 834323 已改为串联等待三个 repair arrays
+（`948765_*`、`937737_*`、`863034_*`）。因此最多只有三个 throttle-3 repair
+arrays 同时请求 Gurobi sessions，不会再叠加11000 array；这保持 operational ceiling，
+没有修改 scientific parameters。另外，10801 task 834321_10 在运行16 h 55 min 后
+被其128G Slurm memory cgroup OOM kill；现有937737 repair 已覆盖它，因此没有新增 retry。
+
+本次检查有九个 active solver tasks。7223 tasks 3-5 的 live gaps 为
+4.25/4.18/4.24%，10801 tasks 7/11/12 为3.59/3.59/3.72%，14568 tasks 5-7
+为3.18/3.58/4.28%。所有 logs 均持续更新；actual-step RSS 约6.0-53.9 GiB，
+CPU/I/O 非零。Canonical counts 仍为 **0/9、0/13、0/11、0/27**；没有释放任何
+joint、assembly、comparison 或 TPI1/FVA scientific gate。
 
 r5 instrumented independent tasks 请求128G、8 CPU、72 h Slurm limit，同时向 Gurobi
 显式传入 `TimeLimit=252000` 秒（70 h）、`MIPGap=1e-4`、8 threads、seed 0，留出
