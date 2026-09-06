@@ -17,6 +17,17 @@ safety reviewer before execution. **No Slurm hold was applied**; it needs
 explicit user approval. The previously deployed application startup hold
 remains in place. No running job was targeted or changed.
 
+**Delivery follow-up, 23:09 BST:** implementation/audit commit `fa7efa7` exists
+locally in `/private/tmp/hgsoc-scientific-audit-20260906`. The GitHub push to
+`xm2325/hgsoc_corneto`, branch `agent/metabolic-retry-pooled-status`, was
+rejected before execution by the safety reviewer; it is **not uploaded**.
+The four new audit-evidence JSON transfers back to Roihu were separately
+rejected. Do not bypass either rejection or retry without explicit payload
+and destination approval. Reviewed solver code and the bilingual documents
+were deployed; JSON evidence remains available locally. OneDrive is not
+claimed synchronized. The 04:00 continuation must read this isolated working
+copy or the updated remote documents, not assume GitHub already has this audit.
+
 ## Latest decision: b25 scientific review hold, 2026-09-06
 
 The research question remains worthwhile, but continuing identical long b25

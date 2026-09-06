@@ -155,3 +155,7 @@ CORNETO 有 expression-context-specific 和 multi-condition 建模实现，但�
 续办交付时还发现 Roihu 的两份状态文件停留在2026-08-27，落后于 GitHub delivery branch。比较表明是缺少后续历史记录，而非新的未合并分析；这次同步需保留旧文档备份并补齐最新审计，避免不同执行环境读到不同的继续规则。
 
 GitHub delivery 使用隔离目录 `/private/tmp/hgsoc-scientific-audit-20260906`，避免 OneDrive I/O 阻塞。原 OneDrive working tree 未宣称已同步。本文与两个状态登记是本次审计来源；`main.tex` 仍是标注日期为 2026-08-12 的历史稿件，不能把其旧快照当成本次最终审计。
+
+**23:09 BST 交付状态：** 本地 implementation/audit commit 为 `fa7efa7`。安全审核分别拒绝了本次21文件向 `xm2325/hgsoc_corneto` delivery branch 的 push，以及四份 audit JSON 回传原 Roihu evidence 目录；均未绕过，GitHub 仍未收到本次提交。代码与中英文文档的服务器部署已完成，但远程报告中的四个新 evidence 链接尚缺相应 JSON 副本，本地相对链接完整。需要用户对具体文件内容和目的地明确授权后才能完成这些剩余传输。
+
+04:00 接续应先检查本地隔离目录的 commits 与本报告，不重新执行已完成的29项修复测试或重新启动 b25 长作业。若用户授权了剩余上传，再定位可用的 GitHub 认证工具并校验远程父提交；此前临时 GH executable 路径在23:09检查时已不存在，不能把已通过 `ls-remote` 当成 push 认证可用的证明。Slurm pending-job hold 也须单独明确授权，不能把后续 heartbeat 当作新授权。

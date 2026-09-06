@@ -12,6 +12,14 @@ tasks，9份 solver logs 均有近期更新。937737_3/4/6 的 live gaps 为3.14
 **未施加 Slurm hold**，需用户明确授权。此前部署的 application startup hold 仍保留；
 没有针对或修改任何 RUNNING 任务。
 
+**23:09 BST 交付跟进：** 本地已生成 implementation/audit commit `fa7efa7`，目录为
+`/private/tmp/hgsoc-scientific-audit-20260906`。向 `xm2325/hgsoc_corneto` 的
+`agent/metabolic-retry-pooled-status` push 被安全审核在执行前拒绝，**尚未上传 GitHub**。
+四份新 audit-evidence JSON 回传 Roihu 也被单独拒绝。不得绕过或在没有明确的文件内容/目的地
+授权前重试。已审阅的 solver code 与中英文文档已部署，JSON evidence 保留在本地。
+OneDrive 未宣称同步；04:00 恢复应先读取此隔离工作目录或更新的远程文档，不能假设 GitHub
+已有本轮审计。
+
 ## 最新决定：b25 scientific review hold（2026-09-06）
 
 科学问题仍然值得研究，但继续重复相同的 b25 长求解，当前不能被视为 OCM-specific
