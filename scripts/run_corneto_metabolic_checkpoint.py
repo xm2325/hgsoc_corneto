@@ -11,6 +11,8 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
+from hgsoc_corneto.metabolic.validation import validate_receipt
+
 
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
@@ -255,7 +257,9 @@ def assemble(args: argparse.Namespace) -> int:
     independent_jobs: list[str | None] = []
     for index, condition in enumerate(conditions):
         path = args.independent_dir / f"{index:03d}_{condition}.json"
-        receipt = _read_json(path)
+        receipt = validate_receipt(
+            path, context_sha256=context_sha, conditions=[condition], kind="independent"
+        )
         expected = {
             "status": "completed",
             "schema_version": "metabolic_independent_checkpoint.v1",
@@ -267,13 +271,14 @@ def assemble(args: argparse.Namespace) -> int:
         solution = receipt.get("solution")
         if not isinstance(solution, dict) or str(solution.get("status", "")).casefold() not in {
             "optimal",
-            "optimal_inaccurate",
         }:
             raise ValueError(f"independent solution is not optimal: {path}")
         independent.append(solution)
         independent_jobs.append(receipt.get("slurm_job_id"))
 
-    joint_receipt = _read_json(args.joint_receipt)
+    joint_receipt = validate_receipt(
+        args.joint_receipt, context_sha256=context_sha, conditions=conditions, kind="joint"
+    )
     if (
         joint_receipt.get("status") != "completed"
         or joint_receipt.get("schema_version") != "metabolic_joint_checkpoint.v1"
@@ -286,10 +291,7 @@ def assemble(args: argparse.Namespace) -> int:
     joint = joint_result.get("joint")
     if not isinstance(joint, list) or len(joint) != len(conditions):
         raise ValueError("joint result has the wrong number of condition summaries")
-    if any(
-        str(item.get("status", "")).casefold() not in {"optimal", "optimal_inaccurate"}
-        for item in joint
-    ):
+    if any(str(item.get("status", "")).casefold() != "optimal" for item in joint):
         raise ValueError("at least one joint condition is not optimal")
 
     independent_union = sorted(
@@ -333,7 +335,14 @@ def assemble(args: argparse.Namespace) -> int:
             "independent_job_ids": independent_jobs,
             "joint_job_id": joint_receipt.get("slurm_job_id"),
             "assembly_job_id": os.environ.get("SLURM_JOB_ID"),
+            "validation_policy": "instrumented_context_gap_primal_artifact_v1",
+            "independent_receipt_sha256": [
+                _sha256(args.independent_dir / f"{i:03d}_{c}.json")
+                for i, c in enumerate(conditions)
+            ],
+            "joint_receipt_sha256": _sha256(args.joint_receipt),
         },
+        "interpretation_status": "requires_separate_input_and_biological_validation",
     }
     if args.output.exists():
         raise FileExistsError(f"refusing to overwrite canonical receipt: {args.output}")

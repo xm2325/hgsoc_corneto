@@ -1,0 +1,2881 @@
+{
+  "attempts": [
+    {
+      "array_index": 0,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "86419380a48e26ead69ceeca62ca9f80078ca5b7fd9c81ceaa9624aa42cde2df"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "98267346afbf8aec08a692525700df474a213a5e196bc919083d6fee58a3b954"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "182cd9c5c77b7c02bd5fec772ad1af5306b6362a822ab3ec508b58131da67a27"
+        }
+      },
+      "condition": "ERR2808250",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 57,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -1000
+        },
+        "expression_cap_count": 15,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 22,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.007756442781013964,
+          "median": 0.007756440231804045,
+          "min": 0.0038594847194539095
+        },
+        "max_sparse_summary_mass_balance_residual": 2.5002273732269154e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 548,
+        "selected_indicator_count": 526,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/000_ERR2808250_job805824_task0.json",
+      "receipt_sha256": "9f3df3bf6419ffe7ebe8dd7b10db4f3e03c1a4c500f0117ca8d256d398c1dc9a",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-7223",
+      "telemetry": {
+        "absolute_gap": 7.855114762550841,
+        "barrier_iterations": 0,
+        "best_bound": -142.60873130604284,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 14986,
+        "nonzero_count": 127448,
+        "objective_value": -134.753616543492,
+        "relative_gap": 0.05829242260088498,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 600,
+        "runtime_seconds": 600.0092780590057,
+        "simplex_iterations": 6941492,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 1325.649691244482
+      }
+    },
+    {
+      "array_index": 0,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "dd9264265ac86c92d6db15ba9079d5ae121330550c46c1cc4cc8cdf96b008310"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "42af4a4ae5d818ca7148d1b54b2dbb15d11b55aa1ccbb932a466f86b5cb6f08e"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "4adfcc731a3c6b59d9273f0b53cda390e30b53724286342fa21ae3a99434acc2"
+        }
+      },
+      "condition": "ERR2808250",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -999.9922435598239
+        },
+        "expression_cap_count": 15,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 36,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.009058548009367682,
+          "median": 0.007756440281030445,
+          "min": 0.003866978922716627
+        },
+        "max_sparse_summary_mass_balance_residual": 1.0690200724638999e-8,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 539,
+        "selected_indicator_count": 503,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/000_ERR2808250_job890339_task0.json",
+      "receipt_sha256": "ec06232300d7f94b5500850108ea7b4bdc7fa291822d95f6f8abf9996b5e255d",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-7223",
+      "telemetry": {
+        "absolute_gap": 4.067623878359086,
+        "barrier_iterations": 0,
+        "best_bound": -141.12122801608234,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 5393887,
+        "nonzero_count": 127448,
+        "objective_value": -137.05360413772326,
+        "relative_gap": 0.02967907268072708,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.24278998375,
+        "simplex_iterations": 5695940993,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 725203.20901869
+      }
+    },
+    {
+      "array_index": 1,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "9f103ce4a656157c142996a10e195f7af89827e3145b3c18688163a46d97201f"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "277438cbc244141d840804219354fbd4fa52c9ba727ff16541e631954cbb3fed"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "bd0da5067cc5f2ac25c1f363f0d052e2aca44013ae9e8b7c68a8ee3cd74e91ab"
+        }
+      },
+      "condition": "ERR2808251",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 57,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -996.6741640762525
+        },
+        "expression_cap_count": 17,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 21,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.007756442781013964,
+          "median": 0.0077414519932850106,
+          "min": 0.0038669789040568503
+        },
+        "max_sparse_summary_mass_balance_residual": 2.499999999551472e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 531,
+        "selected_indicator_count": 511,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/001_ERR2808251_job890340_task1.json",
+      "receipt_sha256": "e63226dd04e8590035bcf5c9f5b3dc819c9cb20998b429b21df58cce1e723ba0",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-7223",
+      "telemetry": {
+        "absolute_gap": 4.862310995266711,
+        "barrier_iterations": 0,
+        "best_bound": -141.1159266378064,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 7360324,
+        "nonzero_count": 127448,
+        "objective_value": -136.2536156425397,
+        "relative_gap": 0.035685739217540806,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.3548400402,
+        "simplex_iterations": 4547063423,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 710885.7365037492
+      }
+    },
+    {
+      "array_index": 3,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "ab7b6d7a2ae757dbf45d90cccae5f5c9ec1dbde2807c3b21106561755617e1f9"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "6ccbaa490876d562fc93f7cf49805ea0a4e5e4c3c62b4531db23028be9f39cd7"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "b224d8980d708f4f802ce0a8d7a5988b89acca9c7a232c7ee3ad39e8b55d34ca"
+        }
+      },
+      "condition": "ERR2808254",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -1000
+        },
+        "expression_cap_count": 1,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 27,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.007756440282167314,
+          "median": 0.007756436947726651,
+          "min": 0.003859484770961627
+        },
+        "max_sparse_summary_mass_balance_residual": 3.3540920058722223e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 537,
+        "selected_indicator_count": 511,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/003_ERR2808254_job947401_task3.json",
+      "receipt_sha256": "acd007ee7c9b22f54e2b5ff6fcbc98252f2466945836464c0fd5b2ab3aca2d0a",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-7223",
+      "telemetry": {
+        "absolute_gap": 5.041597881435479,
+        "barrier_iterations": 0,
+        "best_bound": -141.29521041915592,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 7670065,
+        "nonzero_count": 127448,
+        "objective_value": -136.25361253772044,
+        "relative_gap": 0.037001572197139086,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.40241098404,
+        "simplex_iterations": 5071677182,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 750333.4786194117
+      }
+    },
+    {
+      "array_index": 5,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "665d739d4b1246fce7aef181fa573c09a8ec0131f67fb56b1267e1b8881cd654"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "f7c8ed802bd58609e80c699abe13ee1defc8794f270e754f60a993deb446b568"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "4c4e9e314ef682e5cb7a53a0bde12bed0e571c3bd6479633238b3cf3e1a605c2"
+        }
+      },
+      "condition": "ERR2808261",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -1000
+        },
+        "expression_cap_count": 15,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 31,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.007756440284043543,
+          "median": 0.007756440281030445,
+          "min": 0.0038594848119267834
+        },
+        "max_sparse_summary_mass_balance_residual": 3.333560706121619e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 544,
+        "selected_indicator_count": 513,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/005_ERR2808261_job833065_task5.json",
+      "receipt_sha256": "655402bd5afeab2c7fa511806380c03c359440cee700d75904854ab4519f10aa",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-7223",
+      "telemetry": {
+        "absolute_gap": 5.137037435005709,
+        "barrier_iterations": 0,
+        "best_bound": -141.19064566009698,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 4901136,
+        "nonzero_count": 127448,
+        "objective_value": -136.05360822509127,
+        "relative_gap": 0.03775745091969069,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.2617161274,
+        "simplex_iterations": 4745306757,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 607747.9895313734
+      }
+    },
+    {
+      "array_index": 5,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "40285ab23f9218b65d40776946983676ddfa9d0fb28b4a9819298e71ee419f01"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "f7c8ed802bd58609e80c699abe13ee1defc8794f270e754f60a993deb446b568"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "4c4e9e314ef682e5cb7a53a0bde12bed0e571c3bd6479633238b3cf3e1a605c2"
+        }
+      },
+      "condition": "ERR2808261",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -1000
+        },
+        "expression_cap_count": 15,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 31,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.007756440284043543,
+          "median": 0.007756440281030445,
+          "min": 0.0038594848119267834
+        },
+        "max_sparse_summary_mass_balance_residual": 3.333560706121619e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 544,
+        "selected_indicator_count": 513,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/005_ERR2808261_job947411_task5.json",
+      "receipt_sha256": "b888baadca1faab6059304557123a3e5e4ab71ee5b251287993f1fd804f96801",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-7223",
+      "telemetry": {
+        "absolute_gap": 5.101180527884509,
+        "barrier_iterations": 0,
+        "best_bound": -141.15478875297578,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 6098689,
+        "nonzero_count": 127448,
+        "objective_value": -136.05360822509127,
+        "relative_gap": 0.037493901076441565,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.30764484406,
+        "simplex_iterations": 5959442685,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 767773.3704733902
+      }
+    },
+    {
+      "array_index": 6,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "bf3fd6c676231ca01d0a44f7fb8b1f1dc24e5d231fff51b4aa334b26c2b1f1b8"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "8afbebbb2a284b5aee4bfe8a09166dcb4965e8acd4cec6bde131cf42acdf3656"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "44da99756110f6297637982676ae8ecc6b53e208aa8ef29db33eb6942c0926c7"
+        }
+      },
+      "condition": "ERR2808264",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -976.9528673127417
+        },
+        "expression_cap_count": 15,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 19,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.00905854800942052,
+          "median": 0.007756440270327403,
+          "min": 0.0038669789227014917
+        },
+        "max_sparse_summary_mass_balance_residual": 4.172464684870647e-8,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 533,
+        "selected_indicator_count": 514,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/006_ERR2808264_job998428_task6.json",
+      "receipt_sha256": "65439dce8597549ed0c2da24e5f2b38285c4dd25079534d19dd4b054c96d67c5",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-7223",
+      "telemetry": {
+        "absolute_gap": 5.117995532568614,
+        "barrier_iterations": 0,
+        "best_bound": -141.07161336096254,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 5129379,
+        "nonzero_count": 127448,
+        "objective_value": -135.95361782839393,
+        "relative_gap": 0.03764515879988388,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.25471115112,
+        "simplex_iterations": 3568089021,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 575539.6355498862
+      }
+    },
+    {
+      "array_index": 7,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "16975f12af696701cd4d90e451228ef5d8feae72d7a4572b30c2180d95a1cb92"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "dcf1c6047b31b4aee4391600984bec162292a8f0ada0b52d8a819fd621a03ad1"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "38fab3346abba8334087f4c5ec7d8a006f56fa097019cf88b90b96d003a6378c"
+        }
+      },
+      "condition": "ERR2808265",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -990.2529274003855
+        },
+        "expression_cap_count": 14,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 28,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.007756440281030445,
+          "median": 0.007756435281127652,
+          "min": 0.0038594847759638434
+        },
+        "max_sparse_summary_mass_balance_residual": 3.400635941244734e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 538,
+        "selected_indicator_count": 511,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/007_ERR2808265_job998429_task7.json",
+      "receipt_sha256": "d59a196d2a5fde564402006ddf00332fa6ce6fb667711b0d19b692cb41a04e8c",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-7223",
+      "telemetry": {
+        "absolute_gap": 4.927566869045336,
+        "barrier_iterations": 0,
+        "best_bound": -141.18117747327733,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 5539730,
+        "nonzero_count": 127448,
+        "objective_value": -136.253610604232,
+        "relative_gap": 0.03616467003841942,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.01772904396,
+        "simplex_iterations": 3735007713,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 578014.1907172708
+      }
+    },
+    {
+      "array_index": 8,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "4a08d146a37aebf28809e4ef2161e12b8a8a79af3441eebd67f2cc09fd7bfe58"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "6d0bb717a6d5b565139af77a187b35d1381a3e8663670efc027e32311bacba4b"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "1a04aa00c97928c92984b7f0be8b84c99fe4970fbc43115ce0300f84e1db6cdc"
+        }
+      },
+      "condition": "ERR2808266",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -996.8208125662138
+        },
+        "expression_cap_count": 14,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 37,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.009058548009367682,
+          "median": 0.007756440281013965,
+          "min": 0.001933489448219916
+        },
+        "max_sparse_summary_mass_balance_residual": 2.0354691265822566e-8,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 547,
+        "selected_indicator_count": 511,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/008_ERR2808266_job834320_task8.json",
+      "receipt_sha256": "114ebf9f6fa933819c2b38ecac160958dd72d618cb6350552e659fcb9e131905",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-7223",
+      "telemetry": {
+        "absolute_gap": 4.878038314512224,
+        "barrier_iterations": 0,
+        "best_bound": -141.1316462585565,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 6413732,
+        "nonzero_count": 127448,
+        "objective_value": -136.25360794404426,
+        "relative_gap": 0.0358011680433116,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.3262410164,
+        "simplex_iterations": 4290123429,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 666352.6424447675
+      }
+    },
+    {
+      "array_index": 0,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "5a91dc65bfe28d4bfe82bf9caffb9172429cf5134812be162bf8755f34ee8d25"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "c746cb60f54af1af1296033c287beb61111de72d1ea03ec6e74a4490c971b1e1"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "f021fa3d4b6bd4f1f05485d63ac819929ea9bd88e1dc667195403e20ed460a48"
+        }
+      },
+      "condition": "ERR6389067",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -1000
+        },
+        "expression_cap_count": 10,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 17,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.007756440281030478,
+          "median": 0.007756436947697112,
+          "min": 0.0038669789227014917
+        },
+        "max_sparse_summary_mass_balance_residual": 3.3333333333135373e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 527,
+        "selected_indicator_count": 510,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-10801/checkpoint_b25/instrumented_attempts/000_ERR6389067_job998607_task0.json",
+      "receipt_sha256": "a4268e362a9b53c2e0b99dc49e22428f863e3e5573a4d6a9a437cc5bca1cca0f",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-10801",
+      "telemetry": {
+        "absolute_gap": 4.666663299803986,
+        "barrier_iterations": 0,
+        "best_bound": -141.02028237695717,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 4423857,
+        "nonzero_count": 127448,
+        "objective_value": -136.35361907715318,
+        "relative_gap": 0.03422471168266858,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.02411603928,
+        "simplex_iterations": 3327598775,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 534899.5096456028
+      }
+    },
+    {
+      "array_index": 1,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "9236a4933ba46c99797c68a2b902700f7dd297dfe7ccdd3e2324c30f60c6de40"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "17a5b74d814c245e9e56d29f7428734d7230aa966d568bc748fb2098c0fa43c3"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "ef100d2ddc0d3786704896126a9259fa810cf5bbe7e091ffac53840bcec5eddf"
+        }
+      },
+      "condition": "ERR6389069",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 53,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -1000
+        },
+        "expression_cap_count": 1,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 32,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.00905854800942052,
+          "median": 0.007756440281030445,
+          "min": 0.0038594847755773114
+        },
+        "max_sparse_summary_mass_balance_residual": 2.4999999986841104e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 542,
+        "selected_indicator_count": 511,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-10801/checkpoint_b25/instrumented_attempts/001_ERR6389069_job832834_task1.json",
+      "receipt_sha256": "0103cdb1b5f62a38345822b2e9332c2c344a10c5215e3b4dcdd8615e02811ced",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-10801",
+      "telemetry": {
+        "absolute_gap": 4.872620955216917,
+        "barrier_iterations": 0,
+        "best_bound": -141.1262291334114,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 5612968,
+        "nonzero_count": 127448,
+        "objective_value": -136.2536081781945,
+        "relative_gap": 0.03576140859950241,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.2740831375,
+        "simplex_iterations": 3580854831,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 575249.0370430568
+      }
+    },
+    {
+      "array_index": 1,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "9557031e4ffc8ef06e87c54bac848ebdfdffcc2c6566fa52df61ab0924216fbe"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "17a5b74d814c245e9e56d29f7428734d7230aa966d568bc748fb2098c0fa43c3"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "ef100d2ddc0d3786704896126a9259fa810cf5bbe7e091ffac53840bcec5eddf"
+        }
+      },
+      "condition": "ERR6389069",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 53,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -1000
+        },
+        "expression_cap_count": 1,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 32,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.00905854800942052,
+          "median": 0.007756440281030445,
+          "min": 0.0038594847755773114
+        },
+        "max_sparse_summary_mass_balance_residual": 2.4999999986841104e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 542,
+        "selected_indicator_count": 511,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-10801/checkpoint_b25/instrumented_attempts/001_ERR6389069_job998608_task1.json",
+      "receipt_sha256": "04db52ac8b4f3d1e28375ae7fc15e23aa7501d5cb2e5b56029e67c9f40cd3646",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-10801",
+      "telemetry": {
+        "absolute_gap": 4.881313873066574,
+        "barrier_iterations": 0,
+        "best_bound": -141.13492205126107,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 5298376,
+        "nonzero_count": 127448,
+        "objective_value": -136.2536081781945,
+        "relative_gap": 0.035825208141884356,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.27811217308,
+        "simplex_iterations": 3371781148,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 540961.629386958
+      }
+    },
+    {
+      "array_index": 2,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "e4d6f8f3252c76d2a2a552eda2bfd84a96e954c7163aa64d778bf6ac48ac150a"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "6fdd4b56f0a3f85d58b9df189f9cbf5a7a749a9a987705e46ea47ed50d4ab36e"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "be07caff81d80b2b6928bb14c65843adae7e7190c0efb458ebd8e55c9a180f71"
+        }
+      },
+      "condition": "ERR6389071",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 50,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -998.1711001051278
+        },
+        "expression_cap_count": 9,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 18,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.0077564427812413395,
+          "median": 0.0077564402809167585,
+          "min": 0.0038594853142878364
+        },
+        "max_sparse_summary_mass_balance_residual": 2.500000000418834e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 533,
+        "selected_indicator_count": 515,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-10801/checkpoint_b25/instrumented_attempts/002_ERR6389071_job998609_task2.json",
+      "receipt_sha256": "078bf8a0dbc256e23cf16d7b2e03da09c6f5e42f0f61376601b3dbc837d285b4",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-10801",
+      "telemetry": {
+        "absolute_gap": 5.584560794892269,
+        "barrier_iterations": 0,
+        "best_bound": -141.43817798197435,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 5572181,
+        "nonzero_count": 127448,
+        "objective_value": -135.85361718708208,
+        "relative_gap": 0.041107192510022386,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.29557991028,
+        "simplex_iterations": 3822199630,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 595383.8942636614
+      }
+    },
+    {
+      "array_index": 11,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "4e743d6b22ed6a2fbbf9165075b8819e51aa27d96ae936c855ec53db76028cb6"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "d52b5f5e2e8430708ab8fa9913b326786daf5917e4c9e9a1e8deca8904c05a1b"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "7460069b107cadfd6549a70b66d94a4e7bdc0d11cdff18920a4758dab0015708"
+        }
+      },
+      "condition": "ERR6389099",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -1000
+        },
+        "expression_cap_count": 15,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 33,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.009058548009367682,
+          "median": 0.007756440281030445,
+          "min": 0.0038669789149707867
+        },
+        "max_sparse_summary_mass_balance_residual": 2.6596292945768596e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 543,
+        "selected_indicator_count": 510,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-10801/checkpoint_b25/instrumented_attempts/011_ERR6389099_job935491_task11.json",
+      "receipt_sha256": "e840c9af49ad7f3662ad02e871d7962028a275d646cf8aa0e632fad5781ea2b0",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-10801",
+      "telemetry": {
+        "absolute_gap": 4.784204113466359,
+        "barrier_iterations": 0,
+        "best_bound": -141.13781225306113,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 5247565,
+        "nonzero_count": 127448,
+        "objective_value": -136.35360813959477,
+        "relative_gap": 0.035086743788755724,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.0216870308,
+        "simplex_iterations": 4065366547,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 670917.7245063074
+      }
+    },
+    {
+      "array_index": 3,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "6ead8659b8377fd719a0cbe5db0339a917113b611a1838d959f99a61fc85a6a0"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "b3da42d88f9eb3b34dee957327d97fd93fca38fbc8ebb7d6fd408c48cb80b095"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "dba5091d85c80f6b250273591a11848bc06551d95bb12ab07c558791f12e5e83"
+        }
+      },
+      "condition": "ERR13907040",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -1000
+        },
+        "expression_cap_count": 9,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 35,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.0077564403076166855,
+          "median": 0.007756440281030445,
+          "min": 0.0038594847678845023
+        },
+        "max_sparse_summary_mass_balance_residual": 1.9999999989472883e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 541,
+        "selected_indicator_count": 507,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-14568/checkpoint_b25/instrumented_attempts/003_ERR13907040_job864522_task3.json",
+      "receipt_sha256": "82666525e36cd2e3379d2cc8f4f1c592dff90c0e176883e65f274e842400b40a",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-14568",
+      "telemetry": {
+        "absolute_gap": 4.670704914859812,
+        "barrier_iterations": 0,
+        "best_bound": -141.3243116333504,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 6048832,
+        "nonzero_count": 127448,
+        "objective_value": -136.65360671849058,
+        "relative_gap": 0.03417915580143864,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.03239488602,
+        "simplex_iterations": 4157168311,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 649055.4433371231
+      }
+    },
+    {
+      "array_index": 5,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "0ec3aa3d51d8fef946e5710f18d279128f033372fb08e314b182bf53b120a5af"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "be594a0fb4b4c03998cd73ce5acd25320c4548566aa159db4c131a77a78b4890"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "664ef61d3d82b4539e509a601919605501ff5856819ee6257fab65b803ee8658"
+        }
+      },
+      "condition": "ERR13907042",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -999.9999999999989,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -1000
+        },
+        "expression_cap_count": 0,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 17,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.0077564402962644816,
+          "median": 0.007756440281030445,
+          "min": 0.0038669789227157025
+        },
+        "max_sparse_summary_mass_balance_residual": 1.2532836990430951e-8,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 524,
+        "selected_indicator_count": 507,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-14568/checkpoint_b25/instrumented_attempts/005_ERR13907042_job900491_task5.json",
+      "receipt_sha256": "8be9a23cb407d58629420f331592c73dd1e034f2df5f1a6cd28ea75fcbe78261",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-14568",
+      "telemetry": {
+        "absolute_gap": 4.339594148586542,
+        "barrier_iterations": 0,
+        "best_bound": -140.99321327065624,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 7296397,
+        "nonzero_count": 127448,
+        "objective_value": -136.6536191220697,
+        "relative_gap": 0.03175615967192261,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.02484703064,
+        "simplex_iterations": 4377046259,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 672698.6953648687
+      }
+    },
+    {
+      "array_index": 7,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "7532a60d4828a4a547adb9a2977674f42440373ae0504ca42c1770b9bcdda9f9"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "68629e1bea899cc2f68bf767c19906376de6324e7c72211a5fba74522118d195"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "3921cc17e9214b98b6d5cf8a8b7d00c680fae8dff77c107972ed7b10ccc941d3"
+        }
+      },
+      "condition": "ERR13907044",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 186.55505238017506,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -966.6434915026709
+        },
+        "expression_cap_count": 3,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 9,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.007723379168766626,
+          "median": 0.003850496281808934,
+          "min": 0.003850496281126813
+        },
+        "max_sparse_summary_mass_balance_residual": 1.6552803572267294e-10,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 518,
+        "selected_indicator_count": 509,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-14568/checkpoint_b25/instrumented_attempts/007_ERR13907044_job928881_task7.json",
+      "receipt_sha256": "cdb76521354ef6cc67bc536e4e361bf7c682e0cd0a71ada7c60e37cd824e8b4b",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-14568",
+      "telemetry": {
+        "absolute_gap": 5.633847627635049,
+        "barrier_iterations": 0,
+        "best_bound": -141.28889615284137,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 6412285,
+        "nonzero_count": 127448,
+        "objective_value": -135.65504852520633,
+        "relative_gap": 0.041530688970917384,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.0446999073,
+        "simplex_iterations": 5754066026,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 726798.2292723478
+      }
+    },
+    {
+      "array_index": 8,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "ed7fe3396232032620d6ab389b7149a4950b3f918f62de21f7566df5f0ddbf7a"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "381e4434d08ea5b2133382946deaa2c93fe7fe83fa382d6872efe06554ca0dad"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "943fd551fa5ba72d62a895a7f4284228daa9a8efba167b7b302ad9914c70633c"
+        }
+      },
+      "condition": "ERR13907045",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -1000
+        },
+        "expression_cap_count": 1,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 28,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.009058548009367682,
+          "median": 0.007756440281022205,
+          "min": 0.003859484773652215
+        },
+        "max_sparse_summary_mass_balance_residual": 8.322111905850749e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 538,
+        "selected_indicator_count": 510,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-14568/checkpoint_b25/instrumented_attempts/008_ERR13907045_job998438_task8.json",
+      "receipt_sha256": "44948c446007d3c146c59a7edb4267a32e98a6e0e3e00a89011870bba98ed239",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-14568",
+      "telemetry": {
+        "absolute_gap": 4.618142842030892,
+        "barrier_iterations": 0,
+        "best_bound": -140.97175374697827,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 5825208,
+        "nonzero_count": 127448,
+        "objective_value": -136.35361090494737,
+        "relative_gap": 0.03386887088197625,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.01663899422,
+        "simplex_iterations": 3941610560,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 613858.0328895458
+      }
+    },
+    {
+      "array_index": 9,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "91043454129dd94c9422e247b1463966d5e6132e2b8e44cc34880eccd12f9ef5"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "be594a0fb4b4c03998cd73ce5acd25320c4548566aa159db4c131a77a78b4890"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "664ef61d3d82b4539e509a601919605501ff5856819ee6257fab65b803ee8658"
+        }
+      },
+      "condition": "ERR13907046",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -999.9999999999989,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -1000
+        },
+        "expression_cap_count": 0,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 17,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.0077564402962644816,
+          "median": 0.007756440281030445,
+          "min": 0.0038669789227157025
+        },
+        "max_sparse_summary_mass_balance_residual": 1.2532836990430951e-8,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 524,
+        "selected_indicator_count": 507,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-14568/checkpoint_b25/instrumented_attempts/009_ERR13907046_job998439_task9.json",
+      "receipt_sha256": "c87a82acc451bbe8d62ccf2de4b0eba84ae2069138fcdeaba30967c5a6dbf0c0",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-14568",
+      "telemetry": {
+        "absolute_gap": 4.3460885789734505,
+        "barrier_iterations": 0,
+        "best_bound": -140.99970770104315,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 6895133,
+        "nonzero_count": 127448,
+        "objective_value": -136.6536191220697,
+        "relative_gap": 0.03180368443144696,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.0161099434,
+        "simplex_iterations": 4139009859,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 636826.1717283594
+      }
+    },
+    {
+      "array_index": 10,
+      "artifact_checks": {
+        "gurobi_log": {
+          "exists_nonempty": true,
+          "sha256": "8c843bd8f3c0a3811f2509f28a402f44361c8e9f9c2a078e80122bab34181260"
+        },
+        "mip_start": {
+          "exists_nonempty": true,
+          "sha256": "4fdf0a5236ffa64064fc45bfa80e717f26892794d71194d7431420a3dadee80f"
+        },
+        "solution": {
+          "exists_nonempty": true,
+          "sha256": "4cdc83e60640de983b0bc510f88e69ea542fa645d7b3a728e502a0c4afd12aed"
+        }
+      },
+      "condition": "ERR13907047",
+      "context_matches": true,
+      "diagnostics": {
+        "biomass_flux": 187.35362997658078,
+        "context_bound_violation_count": 0,
+        "contexts_accepting_saved_flux_bounds": 60,
+        "contexts_tested": 60,
+        "diagnostic_exchange_fluxes": {
+          "EX_atp[e]": -1000,
+          "EX_glc_D[e]": 0,
+          "EX_pcreat[e]": -1000,
+          "EX_pep[e]": -999.4565077303051
+        },
+        "expression_cap_count": 11,
+        "expression_caps_with_reported_flux": [],
+        "flux_without_selected_indicator_count": 32,
+        "flux_without_selected_indicator_magnitude": {
+          "max": 0.007756442781013964,
+          "median": 0.00775081940609571,
+          "min": 0.000011241749803048151
+        },
+        "max_sparse_summary_mass_balance_residual": 5.6863882491597906e-9,
+        "model_bound_violation_count": 0,
+        "nonzero_reported_flux_count": 536,
+        "selected_indicator_count": 506,
+        "unknown_reactions": []
+      },
+      "receipt_path": "data/processed/corneto/E-MTAB-14568/checkpoint_b25/instrumented_attempts/010_ERR13907047_job998440_task10.json",
+      "receipt_sha256": "22d35093f54901a4129bc074483ba49b4ce5902bc2019af60a0f36b8d818a4be",
+      "scientific_success": false,
+      "status": "partial_incumbent",
+      "study": "E-MTAB-14568",
+      "telemetry": {
+        "absolute_gap": 4.345396271480382,
+        "barrier_iterations": 0,
+        "best_bound": -141.09900888082024,
+        "binary_variable_count": 13096,
+        "constraint_count": 60784,
+        "cvxpy_status": "user_limit",
+        "gurobi_status_code": 9,
+        "gurobi_status_name": "TIME_LIMIT",
+        "has_incumbent": true,
+        "integer_variable_count": 13096,
+        "node_count": 7096184,
+        "nonzero_count": 127448,
+        "objective_value": -136.75361260933985,
+        "relative_gap": 0.031775367308897,
+        "requested_mip_gap": 0.0001,
+        "requested_threads": 8,
+        "requested_time_limit_seconds": 252000,
+        "runtime_seconds": 252000.0329079628,
+        "simplex_iterations": 4635273818,
+        "solution_count": 10,
+        "variable_count": 26192,
+        "work_units": 739688.7079522494
+      }
+    }
+  ],
+  "audited_at_utc": "2026-09-06T17:03:54.368324+00:00",
+  "candidate_overlaps": [
+    {
+      "intersection": 4,
+      "jaccard": 0.08695652173913043,
+      "studies": [
+        "E-MTAB-7223",
+        "E-MTAB-10801"
+      ],
+      "union": 46
+    },
+    {
+      "intersection": 13,
+      "jaccard": 0.35135135135135137,
+      "studies": [
+        "E-MTAB-7223",
+        "E-MTAB-11000"
+      ],
+      "union": 37
+    },
+    {
+      "intersection": 4,
+      "jaccard": 0.08695652173913043,
+      "studies": [
+        "E-MTAB-7223",
+        "E-MTAB-14568"
+      ],
+      "union": 46
+    },
+    {
+      "intersection": 10,
+      "jaccard": 0.25,
+      "studies": [
+        "E-MTAB-10801",
+        "E-MTAB-11000"
+      ],
+      "union": 40
+    },
+    {
+      "intersection": 13,
+      "jaccard": 0.35135135135135137,
+      "studies": [
+        "E-MTAB-10801",
+        "E-MTAB-14568"
+      ],
+      "union": 37
+    },
+    {
+      "intersection": 1,
+      "jaccard": 0.02040816326530612,
+      "studies": [
+        "E-MTAB-11000",
+        "E-MTAB-14568"
+      ],
+      "union": 49
+    }
+  ],
+  "cohorts": [
+    {
+      "candidate_reaction_ids": [
+        "HMR_7329",
+        "HMR_8584",
+        "HMR_9465",
+        "O16G1e",
+        "FUT93g",
+        "HMR_8287",
+        "HMR_8307",
+        "HMR_8308",
+        "HMR_8309",
+        "HMR_8322",
+        "HMR_8326",
+        "HMR_8330",
+        "HMR_8331",
+        "HMR_8332",
+        "HMR_8333",
+        "HMR_8334",
+        "HMR_6741",
+        "HMR_6524",
+        "r0924",
+        "CE2026te",
+        "CE4968te",
+        "CE4970te",
+        "HMR_5457",
+        "HMR_1942",
+        "HMR_1950"
+      ],
+      "canonical_file_count_unvalidated": 0,
+      "condition_count": 9,
+      "conditions_with_zero_expression_caps": 0,
+      "context_path": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/context.json",
+      "context_sha256": "7ea9d2268ec7647bfa0f47f8215913442cafc2b6f76faefa13a40c402b7fcb1b",
+      "distinct_bound_contexts": 9,
+      "expression_caps_per_condition": {
+        "max": 17,
+        "median": 15,
+        "min": 1
+      },
+      "growth_optimum": {
+        "max": 187.35362997658078,
+        "median": 187.35362997658078,
+        "min": 187.35362997658078
+      },
+      "objective": {
+        "growth_fraction": 0.9,
+        "independent_lambda": 0.1,
+        "joint_lambda": 1
+      },
+      "study": "E-MTAB-7223"
+    },
+    {
+      "candidate_reaction_ids": [
+        "HMR_8584",
+        "HMR_9465",
+        "O16G1e",
+        "HMR_8046",
+        "HMR_8938",
+        "HMR_9617",
+        "HMR_0786",
+        "HMR_0819",
+        "HMR_0830",
+        "HMR_0832",
+        "HMR_4415",
+        "HMR_4832",
+        "HMR_8764",
+        "HMR_9556",
+        "r0924",
+        "HMR_1589",
+        "HMR_1590",
+        "HMR_1629",
+        "HMR_1630",
+        "HMR_1631",
+        "HMR_1739",
+        "HMR_1767",
+        "HMR_1839",
+        "HMR_1840",
+        "HMR_0941"
+      ],
+      "canonical_file_count_unvalidated": 0,
+      "condition_count": 13,
+      "conditions_with_zero_expression_caps": 1,
+      "context_path": "data/processed/corneto/E-MTAB-10801/checkpoint_b25/context.json",
+      "context_sha256": "1475eee9397af6644fcfaa6500594fbe1441b7d4d4acfbf714a66bac91f0792c",
+      "distinct_bound_contexts": 13,
+      "expression_caps_per_condition": {
+        "max": 15,
+        "median": 9,
+        "min": 0
+      },
+      "growth_optimum": {
+        "max": 187.35362997658078,
+        "median": 187.35362997658078,
+        "min": 187.35362997658078
+      },
+      "objective": {
+        "growth_fraction": 0.9,
+        "independent_lambda": 0.1,
+        "joint_lambda": 1
+      },
+      "study": "E-MTAB-10801"
+    },
+    {
+      "candidate_reaction_ids": [
+        "HMR_7329",
+        "FUT93g",
+        "HMR_8287",
+        "HMR_8307",
+        "HMR_8308",
+        "HMR_8309",
+        "HMR_8322",
+        "HMR_8326",
+        "HMR_8330",
+        "HMR_8331",
+        "HMR_8332",
+        "HMR_8333",
+        "HMR_8334",
+        "HMR_8046",
+        "HMR_1589",
+        "HMR_1590",
+        "HMR_1629",
+        "HMR_1630",
+        "HMR_1631",
+        "HMR_1739",
+        "HMR_1767",
+        "HMR_1839",
+        "HMR_1840",
+        "HMR_7699",
+        "ALLOPtepvb"
+      ],
+      "canonical_file_count_unvalidated": 0,
+      "condition_count": 11,
+      "conditions_with_zero_expression_caps": 1,
+      "context_path": "data/processed/corneto/E-MTAB-11000/checkpoint_b25/context.json",
+      "context_sha256": "fb4b7b4409a20540ef1b81185e1d0f8a5c68cd1be2b43d0f652ae4394dc07d61",
+      "distinct_bound_contexts": 11,
+      "expression_caps_per_condition": {
+        "max": 22,
+        "median": 13,
+        "min": 0
+      },
+      "growth_optimum": {
+        "max": 187.35362997658078,
+        "median": 187.35362997658078,
+        "min": 187.35362997658078
+      },
+      "objective": {
+        "growth_fraction": 0.9,
+        "independent_lambda": 0.1,
+        "joint_lambda": 1
+      },
+      "study": "E-MTAB-11000"
+    },
+    {
+      "candidate_reaction_ids": [
+        "HMR_8584",
+        "HMR_9465",
+        "O16G1e",
+        "HMR_0786",
+        "HMR_0819",
+        "HMR_0830",
+        "HMR_0832",
+        "HMR_4415",
+        "HMR_4832",
+        "HMR_8764",
+        "HMR_9556",
+        "HMR_8046",
+        "HMR_4198",
+        "HMR_4467",
+        "HMR_4791",
+        "HMR_4939",
+        "HMR_5995",
+        "HMR_9610",
+        "r0924",
+        "HMR_7700",
+        "HMR_7904",
+        "HMR_8732",
+        "HMR_8853",
+        "HMR_6637",
+        "HMR_1581"
+      ],
+      "canonical_file_count_unvalidated": 0,
+      "condition_count": 27,
+      "conditions_with_zero_expression_caps": 4,
+      "context_path": "data/processed/corneto/E-MTAB-14568/checkpoint_b25/context.json",
+      "context_sha256": "d6d449bf9035ec466ae530cc774762a6845a529babe6e54751f2c12d7101c3e6",
+      "distinct_bound_contexts": 24,
+      "expression_caps_per_condition": {
+        "max": 18,
+        "median": 8,
+        "min": 0
+      },
+      "growth_optimum": {
+        "max": 187.35362997658078,
+        "median": 187.35362997658078,
+        "min": 187.35362997658078
+      },
+      "objective": {
+        "growth_fraction": 0.9,
+        "independent_lambda": 0.1,
+        "joint_lambda": 1
+      },
+      "study": "E-MTAB-14568"
+    }
+  ],
+  "historical_snapshot_source_verification": [
+    {
+      "actual_sha256": "0923b2782c2635723e9ddb733584d5598127a93bf67e41d755b09130b4c8cbf9",
+      "expected_sha256": "0923b2782c2635723e9ddb733584d5598127a93bf67e41d755b09130b4c8cbf9",
+      "matches": true,
+      "path": "data/processed/rna/E-MTAB-7223/aggregation/aggregation_receipt.json"
+    },
+    {
+      "actual_sha256": "45c48d734920120bd457f145734111f20e4a672972216f6f914221f49f43dafb",
+      "expected_sha256": "45c48d734920120bd457f145734111f20e4a672972216f6f914221f49f43dafb",
+      "matches": true,
+      "path": "data/processed/rna/E-MTAB-10801/aggregation/aggregation_receipt.json"
+    },
+    {
+      "actual_sha256": "275595de8f5451615c12191b7868dc9af921eb2ac986ab942f4511ff3688602b",
+      "expected_sha256": "275595de8f5451615c12191b7868dc9af921eb2ac986ab942f4511ff3688602b",
+      "matches": true,
+      "path": "data/processed/rna/E-MTAB-11000/aggregation/aggregation_receipt.json"
+    },
+    {
+      "actual_sha256": "3edf9b50191e0a5fa1832b5b4d423dd7703a0b71e491c92c2decff79b8c18dc6",
+      "expected_sha256": "3edf9b50191e0a5fa1832b5b4d423dd7703a0b71e491c92c2decff79b8c18dc6",
+      "matches": true,
+      "path": "data/processed/rna/E-MTAB-14568/aggregation/aggregation_receipt.json"
+    },
+    {
+      "actual_sha256": "8025bcb254d12ee9a5547cba0313acd2f30f1a3c10f51af0849a5e5196b764aa",
+      "expected_sha256": "8025bcb254d12ee9a5547cba0313acd2f30f1a3c10f51af0849a5e5196b764aa",
+      "matches": true,
+      "path": "data/processed/rna/pooled_primary60/nmf/rank_summary.tsv"
+    },
+    {
+      "actual_sha256": "346542cd20a2f29f497f6eca0f577a841fd99b0b462af1aedecd8d7f546466c4",
+      "expected_sha256": "346542cd20a2f29f497f6eca0f577a841fd99b0b462af1aedecd8d7f546466c4",
+      "matches": true,
+      "path": "data/processed/rna/nmf_pooled_vs_stratified/comparison_receipt.json"
+    },
+    {
+      "actual_sha256": "af0ae10e37d2546c6b472ace42e8e0bed1ec8b4de96339d9dc0b4156bd8e87bc",
+      "expected_sha256": "af0ae10e37d2546c6b472ace42e8e0bed1ec8b4de96339d9dc0b4156bd8e87bc",
+      "matches": true,
+      "path": "data/processed/rna/pooled_patient_balanced52/patient_balanced_vs_pooled_rank3_v2.json"
+    },
+    {
+      "actual_sha256": "defaf6a90c9cfdf0f378f691b9d0d533489880afc0217494534d826b991d2670",
+      "expected_sha256": "defaf6a90c9cfdf0f378f691b9d0d533489880afc0217494534d826b991d2670",
+      "matches": true,
+      "path": "data/processed/corneto/regulatory_multisample/v1/pooled_vs_cohort_summary.json"
+    },
+    {
+      "actual_sha256": "1831a86633bd0a8f2d00cbdd2eeda1ae33bd6b617ede47b898ca66f17367099e",
+      "expected_sha256": "1831a86633bd0a8f2d00cbdd2eeda1ae33bd6b617ede47b898ca66f17367099e",
+      "matches": true,
+      "path": "data/processed/corneto/regulatory_multisample/patient_balanced52/pooled_vs_patient_balanced.json"
+    },
+    {
+      "actual_sha256": "1965d1c4424a1bc7fa7c2cd8c0d701a2a5dde6963e6a846847d5f66774c8e88e",
+      "expected_sha256": "1965d1c4424a1bc7fa7c2cd8c0d701a2a5dde6963e6a846847d5f66774c8e88e",
+      "matches": true,
+      "path": "data/processed/corneto/regulatory_multisample/richer_v1/narrow_vs_richer_l0p001.json"
+    },
+    {
+      "actual_sha256": "e60c7c1615bc7cfe623ae0a1d83cf6a6e870d07fc63c62a817184c1286737ccb",
+      "expected_sha256": "e60c7c1615bc7cfe623ae0a1d83cf6a6e870d07fc63c62a817184c1286737ccb",
+      "matches": true,
+      "path": "data/processed/corneto/alternative_optima/E-MTAB-14568/l0p1_final_summary.json"
+    },
+    {
+      "actual_sha256": "a65caebf8521f351bb09cc9494adbe6722458622aeac95594e2238f6c5b771b8",
+      "expected_sha256": "a65caebf8521f351bb09cc9494adbe6722458622aeac95594e2238f6c5b771b8",
+      "matches": true,
+      "path": "data/processed/corneto/tpi1_model_gate.json"
+    },
+    {
+      "actual_sha256": "d4f36931ac3692c895d3e928dbc622ba440416a63761c8db36f0487e5c01fe7f",
+      "expected_sha256": "d4f36931ac3692c895d3e928dbc622ba440416a63761c8db36f0487e5c01fe7f",
+      "matches": true,
+      "path": "data/processed/corneto/human_gem_fingerprint.json"
+    },
+    {
+      "actual_sha256": "a3518e5dbd180a21a4336327721881e94c858e280891da03f99613790c4a0998",
+      "expected_sha256": "a3518e5dbd180a21a4336327721881e94c858e280891da03f99613790c4a0998",
+      "matches": true,
+      "path": "data/processed/corneto/pooled_primary_60/metabolic_input_gate.json"
+    }
+  ],
+  "interpretation": "Diagnostics only; no new solver result or biological validation.",
+  "limitations": [
+    "Saved flux summaries omit values below reporting tolerance.",
+    "Cross-context bound compatibility does not prove identical feasible sets.",
+    "No fixed-indicator LP, medium calibration or null-model test was solved."
+  ],
+  "model_reaction_count": 13096,
+  "model_sha256": "57d1b137f0c90d83a3e4f9a8225d74d37523594e6ee99f622b160a014d9f7050",
+  "regulatory_grid": [
+    {
+      "lambda": 0,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-10801/l0.json",
+      "processed_graph": {
+        "edges": 172,
+        "vertices": 98
+      },
+      "scope_counts": {
+        "included_conditions": 13,
+        "manifest_conditions": 13,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "de9b0b7fce501d722bae0d852e7715ebbd5fe39b3d73d5c4e3c6479a49a07db7",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 4,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 74
+    },
+    {
+      "lambda": 0.001,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-10801/l0p001.json",
+      "processed_graph": {
+        "edges": 172,
+        "vertices": 98
+      },
+      "scope_counts": {
+        "included_conditions": 13,
+        "manifest_conditions": 13,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "adf2ac009a72ff909ede50276fb7a07999883633d7435bf0ebe4362de56412c8",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 5.131,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 48
+    },
+    {
+      "lambda": 0.01,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-10801/l0p01.json",
+      "processed_graph": {
+        "edges": 172,
+        "vertices": 98
+      },
+      "scope_counts": {
+        "included_conditions": 13,
+        "manifest_conditions": 13,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "9b8e56e0d247eef49c911724fa52640ea9d8b72dd826cdd1e0e85368babd95a9",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 15.31,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 48
+    },
+    {
+      "lambda": 0.05,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-10801/l0p05.json",
+      "processed_graph": {
+        "edges": 172,
+        "vertices": 98
+      },
+      "scope_counts": {
+        "included_conditions": 13,
+        "manifest_conditions": 13,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "212aad552879bef459ad2e497256b6742e4ffa753cbdf51b48e77f2c5da48b13",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 49.900000000000006,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 7
+    },
+    {
+      "lambda": 0.1,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-10801/l0p1.json",
+      "processed_graph": {
+        "edges": 172,
+        "vertices": 98
+      },
+      "scope_counts": {
+        "included_conditions": 13,
+        "manifest_conditions": 13,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "871079ad32294a9a1f966f0a9993fa50fcb72de065ea766896d7cc9ea86e7233",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 75.7,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0.25,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-10801/l0p25.json",
+      "processed_graph": {
+        "edges": 172,
+        "vertices": 98
+      },
+      "scope_counts": {
+        "included_conditions": 13,
+        "manifest_conditions": 13,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "4c7ecb8193085c1ffc75b8b35afae28a1804fa295aa88b8b34b69db58ce997f3",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 151.75,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0.5,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-10801/l0p5.json",
+      "processed_graph": {
+        "edges": 172,
+        "vertices": 98
+      },
+      "scope_counts": {
+        "included_conditions": 13,
+        "manifest_conditions": 13,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "e7f03d3945fcd5904a2e2bdb92c71c2deddfba74e2cb34357dd12d602b646660",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 278.5,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 1,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-10801/l1.json",
+      "processed_graph": {
+        "edges": 172,
+        "vertices": 98
+      },
+      "scope_counts": {
+        "included_conditions": 13,
+        "manifest_conditions": 13,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "86f224b03db45f3548a35310ec5197a550a003a10a2bdbdd4cd0f64e4599e4f6",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 532,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 2,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-10801/l2.json",
+      "processed_graph": {
+        "edges": 172,
+        "vertices": 98
+      },
+      "scope_counts": {
+        "included_conditions": 13,
+        "manifest_conditions": 13,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "2ae5428a6e6980e7f33c89fd63904eac5f0e7b1ca7ec967b2853defd361fd23b",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 1039,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-11000/l0.json",
+      "processed_graph": {
+        "edges": 148,
+        "vertices": 90
+      },
+      "scope_counts": {
+        "included_conditions": 11,
+        "manifest_conditions": 11,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "34415cd095f7f4edc72619a5177ce8d40f142822529cadf6009b2ad9c12974f9",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 5,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 60
+    },
+    {
+      "lambda": 0.001,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-11000/l0p001.json",
+      "processed_graph": {
+        "edges": 148,
+        "vertices": 90
+      },
+      "scope_counts": {
+        "included_conditions": 11,
+        "manifest_conditions": 11,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "efbe09e814f10b844d4185bca0570a31e755b1402049581fae320ede658be0d2",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 5.77,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 37
+    },
+    {
+      "lambda": 0.01,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-11000/l0p01.json",
+      "processed_graph": {
+        "edges": 148,
+        "vertices": 90
+      },
+      "scope_counts": {
+        "included_conditions": 11,
+        "manifest_conditions": 11,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "f774587eb1e2aeab88c4223050752ac917b8e6cea5ff4082a5dffa5c15b48ece",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 12.7,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 37
+    },
+    {
+      "lambda": 0.05,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-11000/l0p05.json",
+      "processed_graph": {
+        "edges": 148,
+        "vertices": 90
+      },
+      "scope_counts": {
+        "included_conditions": 11,
+        "manifest_conditions": 11,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "abec859b13863d50daa3efbb3ae28a2fa978294491e2f83e4e395d50ebd08238",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 37.150000000000006,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0.1,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-11000/l0p1.json",
+      "processed_graph": {
+        "edges": 148,
+        "vertices": 90
+      },
+      "scope_counts": {
+        "included_conditions": 11,
+        "manifest_conditions": 11,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "028279035f91314f6bdd490ce91d68ed26cf2a33a83cc4b0df7bb4ebe142d8b0",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 55.300000000000004,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0.25,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-11000/l0p25.json",
+      "processed_graph": {
+        "edges": 148,
+        "vertices": 90
+      },
+      "scope_counts": {
+        "included_conditions": 11,
+        "manifest_conditions": 11,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "8a9ceca54be3886c72806b948157971e433322d29b505b7716043d915d066df0",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 109.75,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0.5,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-11000/l0p5.json",
+      "processed_graph": {
+        "edges": 148,
+        "vertices": 90
+      },
+      "scope_counts": {
+        "included_conditions": 11,
+        "manifest_conditions": 11,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "ec989f4af4c5da915bdc54a5cbc1993e93f0f37adf04c155eefb32399e332946",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 200.5,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 1,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-11000/l1.json",
+      "processed_graph": {
+        "edges": 148,
+        "vertices": 90
+      },
+      "scope_counts": {
+        "included_conditions": 11,
+        "manifest_conditions": 11,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "978000570beb7bfc6498f43378815b0bb320041ff7e046ca9516596291b44037",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 382,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 2,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-11000/l2.json",
+      "processed_graph": {
+        "edges": 148,
+        "vertices": 90
+      },
+      "scope_counts": {
+        "included_conditions": 11,
+        "manifest_conditions": 11,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "2f411eda632e1d76f6a4ae50e45d957674cb0f5eec4db7b5098078b0d762b9a9",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 745,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-14568/l0.json",
+      "processed_graph": {
+        "edges": 310,
+        "vertices": 180
+      },
+      "scope_counts": {
+        "included_conditions": 27,
+        "manifest_conditions": 27,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "a6ae02e68f000aea6e73a1a8d657fa9f64eb877a0cd368abaecf667404c9168f",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 11,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 139
+    },
+    {
+      "lambda": 0.001,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-14568/l0p001.json",
+      "processed_graph": {
+        "edges": 310,
+        "vertices": 180
+      },
+      "scope_counts": {
+        "included_conditions": 27,
+        "manifest_conditions": 27,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "4f7cf90f1390dcc0a12393da50fb43ddbcefcb8b21fa740e1a3f3d8455af9ce6",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 15.373999999999999,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 82
+    },
+    {
+      "lambda": 0.01,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-14568/l0p01.json",
+      "processed_graph": {
+        "edges": 310,
+        "vertices": 180
+      },
+      "scope_counts": {
+        "included_conditions": 27,
+        "manifest_conditions": 27,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "ebcea3509302738e627c95dcd9294f2a18ab842897b5e2c2b4a1a0207c91c0f1",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 54.74,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 82
+    },
+    {
+      "lambda": 0.05,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-14568/l0p05.json",
+      "processed_graph": {
+        "edges": 310,
+        "vertices": 180
+      },
+      "scope_counts": {
+        "included_conditions": 27,
+        "manifest_conditions": 27,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "592ae0d5049a14cab51bf1f5db8844cac6ebcc4b5e27878e1656ab00cc1adfb5",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 154,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0.1,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-14568/l0p1.json",
+      "processed_graph": {
+        "edges": 310,
+        "vertices": 180
+      },
+      "scope_counts": {
+        "included_conditions": 27,
+        "manifest_conditions": 27,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "f35144538cbe1c92739104185e513d92c9c9b9279e61236c7030d47943b37ae7",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 262,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0.25,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-14568/l0p25.json",
+      "processed_graph": {
+        "edges": 310,
+        "vertices": 180
+      },
+      "scope_counts": {
+        "included_conditions": 27,
+        "manifest_conditions": 27,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "e71d96061b6088ec1d7e9b76677b25a528adc4474760eb980c35bf051e110251",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 586,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0.5,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-14568/l0p5.json",
+      "processed_graph": {
+        "edges": 310,
+        "vertices": 180
+      },
+      "scope_counts": {
+        "included_conditions": 27,
+        "manifest_conditions": 27,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "4ba4d0de6f6c83062bd0e0c8d7cadc6113e5cc808fcf33e8f6c5dc73fba9e962",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 1126,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 1,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-14568/l1.json",
+      "processed_graph": {
+        "edges": 310,
+        "vertices": 180
+      },
+      "scope_counts": {
+        "included_conditions": 27,
+        "manifest_conditions": 27,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "f65013e016fb220ea40c4abdee481823b5f0df74381ed9574d6f4da28cc36e92",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 2206,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 2,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-14568/l2.json",
+      "processed_graph": {
+        "edges": 310,
+        "vertices": 180
+      },
+      "scope_counts": {
+        "included_conditions": 27,
+        "manifest_conditions": 27,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "49f391ce0247561e7a195cf49c578af6e44782623ce43dd104d7de69a64679e9",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 4366,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-7223/l0.json",
+      "processed_graph": {
+        "edges": 124,
+        "vertices": 76
+      },
+      "scope_counts": {
+        "included_conditions": 9,
+        "manifest_conditions": 9,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "f17f8ae460c2855b17657d2707c7678d68e848c9a60e042e1e47f108256f1e21",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 8,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 46
+    },
+    {
+      "lambda": 0.001,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-7223/l0p001.json",
+      "processed_graph": {
+        "edges": 124,
+        "vertices": 76
+      },
+      "scope_counts": {
+        "included_conditions": 9,
+        "manifest_conditions": 9,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "88936a84a8c0399a60e086aa6a3baa38cf8015ff3d47c943947edca45a4ad721",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 8.468,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 25
+    },
+    {
+      "lambda": 0.01,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-7223/l0p01.json",
+      "processed_graph": {
+        "edges": 124,
+        "vertices": 76
+      },
+      "scope_counts": {
+        "included_conditions": 9,
+        "manifest_conditions": 9,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "a5c8be054c8dfcbaa6921442645c16592b5b65453368d1e2f7e72e104dd5fc86",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 12.68,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 25
+    },
+    {
+      "lambda": 0.05,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-7223/l0p05.json",
+      "processed_graph": {
+        "edges": 124,
+        "vertices": 76
+      },
+      "scope_counts": {
+        "included_conditions": 9,
+        "manifest_conditions": 9,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "31d2bb7f65714f857283c5f3b5f04c49eb0606bccf45ba669d7b1bf7ff803795",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 29.650000000000002,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 10
+    },
+    {
+      "lambda": 0.1,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-7223/l0p1.json",
+      "processed_graph": {
+        "edges": 124,
+        "vertices": 76
+      },
+      "scope_counts": {
+        "included_conditions": 9,
+        "manifest_conditions": 9,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "60f34b3cc1c90006028432e4c687adc23de4c9c9a25e5ed2b345a3ed4a4f9d29",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 43.2,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 1
+    },
+    {
+      "lambda": 0.25,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-7223/l0p25.json",
+      "processed_graph": {
+        "edges": 124,
+        "vertices": 76
+      },
+      "scope_counts": {
+        "included_conditions": 9,
+        "manifest_conditions": 9,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "9480112938c7eff887e144e5e4ea29d4a883e524f4ea03ddfb77af65959c9037",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 79.75,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0.5,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-7223/l0p5.json",
+      "processed_graph": {
+        "edges": 124,
+        "vertices": 76
+      },
+      "scope_counts": {
+        "included_conditions": 9,
+        "manifest_conditions": 9,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "226bf6e407e1abc848120b42b480a92c56bf8fb88fd27c6ef4e54c5140c1addd",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 140.5,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 1,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-7223/l1.json",
+      "processed_graph": {
+        "edges": 124,
+        "vertices": 76
+      },
+      "scope_counts": {
+        "included_conditions": 9,
+        "manifest_conditions": 9,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "4d57995c573d5fa216bb0b334c3f053157d3066d7b8b9c948d199be98f98d155",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 262,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 2,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/E-MTAB-7223/l2.json",
+      "processed_graph": {
+        "edges": 124,
+        "vertices": 76
+      },
+      "scope_counts": {
+        "included_conditions": 9,
+        "manifest_conditions": 9,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "89570fd94f26f59498833457ac252470b1d43a35d6a7622ba2a7dffaf6152cac",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 505,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/pooled/l0.json",
+      "processed_graph": {
+        "edges": 514,
+        "vertices": 280
+      },
+      "scope_counts": {
+        "included_conditions": 60,
+        "manifest_conditions": 60,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "0454f9a6101f7532618d809f8b2caf84c87d8064a4958a30cbc64e509b5a2b70",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 28,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 249
+    },
+    {
+      "lambda": 0.001,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/pooled/l0p001.json",
+      "processed_graph": {
+        "edges": 514,
+        "vertices": 280
+      },
+      "scope_counts": {
+        "included_conditions": 60,
+        "manifest_conditions": 60,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "8e0aea4a3d948d71b960e52b7b6b7b70cfbec5af5778f643754d04a81498c793",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 45.16,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 145
+    },
+    {
+      "lambda": 0.01,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/pooled/l0p01.json",
+      "processed_graph": {
+        "edges": 514,
+        "vertices": 280
+      },
+      "scope_counts": {
+        "included_conditions": 60,
+        "manifest_conditions": 60,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "fce2cb744a35fc2b9450f5aa032d9d8dabed20205b2378310cd10e4caddc2694",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 184.6,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 50
+    },
+    {
+      "lambda": 0.05,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/pooled/l0p05.json",
+      "processed_graph": {
+        "edges": 514,
+        "vertices": 280
+      },
+      "scope_counts": {
+        "included_conditions": 60,
+        "manifest_conditions": 60,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "57723e9c4fb98edf256efd68aa2c3f20c56dab5318cbcd414c41970d40a25e2a",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 532,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0.1,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/pooled/l0p1.json",
+      "processed_graph": {
+        "edges": 514,
+        "vertices": 280
+      },
+      "scope_counts": {
+        "included_conditions": 60,
+        "manifest_conditions": 60,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "fc937a09034135ef04a351510f9331538783ff146ffed26bf553d6312c246da9",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 955,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0.25,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/pooled/l0p25.json",
+      "processed_graph": {
+        "edges": 514,
+        "vertices": 280
+      },
+      "scope_counts": {
+        "included_conditions": 60,
+        "manifest_conditions": 60,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "b04e6bd85e7b173e500b99ec495fbcf0661e49fc98a5331467ec28c43ee66cc8",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 2224,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 0.5,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/pooled/l0p5.json",
+      "processed_graph": {
+        "edges": 514,
+        "vertices": 280
+      },
+      "scope_counts": {
+        "included_conditions": 60,
+        "manifest_conditions": 60,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "929b51a70801f463697782265c128d9353913d8ff42f2fded71e7646878adb35",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 4339,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 1,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/pooled/l1.json",
+      "processed_graph": {
+        "edges": 514,
+        "vertices": 280
+      },
+      "scope_counts": {
+        "included_conditions": 60,
+        "manifest_conditions": 60,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "9330f57d0aef8194c26c2c15130ee067f790421d97ef5f02ae4beb36561fc01c",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 8569,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    },
+    {
+      "lambda": 2,
+      "path": "data/processed/corneto/regulatory_multisample/v1/grid/pooled/l2.json",
+      "processed_graph": {
+        "edges": 514,
+        "vertices": 280
+      },
+      "scope_counts": {
+        "included_conditions": 60,
+        "manifest_conditions": 60,
+        "preprocessing_blocked": 0
+      },
+      "sha256": "56f22e73aeea2c77f607048d18feb8c78ad02fb65b3b1143831aa42128934c1a",
+      "solver": {
+        "has_incumbent": true,
+        "objective_value": 17029,
+        "requested": "gurobi",
+        "selected": "GUROBI",
+        "status": "optimal"
+      },
+      "status": "completed",
+      "union_count": 0
+    }
+  ],
+  "sample_registry": {
+    "all_rows": 117,
+    "patients": 52,
+    "primary_by_study": {
+      "E-MTAB-10801": 13,
+      "E-MTAB-11000": 11,
+      "E-MTAB-14568": 27,
+      "E-MTAB-7223": 9
+    },
+    "primary_rows": 60,
+    "repeated_patients": {
+      "OCM110": 2,
+      "OCM288": 2,
+      "OCM296": 2,
+      "OCM327": 2,
+      "OCM333": 2,
+      "OCM66": 2,
+      "OCM74": 3
+    },
+    "sha256": "797e59c371931b76a8132cd023de206360a423db6bacb1d4795a8cbcfc59b957"
+  },
+  "schema_version": "hgsoc_scientific_validity_audit.v1",
+  "script_sha256": "480974e28889e03cf59eff2985d3d756a59b168b038bbf8e2186c314b8af69ff"
+}

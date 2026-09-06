@@ -49,6 +49,12 @@ def _effective_lambda(nominal_lambda: float, condition_count: int, scaling: str)
     raise ValueError(f"unknown lambda scaling: {scaling}")
 
 
+def _receipt_status(solver_status: str, has_incumbent: bool) -> str:
+    if not has_incumbent:
+        return "no_incumbent"
+    return "completed" if solver_status == "optimal" else "partial_incumbent"
+
+
 def _edge_records(
     method: Any, edge_matrix: Any, condition_names: list[str]
 ) -> dict[str, list[dict[str, object]]]:
@@ -58,12 +64,15 @@ def _edge_records(
     edge_count = len(method.processed_graph.E)
     if values.ndim == 1:
         values = values.reshape((-1, 1))
-    if values.shape == (len(condition_names), edge_count):
+    expected_shape = (edge_count, len(condition_names))
+    if values.shape != expected_shape and values.shape == (len(condition_names), edge_count):
         values = values.T
-    if values.shape != (edge_count, len(condition_names)):
+    if values.shape != expected_shape:
         raise ValueError(
             f"edge_has_signal shape {values.shape} != ({edge_count}, {len(condition_names)})"
         )
+    if not np.isfinite(values).all():
+        raise ValueError("edge_has_signal contains nonfinite values")
     selected: dict[str, list[dict[str, object]]] = {name: [] for name in condition_names}
     for edge_index in range(edge_count):
         source_set, target_set = method.processed_graph.E[edge_index]
@@ -279,7 +288,7 @@ def solve_bundle(
         }
         receipt.update(
             {
-                "status": "completed" if has_incumbent else "no_incumbent",
+                "status": _receipt_status(solver_status, has_incumbent),
                 "solver": {
                     "requested": solver,
                     "selected": selected_solver.upper(),

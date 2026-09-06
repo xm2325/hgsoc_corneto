@@ -5,6 +5,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from test_metabolic_validation import instrument_receipt
+
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "run_corneto_metabolic_checkpoint.py"
 
 
@@ -55,29 +57,38 @@ def test_assemble_requires_complete_matching_checkpoints(tmp_path: Path) -> None
         solutions.append(solution)
         _write(
             independent_dir / f"{index:03d}_{condition}.json",
-            {
-                "status": "completed",
-                "schema_version": "metabolic_independent_checkpoint.v1",
-                "condition": condition,
-                "context_sha256": context_sha,
-                "solution": solution,
-                "slurm_job_id": str(100 + index),
-            },
+            instrument_receipt(
+                tmp_path,
+                {
+                    "status": "completed",
+                    "schema_version": "metabolic_independent_checkpoint.v1",
+                    "condition": condition,
+                    "context_sha256": context_sha,
+                    "solution": solution,
+                    "slurm_job_id": str(100 + index),
+                },
+                [solution],
+            ),
         )
     joint_path = tmp_path / "joint.json"
     _write(
         joint_path,
-        {
-            "status": "completed",
-            "schema_version": "metabolic_joint_checkpoint.v1",
-            "context_sha256": context_sha,
-            "slurm_job_id": "200",
-            "result": {
-                "conditions": conditions,
-                "active_tolerance": 1e-7,
-                "joint": solutions,
+        instrument_receipt(
+            tmp_path,
+            {
+                "status": "completed",
+                "schema_version": "metabolic_joint_checkpoint.v1",
+                "context_sha256": context_sha,
+                "slurm_job_id": "200",
+                "sample_count": len(conditions),
+                "result": {
+                    "conditions": conditions,
+                    "active_tolerance": 1e-7,
+                    "joint": solutions,
+                },
             },
-        },
+            solutions,
+        ),
     )
     output = tmp_path / "final.json"
     completed = subprocess.run(

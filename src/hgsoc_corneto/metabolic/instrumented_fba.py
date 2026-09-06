@@ -14,6 +14,7 @@ from hgsoc_corneto.metabolic.joint_fba import (
     _corneto_components,
     _summaries,
 )
+from hgsoc_corneto.metabolic.validation import audit_primal, optimization_issues, sha256
 
 
 @dataclass(frozen=True)
@@ -51,6 +52,9 @@ class InstrumentedSparseFBAResult:
     active_union: tuple[str, ...]
     summary_error: str | None
     artifacts: Mapping[str, str]
+    artifact_sha256: Mapping[str, str]
+    primal_validation: Mapping[str, Any]
+    acceptance_issues: tuple[str, ...]
 
     def to_dict(self) -> dict[str, Any]:
         value = asdict(self)
@@ -119,9 +123,7 @@ def _telemetry(
     objective = _finite(_attribute(model, "ObjVal")) if has_incumbent else None
     bound = _finite(_attribute(model, "ObjBound"))
     relative_gap = _finite(_attribute(model, "MIPGap")) if has_incumbent else None
-    absolute_gap = (
-        abs(objective - bound) if objective is not None and bound is not None else None
-    )
+    absolute_gap = abs(objective - bound) if objective is not None and bound is not None else None
     telemetry = SolverTelemetry(
         cvxpy_status=str(getattr(solution, "status", "unknown")),
         gurobi_status_code=code,
@@ -197,6 +199,8 @@ def _finish(
     active_tolerance: float,
     artifact_prefix: Path,
     log_file: Path,
+    cobra_model: Any,
+    reaction_bounds: Mapping[str, Mapping[str, tuple[float | None, float | None]]],
 ) -> InstrumentedSparseFBAResult:
     telemetry, model = _telemetry(
         solution, max_seconds=max_seconds, mip_gap=mip_gap, threads=threads
@@ -214,8 +218,37 @@ def _finish(
             )
         except Exception as error:  # preserve telemetry even if expression extraction fails
             summary_error = f"{type(error).__name__}: {error}"
-    normalized = telemetry.cvxpy_status.casefold()
-    scientific_success = normalized in {"optimal", "optimal_inaccurate"} and bool(summaries)
+    primal_validation: dict[str, Any] = {"status": "not_run_no_incumbent"}
+    if telemetry.has_incumbent:
+        try:
+            primal_validation = audit_primal(
+                cobra_model,
+                problem,
+                reaction_ids,
+                conditions,
+                reaction_bounds,
+                activity_tolerance=active_tolerance,
+            )
+        except Exception as error:
+            primal_validation = {"status": "failed", "error": f"{type(error).__name__}: {error}"}
+    artifacts = {"gurobi_log": str(log_file)}
+    artifacts.update(_write_incumbent_artifacts(model, artifact_prefix, telemetry.has_incumbent))
+    artifact_hashes = {}
+    for label in ("solution", "mip_start", "gurobi_log"):
+        raw = artifacts.get(label)
+        try:
+            if raw and Path(raw).is_file() and Path(raw).stat().st_size > 0:
+                artifact_hashes[label] = sha256(Path(raw))
+        except OSError as error:
+            artifacts[f"{label}_hash_error"] = f"{type(error).__name__}: {error}"
+    issues = optimization_issues(asdict(telemetry))
+    if not summaries or summary_error:
+        issues.append("summaries_missing_or_failed")
+    if primal_validation.get("status") != "passed":
+        issues.append("primal_validation_missing_or_failed")
+    if len(artifact_hashes) != 3:
+        issues.append("incumbent_artifacts_missing")
+    scientific_success = not issues
     if scientific_success:
         status = "completed"
     elif telemetry.has_incumbent:
@@ -224,8 +257,6 @@ def _finish(
         status = "time_limit_no_incumbent"
     else:
         status = "failed_no_incumbent"
-    artifacts = {"gurobi_log": str(log_file)}
-    artifacts.update(_write_incumbent_artifacts(model, artifact_prefix, telemetry.has_incumbent))
     return InstrumentedSparseFBAResult(
         status=status,
         scientific_success=scientific_success,
@@ -234,6 +265,9 @@ def _finish(
         active_union=_active_union(summaries),
         summary_error=summary_error,
         artifacts=artifacts,
+        artifact_sha256=artifact_hashes,
+        primal_validation=primal_validation,
+        acceptance_issues=tuple(issues),
     )
 
 
@@ -281,6 +315,8 @@ def solve_independent_instrumented(
         active_tolerance=active_tolerance,
         artifact_prefix=artifact_prefix,
         log_file=log_file,
+        cobra_model=model,
+        reaction_bounds={condition: reaction_bounds},
     )
 
 
@@ -328,4 +364,6 @@ def solve_joint_instrumented(
         active_tolerance=active_tolerance,
         artifact_prefix=artifact_prefix,
         log_file=log_file,
+        cobra_model=model,
+        reaction_bounds=reaction_bounds,
     )

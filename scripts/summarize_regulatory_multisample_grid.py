@@ -72,6 +72,9 @@ def summarize(
             raise ValueError(f"{path}: unexpected schema")
         if data.get("status") != "completed":
             raise ValueError(f"{path}: status={data.get('status')!r}")
+        solver = data.get("solver", {})
+        if solver.get("status") != "optimal" or solver.get("has_incumbent") is not True:
+            raise ValueError(f"{path}: no optimal solver result")
         method = data.get("method", {})
         if not method.get("single_joint_problem"):
             raise ValueError(f"{path}: not a joint problem")

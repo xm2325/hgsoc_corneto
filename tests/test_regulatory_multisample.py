@@ -22,6 +22,13 @@ def test_effective_lambda_normalizes_condition_fit_sum() -> None:
         MODULE._effective_lambda(-0.1, 60, "mean_fit")
 
 
+def test_incumbent_alone_does_not_mean_regulatory_completion() -> None:
+    assert MODULE._receipt_status("optimal", True) == "completed"
+    assert MODULE._receipt_status("optimal_inaccurate", True) == "partial_incumbent"
+    assert MODULE._receipt_status("user_limit", True) == "partial_incumbent"
+    assert MODULE._receipt_status("infeasible", False) == "no_incumbent"
+
+
 def test_edge_records_preserve_condition_columns() -> None:
     class Graph:
         E = [({"A"}, {"B"}), ({"B"}, {"C"})]

@@ -1,0 +1,9 @@
+{
+  "schema_version": "metabolic_scientific_review_hold.v1",
+  "status": "hold",
+  "reason": "The b25 audit found identical growth optima across 60 contexts, six without expression-derived caps, no reported flux on applied expression caps in 20 saved attempts, and flux/indicator disagreement in every attempt. All 20 selected-indicator subnetworks fail the fixed-indicator growth-floor LP; all 20 positive controls retaining reported flux support pass. Pause new solves until model/input and numerical acceptance are reviewed.",
+  "audit_document": "docs/hgsoc_corneto_scientific_audit_20260906.md",
+  "created_on": "2026-09-06",
+  "scope": "Startup gate for independent/joint instrumented b25 solves; processes already solving are unaffected.",
+  "release_condition": "Explicitly reviewed input/media policy and numerical-validation pilot in a versioned context; no automatic release after a timeout or an elapsed wait."
+}

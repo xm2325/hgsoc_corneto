@@ -1,0 +1,47 @@
+{
+  "schema_version": "scientific_audit_deployment.v1",
+  "verified_at_utc": "2026-09-06T17:14:52.212149+00:00",
+  "host_alias": "roihu_cpu",
+  "project_root": "/scratch/project_2012997/xiaomei/hgsoc_corneto",
+  "files": {
+    "scripts/run_corneto_metabolic_instrumented.py": "f11506185410f827d5219eaaff318575fcde8421bb11b884a3b0e0dcef9d3ae5",
+    "scripts/run_corneto_metabolic_checkpoint.py": "84ff2724b83533bd87bf745e41737aea1238f6e70917cf8b9a85acf261224211",
+    "src/hgsoc_corneto/metabolic/validation.py": "439c7c043b4e1291e7bd697d4fc50c714cc1930745a34eec030b2427c07a59ed",
+    "src/hgsoc_corneto/metabolic/instrumented_fba.py": "cb36f7c1fbb7cfb4f715cd7a62546d5ec4d204086b7e15d020f65ea6903e7553",
+    "scripts/run_corneto_regulatory_multisample.py": "45aa7def5d36da892b187978ced48c8096e1595d66795fa25660d6c25c897dcb",
+    "scripts/summarize_regulatory_multisample_grid.py": "3b1461480d762807160ea9ea3834b1e9c4ab948685f02b22ff43852b5418485d",
+    "scripts/audit_fixed_indicator_feasibility.py": "a7630732d9771f5c226ff364037722044c64fbb858c718a56385bcad80803d90"
+  },
+  "context_checks": [
+    {
+      "study": "E-MTAB-7223",
+      "context_sha256": "7ea9d2268ec7647bfa0f47f8215913442cafc2b6f76faefa13a40c402b7fcb1b",
+      "startup_gate": "blocked_before_solver_import"
+    },
+    {
+      "study": "E-MTAB-10801",
+      "context_sha256": "1475eee9397af6644fcfaa6500594fbe1441b7d4d4acfbf714a66bac91f0792c",
+      "startup_gate": "blocked_before_solver_import"
+    },
+    {
+      "study": "E-MTAB-11000",
+      "context_sha256": "fb4b7b4409a20540ef1b81185e1d0f8a5c68cd1be2b43d0f652ae4394dc07d61",
+      "startup_gate": "blocked_before_solver_import"
+    },
+    {
+      "study": "E-MTAB-14568",
+      "context_sha256": "d6d449bf9035ec466ae530cc774762a6845a529babe6e54751f2c12d7101c3e6",
+      "startup_gate": "blocked_before_solver_import"
+    }
+  ],
+  "gurobi_imported": false,
+  "slurm_hold_verified": false,
+  "previous_code_backup": ".codex_stage/scientific_audit_20260906_before",
+  "running_processes_modified": false,
+  "targeted_test_count": 29,
+  "notes": [
+    "Original five deployed code files matched the delivery-branch base before backup and replacement.",
+    "Application startup hold is not a Slurm administrative hold.",
+    "Frozen context/model/scientific parameters were not changed."
+  ]
+}

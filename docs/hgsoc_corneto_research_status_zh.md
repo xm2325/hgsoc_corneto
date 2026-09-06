@@ -1,8 +1,58 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-09-06 11:44 BST（13:44 EEST）。本文件与
+最后科学审计/部署更新：2026-09-06 18:14:52 BST（20:14:52 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
+
+最新运行跟进：**2026-09-06 23:02 BST**。Targeted `squeue` 重新返回相同9个 RUNNING
+tasks，9份 solver logs 均有近期更新。937737_3/4/6 的 live gaps 为3.14/3.65/3.62%，
+948765_3/4/5 为4.05/3.97/3.87%，834322_11/12/13 为3.10/3.97/3.17%。这些舍入值
+不是 final receipts，也不是完成时间预测；见[保存的 log-tail evidence](../evidence/scientific_audit_running_logs_20260906.json)。
+对 pending solver jobs 增加 scheduler-level hold 的尝试在执行前被安全审核拒绝，
+**未施加 Slurm hold**，需用户明确授权。此前部署的 application startup hold 仍保留；
+没有针对或修改任何 RUNNING 任务。
+
+## 最新决定：b25 scientific review hold（2026-09-06）
+
+科学问题仍然值得研究，但继续重复相同的 b25 长求解，当前不能被视为 OCM-specific
+biological analysis。详见[完整科学审计与修复报告](hgsoc_corneto_scientific_audit_20260906.md)、
+[60-context/receipt audit](../evidence/scientific_validity_audit_20260906.json) 和
+[带阳性对照的 fixed-indicator LP audit](../evidence/fixed_indicator_lp_controlled_audit_20260906.json)。
+
+- 60 个 contexts 的 growth optimum 都是 187.35362997658078；6 个没有 expression-derived
+  caps。20 份已保存 independent attempts（17 个不同 OCM/run）在实际施加 expression cap
+  的反应上均无报告非零通量。每份 flux 满足 50–60/60 个 context 的 bounds，其中15份满足
+  全部60个。这削弱 specificity，但不证明完整 feasible sets 相同。
+- 严格关闭未选反应后，20/20 indicator selections 在原 growth floor 下 LP **infeasible**；
+  阳性对照保留 indicator-selected 与 reported nonzero-flux reactions 的并集，20/20
+  **feasible**。这些 selections 不能作为支持生长的网络进入 knockout/FVA；仅检查
+  sparse-summary mass balance 不足以发现这个问题。
+- Canonical independent files 仍为 **0/9、0/13、0/11、0/27**。19个70 h attempts 的最终
+  gap 为2.9679%–4.1531%；另一个600秒 smoke 为5.8292%。这些不是 biological results。
+- 14 个历史 snapshot 源文件 SHA256 本轮全部匹配。45 个 regulatory grid receipts 的
+  solver status 均为 optimal，但27个 edge union 为空。没有一份的 edge×condition shape
+  是本轮修复 bug 所影响的方阵；不由此宣称其余所有历史 regulatory outputs 都已重审。
+
+**修复已部署到 Roihu，旧脚本已有备份。** Canonical acceptance 现在检查 solver/gap、完整
+primal 数值与 artifact hashes；joint 启动前验证全 cohort 每份 independent receipt，不再
+仅凭 subset repair array 成功放行。Regulatory partial incumbent 不再标为 completed。
+29 项 targeted tests 与远程 Python syntax checks 通过；
+[部署证据](../evidence/scientific_audit_deployment_20260906.json)记录 code/context hashes 和4份 pre-solver hold checks。
+
+四个 `checkpoint_b25/scientific_review_hold.json` 阻断以后启动的 independent/joint solves，
+在导入 solver 前生效。这是**应用级 startup hold，不是已确认的 Slurm administrative hold**。
+未取消或修改健康 RUNNING processes；未改变 frozen context、MIPGap 或 medium parameters。
+被该保护主动阻断的任务不得自动 retry。
+
+最后一次成功的 targeted queue snapshot 显示 `937737_3/4/6`、`948765_3/4/5`、
+`834322_11/12/13` 共9个 solver tasks 运行；之后 Slurm controller query 超时，不能说此刻
+仍精确有9个。SSH 和文件审计可用。11000 serialization 已修复且在当次 `squeue` 验证为
+`afterany:1083050_*`、`afterany:1083051_*`、`afterany:863034_*`；11000 不应科学上
+依赖其他 cohort 的成功。Joint/assembly/comparison/TPI1 的 fail-closed gates 保留。
+
+下一优先级是 versioned medium/GPR/expression-policy 和 numerical pilot，加 null/shuffled
+input controls，而不是再次重复70 h。Patient-grouped held-out NMF/regulatory validation
+可并行开发。下方旧快照保留 provenance，不能用来解除 review hold 或重建旧任务。
 
 ## 核心科学问题（Central scientific question）
 
@@ -109,9 +159,10 @@ same-biopsy/spatial relationships 必须依据 source metadata，不能只按编
   包含九个 nominal lambdas 下的 45/45 pooled/cohort receipts。
 - Patient-balanced regulatory analysis 在 52 个共同患者上保留了相似网络：
   pooled/balanced union Jaccard 为 0.890，mean per-sample Jaccard 为 0.899。
-- Narrow-vs-richer PKN sensitivity 已完成。Pooled union Jaccard 为 0.202，
+- Narrow-vs-richer graph-policy sensitivity 已完成。Pooled union Jaccard 为 0.202，
   mean sample Jaccard 为 0.108；cohort union Jaccard 约为 0.108-0.143。因此
-  network conclusions 明显受 PKN 影响，必须报告 stable cores 与 uncertain alternatives。
+  network conclusions 明显受 bundled graph policy 影响，必须报告 stable cores 与 uncertain alternatives。
+  Inputs、outputs 和 depth 同时改变，因此不能将差异单独归因于 PKN breadth。
 - Regulatory longitudinal summary 覆盖 60 runs 和八个 within-family transitions。
   这是 response-blind 分析；acquired-resistance 解释仍需 exact exposure 和 phenotype。
 - Regulatory x NMF state integration 已覆盖四个 cohorts。它是基于相同 input 的
@@ -154,7 +205,10 @@ finding：pooled network 在 nominal lambda 0.05 及以上变为空，大部分 
 absence 的证据。lambda 0.001 时 pooled-vs-merged-cohort edge-union Jaccard 为 0.746；
 lambda 0.01 时降至 0.286。这些仍是 response-blind technical results。
 
-## Metabolic baseline：运行中、失败与排队任务
+## Metabolic baseline：历史运行中、失败与排队快照
+
+以下带日期的快照保留 retry provenance。本文顶部2026-09-06 scientific review hold
+优先于旧快照中的自动继续规则。
 
 冻结的 primary settings：Human-GEM v1.4.1、raw TPM 经 `log1p` 转换、primary
 tumour only、candidate budget 25、growth fraction 0.9、independent lambda 0.1、
@@ -468,8 +522,9 @@ allocation-timeout failures，Slurm 接受了两个 fail-closed successors：
 两者复用 frozen cohort context，并保持 instrumented scientific/solver parameters
 不变；它们会验证并跳过匹配的 canonical receipt，因此不会覆盖有效结果。Joint jobs
 **834324** 与 **834325** 现在分别等待 `afterok:1083050_*` 和
-`afterok:1083051_*`。串行 E-MTAB-11000 array **834323** 现在等待两个新 repairs，
-并继续等待 `afterok:863034_*`。已通过 `squeue` 验证 dependencies；新 arrays 仍在等待
+`afterok:1083051_*`。串行 E-MTAB-11000 array **834323** 在当次快照等待两个新 repairs，
+并继续等待 `afterok:863034_*`（**之后在本文顶部2026-09-06科学审计中纠正为三个 parents
+均使用 afterany**）。当次已通过 `squeue` 验证 dependencies；新 arrays 仍在等待
 active parents，因此当前没有增加 Gurobi sessions。Canonical counts 不变，也没有释放
 scientific result。
 
@@ -561,21 +616,26 @@ response-model accuracy。`chemo_naive_at_biopsy` 不能替代 exact cumulative 
 6. 每个 long MILP 必须设置短于 Slurm 的 internal solver time limit，持久化
    incumbent/bound/gap 与 solver artifacts，并区分 `partial_incumbent` 和 canonical
    `completed`。Partial receipt 可指导 recovery，但不能释放 scientific downstream jobs。
+7. 2026-09-06 scientific review hold 优先于旧 retry 规则：不自动重试相同 b25 long solves，
+   不将 intentional startup hold 误判为 infrastructure failure；只有 versioned input 与
+   numerical pilot 得到审查后才能重新考虑求解方向。
 
 ## 定时监控（Recurring monitor）
 
 Codex heartbeat **HGSOC CORNETO Roihu pipeline monitor** 已绑定到当前对话，
-每 30 分钟运行一次；它没有显式 model 或 reasoning override，因此遵循当前对话/默认设置，
-不会创建单独的 standalone monitoring conversation。这个时间间隔的理由是：
+没有显式 model/reasoning override，也不创建单独任务。按用户要求，2026-09-06 曾临时设置
+**16:32 Europe/London** 的一次性恢复；工具侧信号实际于 **17:56:09 BST** 到达，延迟原因
+未核实。本会话随后继续执行。之后已恢复并核实之前实际配置的 **每周四09:00 Europe/London**。
+旧文档所写“每30分钟”与真实配置不符，已纠正。
 
-- Slurm dependencies 会自动启动有效 successors，因此分钟级轮询不会加速 pipeline。
-- 30 分钟足以在 instrumented checkpoint chain 中发现 smoke/startup、license-session、
-  timeout 与 receipt failures。
-- 对 branch-and-bound 中日志很少的 multi-hour Gurobi jobs，30 分钟不会造成无效的高频查询。
+**最新 schedule 更新（2026-09-06）：** 用户告知5小时 usage window 已重置后，已把同一
+heartbeat 改为 **2026-09-07 英国时间04:00（03:00 UTC）** 的一次性继续，并核实配置。
+未来是否准点运行尚不能确认。Prompt 要求只继续未完成内容，并在这次继续之后恢复原每周四
+09:00 schedule；没有 model override，也没有创建新任务。
 
-每次运行都检查 scheduler state、resource use、log tails 与 receipt JSON。它只能执行确定且
-属于当前范围的修复：不重复提交、不取消健康任务、不改变 scientific parameters，也不在没有
-有效 receipt 时作结果声明。OOM/TIMEOUT retry 保留参数并只增加有依据的 resources；Gurobi
-session-cap failure 要等 active sessions 少于 8 后再低并发或串行 retry。有实质变化时更新本文件
-并 push 到 delivery branch；无变化时只报告简短 checkpoint。所有 cohort、pooled、comparison
-与 TPI1/FVA outputs 进入终态并完成 audit 后，monitor 应报告完成并暂停。
+更新后的 prompt 首先读取科学审计，保留健康 RUNNING 任务，尊重四个 startup review holds，
+不为主动阻断的启动或相同70 h b25 attempts 自动 retry。仅 targeted 查询已登记任务和
+successors，不做广泛或高频轮询；controller outage 不能被当成终态。新 model/media policy
+和生物学全集求解必须先经 reviewed pilot 与授权，原 contexts 和严格下游 gates 保持不变。
+仅有意义的结果、失败和操作更新中英文文档并推送 GitHub；无变化或不可操作的状态保持安静。
+所有保留的运行任务与已授权审计进入终态后，报告最终审计状态及 monitor 可暂停，不创建新研究范围。

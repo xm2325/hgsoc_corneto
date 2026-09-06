@@ -1,10 +1,75 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-09-06 11:44 BST (13:44 EEST). This file is the project-level source of
+Last scientific/deployment update: 2026-09-06 18:14:52 BST (20:14:52 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
+
+Latest operational follow-up: **2026-09-06 23:02 BST**. Targeted `squeue`
+returned the same nine RUNNING tasks; all nine solver-log tails were current.
+Live gaps were 3.14/3.65/3.62% for 937737_3/4/6,
+4.05/3.97/3.87% for 948765_3/4/5, and 3.10/3.97/3.17% for
+834322_11/12/13. These rounded values are not final receipts or completion
+estimates. [Saved log-tail evidence](../evidence/scientific_audit_running_logs_20260906.json).
+An attempted scheduler-level hold of pending solver jobs was rejected by the
+safety reviewer before execution. **No Slurm hold was applied**; it needs
+explicit user approval. The previously deployed application startup hold
+remains in place. No running job was targeted or changed.
+
+## Latest decision: b25 scientific review hold, 2026-09-06
+
+The research question remains worthwhile, but continuing identical long b25
+solves is not currently justified as OCM-specific biological analysis. See the
+[full scientific audit and repair report](hgsoc_corneto_scientific_audit_20260906.md),
+[60-context/receipt audit](../evidence/scientific_validity_audit_20260906.json),
+and [controlled fixed-indicator LP audit](../evidence/fixed_indicator_lp_controlled_audit_20260906.json).
+
+- All 60 contexts share growth optimum 187.35362997658078; six have no
+  expression-derived caps. All 20 saved independent attempts (17 distinct
+  OCM/runs) report zero flux on their applied expression-capped reactions.
+  Each saved flux satisfies 50-60 of the 60 context-bound sets; 15 satisfy all
+  60. This is weak specificity evidence, not proof of identical feasible sets.
+- All 20 saved indicator selections are **infeasible** in a continuous LP at
+  the original growth floor. All 20 positive controls retaining the union of
+  indicator-selected and reported nonzero-flux reactions are **feasible**.
+  Consequently these selections cannot be used as growth-supporting networks
+  for knockout/FVA. Sparse-summary mass balance alone did not detect this.
+- Canonical independent files remain **0/9, 0/13, 0/11, 0/27**. Nineteen
+  70-hour attempts ended at gaps 2.9679%-4.1531%; the additional 600-second
+  smoke has gap 5.8292%. These are optimization diagnostics, not biology.
+- The 14 historical snapshot source hashes all still match. The 45 regulatory
+  grid receipts all report optimal solver status, although 27 have empty edge
+  unions. None has a square edge-by-condition shape affected by the repaired
+  export bug. This does not certify every other historical regulatory output.
+
+**Repairs are deployed and backed up on Roihu.** Canonical acceptance now
+requires solver/gap, full-primal and artifact-hash validation. Joint startup
+checks every independent receipt in the cohort, not only a successful subset
+repair array. Regulatory partial incumbents no longer masquerade as completed
+fits. The changes passed 29 targeted tests and remote Python syntax checks;
+[deployment evidence](../evidence/scientific_audit_deployment_20260906.json)
+records code/context hashes and four successful pre-solver hold checks.
+
+Four `checkpoint_b25/scientific_review_hold.json` markers now block **new**
+independent/joint starts before solver import. This is an application startup
+hold, **not a confirmed Slurm administrative hold**. No healthy RUNNING process
+was cancelled or changed. Such deliberately blocked starts must not trigger
+automatic retries. No frozen context, MIPGap or medium parameter was altered.
+
+The last successful targeted queue snapshot showed `937737_3/4/6`,
+`948765_3/4/5` and `834322_11/12/13` running. Later Slurm controller calls timed
+out, so that nine-task snapshot is not a real-time guarantee. SSH and file
+audits remained available. E-MTAB-11000 serialization was corrected and
+verified as `afterany:1083050_*`, `afterany:1083051_*`, `afterany:863034_*`;
+unrelated cohort success is not a scientific prerequisite for 11000. The
+joint/assembly/comparison/TPI1 fail-closed gates remain intact.
+
+Next priority is a versioned medium/GPR/expression-policy and numerical pilot
+with null/shuffled-input controls, not another identical 70-hour retry.
+Patient-grouped held-out NMF/regulatory validation can be developed in parallel.
+The dated operational history below is provenance, not authority to release
+the review hold or recreate old jobs.
 
 ## Central scientific question
 
@@ -124,10 +189,12 @@ verified from source metadata rather than inferred from suffix ordering.
 - Patient-balanced regulatory analysis retained similar networks on the 52
   common patients: pooled/balanced union Jaccard 0.890 and mean per-sample
   Jaccard 0.899.
-- Narrow-vs-richer PKN sensitivity completed. Pooled union Jaccard was 0.202
+- Narrow-vs-richer graph-policy sensitivity completed. Pooled union Jaccard was 0.202
   and mean sample Jaccard 0.108; cohort union Jaccards were approximately
   0.108-0.143. Network conclusions are therefore materially PKN-sensitive and
-  must be reported as stable cores plus uncertain alternatives.
+  must be reported as stable cores plus uncertain alternatives. Inputs,
+  outputs and depth changed together, so this is not a single-factor test of
+  PKN breadth.
 - Regulatory longitudinal summary covered 60 runs and eight within-family
   transitions. It is response-blind; acquired-resistance interpretation still
   requires exact exposure and phenotype.
@@ -176,7 +243,10 @@ of over-regularisation under the current scaling, not evidence of biological
 absence. At lambda 0.001, pooled-vs-merged-cohort edge-union Jaccard is 0.746;
 at lambda 0.01 it falls to 0.286. These remain response-blind technical results.
 
-## Metabolic baseline: active, failed, and queued
+## Metabolic baseline: historical active/failed/queued snapshots
+
+The dated snapshots below retain retry provenance. The 2026-09-06 scientific
+review hold at the top of this document supersedes their continuation rules.
 
 Primary settings are frozen: Human-GEM v1.4.1, raw TPM transformed with
 `log1p`, primary tumour only, candidate budget 25, growth fraction 0.9,
@@ -545,8 +615,9 @@ Both reuse the frozen cohort context and unchanged instrumented scientific and
 solver parameters. They validate and skip a matching canonical receipt, so
 they cannot overwrite valid work. Joint jobs **834324** and **834325** now wait
 for `afterok:1083050_*` and `afterok:1083051_*`, respectively. The serialized
-E-MTAB-11000 array **834323** now waits for both new repairs plus
-`afterok:863034_*`. The dependencies were verified through `squeue`; the new
+E-MTAB-11000 array **834323** at that checkpoint waited for both new repairs plus
+`afterok:863034_*` (**subsequently corrected to afterany for all three parents
+in the 2026-09-06 scientific audit above**). The dependencies were verified through `squeue`; the new
 arrays remain pending behind their active parents and therefore add no current
 Gurobi sessions. Canonical counts remain unchanged and no scientific result
 was released.
@@ -658,27 +729,37 @@ cumulative exposure.
    persist incumbent/bound/gap and solver artifacts, and distinguish
    `partial_incumbent` from canonical `completed` output. Partial receipts may
    guide recovery but may not release scientific downstream jobs.
+7. The 2026-09-06 scientific review hold supersedes old retry rules: no
+   automatic identical b25 long solves or retries of deliberate startup holds.
+   A reviewed versioned input/numerical pilot must precede reconsideration.
 
 ## Recurring monitor
 
 The Codex heartbeat **HGSOC CORNETO Roihu pipeline monitor** is attached to this
-conversation and runs every 30 minutes. It has no explicit model or reasoning
-override, so it follows the current conversation/default settings and does not
-create a separate standalone monitoring conversation. This cadence is deliberate:
+conversation without an explicit model/reasoning override or a separate task.
+On 2026-09-06 the user-requested one-time resumption was configured for 16:32
+Europe/London. The actual continuation signal arrived at 17:56:09 BST; the
+reason for that delay was not established. Work continued in this conversation.
+The prior actual recurrence, **Thursday 09:00 Europe/London**, was then restored
+and verified in the automation configuration. The old text claiming a
+30-minute recurrence was incorrect and has been removed.
 
-- Slurm dependencies already launch valid successors, so minute-scale polling
-  would not accelerate the pipeline.
-- Thirty minutes is short enough to catch smoke/startup, license-session,
-  timeout, and receipt failures during the instrumented checkpoint chain.
-- It is long enough to avoid repeatedly querying multi-hour Gurobi jobs whose
-  logs are sparse during branch-and-bound.
+**Latest scheduling update, 2026-09-06:** after the user reported that the
+five-hour usage window had reset, the same heartbeat was rescheduled for a
+one-time continuation at **2026-09-07 04:00 Europe/London (03:00 UTC)**.
+This configuration was verified; execution at that future time is not yet
+established. The prompt resumes only unfinished work and restores the prior
+Thursday 09:00 recurrence after that continuation. No model override or new
+task was created.
 
-Each run checks scheduler state, resource use, log tails, and receipt JSON. It
-may make only deterministic in-scope repairs: no duplicate submissions, no
-cancellation of healthy jobs, no scientific-parameter changes, and no result
-claim without a valid receipt. OOM/TIMEOUT retries preserve parameters and
-increase only justified resources; Gurobi session-cap failures wait until fewer
-than eight sessions are active. Meaningful state changes are written here and
-pushed to the delivery branch; unchanged checks produce only a compact
-checkpoint. After all cohort, pooled, comparison, and TPI1/FVA outputs are
-terminal and audited, the monitor reports completion and should be paused.
+The revised prompt reads the scientific audit first, preserves healthy RUNNING
+jobs, honours the four application startup review holds, and never retries
+deliberately blocked starts or identical 70-hour b25 attempts automatically.
+Only documented jobs/successors are inspected, without broad or high-frequency
+polling. Controller outages do not establish terminal status. New frozen
+model/media policies and biological full solves require a reviewed pilot and
+authorization; existing context parameters and strict downstream gates remain
+unchanged. Meaningful results/failures/actions update both documents and the
+GitHub delivery branch; unchanged or non-actionable checks remain quiet. When
+the preserved running work and authorized audits are terminal, report final
+reviewed status and that this monitor can pause, without creating new scope.

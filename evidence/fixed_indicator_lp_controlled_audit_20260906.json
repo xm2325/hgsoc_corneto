@@ -1,0 +1,632 @@
+{
+  "audited_at_utc": "2026-09-06T17:10:25.065634+00:00",
+  "claim_limit": "Restricted LP feasibility only; OCM biology and medium remain unvalidated.",
+  "gurobi_sessions_requested": 0,
+  "model_sha256": "57d1b137f0c90d83a3e4f9a8225d74d37523594e6ee99f622b160a014d9f7050",
+  "results": [
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 526,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 526,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR2808250",
+      "context_sha256": "7ea9d2268ec7647bfa0f47f8215913442cafc2b6f76faefa13a40c402b7fcb1b",
+      "receipt": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/000_ERR2808250_job805824_task0.json",
+      "receipt_sha256": "9f3df3bf6419ffe7ebe8dd7b10db4f3e03c1a4c500f0117ca8d256d398c1dc9a",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-7223",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 5.8690829973784275e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 548,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 503,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 503,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR2808250",
+      "context_sha256": "7ea9d2268ec7647bfa0f47f8215913442cafc2b6f76faefa13a40c402b7fcb1b",
+      "receipt": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/000_ERR2808250_job890339_task0.json",
+      "receipt_sha256": "ec06232300d7f94b5500850108ea7b4bdc7fa291822d95f6f8abf9996b5e255d",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-7223",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 5.144329406903125e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 539,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 511,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 511,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR2808251",
+      "context_sha256": "7ea9d2268ec7647bfa0f47f8215913442cafc2b6f76faefa13a40c402b7fcb1b",
+      "receipt": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/001_ERR2808251_job890340_task1.json",
+      "receipt_sha256": "e63226dd04e8590035bcf5c9f5b3dc819c9cb20998b429b21df58cce1e723ba0",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-7223",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 6.963318810448982e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 532,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 511,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 511,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR2808254",
+      "context_sha256": "7ea9d2268ec7647bfa0f47f8215913442cafc2b6f76faefa13a40c402b7fcb1b",
+      "receipt": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/003_ERR2808254_job947401_task3.json",
+      "receipt_sha256": "acd007ee7c9b22f54e2b5ff6fcbc98252f2466945836464c0fd5b2ab3aca2d0a",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-7223",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 5.144329406903125e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 538,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 513,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 513,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR2808261",
+      "context_sha256": "7ea9d2268ec7647bfa0f47f8215913442cafc2b6f76faefa13a40c402b7fcb1b",
+      "receipt": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/005_ERR2808261_job833065_task5.json",
+      "receipt_sha256": "655402bd5afeab2c7fa511806380c03c359440cee700d75904854ab4519f10aa",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-7223",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 5.7696070143720135e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 544,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 513,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 513,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR2808261",
+      "context_sha256": "7ea9d2268ec7647bfa0f47f8215913442cafc2b6f76faefa13a40c402b7fcb1b",
+      "receipt": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/005_ERR2808261_job947411_task5.json",
+      "receipt_sha256": "b888baadca1faab6059304557123a3e5e4ab71ee5b251287993f1fd804f96801",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-7223",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 5.7696070143720135e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 544,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 514,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 514,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR2808264",
+      "context_sha256": "7ea9d2268ec7647bfa0f47f8215913442cafc2b6f76faefa13a40c402b7fcb1b",
+      "receipt": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/006_ERR2808264_job998428_task6.json",
+      "receipt_sha256": "65439dce8597549ed0c2da24e5f2b38285c4dd25079534d19dd4b054c96d67c5",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-7223",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 1.2420287021086551e-11,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 533,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 511,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 511,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR2808265",
+      "context_sha256": "7ea9d2268ec7647bfa0f47f8215913442cafc2b6f76faefa13a40c402b7fcb1b",
+      "receipt": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/007_ERR2808265_job998429_task7.json",
+      "receipt_sha256": "d59a196d2a5fde564402006ddf00332fa6ce6fb667711b0d19b692cb41a04e8c",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-7223",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 6.707523425575346e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 539,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 511,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 511,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR2808266",
+      "context_sha256": "7ea9d2268ec7647bfa0f47f8215913442cafc2b6f76faefa13a40c402b7fcb1b",
+      "receipt": "data/processed/corneto/E-MTAB-7223/checkpoint_b25/instrumented_attempts/008_ERR2808266_job834320_task8.json",
+      "receipt_sha256": "114ebf9f6fa933819c2b38ecac160958dd72d618cb6350552e659fcb9e131905",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-7223",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 3.637978807091713e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 548,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 510,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 510,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR6389067",
+      "context_sha256": "1475eee9397af6644fcfaa6500594fbe1441b7d4d4acfbf714a66bac91f0792c",
+      "receipt": "data/processed/corneto/E-MTAB-10801/checkpoint_b25/instrumented_attempts/000_ERR6389067_job998607_task0.json",
+      "receipt_sha256": "a4268e362a9b53c2e0b99dc49e22428f863e3e5573a4d6a9a437cc5bca1cca0f",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-10801",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 6.963318810448982e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 527,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 511,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 511,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR6389069",
+      "context_sha256": "1475eee9397af6644fcfaa6500594fbe1441b7d4d4acfbf714a66bac91f0792c",
+      "receipt": "data/processed/corneto/E-MTAB-10801/checkpoint_b25/instrumented_attempts/001_ERR6389069_job832834_task1.json",
+      "receipt_sha256": "0103cdb1b5f62a38345822b2e9332c2c344a10c5215e3b4dcdd8615e02811ced",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-10801",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 3.325340003357269e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 543,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 511,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 511,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR6389069",
+      "context_sha256": "1475eee9397af6644fcfaa6500594fbe1441b7d4d4acfbf714a66bac91f0792c",
+      "receipt": "data/processed/corneto/E-MTAB-10801/checkpoint_b25/instrumented_attempts/001_ERR6389069_job998608_task1.json",
+      "receipt_sha256": "04db52ac8b4f3d1e28375ae7fc15e23aa7501d5cb2e5b56029e67c9f40cd3646",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-10801",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 3.325340003357269e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 543,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 515,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 515,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR6389071",
+      "context_sha256": "1475eee9397af6644fcfaa6500594fbe1441b7d4d4acfbf714a66bac91f0792c",
+      "receipt": "data/processed/corneto/E-MTAB-10801/checkpoint_b25/instrumented_attempts/002_ERR6389071_job998609_task2.json",
+      "receipt_sha256": "078bf8a0dbc256e23cf16d7b2e03da09c6f5e42f0f61376601b3dbc837d285b4",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-10801",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 2.1600499167107046e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 533,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 510,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 510,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR6389099",
+      "context_sha256": "1475eee9397af6644fcfaa6500594fbe1441b7d4d4acfbf714a66bac91f0792c",
+      "receipt": "data/processed/corneto/E-MTAB-10801/checkpoint_b25/instrumented_attempts/011_ERR6389099_job935491_task11.json",
+      "receipt_sha256": "e840c9af49ad7f3662ad02e871d7962028a275d646cf8aa0e632fad5781ea2b0",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-10801",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 3.325340003357269e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 543,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 507,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 507,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR13907040",
+      "context_sha256": "d6d449bf9035ec466ae530cc774762a6845a529babe6e54751f2c12d7101c3e6",
+      "receipt": "data/processed/corneto/E-MTAB-14568/checkpoint_b25/instrumented_attempts/003_ERR13907040_job864522_task3.json",
+      "receipt_sha256": "82666525e36cd2e3379d2cc8f4f1c592dff90c0e176883e65f274e842400b40a",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-14568",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 6.963318810448982e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 542,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 507,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 507,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR13907042",
+      "context_sha256": "d6d449bf9035ec466ae530cc774762a6845a529babe6e54751f2c12d7101c3e6",
+      "receipt": "data/processed/corneto/E-MTAB-14568/checkpoint_b25/instrumented_attempts/005_ERR13907042_job900491_task5.json",
+      "receipt_sha256": "8be9a23cb407d58629420f331592c73dd1e034f2df5f1a6cd28ea75fcbe78261",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-14568",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 8.782308213994838e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 524,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 509,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 509,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR13907044",
+      "context_sha256": "d6d449bf9035ec466ae530cc774762a6845a529babe6e54751f2c12d7101c3e6",
+      "receipt": "data/processed/corneto/E-MTAB-14568/checkpoint_b25/instrumented_attempts/007_ERR13907044_job928881_task7.json",
+      "receipt_sha256": "cdb76521354ef6cc67bc536e4e361bf7c682e0cd0a71ada7c60e37cd824e8b4b",
+      "saved_biomass": 186.55505238017506,
+      "study": "E-MTAB-14568",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 4.661160346586257e-12,
+        "maximum_biomass": 186.55505238017582,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 518,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 510,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 510,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR13907045",
+      "context_sha256": "d6d449bf9035ec466ae530cc774762a6845a529babe6e54751f2c12d7101c3e6",
+      "receipt": "data/processed/corneto/E-MTAB-14568/checkpoint_b25/instrumented_attempts/008_ERR13907045_job998438_task8.json",
+      "receipt_sha256": "44948c446007d3c146c59a7edb4267a32e98a6e0e3e00a89011870bba98ed239",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-14568",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 7.844391802791506e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 538,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 507,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 507,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR13907046",
+      "context_sha256": "d6d449bf9035ec466ae530cc774762a6845a529babe6e54751f2c12d7101c3e6",
+      "receipt": "data/processed/corneto/E-MTAB-14568/checkpoint_b25/instrumented_attempts/009_ERR13907046_job998439_task9.json",
+      "receipt_sha256": "c87a82acc451bbe8d62ccf2de4b0eba84ae2069138fcdeaba30967c5a6dbf0c0",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-14568",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 8.782308213994838e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 524,
+        "status": "optimal",
+        "success": true
+      }
+    },
+    {
+      "at_context_growth_floor": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 506,
+        "status": "infeasible",
+        "success": false
+      },
+      "at_saved_biomass": {
+        "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+        "scipy_status": 2,
+        "selected_reaction_count": 506,
+        "status": "infeasible",
+        "success": false
+      },
+      "condition": "ERR13907047",
+      "context_sha256": "d6d449bf9035ec466ae530cc774762a6845a529babe6e54751f2c12d7101c3e6",
+      "receipt": "data/processed/corneto/E-MTAB-14568/checkpoint_b25/instrumented_attempts/010_ERR13907047_job998440_task10.json",
+      "receipt_sha256": "22d35093f54901a4129bc074483ba49b4ce5902bc2019af60a0f36b8d818a4be",
+      "saved_biomass": 187.35362997658078,
+      "study": "E-MTAB-14568",
+      "with_reported_flux_support_at_context_floor": {
+        "max_mass_balance_residual": 7.73070496506989e-12,
+        "maximum_biomass": 187.35362997658078,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "scipy_status": 0,
+        "selected_reaction_count": 538,
+        "status": "optimal",
+        "success": true
+      }
+    }
+  ],
+  "schema_version": "fixed_indicator_lp_audit.v1",
+  "scipy_version": "1.18.1",
+  "script_sha256": "a7630732d9771f5c226ff364037722044c64fbb858c718a56385bcad80803d90",
+  "solver": "scipy.optimize.linprog/HiGHS"
+}

@@ -10,6 +10,8 @@ import os
 from pathlib import Path
 from typing import Any
 
+from hgsoc_corneto.metabolic.validation import require_independent_receipts, validate_receipt
+
 
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
@@ -37,6 +39,13 @@ def _context(path: Path) -> tuple[dict[str, Any], str]:
     value = _read_json(path)
     if value.get("status") != "prepared":
         raise ValueError("scientific context is not prepared")
+    hold_path = path.parent / "scientific_review_hold.json"
+    if hold_path.is_file():
+        hold = _read_json(hold_path)
+        if hold.get("status") != "released":
+            raise RuntimeError(
+                f"Scientific review hold; solver was not started. {hold_path}: {hold.get('reason')}"
+            )
     return value, _sha256(path)
 
 
@@ -52,16 +61,11 @@ def _bounds(
     }
 
 
-def _completed_matches(path: Path, context_sha: str, condition: str | None = None) -> bool:
+def _completed_matches(path: Path, context_sha: str, conditions: list[str], kind: str) -> bool:
     if not path.is_file():
         return False
-    value = _read_json(path)
-    expected = {"status": "completed", "context_sha256": context_sha}
-    if condition is not None:
-        expected["condition"] = condition
-    if all(value.get(key) == wanted for key, wanted in expected.items()):
-        return True
-    raise ValueError(f"existing canonical receipt is incompatible: {path}")
+    validate_receipt(path, context_sha256=context_sha, conditions=conditions, kind=kind)
+    return True
 
 
 def _attempt_path(directory: Path, stem: str) -> Path:
@@ -81,7 +85,7 @@ def independent(args: argparse.Namespace) -> int:
         raise IndexError(f"array index {args.array_index} outside 0..{len(conditions) - 1}")
     condition = conditions[args.array_index]
     canonical = args.output_dir / f"{args.array_index:03d}_{condition}.json"
-    if _completed_matches(canonical, context_sha, condition):
+    if _completed_matches(canonical, context_sha, [condition], "independent"):
         print(json.dumps({"status": "existing_valid", "output": str(canonical)}))
         return 0
 
@@ -139,10 +143,13 @@ def independent(args: argparse.Namespace) -> int:
 
 def joint(args: argparse.Namespace) -> int:
     context, context_sha = _context(args.context)
-    if _completed_matches(args.output, context_sha):
+    conditions = list(context["conditions"])
+    # A repair array can cover only a subset. Slurm afterok on that subset is
+    # not proof that every independent result in the cohort is valid.
+    independent_receipts = require_independent_receipts(args.context)
+    if _completed_matches(args.output, context_sha, conditions, "joint"):
         print(json.dumps({"status": "existing_valid", "output": str(args.output)}))
         return 0
-    conditions = list(context["conditions"])
 
     import cobra
 
@@ -184,6 +191,10 @@ def joint(args: argparse.Namespace) -> int:
         },
         "instrumentation": result_dict,
         "slurm_job_id": os.environ.get("SLURM_JOB_ID"),
+        "independent_prerequisites": [
+            {"condition": r["condition"], "slurm_job_id": r.get("slurm_job_id")}
+            for r in independent_receipts
+        ],
         "claim_limit": (
             "Canonical result only when status=completed; partial incumbent is optimization "
             "diagnostic evidence and not a biological result."
