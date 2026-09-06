@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-09-06 11:35 BST (13:35 EEST). This file is the project-level source of
+Last operational update: 2026-09-06 11:44 BST (13:44 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -528,6 +528,28 @@ indices will require one consolidated, fail-closed successor only after Slurm
 control/accounting recovers and the currently running arrays can be audited.
 The existing 11000 serialization and all downstream fail-closed gates were
 left untouched.
+
+### 2026-09-06 13:41-13:44 EEST: Slurm controller recovery and targeted repair
+
+`squeue` recovered and showed the same nine solver tasks still running, while
+`sacct` remained unavailable because the accounting database connection was
+refused. No healthy solver was cancelled. To cover only the four confirmed
+allocation-timeout failures, two fail-closed successors were accepted:
+
+- **1083050**, E-MTAB-7223 r7, array `0-2%3`, 128G, excluding `rc5140`, after
+  `afterany:948765_*`;
+- **1083051**, E-MTAB-10801 r7, task `5%1`, 128G, excluding `rc5140`, after
+  `afterany:937737_*`.
+
+Both reuse the frozen cohort context and unchanged instrumented scientific and
+solver parameters. They validate and skip a matching canonical receipt, so
+they cannot overwrite valid work. Joint jobs **834324** and **834325** now wait
+for `afterok:1083050_*` and `afterok:1083051_*`, respectively. The serialized
+E-MTAB-11000 array **834323** now waits for both new repairs plus
+`afterok:863034_*`. The dependencies were verified through `squeue`; the new
+arrays remain pending behind their active parents and therefore add no current
+Gurobi sessions. Canonical counts remain unchanged and no scientific result
+was released.
 
 The r5 instrumented independent tasks request 128G, eight CPUs and a 72 h Slurm limit,
 but pass an internal Gurobi `TimeLimit=252000` seconds (70 h), `MIPGap=1e-4`,

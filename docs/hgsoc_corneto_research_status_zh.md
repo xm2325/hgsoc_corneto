@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-09-06 11:35 BST（13:35 EEST）。本文件与
+最后运行更新：2026-09-06 11:44 BST（13:44 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -453,6 +453,25 @@ scheduler/control infrastructure failure，不是 solver 或 biological evidence
 dependency。只有在 Slurm control/accounting 恢复、当前 arrays 得到审计后，才能为这些
 失败 repair indices 提交一个 consolidated、fail-closed successor。现有11000
 serialization 与全部 downstream fail-closed gates 保持不变。
+
+### 2026-09-06 13:41-13:44 EEST：Slurm controller 恢复与 targeted repair
+
+`squeue` 已恢复，并显示相同的九个 solver tasks 仍在运行；`sacct` 仍因 accounting
+database connection refused 而不可用。没有取消任何健康 solver。为只覆盖四个已确认的
+allocation-timeout failures，Slurm 接受了两个 fail-closed successors：
+
+- **1083050**：E-MTAB-7223 r7，array `0-2%3`，128G，排除 `rc5140`，等待
+  `afterany:948765_*`；
+- **1083051**：E-MTAB-10801 r7，task `5%1`，128G，排除 `rc5140`，等待
+  `afterany:937737_*`。
+
+两者复用 frozen cohort context，并保持 instrumented scientific/solver parameters
+不变；它们会验证并跳过匹配的 canonical receipt，因此不会覆盖有效结果。Joint jobs
+**834324** 与 **834325** 现在分别等待 `afterok:1083050_*` 和
+`afterok:1083051_*`。串行 E-MTAB-11000 array **834323** 现在等待两个新 repairs，
+并继续等待 `afterok:863034_*`。已通过 `squeue` 验证 dependencies；新 arrays 仍在等待
+active parents，因此当前没有增加 Gurobi sessions。Canonical counts 不变，也没有释放
+scientific result。
 
 r5 instrumented independent tasks 请求128G、8 CPU、72 h Slurm limit，同时向 Gurobi
 显式传入 `TimeLimit=252000` 秒（70 h）、`MIPGap=1e-4`、8 threads、seed 0，留出
