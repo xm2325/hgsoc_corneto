@@ -1,6 +1,6 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后运行更新：2026-08-30 10:03 BST（12:03 EEST）。本文件与
+最后运行更新：2026-09-06 11:35 BST（13:35 EEST）。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
@@ -423,6 +423,36 @@ arrays 同时请求 Gurobi sessions，不会再叠加11000 array；这保持 ope
 为3.18/3.58/4.28%。所有 logs 均持续更新；actual-step RSS 约6.0-53.9 GiB，
 CPU/I/O 非零。Canonical counts 仍为 **0/9、0/13、0/11、0/27**；没有释放任何
 joint、assembly、comparison 或 TPI1/FVA scientific gate。
+
+### 2026-09-06 13:31-13:35 EEST：仅有 partial progress，且 Slurm control outage
+
+四个 cohorts 均没有 canonical independent receipt；计数仍为
+**0/9、0/13、0/11、0/27**，joint、assembly、comparison 与 TPI1/FVA outputs
+均不存在。自上次 checkpoint 后，新审计了14份 attempt receipts：7223 五份
+（indices 3、5、6、7、8），10801 四份（r5 index 11 与 r6 indices 0-2），
+14568 五份（indices 5、7、8、9、10）。所有 receipts 均匹配各自 cohort context，
+报告 Gurobi `TIME_LIMIT`、`scientific_success=false`、requested
+`MIPGap=0.0001`，`summary_error` 为 null，且引用非空 `.sol`、`.mst` 与 solver
+log；gaps 为3.18-4.15%。它们只能作为 optimization evidence，不能释放 scientific
+dependency。
+
+四个没有 receipt 的 r5 tasks 在 terminal logs 中有明确 OOM 证据：7223 index 4
+在99,206 solver seconds 后 OOM；10801 indices 7 与12 分别在191,700 和174,591
+seconds 后 OOM；14568 index 6 在251,025 seconds 后 OOM。现有 repair arrays 已覆盖
+这些 missing/noncanonical indices，因此没有重复提交。
+
+检查时九份 solver logs 仍在推进：7223 r6 indices 3-5 的 gaps 为
+4.10/4.03/3.94%，10801 r6 indices 3/4/6 为3.65/3.77/3.66%，14568 r5
+indices 11-13 为3.31/4.03/3.21%。但 `squeue` 与 `scontrol` 没有返回 job records，
+`sacct` 则报告 persistent Slurm database connection refused。四个 repair elements
+（7223 r6 indices 0-2 与10801 r6 index 5）的 terminal logs 显示，`srun` 因 Slurm
+socket timeout 无法确认 allocation，并将 JobIds 判为 expired/invalid。这是
+scheduler/control infrastructure failure，不是 solver 或 biological evidence。
+
+由于无法权威审计 scheduler state 与 allocations，本轮没有提交 retry，也没有修改
+dependency。只有在 Slurm control/accounting 恢复、当前 arrays 得到审计后，才能为这些
+失败 repair indices 提交一个 consolidated、fail-closed successor。现有11000
+serialization 与全部 downstream fail-closed gates 保持不变。
 
 r5 instrumented independent tasks 请求128G、8 CPU、72 h Slurm limit，同时向 Gurobi
 显式传入 `TimeLimit=252000` 秒（70 h）、`MIPGap=1e-4`、8 threads、seed 0，留出

@@ -1,6 +1,6 @@
 # HGSOC CORNETO research status and dependency register
 
-Last operational update: 2026-08-30 10:03 BST (12:03 EEST). This file is the project-level source of
+Last operational update: 2026-09-06 11:35 BST (13:35 EEST). This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
@@ -492,6 +492,42 @@ for 7223 tasks 3-5, 3.59/3.59/3.72% for 10801 tasks 7/11/12, and
 samples were approximately 6.0-53.9 GiB with nonzero CPU/I/O. Canonical counts
 remain **0/9, 0/13, 0/11 and 0/27**. No joint, assembly, comparison or
 TPI1/FVA scientific gate was released.
+
+### 2026-09-06 13:31-13:35 EEST: partial-only progress and Slurm control outage
+
+No canonical independent receipt exists in any cohort: counts remain
+**0/9, 0/13, 0/11 and 0/27**; joint, assembly, comparison and TPI1/FVA outputs
+remain absent. Since the previous checkpoint, 14 additional attempt receipts
+were content-audited: five for 7223 (indices 3, 5, 6, 7 and 8), four for 10801
+(r5 index 11 and r6 indices 0-2), and five for 14568 (indices 5, 7, 8, 9 and
+10). Every receipt matches its cohort context, reports Gurobi `TIME_LIMIT`,
+`scientific_success=false`, requested `MIPGap=0.0001`, has null summary error,
+and references nonempty `.sol`, `.mst` and solver-log artifacts. Their gaps
+span 3.18-4.15%. They are optimization evidence only and do not release any
+scientific dependency.
+
+Four r5 tasks without a receipt have explicit OOM evidence in their terminal
+logs: 7223 index 4 after 99,206 solver seconds; 10801 indices 7 and 12 after
+191,700 and 174,591 seconds; and 14568 index 6 after 251,025 seconds. Their
+existing repair arrays cover the missing/noncanonical indices; no duplicate
+was submitted.
+
+At this inspection, nine solver logs were still advancing: 7223 r6 indices
+3-5 (gaps 4.10/4.03/3.94%), 10801 r6 indices 3/4/6
+(3.65/3.77/3.66%), and 14568 r5 indices 11-13
+(3.31/4.03/3.21%). However, `squeue` and `scontrol` returned no job records,
+and `sacct` reported that its persistent Slurm database connection was refused.
+Four repair elements (7223 r6 indices 0-2 and 10801 r6 index 5) have terminal
+logs stating that `srun` could not confirm their allocations because the Slurm
+socket timed out and the JobIds were expired/invalid. This is scheduler/control
+infrastructure failure, not solver or biological evidence.
+
+Because scheduler state and allocations could not be authoritatively audited,
+no new retry was submitted and no dependency was changed. The failed repair
+indices will require one consolidated, fail-closed successor only after Slurm
+control/accounting recovers and the currently running arrays can be audited.
+The existing 11000 serialization and all downstream fail-closed gates were
+left untouched.
 
 The r5 instrumented independent tasks request 128G, eight CPUs and a 72 h Slurm limit,
 but pass an internal Gurobi `TimeLimit=252000` seconds (70 h), `MIPGap=1e-4`,
