@@ -4,6 +4,18 @@
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
+## 2026-09-07：授权交付完成；未施加 Slurm hold
+
+用户明确授权后，本次21个已审阅文件（含四份 audit JSON）已推送至
+`xm2325/hgsoc_corneto` 的 `agent/metabolic-retry-pooled-status` 分支，
+commit 为 `3907c4f`，由 `e7f03b7` fast-forward 更新。四份 JSON 已同步至
+原 Roihu 项目的 `evidence/` 目录，四份远端 SHA-256 均与本地一致。
+此记录取代下文历史检查点中的“交付被阻止”状态；未包含 raw data、licences、
+secrets 或未跟踪的 uncontrolled LP audit 文件。
+用户表示尚不理解 Slurm hold，因此本轮没有施加 scheduler-level hold；
+已有 application startup review holds 保持不变。本次交付不构成新科学结果，
+也不授权启动新的 solver 工作。
+
 ## 2026-09-07 08:31–08:36 BST：只读继续，无新科学结果
 
 04:00 BST 的一次性继续发生延迟：heartbeat 时间戳为05:16 BST，首次实际执行检查为
@@ -672,7 +684,8 @@ heartbeat 改为 **2026-09-07 英国时间04:00（03:00 UTC）** 的一次性继
 09:00 schedule；没有 model override，也没有创建新任务。
 
 上述2026-09-07继续现已运行；当前已验证的 schedule 为每周四09:00 Europe/London，
-一次性04:00规则已结束。交付与 administrative Slurm holds 仍等待此前已请求的明确授权，
+一次性04:00规则已结束。交付随后已获明确授权并完成，见本文最新交付记录。
+administrative Slurm holds 仍需知情批准，不得将上传授权解释为 hold 授权，
 monitor 不得绕过。
 
 更新后的 prompt 首先读取科学审计，保留健康 RUNNING 任务，尊重四个 startup review holds，

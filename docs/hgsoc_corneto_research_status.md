@@ -6,6 +6,19 @@ attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
 
+## 2026-09-07: authorized delivery completed; no Slurm hold applied
+
+Following explicit user authorization, all 21 reviewed files, including the four
+audit JSON files, were pushed to `xm2325/hgsoc_corneto`, branch
+`agent/metabolic-retry-pooled-status`, at commit `3907c4f` (fast-forward from
+`e7f03b7`). The four JSON files were copied to the original Roihu project's
+`evidence/` directory; all four remote SHA-256 hashes match the local files.
+This supersedes the historical delivery-blocked notes below. No raw data,
+licences, secrets, or the untracked uncontrolled LP audit were included.
+The user requested clarification of Slurm hold; no scheduler-level hold was
+applied. Existing application startup review holds remain unchanged. This
+delivery is not a new scientific result or authorization for new solver work.
+
 ## 2026-09-07 08:31-08:36 BST: read-only continuation, no new scientific result
 
 The one-time 04:00 BST resumption was delayed: its heartbeat timestamp was
@@ -799,8 +812,9 @@ task was created.
 
 The 2026-09-07 continuation above has now run, and the verified current
 recurrence is Thursday 09:00 Europe/London. The one-time 04:00 rule is no
-longer active. Delivery and administrative Slurm holds still await the
-explicit authorization already requested; the monitor must not bypass it.
+longer active. Delivery was subsequently explicitly authorized and completed
+as recorded above. Administrative Slurm holds still await informed approval;
+the monitor must not infer that approval from the upload authorization.
 
 The revised prompt reads the scientific audit first, preserves healthy RUNNING
 jobs, honours the four application startup review holds, and never retries
