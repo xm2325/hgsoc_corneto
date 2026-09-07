@@ -4,6 +4,36 @@
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
+## 2026-09-07 08:31–08:36 BST：只读继续，无新科学结果
+
+04:00 BST 的一次性继续发生延迟：heartbeat 时间戳为05:16 BST，首次实际执行检查为
+08:31 BST；原因未核实。依据 existing same-conversation automation 与
+[官方 OpenAI documentation](https://learn.chatgpt.com/zh-Hans/docs/automations)，
+已恢复并验证原 **每周四09:00 Europe/London** schedule，没有 model
+override，也没有另建任务。
+
+Targeted `squeue` 仍显示相同9个 RUNNING tasks（约38–41 h），9份日志均有近期更新。
+08:35 检查的 live gaps 如下：
+
+| Array tasks（按顺序） | Actual numeric JobIds（按顺序） | 舍入的 live gaps |
+|---|---|---|
+| 937737_3 / 4 / 6 | 1077075 / 1077163 / 1077866 | 3.11% / 3.62% / 3.59% |
+| 948765_3 / 4 / 5 | 1077699 / 1077700 / 1077798 | 4.01% / 3.94% / 3.83% |
+| 834322_11 / 12 / 13 | 1076518 / 1077046 / 1077074 | 3.07% / 3.94% / 3.14% |
+
+对这些 actual `.0` steps 的 `sstat` 采样显示 MaxRSS 为23.44–33.81 GiB，CPU/I/O
+counters 非零；这不能保证后续不会 OOM。`sacct` 仍因 database connection refused
+不可用，因此不声称获得新的 terminal accounting 结论。
+
+四份 context hashes 与20份已有 attempt hashes 均匹配此前审计；没有新的 attempt、
+canonical independent 或 joint receipts。四个 application review holds 仍为 `hold`；
+11000 的 `afterany` serialization 与下游 dependencies 未变。没有提交、修改、取消
+solver，也没有施加 Slurm hold。
+
+只读 GitHub 核实仍为 `e7f03b7d630b33d48dc16fcbaa3c5f30c07067aa`。此前 upload/Slurm-hold
+拒绝不等于获得新授权，因此未重试被拒的传输或 hold。本次 checkpoint **仅本地提交**；
+GitHub、OneDrive 和远程副本尚不包含此 checkpoint。
+
 最新运行跟进：**2026-09-06 23:02 BST**。Targeted `squeue` 重新返回相同9个 RUNNING
 tasks，9份 solver logs 均有近期更新。937737_3/4/6 的 live gaps 为3.14/3.65/3.62%，
 948765_3/4/5 为4.05/3.97/3.87%，834322_11/12/13 为3.10/3.97/3.17%。这些舍入值
@@ -636,10 +666,14 @@ Codex heartbeat **HGSOC CORNETO Roihu pipeline monitor** 已绑定到当前对�
 未核实。本会话随后继续执行。之后已恢复并核实之前实际配置的 **每周四09:00 Europe/London**。
 旧文档所写“每30分钟”与真实配置不符，已纠正。
 
-**最新 schedule 更新（2026-09-06）：** 用户告知5小时 usage window 已重置后，已把同一
+**历史 schedule 更新（2026-09-06）：** 用户告知5小时 usage window 已重置后，已把同一
 heartbeat 改为 **2026-09-07 英国时间04:00（03:00 UTC）** 的一次性继续，并核实配置。
-未来是否准点运行尚不能确认。Prompt 要求只继续未完成内容，并在这次继续之后恢复原每周四
+在当次检查时，未来是否准点运行尚不能确认。Prompt 要求只继续未完成内容，并在这次继续之后恢复原每周四
 09:00 schedule；没有 model override，也没有创建新任务。
+
+上述2026-09-07继续现已运行；当前已验证的 schedule 为每周四09:00 Europe/London，
+一次性04:00规则已结束。交付与 administrative Slurm holds 仍等待此前已请求的明确授权，
+monitor 不得绕过。
 
 更新后的 prompt 首先读取科学审计，保留健康 RUNNING 任务，尊重四个 startup review holds，
 不为主动阻断的启动或相同70 h b25 attempts 自动 retry。仅 targeted 查询已登记任务和

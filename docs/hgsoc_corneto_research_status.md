@@ -6,6 +6,40 @@ attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
 
+## 2026-09-07 08:31-08:36 BST: read-only continuation, no new scientific result
+
+The one-time 04:00 BST resumption was delayed: its heartbeat timestamp was
+05:16 BST and the first executed check was 08:31 BST. The cause was not
+established. Using the existing same-conversation automation and
+[official OpenAI documentation](https://learn.chatgpt.com/zh-Hans/docs/automations),
+the prior **Thursday 09:00 Europe/London** recurrence
+was restored and verified, with no model override or new task.
+
+Targeted `squeue` still shows the same nine RUNNING tasks (about 38-41 h).
+All nine log tails are current. Live gaps at the 08:35 check are:
+
+| Array tasks, in order | Actual numeric JobIds, in order | Rounded live gaps |
+|---|---|---|
+| 937737_3 / 4 / 6 | 1077075 / 1077163 / 1077866 | 3.11% / 3.62% / 3.59% |
+| 948765_3 / 4 / 5 | 1077699 / 1077700 / 1077798 | 4.01% / 3.94% / 3.83% |
+| 834322_11 / 12 / 13 | 1076518 / 1077046 / 1077074 | 3.07% / 3.94% / 3.14% |
+
+`sstat` on these actual `.0` steps reports MaxRSS samples of 23.44-33.81 GiB
+and nonzero CPU/I/O counters; this is not a guarantee against later OOM.
+`sacct` remains unavailable because its database connection was refused, so
+no new terminal accounting conclusion is asserted.
+
+The four context hashes and all 20 saved attempt hashes match the prior audit;
+there are no new attempts, canonical independent files, or joint receipts.
+All four application review holds remain `hold`. The 11000 `afterany`
+serialization and downstream dependencies remain unchanged. No solver was
+submitted, modified, cancelled, or placed on Slurm hold.
+
+Read-only GitHub verification still returns `e7f03b7d630b33d48dc16fcbaa3c5f30c07067aa`.
+Prior upload/Slurm-hold denials are not new authorization: neither blocked
+transfer nor hold was retried. This checkpoint is committed **locally only**;
+GitHub, OneDrive and remote copies do not yet include this checkpoint.
+
 Latest operational follow-up: **2026-09-06 23:02 BST**. Targeted `squeue`
 returned the same nine RUNNING tasks; all nine solver-log tails were current.
 Live gaps were 3.14/3.65/3.62% for 937737_3/4/6,
@@ -755,13 +789,18 @@ The prior actual recurrence, **Thursday 09:00 Europe/London**, was then restored
 and verified in the automation configuration. The old text claiming a
 30-minute recurrence was incorrect and has been removed.
 
-**Latest scheduling update, 2026-09-06:** after the user reported that the
+**Historical scheduling update, 2026-09-06:** after the user reported that the
 five-hour usage window had reset, the same heartbeat was rescheduled for a
 one-time continuation at **2026-09-07 04:00 Europe/London (03:00 UTC)**.
 This configuration was verified; execution at that future time is not yet
-established. The prompt resumes only unfinished work and restores the prior
+established at that checkpoint. The prompt resumes only unfinished work and restores the prior
 Thursday 09:00 recurrence after that continuation. No model override or new
 task was created.
+
+The 2026-09-07 continuation above has now run, and the verified current
+recurrence is Thursday 09:00 Europe/London. The one-time 04:00 rule is no
+longer active. Delivery and administrative Slurm holds still await the
+explicit authorization already requested; the monitor must not bypass it.
 
 The revised prompt reads the scientific audit first, preserves healthy RUNNING
 jobs, honours the four application startup review holds, and never retries
