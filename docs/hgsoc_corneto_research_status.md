@@ -8,6 +8,11 @@ passes the corresponding content validator.
 
 ## 2026-09-08 22:08 UTC: serialization failure repaired; two-hour monitoring
 
+Post-deployment check: 1163513 COMPLETED in 22 seconds; its receipt reports
+completed, 56 LP cases across four samples and zero unresolved solver cases.
+Pilot 1163554 is PENDING (Priority), with smoke dependency cleared. Detailed
+policy contrasts and source/hash re-audit remain pending; no new mechanism claim.
+
 Targeted sacct/log audit: smoke 1138529 FAILED after 14 seconds; pilot 1138550
 CANCELLED without running. The PAR_Y guard was passed (3,627/3,628 model genes
 covered for the first sample). One LP result was saved, then NumPy's boolean

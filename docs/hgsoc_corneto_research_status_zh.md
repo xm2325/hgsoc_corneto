@@ -6,6 +6,10 @@
 
 ## 2026-09-08 22:08 UTC：序列化失败已修复；每两小时监控
 
+部署后检查：1163513 在22秒内 COMPLETED；receipt 报告 completed，四个样本共56项
+LP cases，未解决 solver cases 为0。Pilot 1163554 为 PENDING (Priority)，smoke
+依赖已清除。详细 policy 对照与 source/hash 复审仍待完成，尚不声明新机制。
+
 定向 sacct/log 检查：smoke 1138529 运行14秒后 FAILED，pilot 1138550 未运行即
 CANCELLED。已通过 PAR_Y 检查（首个样本覆盖3,627/3,628个 model genes），保存一个
 LP 结果后，bound violation 比较产生的 NumPy boolean 无法 JSON 编码。
