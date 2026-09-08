@@ -1,10 +1,40 @@
 # HGSOC CORNETO research status and dependency register
 
-Last scientific/deployment update: 2026-09-06 18:14:52 BST (20:14:52 EEST). This file is the project-level source of
+Last execution update: 2026-09-08 (BST); latest controlled scientific audit: 2026-09-06. This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
+
+## 2026-09-08: bounded validation submitted; receipt audit interrupted
+
+The user authorized the next validation stage. Five license-free jobs were
+submitted using `hpc/roihu/post_audit_validation.sbatch`; none releases the
+b25 application review holds or cancels healthy running work.
+
+| Job | Purpose | Last directly observed evidence, not a current live claim |
+|---|---|---|
+| 1121178 | NMF smoke, 15 min | Log reports eight folds and completed receipt; receipt content not yet audited |
+| 1121179 | Patient-grouped NMF validation, 6 h | PENDING (Priority), dependency cleared |
+| 1121180 | Metabolic information smoke, 15 min | Failed before LP: version stripping creates duplicate gene identifiers |
+| 1121181 | Metabolic information pilot, 1 h | Submitted afterok:1121180; terminal state not yet verified |
+| 1121182 | Biological annotation, 15 min | Log reports completed receipt; results not yet read or audited |
+
+The next remote read was rejected by the approval service's usage limit before
+SSH executed. This is not evidence of a certificate failure. No remote repair,
+replacement submission, or new GitHub delivery is claimed after that rejection.
+The existing monitor schedule and prompt have not yet been updated for these IDs.
+
+Local repair replaces lossy first-dot gene-ID truncation with Ensembl-version-only
+normalization preserving `_PAR_Y`; genuine normalized collisions still fail closed.
+The exact conflicting remote IDs remain unverified, so this is a tested code repair,
+not proof of the particular input cause or a deployed fix. Do not overwrite the
+failed smoke receipt. Before one replacement smoke, audit 1121181 and any successor,
+use a fresh output namespace, and ensure its pilot reads that replacement receipt.
+
+See [execution plan](post_audit_validation_plan_20260908.md) and
+[biological interpretation and falsification limits](existing_biology_interpretation_20260908.md).
+New NMF/annotation output must not yet be quoted as a validated biological result.
 
 ## 2026-09-07: authorized delivery completed; no Slurm hold applied
 

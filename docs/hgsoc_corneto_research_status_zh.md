@@ -1,8 +1,34 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后科学审计/部署更新：2026-09-06 18:14:52 BST（20:14:52 EEST）。本文件与
+最后执行记录更新：2026-09-08（BST）；最近受控科学审计：2026-09-06。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
+
+## 2026-09-08：已提交有界验证；receipt 审计中断
+
+用户授权下一阶段验证后，已用 `hpc/roihu/post_audit_validation.sbatch` 提交五个
+不占 Gurobi licence 的作业；未解除 b25 application review holds，未取消健康运行任务。
+
+| Job | 用途 | 最后直接观察到的证据，并非当前实时状态 |
+|---|---|---|
+| 1121178 | NMF smoke，15 min | 日志报告八个 folds 和 completed receipt；内容尚未审计 |
+| 1121179 | Patient-grouped NMF validation，6 h | PENDING (Priority)，dependency 已清除 |
+| 1121180 | Metabolic information smoke，15 min | LP 前失败：版本截断产生重复 gene identifiers |
+| 1121181 | Metabolic information pilot，1 h | 已提交 afterok:1121180；尚未核实终态 |
+| 1121182 | Biological annotation，15 min | 日志报告 completed receipt；尚未读取和审计结果 |
+
+随后远程读取在 SSH 执行前被审批服务 usage limit 拒绝；这不是证书失败的证据。
+此后未完成远端修复、替代提交或新的 GitHub 交付。既有监控 schedule 和 prompt
+尚未更新以纳入这些 job IDs。
+
+本地已将有损的首句点截断改为仅去除 Ensembl version、保留 `_PAR_Y` 的 normalization；
+真正的 normalized ID 冲突仍 fail closed。远端具体冲突 ID 尚未核实，因此不能宣称
+已证实本次全部输入原因或修复已经部署。保留失败 smoke receipt；重提一个 smoke 前，
+先审计 1121181 和 successor，使用全新输出目录，并保证 pilot 读取新的 smoke receipt。
+
+详见[执行计划](post_audit_validation_plan_20260908.md)与
+[已有结果的生物学解释及证伪边界](existing_biology_interpretation_20260908.md)。
+新 NMF/annotation 输出尚不可作为已验证的生物学结果引用。
 
 ## 2026-09-07：授权交付完成；未施加 Slurm hold
 

@@ -1,0 +1,23 @@
+{
+  "record_date_bst": "2026-09-08",
+  "record_type": "submission_and_log_observation_not_scientific_receipt",
+  "remote_root": "/scratch/project_2012997/xiaomei/hgsoc_corneto",
+  "output_namespace": "data/processed/post_audit_validation_20260908",
+  "jobs": [
+    {"job_id": "1121178", "mode": "nmf_smoke", "last_evidence": "log_completed_eight_folds", "receipt_audited": false},
+    {"job_id": "1121179", "mode": "nmf_validation", "last_evidence": "PENDING_Priority_dependency_cleared", "receipt_audited": false},
+    {"job_id": "1121180", "mode": "metabolic_smoke", "last_evidence": "ValueError: version stripping creates duplicate gene identifiers", "receipt_audited": false},
+    {"job_id": "1121181", "mode": "metabolic_pilot", "submitted_dependency": "afterok:1121180", "last_evidence": "terminal_state_unverified", "receipt_audited": false},
+    {"job_id": "1121182", "mode": "biology", "last_evidence": "log_completed", "receipt_audited": false}
+  ],
+  "deployed_before_local_repair_sha256": {
+    "scripts/research_validation_common.py": "f3b06704e5473dc644eca46e38c2f84acb368038340e74638d30cadc13954c29",
+    "scripts/run_patient_grouped_nmf_validation.py": "1bbfe41beeab7e2f4e1694ad260c8efc0e2a84b67612c9f1e17689fa042d77ef",
+    "scripts/run_metabolic_information_pilot.py": "257b2df76c66006d13b8c6f04630112feefcf0bea1168ec57eb8e67065e43cd0",
+    "scripts/interpret_existing_biology.py": "827861f8cb4384ba6bb3141d7546fbfd9a1e555089f5d93f085e060527a19712",
+    "hpc/roihu/post_audit_validation.sbatch": "e05c0af6115544e1f6c01fb49b52f4fc016d6152af06ef0cf807b3fc5a3a7984"
+  },
+  "local_repair_deployed": false,
+  "blocker": "Remote receipt audit rejected before execution by approval-service usage limit; not an SSH authentication diagnosis.",
+  "continuation": "Audit completed receipts and exact colliding IDs; check failed-smoke successor state before a single replacement in a fresh namespace. Preserve scientific review holds and healthy running work."
+}

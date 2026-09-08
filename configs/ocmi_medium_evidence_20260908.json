@@ -1,0 +1,25 @@
+{
+  "schema_version": "ocmi_medium_evidence.v1",
+  "status": "documented_recipe_not_flux_calibrated",
+  "primary_source": "https://www.nature.com/articles/s41467-020-14551-2",
+  "source_section": "Methods: Cell culture; Establishment of ex vivo models",
+  "recipe_anchor": {
+    "base_components": ["Nutrient Mixture Ham's F12", "Medium 199"],
+    "volume_ratio": [1, 1],
+    "fbs_percent": 5,
+    "supplemented_glutamine_mM": 2,
+    "note": "The publication lists further supplements; this anchor is NOT the full chemical formulation. Consult the source rather than using this abbreviated record as a medium definition."
+  },
+  "missing_before_ocmi_model_release": [
+    "Per-study/OCM confirmation of culture formulation and passage conditions",
+    "Exact basal-medium product variants and complete chemical-to-exchange mapping",
+    "Explicit serum/unknown-component assumptions and exchange-direction audit",
+    "Measured uptake rates or clearly labelled bounded sensitivity scenarios"
+  ],
+  "current_pilot": {
+    "unchanged_legacy_model": true,
+    "diagnostic_exchange_exclusion": ["EX_atp[e]", "EX_pep[e]", "EX_pcreat[e]"],
+    "interpretation": "Counterfactual test of dependence on three unvalidated energy uptakes; not a reconstructed OCMI medium."
+  },
+  "claim_limit": "A concentration or gas fraction is not an uptake flux. The absence of an ingredient in this abbreviated record is not evidence of absence in the culture."
+}
