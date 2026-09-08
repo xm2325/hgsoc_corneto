@@ -6,6 +6,28 @@ attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
 
+## 2026-09-08 22:08 UTC: serialization failure repaired; two-hour monitoring
+
+Targeted sacct/log audit: smoke 1138529 FAILED after 14 seconds; pilot 1138550
+CANCELLED without running. The PAR_Y guard was passed (3,627/3,628 model genes
+covered for the first sample). One LP result was saved, then NumPy's boolean
+from the bound-violation comparison could not be JSON encoded. The stale receipt
+still says running: scheduler/log evidence takes precedence for execution state,
+and this partial diagnostic is not a completed scientific result.
+
+Explicit conversion of numerical_pass to Python bool is deployed. A regression
+test simulates a small nonzero bound residual and verifies JSON serialization;
+all 13 tests and scoped Ruff checks passed. Replacement smoke **1163513** and
+pilot **1163554** use fresh `_r3` directories; pilot requires afterok:1163513
+and the matching smoke receipt. No scientific parameters or legacy holds changed.
+Deployed runner SHA256: `e3dd9399b9e10efb753e2daa9bb9d2b2ee1e1eb51f22b10f841eb5559644ffb0`.
+
+The existing same-conversation heartbeat now checks every two hours, without
+model override or a separate task. It reads this register for direct successors,
+stays quiet on unchanged/non-actionable state, and reports meaningful failures,
+audited results or required action. Old upload prohibitions were removed because
+authorized GitHub delivery through 98feba1 is verified.
+
 ## 2026-09-08 14:31 UTC onward: connection restored and receipts checked
 
 SSH succeeded on retry; the prior approval-service quota block is historical,

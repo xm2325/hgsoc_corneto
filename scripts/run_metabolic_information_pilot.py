@@ -167,7 +167,7 @@ class ContinuousModel:
                 maximum_biomass=float(-solution.fun),
                 max_mass_balance_residual=mass_error,
                 max_bound_violation=float(bound_error),
-                numerical_pass=mass_error <= 1e-6 and bound_error <= 1e-6,
+                numerical_pass=bool(mass_error <= 1e-6 and bound_error <= 1e-6),
                 flux_support_count=int(np.sum(np.abs(solution.x) > 1e-7)),
                 expression_caps_with_nonzero_flux=sum(abs(flux[r]) > 1e-7 for r in caps),
                 diagnostic_exchanges={

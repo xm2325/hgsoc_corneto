@@ -4,6 +4,23 @@
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
+## 2026-09-08 22:08 UTC：序列化失败已修复；每两小时监控
+
+定向 sacct/log 检查：smoke 1138529 运行14秒后 FAILED，pilot 1138550 未运行即
+CANCELLED。已通过 PAR_Y 检查（首个样本覆盖3,627/3,628个 model genes），保存一个
+LP 结果后，bound violation 比较产生的 NumPy boolean 无法 JSON 编码。
+旧 receipt 残留 running 不代表作业仍运行，也不是 completed scientific result。
+
+已部署 numerical_pass 显式转换为 Python bool 的修复。回归测试模拟小的非零
+bound residual 并验证 JSON serialization；13项测试与 scoped Ruff 均通过。
+新 smoke **1163513**、pilot **1163554** 使用 `_r3` 目录；pilot 要求
+afterok:1163513 及对应 smoke receipt。未改科学参数，未解除 legacy holds。
+部署 runner SHA256：`e3dd9399b9e10efb753e2daa9bb9d2b2ee1e1eb51f22b10f841eb5559644ffb0`。
+
+既有 same-conversation heartbeat 已改为每两小时检查，不另开任务、不指定模型。
+它读取本登记表寻找直接 successor；状态无变化或无需处理时保持安静，仅报告重要失败、
+已审计结果或需要用户处理的事项。已移除过期上传禁止记录：此前授权交付98feba1已验证。
+
 ## 2026-09-08 14:31 UTC 起：连接恢复，已检查 receipts
 
 重试 SSH 成功；此前审批服务 quota 阻断已是历史状态。`sacct` 确认

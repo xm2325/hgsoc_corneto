@@ -1,3 +1,6 @@
+import json
+from types import SimpleNamespace
+
 import numpy as np
 import pytest
 from interpret_existing_biology import paired_stroma
@@ -26,6 +29,17 @@ def test_gene_version_normalization_preserves_identity():
 def test_gene_normalization_rejects_real_collisions():
     with pytest.raises(ValueError, match="ENSG000001"):
         normalize_unique_gene_ids(["ENSG000001.1", "ENSG000001.2"])
+
+
+def test_lp_receipt_serializes_numpy_bound_comparison(monkeypatch):
+    monkeypatch.setattr("run_metabolic_information_pilot.linprog", lambda *a, **kw:
+        SimpleNamespace(status=0, message="test", success=True,
+                        x=np.array([-1e-10]), fun=1e-10))
+    model = ContinuousModel({"biomass_human": {
+        "lower": 0.0, "upper": 1.0, "stoichiometry": {"a": 1.0}}})
+    result = model.solve({}, set(), 5)
+    assert type(result["numerical_pass"]) is bool
+    assert json.loads(json.dumps(result, allow_nan=False))["numerical_pass"] is True
 
 
 def test_cross_study_patient_is_fully_excluded():
