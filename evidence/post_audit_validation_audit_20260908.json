@@ -1,0 +1,34 @@
+{
+  "audit_date_utc": "2026-09-08",
+  "first_remote_clock_utc": "2026-09-08T14:31:24Z",
+  "receipt_base": "/scratch/project_2012997/xiaomei/hgsoc_corneto/data/processed/post_audit_validation_20260908",
+  "nmf_validation": {
+    "receipt_sha256": "9dd4c5adc6f36d634766b630c64048cb571d74be8d1ce49162c47728a08dfded",
+    "status": "completed", "input_hashes_matching": 8, "input_hashes_checked": 8,
+    "npz_artifacts_present": 8, "folds_with_patient_overlap": 0,
+    "patient_mean_improvement_rank2_rank3": {
+      "E-MTAB-7223": [0.12055925546966284, 0.1385348203187556],
+      "E-MTAB-10801": [0.10616341388798922, 0.14785380267999793],
+      "E-MTAB-11000": [0.09339128130625377, 0.14255506063859366],
+      "E-MTAB-14568": [0.08922666665341328, 0.12624860026318654]
+    }
+  },
+  "biology": {
+    "receipt_sha256": "64d3953e172b33df4fe09b266afd2144da0f4b22d36bf659b5f7e80ab8d7b3e7",
+    "status": "completed", "top_level_source_hashes_matching": 10,
+    "top_level_source_hashes_checked": 10,
+    "nested_regulatory_sources_independently_checked": false,
+    "repeated_patients": 7, "within_distance_lower_than_matched_between": 6,
+    "exception": "OCM327", "paired_stroma_patients": 17,
+    "hallmark_tests": 50, "hallmark_bh_q_below_0_05": 29
+  },
+  "id_diagnosis": {"first_dot_collision_groups": 45, "remaining_after_version_only_fix": 0,
+    "checked_input": "E-MTAB-7223/gene_log1p_tpm.tsv.gz"},
+  "deployed_sha256": {
+    "scripts/run_metabolic_information_pilot.py": "2b8e2d028833618852f8274a80a81daf23b1a81abac5be3c3217b5d0f07415cc",
+    "hpc/roihu/post_audit_validation.sbatch": "e53ae7e7e011e00d150a3d5ffedcb382d436aca2c0039f55a324ee2a6eff89f3"
+  },
+  "replacement_smoke": "1138529", "replacement_pilot": "1138550",
+  "replacement_namespace_suffix": "_r2",
+  "claim_limit": "Exploratory expression diagnostics; no canonical metabolic result, flux or clinical subtype claim."
+}

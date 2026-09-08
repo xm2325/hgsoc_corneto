@@ -4,7 +4,30 @@
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
-## 2026-09-08：已提交有界验证；receipt 审计中断
+## 2026-09-08 14:31 UTC 起：连接恢复，已检查 receipts
+
+重试 SSH 成功；此前审批服务 quota 阻断已是历史状态。`sacct` 确认
+1121178/1121179/1121182 COMPLETED，1121180 FAILED，1121181 CANCELLED。
+正式 NMF receipt 为 completed，8个输入 hash 全匹配，8个 NPZ 均存在，
+8个 fold 的 patient overlap 均为空。Biology receipt 为 completed，10个顶层
+source hash 全匹配；这不等于独立验证 regulatory 小节嵌套 sources。
+
+按患者平均的 held-out reconstruction 相对 training-mean baseline 改善：
+7223 rank2/rank3 为12.06%/13.85%，10801为10.62%/14.79%，11000为9.34%/14.26%，
+14568为8.92%/12.62%。每个 rank 的30次 patient-balanced draws 中，ARI median：
+rank2为0.9225（范围0.5255–1.0000），rank3为0.8708（0.8421–0.9468）。
+这是 transferability/sensitivity 证据，不是临床亚型验证；rank3也有更高模型容量。
+7个重复患者中6个 within-patient expression distance 小于匹配的 between-patient
+distance，OCM327例外。Tumour–stroma 配对是17位患者而非60位；50个 Hallmark tests
+中29个 BH q<0.05。仍需保留 lineage/culture 混杂及共用 RNA 的限制。
+
+远端确认45组首句点截断冲突，示例均为普通/PAR_Y pairs；版本号专用 normalization
+在所检查共同 gene list 上不再有冲突。修复已部署；新 smoke **1138529**、
+gated pilot **1138550** 使用 `_r2` 新目录，pilot 要求 afterok:1138529 和新 receipt。
+保留旧失败证据，未解除 b25 holds。证据与 hash 见
+`evidence/post_audit_validation_audit_20260908.json`。
+
+## 2026-09-08：已提交有界验证；receipt 审计中断（历史）
 
 用户授权下一阶段验证后，已用 `hpc/roihu/post_audit_validation.sbatch` 提交五个
 不占 Gurobi licence 的作业；未解除 b25 application review holds，未取消健康运行任务。

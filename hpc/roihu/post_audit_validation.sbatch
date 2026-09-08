@@ -18,7 +18,9 @@ cd "$ROOT"
 export PYTHONNOUSERSITE=1 PYTHONPATH="$ROOT/src:$ROOT/scripts"
 export OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 MKL_NUM_THREADS=4
 MODE=${VALIDATION_MODE:?Set VALIDATION_MODE}
-OUT="data/processed/post_audit_validation_20260908/$MODE"
+VALIDATION_TAG=${VALIDATION_TAG:-}
+[[ "$VALIDATION_TAG" =~ ^[a-zA-Z0-9_-]*$ ]]
+OUT="data/processed/post_audit_validation_20260908/${MODE}${VALIDATION_TAG}"
 test ! -e "$OUT"
 case "$MODE" in
   nmf_smoke)
@@ -32,7 +34,7 @@ case "$MODE" in
     exec srun "$PY" scripts/run_metabolic_information_pilot.py --root "$ROOT" --rna-root "$RNA" \
       --human-gem "$MODEL" --output-dir "$OUT" --per-study 1 --shuffles 2 ;;
   metabolic_pilot)
-    "$PY" -c 'import json; from pathlib import Path; p=Path("data/processed/post_audit_validation_20260908/metabolic_smoke/receipt.json"); d=json.loads(p.read_text()); assert d["status"]=="completed" and len(d["sample_information"])==4'
+    "$PY" -c 'import json,sys; from pathlib import Path; p=Path(sys.argv[1]); d=json.loads(p.read_text()); assert d["status"]=="completed" and len(d["sample_information"])==4' "data/processed/post_audit_validation_20260908/metabolic_smoke${VALIDATION_TAG}/receipt.json"
     exec srun "$PY" scripts/run_metabolic_information_pilot.py --root "$ROOT" --rna-root "$RNA" \
       --human-gem "$MODEL" --output-dir "$OUT" --per-study 2 --shuffles 10 ;;
   biology)

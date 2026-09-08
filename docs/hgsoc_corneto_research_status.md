@@ -6,7 +6,33 @@ attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
 
-## 2026-09-08: bounded validation submitted; receipt audit interrupted
+## 2026-09-08 14:31 UTC onward: connection restored and receipts checked
+
+SSH succeeded on retry; the prior approval-service quota block is historical,
+not current. `sacct` confirms 1121178/1121179/1121182 COMPLETED, 1121180 FAILED,
+1121181 CANCELLED. Full NMF receipt is completed, all eight recorded input hashes
+match, all eight NPZ artifacts exist, and all eight fold patient overlaps are empty.
+Biology receipt is completed and its ten top-level source hashes match. This does
+not constitute independent validation of the regulatory subsection's nested sources.
+
+Full NMF patient-mean held-out reconstruction improvement vs training mean:
+7223 rank2/rank3 12.06%/13.85%; 10801 10.62%/14.79%; 11000 9.34%/14.26%;
+14568 8.92%/12.62%. Thirty patient-balanced draws per rank yield ARI median
+0.9225 (rank2, range 0.5255–1.0000) and 0.8708 (rank3, 0.8421–0.9468).
+These are transferability/sensitivity diagnostics, not validated clinical subtypes;
+rank3's extra capacity also improves reconstruction. Six of seven repeated families
+have lower within-patient than matched between-patient expression distance;
+OCM327 is the exception. Paired tumour–stroma tests cover 17 patients, not 60;
+29/50 Hallmark tests have BH q<0.05. Lineage/culture and shared RNA remain limitations.
+
+Remote input inspection confirmed 45 first-dot collisions, each exemplified by
+ordinary/PAR_Y pairs; version-only normalization leaves zero collisions in the
+checked common gene list. The fix is deployed. Replacement smoke **1138529**
+and gated pilot **1138550** use fresh `_r2` outputs; pilot requires afterok:1138529
+and the new smoke receipt. Old failed evidence is preserved. No b25 hold released.
+See `evidence/post_audit_validation_audit_20260908.json` for hashes and provenance.
+
+## 2026-09-08: bounded validation submitted; receipt audit interrupted (historical)
 
 The user authorized the next validation stage. Five license-free jobs were
 submitted using `hpc/roihu/post_audit_validation.sbatch`; none releases the

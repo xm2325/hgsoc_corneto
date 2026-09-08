@@ -32,5 +32,26 @@ growth-support networks 的说法，不是否定细胞生长或 CORNETO 方法�
 - Real/shuffled expression caps 和 energy-uptake exclusion 检验模型是否感知表达与边界条件；
   未校准的 cap 不等于 enzyme capacity，排除三种 uptake 不等于完整 OCMI medium。
 
-1121178 与 1121182 目前只有完成日志已读；本文件不填入尚未审计的 pathway 名称、效应值或 p 值。
-1121180 在 gene-ID 检查阶段失败，没有产生可解释的新 LP 结果。
+## 14:31 UTC 后新增 receipt 检查
+
+正式 NMF 1121179 的8个 folds 均无 patient overlap，8个输入 hash 全匹配，8个 NPZ 存在。
+Rank2/rank3 在四个 held-out cohorts 的 patient-mean reconstruction 改善分别为
+12.06%/13.85%、10.62%/14.79%、9.34%/14.26%、8.92%/12.62%
+（顺序7223、10801、11000、14568）。支持存在可迁移表达结构；更高 rank 的模型容量
+本身也改善拟合，不能仅据改善幅度选定“正确亚型数”。
+
+Biology receipt 的10个顶层输入 hash 已匹配。7个重复患者中6个表现出更低的
+within-patient expression distance，OCM327反向；应优先核对该患者样本采集、培养、QC，
+不可直接命名为 acquired resistance。OCM74 的同 study 两个样本很近，但跨 study 比较
+接近 matched between-patient reference，提醒 cohort/batch 仍可能影响相似性。
+
+17位患者的 tumour–stroma 配对中，EMT 与 angiogenesis 的 percentile-score 差值为
+−0.04548、−0.03621；cholesterol homeostasis、MYC targets V2、oxidative phosphorylation
+为+0.01191、+0.01061、+0.00345；这些项目的 BH q 均约0.000455。
+方向与 tumour/reference 谱系或增殖差异相容，但不是 HGSOC 特异机制验证。
+OXPHOS 效应小且基于 RNA 排名，不能称为呼吸通量升高。
+Hallmark 名称（如 PANCREAS_BETA_CELLS）只是 gene-set 标签，不证明细胞身份转变。
+共50项检验中29项 q<0.05；有限 Monte Carlo resolution 与非独立 gene sets 均应注明。
+
+完整数值来源与 receipt SHA 见 `evidence/post_audit_validation_audit_20260908.json`
+及其指向的服务器 receipts。原1121180未产生 LP 结果；修复版1138529/1138550另行验证。
