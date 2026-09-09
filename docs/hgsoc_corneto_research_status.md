@@ -6,6 +6,22 @@ attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
 
+## 2026-09-09 08:20 UTC: expression-shuffle contrast checked
+
+Pilot receipt SHA remains unchanged. At GPR scale1 under legacy default bounds,
+all eight real-expression maxima exceed all ten within-sample gene-value shuffles.
+Real maxima span 6.2809–10.2168; shuffle maxima across all 80 cases span
+0.00850–4.24632. This supports gene/value identity mattering under this particular
+GPR-cap construction, not just the marginal expression distribution. It is not
+HGSOC specificity, measured growth, patient discrimination or a validated medium.
+Only ten shuffles per sample were run: a corrected one-sided Monte Carlo tail
+estimate is 1/11 when none exceeds the real value, not p=0. Shared seeds and
+gene/model structure preclude treating the 80 cases as independent patients.
+
+Targeted squeue returned no entries for the documented legacy chain members.
+That is queue absence only; terminal accounting/artifact review is still pending.
+No retries or new research jobs were submitted; scientific holds remain in place.
+
 ## 2026-09-09 03:20 UTC: bounded pilot completed and numerical receipt audited
 
 1163554 completed in 1m58s. Receipt: 240 unique LP cases across eight samples,

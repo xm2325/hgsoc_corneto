@@ -4,6 +4,19 @@
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
+## 2026-09-09 08:20 UTC：已检查 expression-shuffle 对照
+
+Pilot receipt SHA 未变化。在 GPR scale1、legacy default bounds 下，八个样本的
+真实表达 growth maximum 均高于各自十次 gene-value shuffles。真实值范围
+6.2809–10.2168，全部80项 shuffle 范围0.00850–4.24632。
+这支持该 GPR-cap 构造不仅依赖表达边际分布，也依赖 gene/value 对应；
+不证明 HGSOC 特异性、实测生长、患者区分能力或 medium 已验证。
+每样本仅十次 shuffle，零次超过真实值时，校正的单侧 Monte Carlo tail estimate
+为1/11，而不是 p=0；共用 seeds 与 gene/model 结构也不允许把80项当独立患者。
+
+定向 squeue 未返回已记录 legacy chain 的作业，但仅表示不在队列中；终态
+accounting/artifact 审计仍待完成。未重试或提交新研究任务，scientific holds 保持。
+
 ## 2026-09-09 03:20 UTC：有界 pilot 完成并通过数值 receipt 审计
 
 1163554 用时1分58秒完成。八个样本共240项唯一 LP cases，全部 optimal 且

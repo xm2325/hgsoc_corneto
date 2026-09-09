@@ -19,5 +19,14 @@
     "1.0": [6.280864815725073, 10.216829998874026],
     "10.0": [30.44070256265681, 35.041288570871615]
   },
-  "claim_limit": "Continuous LP diagnostics only; uncalibrated caps and medium. Three-energy-uptake exclusion does not change reported real/null/b25 growth maxima beyond rounding. Shuffle contrasts not yet interpreted; no canonical sparse network promotion."
+  "shuffle_check_20260909_0820_utc": {
+    "receipt_sha_unchanged": true,
+    "policy": "gpr_real_scale_1.0 versus gpr_shuffled_0 through 9",
+    "medium": "legacy_default",
+    "samples_real_above_all_ten_shuffles": 8,
+    "shuffle_cases": 80,
+    "shuffle_growth_range": [0.00849848984418189, 4.246316305975037],
+    "corrected_per_sample_one_sided_tail_estimate": "1/11, not zero; descriptive diagnostic with only ten shuffles"
+  },
+  "claim_limit": "Continuous LP diagnostics only; uncalibrated caps and medium. Three-energy-uptake exclusion does not change reported real/null/b25 growth maxima beyond rounding. Gene-value identity sensitivity is not HGSOC specificity or patient discrimination; no canonical sparse network promotion."
 }
