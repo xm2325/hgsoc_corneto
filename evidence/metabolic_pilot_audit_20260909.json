@@ -1,0 +1,23 @@
+{
+  "audit_date_utc": "2026-09-09",
+  "job_id": "1163554",
+  "receipt_path": "/scratch/project_2012997/xiaomei/hgsoc_corneto/data/processed/post_audit_validation_20260908/metabolic_pilot_r3/receipt.json",
+  "receipt_sha256": "a4332123367cf37edc261555eefc029d14ed6413ca29c9c31932da1f752449b8",
+  "receipt_status": "completed",
+  "unique_cases": 240,
+  "samples": 8,
+  "optimal_cases": 240,
+  "all_numerical_pass": true,
+  "matching_input_hashes": 8,
+  "matching_context_hashes": 4,
+  "model_and_two_code_hashes_match": true,
+  "max_mass_balance_residual": 6.88356038835991e-11,
+  "max_bound_violation": 5.684341886080801e-13,
+  "null_and_b25_growth_all_samples_both_media": 187.35362997658078,
+  "legacy_real_gpr_growth_ranges": {
+    "0.1": [0.6280864815725072, 1.0216829998874026],
+    "1.0": [6.280864815725073, 10.216829998874026],
+    "10.0": [30.44070256265681, 35.041288570871615]
+  },
+  "claim_limit": "Continuous LP diagnostics only; uncalibrated caps and medium. Three-energy-uptake exclusion does not change reported real/null/b25 growth maxima beyond rounding. Shuffle contrasts not yet interpreted; no canonical sparse network promotion."
+}

@@ -1,10 +1,28 @@
 # HGSOC CORNETO research status and dependency register
 
-Last execution update: 2026-09-08 (BST); latest controlled scientific audit: 2026-09-06. This file is the project-level source of
+Last execution update: 2026-09-09 (BST); latest bounded LP audit: 2026-09-09. This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
+
+## 2026-09-09 03:20 UTC: bounded pilot completed and numerical receipt audited
+
+1163554 completed in 1m58s. Receipt: 240 unique LP cases across eight samples,
+all optimal and all numerical_pass. Eight input and four context SHA256 checks,
+model hash and both code hashes match. Maximum mass-balance residual is
+6.884e-11, maximum bound violation 5.685e-13. These are audited continuous-LP
+diagnostics, not canonical sparse CORNETO networks.
+
+In both tested boundary settings, expression-null and frozen-b25 growth maxima
+remain identical across eight samples at 187.35362997658078. Real GPR caps yield
+sample-dependent maxima: scale0.1 0.6281–1.0217; scale1 6.2809–10.2168;
+scale10 30.4407–35.0413. This demonstrates sensitivity to these assumed caps,
+not measured metabolic capacity. Excluding the three energy uptakes does not
+change these maxima (apart from rounding); thus their presence alone does not
+explain the growth optimum. A full medium audit remains necessary. Shuffle
+contrasts and legacy terminal-artifact review remain pending; no holds released
+or further full-scope jobs submitted. See `evidence/metabolic_pilot_audit_20260909.json`.
 
 ## 2026-09-08 22:08 UTC: serialization failure repaired; two-hour monitoring
 

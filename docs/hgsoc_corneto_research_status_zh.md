@@ -1,8 +1,23 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后执行记录更新：2026-09-08（BST）；最近受控科学审计：2026-09-06。本文件与
+最后执行记录更新：2026-09-09（BST）；最近有界 LP 审计：2026-09-09。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
+
+## 2026-09-09 03:20 UTC：有界 pilot 完成并通过数值 receipt 审计
+
+1163554 用时1分58秒完成。八个样本共240项唯一 LP cases，全部 optimal 且
+numerical_pass；8个输入、4个 context、model 和两个代码 hash 全匹配。
+最大 mass-balance residual 为6.884e-11，bound violation 为5.685e-13。
+这是 continuous-LP diagnostic 通过，不是 canonical sparse CORNETO networks。
+
+两种边界设置下，expression-null 与 frozen-b25 在八个样本中的 growth maxima
+均为187.35362997658078。Real GPR caps 产生样本差异：scale0.1为0.6281–1.0217，
+scale1为6.2809–10.2168，scale10为30.4407–35.0413；只证明模型对假设 caps 敏感，
+不代表实测代谢能力。排除三个 energy uptakes 后这些 maxima 不变（舍入误差除外），
+因此不能把 growth optimum 单独归因于它们；仍需完整 medium 审计。
+Shuffle 对照及 legacy 终态 artifact 复核尚待完成；未解除 holds，未提交新全集任务。
+证据见 `evidence/metabolic_pilot_audit_20260909.json`。
 
 ## 2026-09-08 22:08 UTC：序列化失败已修复；每两小时监控
 
