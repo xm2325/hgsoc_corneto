@@ -8,6 +8,17 @@ passes the corresponding content validator.
 
 ## 2026-09-10: native indicator revision deployed
 
+Audited outcome:1240865 COMPLETED in32s, validated_restricted_optimum.
+Selected592/767 reactions, objective592, bound592.0000000000001, gap0;
+integer error0, unselected flux0, mass residual1.102e-12, link violation1.904e-13.
+Independent fixed-support LP maximum7.90415942765149 meets the unchanged90%
+growth floor. Input, runner and native-helper hashes match; native.sol and log
+exist. Receipt SHA256 `611b066d84bb7556ae34bf76630b047492055f5792dd91e59a91456c1ca15ff8`.
+This validates the revised implementation on this one restricted support only,
+not an unrestricted optimum or calibrated biological model. The improvement
+bundles engine, native linking and tighter numerical settings; their individual
+effects have not been isolated. Medium and broader-panel validation remain gates.
+
 User authorized another bounded revision. Job **1240865** uses Gurobi native
 indicator constraints: y=0 implies flux=0; y=1 applies the original reaction
 bounds. Same767-reaction restricted support, growth floor and objective;

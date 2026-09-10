@@ -6,6 +6,16 @@
 
 ## 2026-09-10：已部署 native indicator 修订
 
+审计结果：1240865 在32秒内 COMPLETED，receipt 为 validated_restricted_optimum。
+767反应中选择592个，objective592，bound592.0000000000001，gap0；
+整数误差0、未选通量0、mass residual1.102e-12、link violation1.904e-13。
+独立 fixed-support LP 最大生长7.90415942765149，满足未改变的90% growth floor。
+输入、runner、native-helper hash 全匹配，native.sol 与日志存在。
+Receipt SHA256：`611b066d84bb7556ae34bf76630b047492055f5792dd91e59a91456c1ca15ff8`。
+仅验证这个受限 support 上的实现，不是 unrestricted optimum 或已校准生物模型。
+此次同时改变 engine、native linking 和数值设置，尚未分离各因素贡献。
+Medium 与更广样本验证仍是后续门槛。
+
 用户授权继续有界修订。任务 **1240865** 使用 Gurobi native indicators：
 y=0 则 flux=0，y=1 则遵循原 reaction bounds。同一767反应受限 support、
 growth floor 和 objective；solver120秒、gap1e-4、4threads，
