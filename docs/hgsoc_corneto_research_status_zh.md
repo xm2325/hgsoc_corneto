@@ -4,6 +4,22 @@
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
+## 2026-09-10 08:52 UTC：旧链终态 accounting 与 gate 证据
+
+定向 sacct 确认 joint/assembly 834324–834331、TPI1/FVA 834334–834335
+均未执行即 CANCELLED。Comparison 834333 因缺失7223的 full_direct_b25.json
+而 FAILED。834332 虽为 scheduler COMPLETED，但日志与 receipt 明确为
+incomplete（日志 ready=0），不是四队列科学分析成功。Availability receipt SHA256：
+`92ae4f477bad8ada484dfb6a54811ebd8a42fc89d396044827f8474ec25bf8e0`。
+
+快速失败样例863034_0为预期 scientific_review_hold 拒绝，并非 OOM；
+70小时失败样例937737_3终态为 user_limit/partial_incumbent，对应
+`003_ERR6389080_job1077075_task3.json`，SHA256：
+`fb2a7b56aad8251d7635ba5a238d7dca72b348a706bbb3fa59d9a2f2bb715dfa`。
+不能用这些样例解释所有 array failures；其余单独终态 artifacts 仍待复核，
+不能只凭 exit code 或时长推断原因。未重试、取消或解除 holds。
+有界 pilot 仍为完成；其数值有效性不能修复旧 sparse-network chain。
+
 ## 2026-09-09 08:20 UTC：已检查 expression-shuffle 对照
 
 Pilot receipt SHA 未变化。在 GPR scale1、legacy default bounds 下，八个样本的

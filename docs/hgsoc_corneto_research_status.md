@@ -6,6 +6,24 @@ attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
 
+## 2026-09-10 08:52 UTC: legacy terminal accounting and gate evidence
+
+Targeted sacct confirms joint/assembly 834324–834331 and TPI1/FVA
+834334–834335 CANCELLED without execution. Comparison 834333 FAILED because
+the 7223 full_direct_b25.json was absent. Although 834332 is scheduler COMPLETED,
+its log and receipt explicitly say incomplete (log: ready=0); this is not a
+successful four-cohort analysis. Availability receipt SHA256:
+`92ae4f477bad8ada484dfb6a54811ebd8a42fc89d396044827f8474ec25bf8e0`.
+
+Example rapid failure 863034_0 is an intentional scientific_review_hold rejection,
+not OOM. Example 70-hour failure 937737_3 ends user_limit/partial_incumbent;
+receipt `003_ERR6389080_job1077075_task3.json` SHA256 is
+`fb2a7b56aad8251d7635ba5a238d7dca72b348a706bbb3fa59d9a2f2bb715dfa`.
+These examples do not classify every array failure. Remaining individual terminal
+artifacts need review; do not infer cause solely from exit code or duration.
+No retries, cancellations or hold releases were performed. Bounded pilot remains
+completed; its numerical validity does not repair the old sparse-network chain.
+
 ## 2026-09-09 08:20 UTC: expression-shuffle contrast checked
 
 Pilot receipt SHA remains unchanged. At GPR scale1 under legacy default bounds,
