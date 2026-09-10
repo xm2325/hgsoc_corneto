@@ -4,6 +4,20 @@
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
+## 2026-09-10：已提交用户授权的修订模型 smoke
+
+新任务 **1232423**，4CPU/32G/15min：完整 GPR scale1 caps 加 pFBA，
+四个固定、未按结果挑选的 OCM，分别验证各样本自身最大生长的50%/90%，
+并加入四个关闭全部 boundary uptake 的负对照。不占 Gurobi session。
+按实际 flux 选择 support 后，将其余反应严格置零，再用第二个 LP 验证生长。
+14项本地测试及 scoped Ruff 通过。新输出：
+`data/processed/revised_gpr_pfba_20260910/receipt.json`。
+
+这是 continuous parsimonious-flux diagnostic，不是最少反应数 CORNETO 或
+已校准 OCMI 模型；medium 重建仍是放行条件，旧 b25 holds 保持，未提交全集后继。
+监控新增1232423，审计 cases、负对照与 hashes 后再决定后续。
+详见[修订验证契约](revised_model_validation_20260910.md)。
+
 ## 2026-09-10 08:52 UTC：旧链终态 accounting 与 gate 证据
 
 定向 sacct 确认 joint/assembly 834324–834331、TPI1/FVA 834334–834335

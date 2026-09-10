@@ -6,6 +6,21 @@ attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
 
+## 2026-09-10: user-authorized revised-model smoke submitted
+
+New job **1232423**,4CPU/32G/15min, tests full GPR scale1 caps with pFBA,
+50%/90% of each sample's own maximum growth, four fixed response-blind OCMs,
+and four all-boundary-uptake-closed negative controls. No Gurobi sessions.
+Flux-selected support must pass a second LP with every unselected reaction zeroed.
+Fourteen local tests and scoped Ruff passed. Fresh output:
+`data/processed/revised_gpr_pfba_20260910/receipt.json`.
+
+This is a continuous parsimonious-flux diagnostic, not minimum-cardinality
+CORNETO or a calibrated OCMI model. Medium reconstruction remains a release gate;
+old b25 holds remain intact. No full-cohort successor was submitted. Monitor
+1232423 as newly authorized work; audit its cases/negative controls and hashes
+before any further action. See [revision contract](revised_model_validation_20260910.md).
+
 ## 2026-09-10 08:52 UTC: legacy terminal accounting and gate evidence
 
 Targeted sacct confirms joint/assembly 834324–834331 and TPI1/FVA
