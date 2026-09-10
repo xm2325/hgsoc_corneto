@@ -8,6 +8,14 @@ passes the corresponding content validator.
 
 ## 2026-09-10: pFBA support gate passed; restricted binary test submitted
 
+Follow-up:1237008 is scheduler COMPLETED but receipt is no_incumbent,
+HiGHS infeasible (status2),767 restricted reactions, no objective/bound/gap.
+Receipt SHA256 `b43d0aba47b630a946b027cac435cbddb16bc2bd130e7eb71a46c87a199a1e20`.
+This fails the binary validation gate despite the corresponding continuous
+fixed-support LP passing. Diagnose exact matrix/bounds against the known feasible
+flux before attributing this to presolve or changing scientific constraints.
+No global solve is authorized by this result. Medium gate remains unresolved.
+
 1232423 completed in21s. All eight fixed-support rechecks passed; four closed-
 uptake negative controls had zero biomass. Input and panel hashes matched;
 maximum pFBA mass residual1.308e-12, bound violation0. Receipt SHA256:

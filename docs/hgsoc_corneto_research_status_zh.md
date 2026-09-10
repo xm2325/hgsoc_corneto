@@ -6,6 +6,13 @@
 
 ## 2026-09-10：pFBA support 验证通过；已提交受限二元测试
 
+后续：1237008 虽为 scheduler COMPLETED，但 receipt 为 no_incumbent，
+HiGHS infeasible（status2），767个受限反应，无 objective/bound/gap。
+Receipt SHA256 `b43d0aba47b630a946b027cac435cbddb16bc2bd130e7eb71a46c87a199a1e20`。
+因此二元验证未通过，与对应连续 fixed-support LP 可行结果冲突。
+必须先用已知可行 flux 核查精确 matrix/bounds，不能直接归因于 presolve，
+也不能为通过而改变科学约束。不得据此扩大求解；medium gate 仍未解决。
+
 1232423 用时21秒完成；8项 fixed-support 复验通过，4项关闭摄取负对照均无生长。
 输入与 panel hash 匹配，最大 pFBA mass residual 1.308e-12，bound violation0。
 Receipt SHA256：`355769d1af982bdebd16ec4244a25e52ff790e180576aee0b51478c22ff573d3`。
