@@ -6,6 +6,15 @@
 
 ## 2026-09-10：精确矩阵见证与 presolve 诊断
 
+结果：1240622 未通过科学验收。实际提交矩阵的 all-on witness 残差3.979e-13，
+边界/link/growth 违反为0。关闭 presolve 后 HiGHS 报 optimal/gap0，
+objective547.000021064138，但 integrality error9.806e-7 允许未选反应通量
+0.0009806065；round indicators 并严格关闭未选反应后，最大生长为0。
+已确认 big-M/integer-tolerance 泄漏，不能接受或放宽验收。下一轮有界修订需测试
+更强联动（如 native indicators 或有依据的 tight bounds/tolerances），保留可行见证
+和 fixed-support LP 验收。Presolve-on infeasible 是另外一个数值症状。
+尚未建立已校准 medium 或完整模型结果。
+
 用户要求继续数值修复，额度重置后撤回14:53预约要求；此前一次性预约更新被拒绝，
 没有创建新唤醒，既有两小时监控保持不变。
 

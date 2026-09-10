@@ -8,6 +8,17 @@ passes the corresponding content validator.
 
 ## 2026-09-10: exact-matrix witness and presolve diagnostic
 
+Outcome:1240622 failed its scientific gate. Exact submitted-matrix all-on witness
+has residual3.979e-13 and zero bound/link/growth violations. With presolve disabled,
+HiGHS reports optimal/gap0, objective547.000021064138, but integrality error
+9.806e-7 permits unselected flux0.0009806065. Rounding indicators and zeroing
+unselected reactions yields maximum biomass0. This is verified big-M/integer-
+tolerance leakage, not an acceptable network. Do not relax validation. Next
+bounded revision should test stronger linking (e.g. native indicators or justified
+tight bounds/tolerances), preserving a known-feasible witness and fixed-support
+LP acceptance. Presolve-on infeasibility remains a separate numerical symptom.
+No calibrated medium or full-model result has been established.
+
 User requested continued numerical repair and then withdrew the14:53 scheduling
 request after quota reset. The attempted one-time scheduling update was rejected;
 no new wake-up was created. Existing two-hour monitoring is unchanged.
