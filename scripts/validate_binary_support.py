@@ -24,6 +24,7 @@ def main():
     p.add_argument("--model", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--disable-presolve", action="store_true")
+    p.add_argument("--native-indicators", action="store_true")
     a = p.parse_args()
     a.output.mkdir(parents=True, exist_ok=False)
     report = {
@@ -93,20 +94,38 @@ def main():
         write_json(target, report)
         if max(violations + [witness_bounds]) > 1e-6:
             raise ValueError("known flux is not feasible in the assembled MILP")
-        sol = milp(
-            np.r_[np.zeros(n), np.ones(n)],
-            integrality=np.r_[np.zeros(n), np.ones(n)],
-            bounds=Bounds(
-                np.r_[np.minimum(lo, 0), np.zeros(n)], np.r_[np.maximum(hi, 0), np.ones(n)]
-            ),
-            constraints=constraints,
-            options={
-                "time_limit": 120,
-                "mip_rel_gap": 1e-4,
-                "disp": True,
-                "presolve": not a.disable_presolve,
-            },
-        )
+        if a.native_indicators:
+            from native_indicator_solver import solve_native
+
+            report["native_helper_sha256"] = sha(
+                Path(__file__).with_name("native_indicator_solver.py")
+            )
+            report["solver_policy"] = {
+                "engine": "gurobi_native_indicators",
+                "FeasibilityTol": 1e-9,
+                "IntFeasTol": 1e-9,
+                "IntegralityFocus": 1,
+                "warm_start": "saved_pFBA_flux_and_all_indicators_one",
+            }
+            write_json(target, report)
+            sol = solve_native(
+                model.s, lo, hi, model.ids.index("biomass_human"), growth, witness, a.output
+            )
+        else:
+            sol = milp(
+                np.r_[np.zeros(n), np.ones(n)],
+                integrality=np.r_[np.zeros(n), np.ones(n)],
+                bounds=Bounds(
+                    np.r_[np.minimum(lo, 0), np.zeros(n)], np.r_[np.maximum(hi, 0), np.ones(n)]
+                ),
+                constraints=constraints,
+                options={
+                    "time_limit": 120,
+                    "mip_rel_gap": 1e-4,
+                    "disp": True,
+                    "presolve": not a.disable_presolve,
+                },
+            )
         report.update(solver_status=int(sol.status), message=sol.message, restricted_reactions=n)
         for key in ["fun", "mip_gap", "mip_dual_bound", "mip_node_count"]:
             v = getattr(sol, key, None)

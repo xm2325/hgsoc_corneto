@@ -2,10 +2,12 @@ import json
 import sys
 
 import numpy as np
+import pytest
 import validate_binary_support as runner
 
 
-def test_binary_runner_and_independent_support(tmp_path, monkeypatch):
+@pytest.mark.parametrize("native", [False, True])
+def test_binary_runner_and_independent_support(tmp_path, monkeypatch, native):
     reactions = {
         "in": {"lower": 0, "upper": 10, "stoichiometry": {"a": 1}},
         "biomass_human": {"lower": 0, "upper": 10, "stoichiometry": {"a": -1}},
@@ -53,6 +55,9 @@ def test_binary_runner_and_independent_support(tmp_path, monkeypatch):
             str(tmp_path / "out"),
         ],
     )
+    if native:
+        pytest.importorskip("gurobipy")
+        sys.argv.append("--native-indicators")
     runner.main()
     d = json.loads((tmp_path / "out/receipt.json").read_text())
     assert d["status"] == "validated_restricted_optimum"

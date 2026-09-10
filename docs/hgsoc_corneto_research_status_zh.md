@@ -4,6 +4,22 @@
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
+## 2026-09-10：已部署 native indicator 修订
+
+用户授权继续有界修订。任务 **1240865** 使用 Gurobi native indicators：
+y=0 则 flux=0，y=1 则遵循原 reaction bounds。同一767反应受限 support、
+growth floor 和 objective；solver120秒、gap1e-4、4threads，
+FeasibilityTol/IntFeasTol1e-9，IntegralityFocus1。明确将已知 pFBA flux/all-on
+witness 装载为 MIP start。日志与 .sol 留在 Roihu，不复制或暴露 licence。
+独立 fixed-support LP 及 leakage 验收不变。
+
+本地 HiGHS 和 native Gurobi toy 端到端测试均通过；新增 native case 前的15项
+回归套件也通过，scoped Ruff/bash syntax 检查通过。提交前 squeue 无运行作业。
+这是单 session 诊断，不重启 b25 或全集。新输出：
+`data/processed/revised_binary_native_20260910/receipt.json`。
+参考[Gurobi 数值指南](https://docs.gurobi.com/projects/optimizer/en/current/concepts/numericguide/tolerances_scaling.html)；
+native indicators 与更紧 tolerances 不能替代独立验收。
+
 ## 2026-09-10：精确矩阵见证与 presolve 诊断
 
 结果：1240622 未通过科学验收。实际提交矩阵的 all-on witness 残差3.979e-13，

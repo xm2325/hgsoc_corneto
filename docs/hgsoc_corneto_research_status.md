@@ -6,6 +6,24 @@ attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
 
+## 2026-09-10: native indicator revision deployed
+
+User authorized another bounded revision. Job **1240865** uses Gurobi native
+indicator constraints: y=0 implies flux=0; y=1 applies the original reaction
+bounds. Same767-reaction restricted support, growth floor and objective;
+120s solver limit, gap1e-4,4threads, FeasibilityTol/IntFeasTol1e-9,
+IntegralityFocus1. The known pFBA flux/all-on witness is explicitly loaded as
+a MIP start. Logs and .sol remain on Roihu; no licence is copied or exposed.
+Independent fixed-support LP and leakage acceptance remain unchanged.
+
+Local tests passed for both HiGHS and native Gurobi toy end-to-end cases;
+the existing15-case regression suite also passed before the extra native case.
+Scoped Ruff/bash syntax checks pass. Pre-submission squeue showed no running
+jobs. This is a one-session diagnostic, not a reopened b25/full-cohort chain.
+Fresh output: `data/processed/revised_binary_native_20260910/receipt.json`.
+The change follows [Gurobi's numerical guidance](https://docs.gurobi.com/projects/optimizer/en/current/concepts/numericguide/tolerances_scaling.html);
+native indicators/tighter tolerances do not replace independent validation.
+
 ## 2026-09-10: exact-matrix witness and presolve diagnostic
 
 Outcome:1240622 failed its scientific gate. Exact submitted-matrix all-on witness
