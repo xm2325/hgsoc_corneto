@@ -8,6 +8,34 @@ passes the corresponding content validator.
 
 ## 2026-09-10: bounded native panel submitted
 
+20:37 BST continuation audit: all seven 1241662 elements COMPLETED (9–44s).
+Combined with 1240865, 8/8 receipts are validated_restricted_optimum, gap zero,
+integrality error zero and unselected flux zero. Selected reaction counts at
+fractions 0.5/0.9: ERR2808260 724/592; ERR6389093 729/713;
+ERR6877946 707/718; ERR13907056 674/695. All independent fixed-support LPs
+are optimal, numerically valid and meet their case-specific growth floor.
+Maximum native mass residual is 3.5783e-12. Real RNA/QC input hashes, model
+hash, source receipt hash and native-helper hash were verified. Seven new runner
+hashes match the deployed code; the reused case matches git c5bd077's runner
+SHA256 42b208e008a978c224c52495015d23135e7f8bb3447401d55e59cd148c9cabdf.
+All native.sol and native.gurobi.log artifacts exist. No retry is warranted.
+
+Important limitation: fixed-support LP witnesses still use ATP uptake; this is
+not evidence for physiological ATP uptake or its necessity. Medium validation
+must precede biological interpretation. Non-monotone support counts reflect
+different candidate supports, not a demonstrated biological growth response.
+Next gate: evidence-based medium boundaries and same-candidate-set sensitivity,
+not automatic full-cohort release. The monitor was restored to five-hour intervals.
+
+New receipt SHA256 values by index (existing index 1 is recorded below):
+0 ae99cd9832f3da299d539cbe53b08ed077fdbdac8bc8f22aa2a0ff96c8d9b24e;
+2 322ff1865db3b18dec9251459d251d1543f43a42e24a459ddb448c7661d36d48;
+3 1b5078b35c3fc9471cbaac74e20a7ceb8299a0868220b7bb0d1d55867f666c66;
+4 829dbed129d574a265f97805afccff9fc7e910aa26e92b7809c9b7cfb243eef4;
+5 8e543b724911f3efec069b03fce2a485ab3b76d2ca9b544116ee851d2ee78dd5;
+6 5f26196911937608bf69097a139c86c734b4415af8b728dd791b541f29fcbd3a;
+7 79dd5b5963882e21814c1c9a8b40ea213ce07cd54cea86076b0c228665958be8.
+
 Job array **1241662**, indices `0,2-7`, serial throttle one, tests the remaining
 seven cases in the audited four-OCM × growth-fraction {0.5, 0.9} pFBA panel.
 Index 1 is already audited under 1240865; it is not resubmitted. Each case retains

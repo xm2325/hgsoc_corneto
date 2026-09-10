@@ -6,6 +6,32 @@
 
 ## 2026-09-10：已提交有界 native panel
 
+20:37 BST 继续审计：1241662 七项均 COMPLETED（9–44秒），加上1240865，
+8/8 receipt 均为 validated_restricted_optimum，gap、integrality error、
+unselected flux 均为零。0.5/0.9 fraction 下 selected reactions 分别为：
+ERR2808260 724/592；ERR6389093 729/713；ERR6877946 707/718；
+ERR13907056 674/695。独立 fixed-support LP 全部 optimal、数值合格且达到
+各自 growth floor。最大 native mass residual 为3.5783e-12。实际 RNA/QC
+输入、model、source receipt、native-helper hash 已验证；七份新 runner hash
+匹配部署代码，复用案例匹配 git c5bd077 的 runner hash：
+42b208e008a978c224c52495015d23135e7f8bb3447401d55e59cd148c9cabdf。
+所有 native.sol 与 native.gurobi.log 均存在，无需 retry。
+
+重要限制：fixed-support LP witness 仍使用 ATP uptake；这不证明生理性摄取
+或其必要性。必须先验证 medium，再作生物学解释。非单调 reaction counts
+来自不同 candidate supports，不能解释成生物学 growth response。
+下一道门槛是有来源的 medium boundaries 与 same-candidate-set sensitivity，
+不是自动启动全队列。监控已恢复每五小时。
+
+新 receipt SHA256（既有索引1见下文）：
+0 ae99cd9832f3da299d539cbe53b08ed077fdbdac8bc8f22aa2a0ff96c8d9b24e；
+2 322ff1865db3b18dec9251459d251d1543f43a42e24a459ddb448c7661d36d48；
+3 1b5078b35c3fc9471cbaac74e20a7ceb8299a0868220b7bb0d1d55867f666c66；
+4 829dbed129d574a265f97805afccff9fc7e910aa26e92b7809c9b7cfb243eef4；
+5 8e543b724911f3efec069b03fce2a485ab3b76d2ca9b544116ee851d2ee78dd5；
+6 5f26196911937608bf69097a139c86c734b4415af8b728dd791b541f29fcbd3a；
+7 79dd5b5963882e21814c1c9a8b40ea213ce07cd54cea86076b0c228665958be8。
+
 数组 **1241662**，索引 `0,2-7`、串行并发一，补测已审计的四个 OCM ×
 growth fraction {0.5, 0.9} pFBA panel 中剩余七个案例。索引 1 已由
 1240865 验证，不重复提交。参数保持 native smoke 设置：solver TimeLimit
