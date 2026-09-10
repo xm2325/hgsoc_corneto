@@ -1,10 +1,31 @@
 # HGSOC CORNETO research status and dependency register
 
-Last execution update: 2026-09-09 (BST); latest bounded LP audit: 2026-09-09. This file is the project-level source of
+Last execution update: 2026-09-10 (BST); latest bounded LP audit: 2026-09-10. This file is the project-level source of
 truth for scientific scope, completed evidence, queued analyses, failed
 attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
+
+## 2026-09-10: bounded native panel submitted
+
+Job array **1241662**, indices `0,2-7`, serial throttle one, tests the remaining
+seven cases in the audited four-OCM × growth-fraction {0.5, 0.9} pFBA panel.
+Index 1 is already audited under 1240865; it is not resubmitted. Each case retains
+the native smoke settings: 120-second solver limit, requested gap 1e-4, four
+threads, 32G and ten-minute Slurm limit. Selection is now explicit by case index;
+receipts record the index and growth fraction. Outputs use the fresh namespace
+`data/processed/revised_binary_native_panel_20260910/<index>/receipt.json`.
+Sixteen regression tests and shell syntax/lint checks passed. No active jobs
+were reported immediately before submission; no legacy hold was released.
+Submission alone is not a passed scientific gate. Audit each receipt, exact
+case coverage, hashes, unselected flux and independent fixed-support LP before
+combining with the existing case. Supports differ between fractions, so this
+does not establish a global cardinality comparison across growth fractions.
+
+The existing same-conversation monitor is scheduled once for 10 September
+20:37 BST (19:37 UTC), with no model override or additional task. Its prompt
+restores the previously configured five-hour interval after that continuation.
+Medium calibration and unrestricted-model validation remain separate gates.
 
 ## 2026-09-10: native indicator revision deployed
 

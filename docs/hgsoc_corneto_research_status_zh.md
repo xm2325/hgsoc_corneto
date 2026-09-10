@@ -1,8 +1,26 @@
 # HGSOC CORNETO 研究状态与依赖登记（中文对应版）
 
-最后执行记录更新：2026-09-09（BST）；最近有界 LP 审计：2026-09-09。本文件与
+最后执行记录更新：2026-09-10（BST）；最近有界 LP 审计：2026-09-10。本文件与
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
+
+## 2026-09-10：已提交有界 native panel
+
+数组 **1241662**，索引 `0,2-7`、串行并发一，补测已审计的四个 OCM ×
+growth fraction {0.5, 0.9} pFBA panel 中剩余七个案例。索引 1 已由
+1240865 验证，不重复提交。参数保持 native smoke 设置：solver TimeLimit
+120 秒、requested gap 1e-4、四线程、32G、Slurm 十分钟。现通过显式
+case index 选择案例，receipt 记录索引和 growth fraction。新输出目录为
+`data/processed/revised_binary_native_panel_20260910/<index>/receipt.json`。
+16 项 regression tests 和 shell syntax/lint 检查通过。提交前未发现运行作业，
+未解除任何 legacy hold。提交不代表科学验证成功；须逐一核验 receipt、
+案例覆盖、hash、unselected flux 和独立 fixed-support LP 后才能合并既有案例。
+不同 growth fraction 的候选 support 不同，因此不能据此证明跨 fraction 的
+全局 minimum-cardinality 比较。
+
+现有同会话 monitor 已设置为 9 月 10 日英国时间 20:37（19:37 UTC）单次继续，
+不指定模型、不新增任务；提示要求此次继续后恢复此前配置的每五小时检查。
+Medium calibration 与 unrestricted-model validation 仍是独立门槛。
 
 ## 2026-09-10：已部署 native indicator 修订
 

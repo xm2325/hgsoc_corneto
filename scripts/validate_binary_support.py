@@ -25,6 +25,7 @@ def main():
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--disable-presolve", action="store_true")
     p.add_argument("--native-indicators", action="store_true")
+    p.add_argument("--case-index", type=int, help="Explicit index in the audited pFBA panel")
     a = p.parse_args()
     a.output.mkdir(parents=True, exist_ok=False)
     report = {
@@ -42,8 +43,15 @@ def main():
         source = a.root / "data/processed/revised_gpr_pfba_20260910/receipt.json"
         prior = json.loads(source.read_text())
         assert prior["status"] == "completed" and prior["model_sha256"] == sha(a.model)
-        case = next(c for c in prior["cases"] if c["fraction"] == 0.9)
+        case_index = a.case_index
+        if case_index is None:
+            case_index = next(i for i, c in enumerate(prior["cases"]) if c["fraction"] == 0.9)
+        if not 0 <= case_index < len(prior["cases"]):
+            raise ValueError("case index outside the audited pFBA panel")
+        case = prior["cases"][case_index]
         report.update(
+            case_index=case_index,
+            growth_fraction=case["fraction"],
             source_sha256=sha(source),
             model_sha256=sha(a.model),
             condition=case["condition"],
