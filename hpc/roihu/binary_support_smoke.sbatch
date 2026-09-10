@@ -16,4 +16,4 @@ exec srun /scratch/project_2012997/xiaomei/hgsoc_corneto_env/bin/python \
  scripts/validate_binary_support.py --root "$ROOT" \
  --rna /scratch/project_2012997/xiaomei/hgsoc_corneto_rna/aggregated \
  --model /scratch/project_2012997/xiaomei/hgsoc_corneto_inputs/downloads/Human-GEM-v1.4.1.xml \
- --output data/processed/revised_binary_support_20260910
+ --output data/processed/revised_binary_support_20260910_nopresolve --disable-presolve

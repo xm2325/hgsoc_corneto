@@ -25,6 +25,7 @@ def test_binary_runner_and_independent_support(tmp_path, monkeypatch):
                         "condition": "test",
                         "selected_reactions": list(reactions),
                         "growth_maximum": {"maximum_biomass": 10},
+                        "flux": {"in": 9.0, "biomass_human": 9.0},
                     }
                 ],
             }

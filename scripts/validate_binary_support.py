@@ -23,6 +23,7 @@ def main():
     p.add_argument("--rna", type=Path, required=True)
     p.add_argument("--model", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--disable-presolve", action="store_true")
     a = p.parse_args()
     a.output.mkdir(parents=True, exist_ok=False)
     report = {
@@ -74,6 +75,24 @@ def main():
             LinearConstraint(bmat([[ident, -diags(lo)]]), 0, np.inf),
             LinearConstraint(row.tocsc(), growth, np.inf),
         ]
+        witness = np.r_[[case["flux"][r] for r in model.ids], np.ones(n)]
+        violations = []
+        for constraint in constraints:
+            activity = constraint.A @ witness
+            violations.append(
+                float(max(0, np.max(constraint.lb - activity), np.max(activity - constraint.ub)))
+            )
+        lower = np.r_[np.minimum(lo, 0), np.zeros(n)]
+        upper = np.r_[np.maximum(hi, 0), np.ones(n)]
+        witness_bounds = float(max(0, np.max(lower - witness), np.max(witness - upper)))
+        report["all_on_witness"] = {
+            "constraint_violations": violations,
+            "bound_violation": witness_bounds,
+        }
+        report["presolve"] = not a.disable_presolve
+        write_json(target, report)
+        if max(violations + [witness_bounds]) > 1e-6:
+            raise ValueError("known flux is not feasible in the assembled MILP")
         sol = milp(
             np.r_[np.zeros(n), np.ones(n)],
             integrality=np.r_[np.zeros(n), np.ones(n)],
@@ -81,7 +100,12 @@ def main():
                 np.r_[np.minimum(lo, 0), np.zeros(n)], np.r_[np.maximum(hi, 0), np.ones(n)]
             ),
             constraints=constraints,
-            options={"time_limit": 120, "mip_rel_gap": 1e-4, "disp": True},
+            options={
+                "time_limit": 120,
+                "mip_rel_gap": 1e-4,
+                "disp": True,
+                "presolve": not a.disable_presolve,
+            },
         )
         report.update(solver_status=int(sol.status), message=sol.message, restricted_reactions=n)
         for key in ["fun", "mip_gap", "mip_dual_bound", "mip_node_count"]:
@@ -133,6 +157,8 @@ def main():
     finally:
         report["finished_at"] = stamp()
         write_json(target, report)
+    if report["status"] != "validated_restricted_optimum":
+        raise RuntimeError("binary scientific gate not passed; receipt preserved")
 
 
 if __name__ == "__main__":

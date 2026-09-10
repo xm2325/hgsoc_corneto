@@ -6,6 +6,22 @@ attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
 
+## 2026-09-10: exact-matrix witness and presolve diagnostic
+
+User requested continued numerical repair and then withdrew the14:53 scheduling
+request after quota reset. The attempted one-time scheduling update was rejected;
+no new wake-up was created. Existing two-hour monitoring is unchanged.
+
+New diagnostic **1240622** retains the same restricted model, growth floor and
+gap1e-4, but disables HiGHS presolve (120s limit). Before solving, the runner
+evaluates the saved all-indicators-on witness against the exact assembled
+constraint matrices and variable bounds and writes residuals to receipt.
+Any nonvalidated outcome now exits nonzero while preserving the receipt.
+Updated binary regression test and Ruff pass. Output is a fresh
+`data/processed/revised_binary_support_20260910_nopresolve` directory;
+no old evidence or hold is overwritten. Outcome pending; presolve is a tested
+hypothesis, not yet an established cause.
+
 ## 2026-09-10: pFBA support gate passed; restricted binary test submitted
 
 Follow-up:1237008 is scheduler COMPLETED but receipt is no_incumbent,

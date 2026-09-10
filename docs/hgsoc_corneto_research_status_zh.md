@@ -4,6 +4,18 @@
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
+## 2026-09-10：精确矩阵见证与 presolve 诊断
+
+用户要求继续数值修复，额度重置后撤回14:53预约要求；此前一次性预约更新被拒绝，
+没有创建新唤醒，既有两小时监控保持不变。
+
+新诊断任务 **1240622** 保持同一受限模型、growth floor、gap1e-4，仅关闭
+HiGHS presolve（120秒限制）。求解前将保存的 all-indicators-on witness
+代入实际提交的 constraint matrices 与 variable bounds，残差写入 receipt。
+任何未通过科学验收的结果都会非零退出并保留 receipt。更新后二元回归测试与 Ruff
+通过。新目录 `data/processed/revised_binary_support_20260910_nopresolve`，
+不覆盖旧证据、不解除 holds。结果待审；presolve 目前是待检验假设，而非已证实原因。
+
 ## 2026-09-10：pFBA support 验证通过；已提交受限二元测试
 
 后续：1237008 虽为 scheduler COMPLETED，但 receipt 为 no_incumbent，
