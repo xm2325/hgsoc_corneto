@@ -6,6 +6,24 @@ attempts, dependencies, and claim limits. Slurm `COMPLETED` is never sufficient
 on its own: a result is scientifically complete only when its output receipt
 passes the corresponding content validator.
 
+## 2026-09-10: pFBA support gate passed; restricted binary test submitted
+
+1232423 completed in21s. All eight fixed-support rechecks passed; four closed-
+uptake negative controls had zero biomass. Input and panel hashes matched;
+maximum pFBA mass residual1.308e-12, bound violation0. Receipt SHA256:
+`355769d1af982bdebd16ec4244a25e52ff790e180576aee0b51478c22ff573d3`.
+Support counts in receipt order:816,767,827,934,809,887,792,869. These are
+thresholded pFBA supports, not proven minimum-cardinality networks.
+
+New job **1237008** tests binary links on the first sample's90%-growth pFBA
+support only: minimize indicator count with per-reaction L*y<=v<=U*y,
+120s HiGHS MILP limit, requested relative gap1e-4, saved incumbent/bound/gap,
+full-primal/link/integrality checks and an independent fixed-support LP.
+It is topology-restricted and not a full CORNETO result. No Gurobi session,
+10min/32G allocation;15 local tests passed. Output:
+`data/processed/revised_binary_support_20260910/receipt.json`.
+Medium calibration and unrestricted binary model remain unfinished gates.
+
 ## 2026-09-10: user-authorized revised-model smoke submitted
 
 New job **1232423**,4CPU/32G/15min, tests full GPR scale1 caps with pFBA,

@@ -4,6 +4,22 @@
 `docs/hgsoc_corneto_research_status.md` 对应，记录研究范围、已完成证据、排队分析、失败尝试、依赖关系与可声明范围。
 仅有 Slurm `COMPLETED` 不足以证明科学分析完成；只有输出 `receipt` 通过相应内容验证后，结果才算科学上完成。
 
+## 2026-09-10：pFBA support 验证通过；已提交受限二元测试
+
+1232423 用时21秒完成；8项 fixed-support 复验通过，4项关闭摄取负对照均无生长。
+输入与 panel hash 匹配，最大 pFBA mass residual 1.308e-12，bound violation0。
+Receipt SHA256：`355769d1af982bdebd16ec4244a25e52ff790e180576aee0b51478c22ff573d3`。
+按 receipt 顺序 support counts：816、767、827、934、809、887、792、869；
+这是阈值化 pFBA support，不是已证明最少反应数网络。
+
+新任务 **1237008** 仅在首个样本90% growth 的 pFBA support 内测试二元约束：
+最小 indicator count，逐反应 L*y<=v<=U*y，HiGHS MILP 限时120秒，
+请求 relative gap1e-4；保存 incumbent/bound/gap，检查 full primal、links、
+integrality，再独立 LP 验证固定网络。它是 topology-restricted 测试，不是完整
+CORNETO 结果；不占 Gurobi，10min/32G，15项本地测试通过。
+输出：`data/processed/revised_binary_support_20260910/receipt.json`。
+培养基校准与 unrestricted binary model 仍未完成。
+
 ## 2026-09-10：已提交用户授权的修订模型 smoke
 
 新任务 **1232423**，4CPU/32G/15min：完整 GPR scale1 caps 加 pFBA，
